@@ -24,8 +24,94 @@
       padding: 10px;
     }
 
+    img {
+      border-radius: 20%;
+    }
+
+    .td-item {
+      border:2px solid #8331da;
+      text-align: center;
+      width:8%;
+    }
+
+    table.come {
+      position:fixed;
+      /* position: absolute; */
+      font-family: "Courier New";
+      /* position: absolute; */
+      left: 0px;
+      font-weight: bold;
+      border:0 solid #8331da;
+      margin:auto;
+      width:100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      /* padding-top:50px; */
+      /* display: inline;  */
+    }
+
+    .td-item {
+      border:2px solid #8331da;
+      text-align: center;
+      width:8%;
+    }
+
+    td {
+      background:#8331da;
+      background-color: hsla(20,50%,10%,0.40);
+      color:white;
+      text-align: center;
+      width:8%;
+      font-size: 26px;
+    }
+
+    td:hover {
+      background:#6331da;
+      color:white;
+      text-align: center;
+      width:8%;
+      font-size: 26px;
+    }
+
+    #a1:hover {
+      background:red;
+    }
+    #a2:hover {
+      background:green;
+    }
+    #a3:hover {
+      background:blue;
+    }
+    #a4:hover {
+      background:green;
+    }
+    #a5:hover {
+      background:red;
+    }
+    #a6:hover {
+      background:green;
+    }
+    #a7:hover {
+      background:blue;
+    }
+    #a8:hover {
+      background:green;
+    }
+    #a9:hover {
+      background:red;
+    }
+
+    #page {
+      padding-top:50px;
+      display:inline;
+    }
+
     /* try text in  borders https://stackoverflow.com/questions/7731310/text-in-border-css-html */
 
+    /* img {
+      border-radius: 20%;
+    } */
   </style>
   <script type="text/javascript">
     (function(m, e, t, r, i, k, a) {
@@ -45,7 +131,7 @@
     });
   </script>
   <noscript>
-    <div><img src="https://mc.yandex.ru/watch/53377975" style="position:absolute; left:-9999px;" alt="" /></div>
+    <div><img src="https://mc.yandex.ru/watch/53377975" class="ava" style="position:absolute; left:-9999px;" alt="" /></div>
   </noscript>
   <!-- /Yandex.Metrika counter -->
 </head>
@@ -53,7 +139,31 @@
 <body>
 
   <center>
-  Welcome Stranger! ☘️  </center>
+    <table id="tbl_nav" class="come">
+      <tr>
+        <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
+        <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
+        <td id="a3"><a href="#s_moments_dev" title="developmet moments">dm</a></td>
+        <td id="a4"><a href="#s_music" title="music momemts">muz</a></td>
+        <td id="a5"><a href="#s_performances" title="performances">pe</a></td>
+        <td id="a6"><a href="#s_lectures" title="Lectures">l</a></td>
+        <td id="a7"><a href="#s_people" title="people">p</a></td>
+        <td id="a8"><a href="#s_beuti_devmat" title="materials">m</a></td>
+        <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
+      </tr>
+    </table>
+  </center>
+
+<div id="page">
+<center>
+<span style="padding-top:50px;">
+  <br>
+  <br>
+  <br>
+  Welcome Stranger! ☘️
+</span>
+
+ </center>
 
   <img src="https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/hands.jpg" alt="" style="width: 50%; margin:auto; padding: 7px; text-align:center; display:block">
   <section>
@@ -121,7 +231,7 @@
     glhf 🦋😚🧞‍💫
     <br/>
 
-    <section>
+    <section name="s_short_film">
       short films & movies:
       <ul>
         <li><a href="https://www.youtube.com/watch?v=kK3_vA867RQ">I need your vision [NY, 2018]</a></li>
@@ -131,7 +241,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_tusion"></a>
       tusion and how tuses works:
       <ul>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=HxHZIzv2Kyc">all collections</a></li>
@@ -151,8 +261,8 @@
       </ul>
     </section>
 
-    <section>
-      moments and dev flow
+    <section><a name="s_moments_dev"></a>
+      moments of dev flow
       <ul>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=kVuJwjTQTbo">experiment introoo: Kil Skil</a></li>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=E7VyiIEF4qU&feature=youtu.be&t=409">Jeet Code Fu #1 [cyberspace]</a></li>
@@ -164,7 +274,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_moments"></a>
       moments:
       <ul>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=8gUC3k-lKeU">Talking with Edward Potter [NY, 2018]</a></li>
@@ -180,7 +290,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_music"></a>
       music moments:
       <ul>
         <li><a href="https://www.youtube.com/watch?v=lwSzpz7s6zo">Amy Winehouse - Back To Black life Limassol cover, [CYPRUS, 2017]</a></li>
@@ -211,7 +321,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_performances"></a>
       performances:
       <ul>
         <li><a href="https://www.youtube.com/watch?v=CMOHFYJ3b0M">[2] Rammellzee future screens // Red Bull Arts, New York, 2018</a></li>
@@ -224,7 +334,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_lectures"></a>
       lectures:
       <ul>
         <li>Prof. Irene Pepperberg <a href="https://www.youtube.com/watch?v=CVVE9Qrog70">"Cognitive and Communicative Abilities of Grey Parrots"</a> at SPbU, 1 June 2019</li>
@@ -236,7 +346,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_proj"></a>
       long projects :
       <ul>
         <li><a href="https://www.youtube.com/watch?v=frU0E-OKlHo">aeMind Immersing Virtual Reality Control Device (IVoRy) [2016]</a></li>
@@ -244,7 +354,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_aml"></a>
       AML language + IDE prototyping
       <ul>
         <li>
@@ -253,7 +363,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_hackathons"></a>
       hackathons & fu-projects:
       <ul>
         <li><a href="https://www.youtube.com/watch?v=jAhkzngImmg">DebitaFriend Demo at IQ Hack 2017 #iqhack2017 // SPb, 2017</a></li>
@@ -266,7 +376,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_psy"></a>
       psy sample & experiments:
       <ul>
         <li><a target="_blank" href="https://www.youtube.com/watch?v=6vUoDeaHYOc">Пилотный авантюрный эксперимент с самовнушением в 360, СПб 2017</a></li>
@@ -277,7 +387,7 @@
     </section>
 
     <br />
-    <section>
+    <section><a name="s_people"></a>
       developers, artists, scientists and people who feel:
       <ol>
         <li>
@@ -310,7 +420,7 @@
       </ol>
     </section>
 
-    <section>
+    <section><a name="s_beuti_devmat"></a>
       beautiful dev materials:
       <ol>
         <li>
@@ -322,7 +432,7 @@
       </ol>
     </section>
 
-    <section>
+    <section><a name="s_useful_dev"></a>
       useful dev materials:
       <ol>
         <li>
@@ -339,7 +449,7 @@
       </ol>
     </section>
 
-    <section>
+    <section><a name="s_services"></a>
       best services:
       <ul>
         <li><a target="_blank" href="https://www.futureme.org">FutureMe org :: letters to the future.</a></li>
@@ -354,7 +464,7 @@
 
     </section>
 
-    <section>
+    <section><a name="s_hackers"></a>
       beauties of the baud:
 
       <ul>
@@ -362,14 +472,14 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_flow"></a>
       visual / flow / dataflow programming paradigm materials:
       <ul>
         <li><a target="_blank" href="https://github.com/shamansir/rpd">RPD — Reactive Patch Development</a></li>
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_quotes"></a>
       dev arch quotes/цитатки про архитектуру:
       <ul>
         <li>
@@ -414,7 +524,7 @@
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_logic"></a>
       tasks on logic / логические задачки:
       <ol>
         <li>
@@ -423,22 +533,23 @@
       </ol>
     </section>
 
-    <section>
+    <section><a name="s_news"></a>
       fine news streams / хорошие информационные потоки:
       <ul>
         <li><a target="_blank" href="https://tinyletter.com/TCTSweekly">TCTS weekly</a> - Think Cognitive Think Science</li>
       </ul>
     </section>
 
-    <section>
+    <section><a name="s_donation"></a>
       donation addresses / адреса для донейшена
       <ul>
         <li>bitcoin: <a href="https://btc.com/3ErMxo2aL1zpv2xGjqFT5A2Z3z8xMW1ssq">3ErMxo2aL1zpv2xGjqFT5A2Z3z8xMW1ssq</a></li>
         <li>waves: <a href="https://wavesexplorer.com/address/3P7hayhDgwD91F2Pkm9dv147UaeSZxikN9n">3P7hayhDgwD91F2Pkm9dv147UaeSZxikN9n</a></li>
       </ul>
 
-      </address>
+
     </section>
+  </div>
 </body>
 
 </html>
