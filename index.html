@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
+<!--
+ https://stackoverflow.com/questions/2802687/is-there-a-way-to-create-your-own-html-tag-in-html5
+ create style for different types of keywords in left table column
+-->
 <head>
   <meta charset="utf-8">
   <title>silkmind team page</title>
@@ -51,6 +55,60 @@
       /* display: inline;  */
     }
 
+
+
+element.style {
+}
+
+.tags .item-tag {
+    background-color: #189218;
+}
+
+/* https://jwiese.eu/en/blog/2018/04/phaser-3-loading-screen-asset-organization/ */
+code, .keytag, samp {
+    font-family: monospace,monospace;
+    font-size: 2em;
+}
+
+.keytag {
+    padding-top: 5px
+    padding: 2px 4px;
+    font-size: 80%;
+    color: #fff;
+
+    border-radius: 20px;
+    -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
+}
+
+.op04 {
+  color:rgb(0,0,0,0.4);
+  font-size: 80%;
+}
+/* hope to go to sass/Less preprocessors */
+ktc {
+  padding-top: 1px
+  padding: 2px 2px;
+  font-size: 90%;
+  color: #fff;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
+  background-color: #333;
+}
+
+kta {
+  padding-top: 1px
+  padding: 8px 8px;
+  font-size: 90%;
+  color: #fff;
+
+  border-radius: 4px;
+  -webkit-box-shadow: inset 2px 20px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
+  background-color: #b03;
+}
+
     .td-item {
       border:2px solid #8331da;
       text-align: center;
@@ -62,7 +120,28 @@
         color: rgba(0, 0, 0, 0.5);
     }
 
-    td {
+    .tsketch td {
+      background:#ffffda;
+      background-color: hsla(20,50%,10%,0.06);
+
+      text-align: center;
+      width:8%;
+    }
+
+    .tsketch td:nth-child(1) {
+      width: 10%;
+    }
+
+    .tsketch td:nth-child(2) {
+      width: 75%;
+      text-align: left;
+    }
+
+    .tsketch td:nth-child(3) {
+      width: 15%;
+    }
+
+    .design td {
       background:#8331da;
       background-color: hsla(20,50%,10%,0.90);
       color:white;
@@ -71,7 +150,7 @@
       font-size: 26px;
     }
 
-    td:hover {
+    .design td:hover {
       background:#6331da;
       color:white;
       text-align: center;
@@ -144,7 +223,7 @@
 <body>
 <div class="margo super"></div>
   <center>
-    <table id="tbl_nav" class="come">
+    <table id="tbl_nav" class="come design">
       <tr>
         <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
         <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
@@ -175,25 +254,51 @@
   <section name="neuropath">
     I am launching Silk Mind neurocompany. Any proposals?)
     <p></p>
-    Я запускаю нейрокомпанию "Шёлковое сознание". Какие есть предложения?) <span class="fontcolor05"> // или компанию стоит назвать "Шёлковый мозг"? </span>
+    Я запускаю нейрокомпанию "Шёлковое сознание". Какие есть предложения?) <span class="fontcolor05"> // другое название - "Шёлковый мозг"? </span>
   </section>
   <section>
 
     <legend><center>Personalia:</center></legend>
 
     contacts / resources / interactions:
-    <ul>
-      <li><a target="_blank" href="https://github.com/j0k">j0k/git</a></li>
-      <li><a target="_blank" href="https://www.linkedin.com/in/yuri-konoplev/">linkedin</a></li>
-      <li><a target="_blank" href="http://t.me/bimodaling">tele</a></li>
-      <li><a target="_blank" href="https://www.facebook.com/yuri.konoplev">fb</a></li>
-      <li>insta: <a target="_blank" href="https://www.instagram.com/keytheorem/">@keytheorem</a></li>
-      <li><a target="_blank" href="mail:yuri@silkmind.com">@email</a></li>
-      <li><a target="_blank" href="https://medium.com/@j00000k">medium</a></li>
-      <li><a target="_blank" href="https://soundcloud.com/yuri-konoplev">soundcloud</a></li>
-      <li><a target="_blank" href="https://www.openprocessing.org/user/82413/">openprocessing: Jiordano Bruno</a></li>
-      <li><a target="_blank" href="https://calendly.com/silkmind/30min">schedule</a> meeting with me</li>
-    </ul>
+
+    <table class="tsketch">
+      <thead>
+
+      </thead>
+      <tbody>
+        <tr class="op04">
+          <td>context</td>
+          <td>data</td>
+          <td>action</td>
+        </tr>
+        <tr>
+          <td><ktc>#social-net</ktc> <p> <ktc>#blog</ktc> <ktc>#articles</ktc> <ktc>#dev</ktc> </td>
+          <td>
+            <ul>
+              <li><a target="_blank" href="https://github.com/j0k">j0k/git</a></li>
+              <li><a target="_blank" href="https://www.linkedin.com/in/yuri-konoplev/">linkedin</a></li>
+              <li><a target="_blank" href="http://t.me/bimodaling">tele</a></li>
+              <li><a target="_blank" href="https://www.facebook.com/yuri.konoplev">fb</a></li>
+              <li>insta: <a target="_blank" href="https://www.instagram.com/keytheorem/">@keytheorem</a></li>
+              <li><a target="_blank" href="mail:yuri@silkmind.com">@email</a></li>
+              <li><a target="_blank" href="https://medium.com/@j00000k">medium</a></li>
+              <li><a target="_blank" href="https://soundcloud.com/yuri-konoplev">soundcloud</a></li>
+              <li><a target="_blank" href="https://www.openprocessing.org/user/82413/">openprocessing: Jiordano Bruno</a></li>
+              <li><a target="_blank" href="https://calendly.com/silkmind/30min">schedule</a> meeting with me</li>
+            </ul>
+          </td>
+          <td>
+            <kta>read</kta><p>
+            <kta>pm</kta><p>
+            <kta>subscribe</kta> <p>
+            <kta>share</kta>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
   </section>
 
 <form style="background:#F4EEF6; border:1px solid #ccc;padding:1px;text-align:center;" action="https://tinyletter.com/silkmind" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/silkmind', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
@@ -205,12 +310,12 @@
 
 
   My name is Yuri Konoplev also going as j0k, keytheorem,
-  NJ and etc... Definitely I like nicks and computer culture.
-   Today I'm working on social network developing at <a href="https://blog.wavesplatform.com/web3-0-the-road-ahead-for-waves-9bd8a51f63ce?source=---------2------------------">Waves</a> and also think on
+  NJ and etc... Definitely I like nicks and computer culture. It's my homepage so it's a place for drafts, notes and HTML experiments.
+   Some months ago I worked on social network developing at <a href="https://blog.wavesplatform.com/web3-0-the-road-ahead-for-waves-9bd8a51f63ce?source=---------2------------------">Waves</a> and also thought on
     <a href="http://tusion.xyz">TuSion</a> neuroapp and
-  brain-computers in wide. As I see today tusion is the most interesting application
-  to check and turning in right mental state if you know how to use it.
-  If you are searching for a big unicorn project to invest - just follow "tusion" rabbit :)
+  brain-computers in wide. As I see today tusion was the most interesting application
+  to check and turning in right mental state if you know how to use it. Reborn as Silk Mind.
+  If you are searching for a big unicorn project to invest - just follow "Silk Mind" rabbit :)
 
   <br/><br/>
 
@@ -252,7 +357,7 @@
       Section for life time tokens and DEX.
     </section>
 
-    <section name="s_short_film">
+    <section><a name="s_short_film"></a>
       short films & movies:
       <ul>
         <li><a href="https://www.youtube.com/watch?v=kK3_vA867RQ">I need your vision [NY, 2018]</a></li>
@@ -454,6 +559,10 @@
           <a target="_blank" href="https://roy.gbiv.com/">Roy T. Fielding</a> homepage. Roy is a REST architector ~creator both as HTTP early-commiter. Roy is also Apache co-founder and director of the Apache Software Foundation. Roy's <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_cv_2000.htm">CV</a>, <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">architecture dissertation</a>. #rest #dev #cs
         </li>
 
+        <li>
+          <a target="_blank" href="https://blog.patricktriest.com/">Roy T. Fielding</a>  BREAK | BETTER : TUTORIALS, SIDE-PROJECTS, AND DATA-DRIVEN STORYTELLING #dev #web
+        </li>
+
       </ol>
     </section>
 
@@ -580,16 +689,12 @@
       </ol>
     </section>
 
-
-
     <section><a name="s_news"></a>
       startup stories / истории стартапов:
       <ul>
         <li><a target="_blank" href="https://basecamp.com/about/story">Basecamp (37signals)</a> - The story of Basecamp.</li>
       </ul>
-    </section>
 
-    <section><a name="s_news"></a>
       fine news streams / хорошие информационные потоки:
       <ul>
         <li><a target="_blank" href="https://tinyletter.com/TCTSweekly">TCTS weekly</a> - Think Cognitive Think Science</li>
