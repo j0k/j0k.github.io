@@ -197,6 +197,7 @@ kta {
       border-radius: 20%;
     } */
   </style>
+  <script type="text/javascript" src="./js/jojslib.js"></script>
   <script type="text/javascript">
     (function(m, e, t, r, i, k, a) {
       m[i] = m[i] || function() {
@@ -466,14 +467,41 @@ kta {
         <li><a target="_blank" href="https://vk.com/video24147_456239150">Стихи. Кусочек вечера ЗПШ 2017 [база Восток, Лен.Обл., 2017]</a></li>
       </ul>
     </section>
+    <section>
+      <p></p>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <div class="container">
 
-    <!-- <section><a name="s_speeches"></a>
-      speeches:
-      <ul>
-        <li><a target="_blank" href="https://youtu.be/pEJw5sdUdH0?t=3442">ФакUp в GrowUp: TuSion, нейроприложения, NR Boom и Silk Mind, [Москва, online, 29 Aug 2019]</a></li>
-      </ul>
-    </section> -->
+        <div class="row">
+          <div class="column">
+            <button id="btn-decode" type="button" name="button">wish</button>
+          </div>
+          <div class="column column-75">
+            <input id="enc-password" type="text" name="" value="" placeholder="12345">
+          </div>
 
+      </div>
+      <div id="decoded"></div>
+      <textarea id="enc-text" name="name" rows="8" cols="80" style="visibility: collapse;">U2FsdGVkX1+4rtbkQg8bPgc1yaYX6Ihzwx6aN9myCpSok8GsJ3JXAhwT93vsCnOxTX9Ur1MjWCa3AIYzNJwUwFfaNXmkukzr10bM+Db5mrNCc24OB2gfaD/IpU/jfexaY8SdjRT9ZKc9CPafIqdHLYmjicBRJ5OTH2r2h+UFzyAYsTt6rZw8oKe6pb5Ezjqqut9DJSBtRJMsp5jP8zfSdZUjnSQXEYv0ho8NokyICUFFLH9WtlvvaZ4gZqhfrLkD9lty3r9uYFtfRpB2fDpcu2UDGrEaR/drQ33pjW0mIbrIbAkuhM7DIchcMWHqo/ot/K08z/8L96x4wJooeelBi+6aUzfqFpAlzNcaPfuFhkfd6Jf69BSKa7S44MyrDeDD
+      </textarea>
+      <script type="text/javascript">
+        $('#btn-decode').on('click', function(){
+          var pass = $('#enc-password').val();
+          var htm = "not so simple!";
+          var go = 1;
+          if (pass === ""){
+            htm = "wish you a good day!";
+            go = 0;
+          }
+          if ((pass !== "12345") && go){
+            var et   = $('#enc-text').val().replace(/\s/g, '')
+            htm = jojslib.lib.CryptoJS.enc.Utf8.stringify(jojslib.lib.AES.decrypt(et, pass));
+          }
+          $('#decoded').html(htm);
+        });
+      </script>
+    </section>
+    
     <section><a name="s_lectures"></a>
       lectures:
       <ul>
