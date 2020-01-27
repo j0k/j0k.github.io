@@ -3,6 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>Записки во время практики фокусировки</title>
+    <script src="./../js/lib/jquery-3.4.1.min.js"></script>
+    <script src="./../js/lib/p5.min.js"></script>
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script> -->
+    <style media="screen">
+      .inner {
+        width: 50%;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
 
@@ -16,12 +25,20 @@
       </li>
       <li>
         <p><b>глубоко захотеть <u>X</u> (что-либо)</b></p>
-        <p>фокус, желание, свежесть, реализация, конечный результат, полёт, скорость, умение, воплощение, сделать реальным,
+          <p id="wordsWant">фокус, желание, свежесть, реализация, конечный результат, полёт, скорость, умение, воплощение, сделать реальным,
           реализация, из мысли в материю, материлиализация, радость, вдохновение, увидеть глазами, потрогать, повертеть,
           прокрутить, освобождение, продвижение, свобода в движении вперёд
        </p>
+       <div class="inner" id="sketch-holder">
+         <!-- Our sketch will go here! -->
+       </div>
+
       </li>
     </ul>
+    <!-- https://github.com/processing/p5.js/wiki/Positioning-your-canvas -->
 
+
+  <script src="sketch.js"></script>
+  <script src="words.js"></script>
   </body>
 </html>
