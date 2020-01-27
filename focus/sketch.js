@@ -35,8 +35,9 @@ function setup() {
   // source: https://www.psychologos.ru/articles/view/75053-zelanie-zvonkij-golos-nasego-tela
 
   //img = loadImage('assets/jin_300.jpg');
-  imgs.push(loadImage('assets/jin_300.jpg'));
+
   imgs.push(loadImage('assets/focus_300.png'));
+  imgs.push(loadImage('assets/jin_300.jpg'));
   // source: https://pikabu.ru/story/kholod_vs_svezhest_995494
   imgs.push(loadImage('assets/fresh_300.jpg'));
   // source: http://pervomajskoe-sp.ru/msu/administratsiya/novosti/media/2016/9/2/na-kubani-v-2016-godu-budet-otremontirovano-536-mnogokvartirnyih-domov-vmesto-380/
