@@ -48,6 +48,10 @@ function setup() {
   imgs.push(loadImage('assets/speed_300.jpg'));
   // https://app.emaze.com/@AOFTFCWRQ
   imgs.push(loadImage('assets/skill_300.jpg'));
+
+  // source: http://perm.joyfun.ru/zozh/mirnyy-voin/507-materializatsiya-myslej-tri-tekhniki-kotorye-pomogut-dobitsya-zhelaemogo
+  imgs.push(loadImage('assets/mater_300.jpg'));
+
   img = imgs[0];
 }
 
