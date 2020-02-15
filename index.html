@@ -11,189 +11,10 @@
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> -->
   <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> -->
   <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+  <link rel="stylesheet" href="./css/default.css">
+  <link rel="stylesheet" href="./css/switches.css">
   <!-- Yandex.Metrika counter -->
-  <style>
-    body {
-      color : rgb(0,0,0);
-      width : 90%;
-      margin: auto;
-      background-image: url("https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/back.png");
-      background-color: hsla(0,0%,100%,0.90);
-      background-blend-mode: overlay;
-      /* opacity: 1; */
-    }
 
-    section {
-      border: 1px dashed black;
-      padding: 10px;
-    }
-
-    img {
-      border-radius: 9%;
-    }
-
-    .td-item {
-      border:2px solid #8331da;
-      text-align: center;
-      width:8%;
-    }
-
-    table.come {
-      position:fixed;
-      /* position: absolute; */
-      font-family: "Courier New";
-      /* position: absolute; */
-      left: 0px;
-      font-weight: bold;
-      border:0 solid #8331da;
-      margin:auto;
-      width:100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      /* padding-top:50px; */
-      /* display: inline;  */
-    }
-
-
-
-.tags .item-tag {
-    background-color: #189218;
-}
-
-/* https://jwiese.eu/en/blog/2018/04/phaser-3-loading-screen-asset-organization/ */
-code, .keytag, samp {
-    font-family: monospace,monospace;
-    font-size: 2em;
-}
-
-.keytag {
-    padding-top: 5px;
-    padding: 2px 4px;
-    font-size: 80%;
-    color: #fff;
-
-    border-radius: 20px;
-    -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
-    box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
-}
-
-.op04 {
-  color:rgb(0,0,0,0.4);
-  font-size: 80%;
-}
-/* hope to go to sass/Less preprocessors */
-ktc {
-  padding-top: 1px;
-  padding: 2px 2px;
-  font-size: 90%;
-  color: #fff;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
-  box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
-  background-color: #333;
-}
-
-kta {
-  padding-top: 1px;
-  padding: 8px 8px;
-  font-size: 90%;
-  color: #fff;
-
-  border-radius: 4px;
-  -webkit-box-shadow: inset 2px 20px 0 rgba(0,0,0,.25);
-  box-shadow: inset 0 1px 0 rgba(0,0,0,.25);
-  background-color: #b03;
-}
-
-    .td-item {
-      border:2px solid #8331da;
-      text-align: center;
-      width:8%;
-    }
-
-    .fontcolor05 {
-        color: #000; /* Fallback for older browsers */
-        color: rgba(0, 0, 0, 0.5);
-    }
-
-    .tsketch td {
-      background:#ffffda;
-      background-color: hsla(20,50%,10%,0.06);
-
-      text-align: center;
-      width:8%;
-    }
-
-    .tsketch td:nth-child(1) {
-      width: 10%;
-    }
-
-    .tsketch td:nth-child(2) {
-      width: 75%;
-      text-align: left;
-    }
-
-    .tsketch td:nth-child(3) {
-      width: 15%;
-    }
-
-    .design td {
-      background:#8331da;
-      background-color: hsla(20,50%,10%,0.90);
-      color:white;
-      text-align: center;
-      width:8%;
-      font-size: 26px;
-    }
-
-    .design td:hover {
-      background:#6331da;
-      color:white;
-      text-align: center;
-      width:8%;
-      font-size: 26px;
-    }
-
-    #a1:hover {
-      background:red;
-    }
-    #a2:hover {
-      background:green;
-    }
-    #a3:hover {
-      background:blue;
-    }
-    #a4:hover {
-      background:green;
-    }
-    #a5:hover {
-      background:red;
-    }
-    #a6:hover {
-      background:green;
-    }
-    #a7:hover {
-      background:blue;
-    }
-    #a8:hover {
-      background:green;
-    }
-    #a9:hover {
-      background:red;
-    }
-
-    #page {
-      padding-top:50px;
-      display:inline;
-    }
-
-    /* try text in  borders https://stackoverflow.com/questions/7731310/text-in-border-css-html */
-
-    /* img {
-      border-radius: 20%;
-    } */
-  </style>
   <script type="text/javascript" src="./js/jojslib.js"></script>
   <script type="text/javascript">
     (function(m, e, t, r, i, k, a) {
@@ -219,9 +40,32 @@ kta {
 </head>
 
 <body>
-<div class="margo super"></div>
-  <center>
-    <table id="tbl_nav" class="come design">
+<!-- <div class="margo super"></div> -->
+<div id="header" style="position:absolute; width: 100%; padding: 0px">
+  <div style="display:inline-block; padding-left: 10px; width: 20%;">
+    <table id="switchTable">
+      <tr>
+        <td>lang:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="scales" onclick='handleLanuageChange(this);'>
+             <label for="scales"><i></i></label>
+         </div>
+        </td>
+      </tr>
+      <tr>
+        <td>menu:</td>
+        <td>
+          <div id="menuSwitch" class="switch">
+             <input type="checkbox" id="scales2" checked>
+             <label for="scales2"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- <div style="display:inline-block; float: left; padding-left: 20px; width: 70%;">
+    <table  id="tbl_nav" class="">
       <tr>
         <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
         <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
@@ -234,26 +78,46 @@ kta {
         <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
       </tr>
     </table>
-  </center>
+  </div> -->
 
-<div id="page">
+</div>
+<!-- <div style="display: inline;  float: left; ">
+  <table id="tbl_nav" class="come design">
+    <tr>
+      <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
+      <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
+      <td id="a3"><a href="#s_moments_dev" title="developmet moments">dm</a></td>
+      <td id="a4"><a href="#s_music" title="music momemts">muz</a></td>
+      <td id="a5"><a href="#s_performances" title="performances">pe</a></td>
+      <td id="a6"><a href="#s_lectures" title="Lectures">l</a></td>
+      <td id="a7"><a href="#s_people" title="people">p</a></td>
+      <td id="a8"><a href="#s_beauti_devmat" title="materials">m</a></td>
+      <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
+    </tr>
+  </table>
+</div> -->
+<div id="page2">
 <center>
-<span style="padding-top:50px;">
-  <br>
-  <br>
-  <br>
-  Welcome Stranger! ☘️
+<span style="padding-top:20px;">
+Welcome Stranger! ☘️
 </span>
 
  </center>
 
   <img src="https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/hands-a.gif" alt="" style="width: 35%; margin:auto; padding: 7px; text-align:center; display:block">
-  <marquee style="font-family: Courier New, Courier, monospace;" bgcolor="#feebcb"><b>Talking with me will improve the sexual energy of your brain which can be used everywhere.  🍏🥑🥝🏄🏻‍♀️🦇🦈🍎☘️🦄🌽🎪🐾🍉🥦🥒🦋🍅❤️👠🕶🌂🐒🦑🦕🐞. </b></marquee>
+  <marquee style="font-family: Courier New, Courier, monospace;" bgcolor="#feebcb">
+    <b>Talking with me will improve the sexual energy of your brain which can be used everywhere.  🍏🥑🥝🏄🏻‍♀️🦇🦈🍎☘️🦄🌽🎪🐾🍉🥦🥒🦋🍅❤️👠🕶🌂🐒🦑🦕🐞. </b></marquee>
+
   <section name="neuropath">
-    I am launching Silk Mind neurocompany. Any proposals?)
+    Hello! My name is Yuri and here you see the page for drafts, notes, links and other flow information.
+    My professional profile is a software and brain-computer interfaces engineering.
+    <span class="fontcolor05"> // My moto: everything is possile! </span>
     <p></p>
-    Я запускаю нейрокомпанию "Шёлковое сознание". Какие есть предложения?) <span class="fontcolor05"> // другое название - "Шёлковый мозг"? </span>
+    Привет! Меня зовут Юра и это моя домашняя страничка для различных заметок, черновых записей, ссылок и
+    прочей проходящей информации. Что касается профессиональных навыков то это: написание программ и создание систем для мозг-компьютерного взаимодействия.
+    <span class="fontcolor05"> // Девиз: всё возможно! </span>
   </section>
+
   <section>
 
     <legend><center>Personalia:</center></legend>
@@ -306,8 +170,7 @@ kta {
 
 </form>
 
-
-  My name is Yuri Konoplev also going as j0k, keytheorem,
+  Now more details. My full name is Yuri Konoplev also going as j0k, keytheorem,
   NJ and etc... Definitely I like nicks and computer culture. It's my homepage so it's a place for drafts, notes and HTML experiments.
    Some months ago I worked on social network developing at <a href="https://blog.wavesplatform.com/web3-0-the-road-ahead-for-waves-9bd8a51f63ce?source=---------2------------------">Waves</a> and also thought on
     <a href="http://tusion.xyz">TuSion</a> neuroapp and
@@ -339,10 +202,9 @@ kta {
   shared econony;) If you have any task for me, or we discussed something common and I still hadn't show any required reaction - plz push it. I will be glad both as you.
 
   <p></p>
-    That homepage has an unstructed style with few comments and going to be in that state for the time.
+    That homepage has an unstructed style with few comments and going to be in that state for some time.
 
-    <p></p>
-    // привести к нормальному виду всё. домашняя страничка - это всё таки приглашение в гости и хорошо бы, чтобы она отражала интересные моменты, которыми ты готов поделиться, предложения к тому чем можно заняться вместе, что сделать и что сотворить, + предложить что-то к чаю, вообщем страничка должна отражать дом, его дизайн, направления мысли и какие-то большие горизонты и представления
+
     <p></p>
     <img src="./img/насвязи.jpg" alt="" style="width: 100%; margin:auto; padding: 7px; text-align:center; display:block">
 

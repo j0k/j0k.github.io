@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .switch {
+          width: 50px;
+          height: 20px;
+          display: inline-flex;
+          position: relative;
+          z-index: 100;
+          cursor: grab;
+      }
+
+      .switch input{
+        opacity: 0;
+        position: absolute;
+      }
+
+      .switch label {
+          cursor: grab;
+          display: block;
+          width: 100%;
+          height: 100%;
+          position: relative;
+          background: #eee;
+          border-radius: 4px;
+          box-shadow:
+              inset 0 3px 3px 1px rgba(0,0,0,0.2),
+              0 1px 0 rgba(255,255,255,0.5);
+      }
+
+      .switch label:after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          <!-- top: -3px; right: -8px; bottom: -3px; left: -8px; -->
+          border-radius: inherit;
+          background: #ccc; /* Fallback */
+          background: linear-gradient(#f2f2f2, #ababab);
+          box-shadow: 0 0 10px rgba(0,0,0,0.3),
+              0 1px 1px rgba(0,0,0,0.25);
+      }
+
+      .switch label:before {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          <!-- top: -3px; right: -3px; bottom: -3px; left: -3px; -->
+          border-radius: inherit;
+          background: #eee;
+          <!-- background: #eee; /* Fallback */ -->
+          background: linear-gradient(#e5e7e6, #eee);
+          box-shadow: 0 1px 0 rgba(255,255,255,0.5);
+          -webkit-filter: blur(1px); /* Smooth trick */
+          filter: blur(1px); /* Future-proof */
+      }
+
+      .switch label i {
+          display: block;
+          height: 100%;
+          width: 50%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 2;
+          border-radius: inherit;
+          background: #b2ac9e; /* Fallback */
+          background: linear-gradient(#f7f2f6, #b2ac9e);
+          box-shadow:
+              inset 0 1px 0 white,
+              0 0 8px rgba(0,0,0,0.3),
+              0 5px 5px rgba(0,0,0,0.2);
+      }
+
+      .switch label i:after {
+          content: "";
+          position: absolute;
+          left: 15%;
+          top: 25%;
+          width: 50%;
+          height: 50%;
+          background: #d2cbc3; /* Fallback */
+          background: linear-gradient(#cbc7bc, #d2cbc3);
+          border-radius: inherit;
+      }
+
+.switch label i:before {
+    content: "RU";
+    position: absolute;
+    top: 50%;
+    right: -80%;
+    margin-top: -5px;
+    color: #666; /* Fallback */
+    color: rgba(0,0,0,0.9);
+    font-style: normal;
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 #bcb8ae, 0 -1px 0 #97958e;
+}
+
+.switch input:checked ~ label { /* Background */
+    background: #eee;
+}
+
+.switch input:checked ~ label i { /* Toggle */
+    left: auto;
+    right: -1%;
+}
+
+.switch input:checked ~ label i:before { /* On/off */
+    content: "EN";
+    right: 115%;
+    color: #000;
+    text-shadow: 0 1px 0 #afcb9b, 0 -1px 0 #6b8659;
+}
+
+#menuSwitch label i:before  {
+    content: "ON";
+}
+
+#menuSwitch input:checked + label i:before {
+    content: "OFF";
+}
+
+#menuSwitch input:checked ~ p#hello:before {
+    color: #00f;
+    right: 115%;
+}
+
+#menuSwitch p#hello {
+    color: #0f0;
+}
+
+    </style>
+    <script type="text/javascript">
+      function handleLanuageChange(cb) {
+        if (cb.checked) {
+          // check en
+          items = document.getElementsByClassName("ru");
+          for (var i=0;i<items.length;i++){
+            items[i].style.display='none';
+          }
+          items = document.getElementsByClassName("en");
+          for (var i=0;i<items.length;i++){
+            items[i].style.display='block';
+          }
+        } else {
+          // check ru
+          items = document.getElementsByClassName("en");
+          for (var i=0;i<items.length;i++){
+            items[i].style.display='none';
+          }
+          items = document.getElementsByClassName("ru");
+          for (var i=0;i<items.length;i++){
+            items[i].style.display='block';
+          }
+        }
+        document.getElementById("debug").innerHTML = "whatever "+ cb.checked;
+
+      }
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>lang:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="scales" onclick='handleLanuageChange(this);'>
+             <label for="scales"><i></i></label>
+         </div>
+        </td>
+      </tr>
+      <tr>
+        <td>menu:</td>
+        <td>
+          <div id="menuSwitch" class="switch">
+             <input type="checkbox" id="scales2" checked>
+             <label for="scales2"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="ru">
+      оарплоываполваылпова
+    </div>
+    <div class="en">
+      dsfsfdslksal;gk;lsafks
+    </div>
+    <div id="debug">
+
+    </div>
+
+  </body>
+</html>
