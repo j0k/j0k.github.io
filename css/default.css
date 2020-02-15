@@ -17,13 +17,13 @@ section {
 } */
 
 .tags .item-tag {
-background-color: #189218;
+  background-color: #189218;
 }
 
 /* https://jwiese.eu/en/blog/2018/04/phaser-3-loading-screen-asset-organization/ */
 code, .keytag, samp {
-font-family: monospace,monospace;
-font-size: 2em;
+  font-family: monospace,monospace;
+  font-size: 2em;
 }
 
 .keytag {
