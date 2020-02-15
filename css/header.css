@@ -1,0 +1,56 @@
+#container {
+    width:100%;
+    display: flex;                  /* establish flex container */
+    flex-direction: row;
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#left {
+    float:left;
+    width:100px;
+}
+
+#center {
+    display: inline-block;
+    margin:0 auto;
+    max-width:100px;
+}
+
+#right {
+    padding-left: 20px;
+    float:right;
+    width:100%;
+}
+
+.switchDiv {
+  background:#8331da;
+  background-color: hsla(20,50%,10%,0.90);
+}
+
+#tbl_nav.td-item {
+  border:2px solid #8331da;
+  text-align: center;
+
+  /* width:8%; */
+}
+
+table#tbl_nav.come {
+  position:fixed;
+  /* position: absolute; */
+  font-family: "Courier New";
+  /* position: absolute; */
+  left: 0px;
+  font-weight: bold;
+  border:0 solid #8331da;
+  margin:auto;
+  /* width:80%; */
+  /* margin: 0; */
+  padding: 0;
+  overflow: hidden;
+  /* padding-top:50px; */
+  /* display: inline;  */
+}

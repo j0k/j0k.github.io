@@ -11,11 +11,18 @@
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> -->
   <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> -->
   <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-  <link rel="stylesheet" href="./css/default.css">
+
+  <!-- <link rel="stylesheet" href="./css/milligram.css"> -->
+
   <link rel="stylesheet" href="./css/switches.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/milligram-fix.css">
+  <link rel="stylesheet" href="./css/default.css">
+  <link rel="stylesheet" href="./css/images.css">
   <!-- Yandex.Metrika counter -->
 
   <script type="text/javascript" src="./js/jojslib.js"></script>
+  <script type="text/javascript" src="./js/lang.js"></script>
   <script type="text/javascript">
     (function(m, e, t, r, i, k, a) {
       m[i] = m[i] || function() {
@@ -41,15 +48,15 @@
 
 <body>
 <!-- <div class="margo super"></div> -->
-<div id="header" style="position:absolute; width: 100%; padding: 0px">
-  <div style="display:inline-block; padding-left: 10px; width: 20%;">
+<div id="container" class="switchDiv">
+  <div id="left" style="padding-left: 10px; max-width: 20%; float:left">
     <table id="switchTable">
       <tr>
         <td>lang:</td>
         <td>
           <div class="switch">
-             <input type="checkbox" id="scales" onclick='handleLanuageChange(this);'>
-             <label for="scales"><i></i></label>
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+             <label for="language"><i></i></label>
          </div>
         </td>
       </tr>
@@ -57,15 +64,16 @@
         <td>menu:</td>
         <td>
           <div id="menuSwitch" class="switch">
-             <input type="checkbox" id="scales2" checked>
-             <label for="scales2"><i></i></label>
+             <input type="checkbox" id="menu" checked>
+             <label for="menu"><i></i></label>
          </div>
         </td>
       </tr>
     </table>
   </div>
-  <!-- <div style="display:inline-block; float: left; padding-left: 20px; width: 70%;">
-    <table  id="tbl_nav" class="">
+  <div id="right" >
+    <table id="tbl_nav">
+      <!-- class="come design" -->
       <tr>
         <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
         <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
@@ -78,25 +86,12 @@
         <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
       </tr>
     </table>
-  </div> -->
+  </div>
 
 </div>
-<!-- <div style="display: inline;  float: left; ">
-  <table id="tbl_nav" class="come design">
-    <tr>
-      <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
-      <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
-      <td id="a3"><a href="#s_moments_dev" title="developmet moments">dm</a></td>
-      <td id="a4"><a href="#s_music" title="music momemts">muz</a></td>
-      <td id="a5"><a href="#s_performances" title="performances">pe</a></td>
-      <td id="a6"><a href="#s_lectures" title="Lectures">l</a></td>
-      <td id="a7"><a href="#s_people" title="people">p</a></td>
-      <td id="a8"><a href="#s_beauti_devmat" title="materials">m</a></td>
-      <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
-    </tr>
-  </table>
-</div> -->
-<div id="page2">
+
+
+<div id="page">
 <center>
 <span style="padding-top:20px;">
 Welcome Stranger! ☘️
@@ -104,18 +99,26 @@ Welcome Stranger! ☘️
 
  </center>
 
-  <img src="https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/hands-a.gif" alt="" style="width: 35%; margin:auto; padding: 7px; text-align:center; display:block">
+   <div id="cf"  style="width: 35%; margin:auto; padding: 7px; text-align:center; display:block">
+     <img class="bottom" src="/img/handsBox.jpg" />
+     <img class="top" src="/img/profile_me.png" />
+   </div>
+
+  <!-- <img src="https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/hands-a.gif" alt="" style="width: 35%; margin:auto; padding: 7px; text-align:center; display:block"> -->
   <marquee style="font-family: Courier New, Courier, monospace;" bgcolor="#feebcb">
     <b>Talking with me will improve the sexual energy of your brain which can be used everywhere.  🍏🥑🥝🏄🏻‍♀️🦇🦈🍎☘️🦄🌽🎪🐾🍉🥦🥒🦋🍅❤️👠🕶🌂🐒🦑🦕🐞. </b></marquee>
 
   <section name="neuropath">
-    Hello! My name is Yuri and here you see the page for drafts, notes, links and other flow information.
-    My professional profile is a software and brain-computer interfaces engineering.
-    <span class="fontcolor05"> // My moto: everything is possile! </span>
-    <p></p>
-    Привет! Меня зовут Юра и это моя домашняя страничка для различных заметок, черновых записей, ссылок и
-    прочей проходящей информации. Что касается профессиональных навыков то это: написание программ и создание систем для мозг-компьютерного взаимодействия.
-    <span class="fontcolor05"> // Девиз: всё возможно! </span>
+    <span class="en">
+      Hello! My name is Yuri and here you see the page for drafts, notes, links and other flow information.
+      My professional profile is a software and brain-computer interfaces engineering.
+      <span class="fontcolor05"> // My moto: everything is possile! </span>
+    </span>
+    <span class="ru">
+      Привет! Меня зовут Юра и это моя домашняя страничка для различных заметок, черновых записей, ссылок и
+      прочей проходящей информации. Что касается моих профессиональных навыков то это написание программ и создание систем для мозг-компьютерного взаимодействия.
+      <span class="fontcolor05"> // Девиз: всё возможно! </span>
+    </span>
   </section>
 
   <section>

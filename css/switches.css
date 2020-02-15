@@ -129,7 +129,14 @@ right: 115%;
 color: #0f0;
 }
 
+#switchTable {
+  margin-bottom: 0rem;
+  color: #a50;
+  border-bottom: 0.0rem ;
+}
+
 #switchTable td {
   padding: 0rem 0rem;
-  font-size: 0.8em;  
+  font-size: 0.8em;
+  border-bottom: 0.0;
 }

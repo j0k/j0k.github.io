@@ -1,0 +1,21 @@
+/* http://css3.bradshawenterprises.com/cfimg/ */
+
+#cf {
+  position:relative;
+}
+
+#cf img {
+  -webkit-transition: opacity 2s ease-in-out;
+  -moz-transition: opacity 2s ease-in-out;
+  -o-transition: opacity 2s ease-in-out;
+  transition: opacity 2s ease-in-out;
+}
+
+#cf img.top{
+  position:absolute;
+  left:0;
+}
+#cf img.top:hover {
+
+  opacity:0;
+}
