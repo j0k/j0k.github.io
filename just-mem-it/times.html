@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="./../css/switches.css">
+    <style media="screen">
+      table,td {
+        border: 0.5px solid;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>
+      <span class="en">Time intervals</span>
+      <span class="ru">Временные интервалы</span>
+    </h1>
+
+    <table id="switchTable">
+      <tr>
+        <td>language:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this); createTable();' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td>
+          <span class="en">Round values:</span>
+          <span class="ru">Округление：</span>
+        </td>
+        <td>
+          <input type="radio" id="radioInt" name="round" value="int" checked>
+          <label for="round">
+            <span class="en">to integer</span>
+            <span class="ru">до целых</span>
+          </label><br>
+          <input type="radio" id="radio2" name="round" value="nth">
+          <label for="female">
+            <span class="en">to</span>
+            <span class="ru">до</span>
+            <input id="nthDig" size="1" type="text" name="" value="2">
+            <span class="en">digit</span>
+            <span class="ru">-го знака</span>
+          </label><br>
+          <input type="radio" id="radioNone" name="round" value="none">
+          <label for="other">
+            <span class="en">without round</span>
+            <span class="ru">без округления</span>
+          </label>
+        </td>
+      </tr>
+    </table>
+
+
+    <p></p>
+
+    <label for="">
+      <span class="en">Seconds</span>
+      <span class="ru">Секундны</span>
+    </label>
+    <input id="times" type="text" name="times" value="1, 1200, 86400, 172800, 5184000" size="60" onchange="createTable();">
+    <br>
+    <button type="button" name="button" onclick="createTable();">
+      <span class="en">Calculate</span>
+      <span class="ru">Расчитать</span>
+    </button>
+
+    <p></p>
+    <table id="tableTimes">
+      <thead>
+        <td>
+          <span class="en">Number</span>
+          <span class="ru">Номер</span>
+        </td>
+        <td>
+          <span class="en">[sec]</span>
+          <span class="ru">[сек]</span>
+        </td>
+        <td><span class="en">[min]</span>
+        <span class="ru">[мин]</span></td>
+        <td><span class="en">[hour]</span>
+        <span class="ru">[час]</span></td>
+        <td><span class="en">[day]</span>
+        <span class="ru">[день]</span></td>
+        <td><span class="en">[week]</span>
+        <span class="ru">[неделя]</span></td>
+        <td><span class="en">[month]</span>
+        <span class="ru">[месяц]</span></td>
+        <td><span class="en">[year]</span>
+        <span class="ru">[год]</span></td>
+        <td>
+          <span class="en">short form</span>
+          <span class="ru">короткая форма</span>
+        </td>
+      </thead>
+        <tr>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+
+    </table>
+    <script type="text/javascript" src="./js/calcTimes.js"></script>
+    <script type="text/javascript" src="./../js/lang.js"></script>
+  </body>
+</html>

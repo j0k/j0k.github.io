@@ -9,11 +9,11 @@ function handleLanuageChange(cb) {
   if (cb.checked) {
     // check en
     setClassStyleProperty('ru', 'display', 'none')
-    setClassStyleProperty('en', 'display', 'block')
+    setClassStyleProperty('en', 'display', '')
   } else {
     // check ru
     setClassStyleProperty('en', 'display', 'none')
-    setClassStyleProperty('ru', 'display', 'block')
+    setClassStyleProperty('ru', 'display', '')
   }
   // document.getElementById("debug").innerHTML = "whatever "+ cb.checked;
 }
