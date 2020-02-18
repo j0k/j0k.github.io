@@ -87,3 +87,17 @@ function createTable(){
     t.rows[1+i].cells[0].innerText = i+1;
   }
 }
+
+
+var rad = document.getElementsByName('round');
+var prev = null;
+for (var i = 0; i < rad.length; i++) {
+    rad[i].addEventListener('change', function() {
+        // (prev) ? console.log(prev.value): null;
+        createTable();
+        if (this !== prev) {
+            prev = this;
+        }
+        //console.log(this.value)
+    });
+}
