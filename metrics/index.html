@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Metrics</title>
+    <meta name="description" content="wake up time vizulization" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <script type="text/javascript" src="./../js/lib/jquery-3.4.1.min.js"></script>
+    <style media="screen">
+      table,td  {
+        border: 0.1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tmp">
+
+    </div>
+    <div id="tmp2">
+
+    </div>
+    <table>
+      <thead>
+        <td>day</td>
+        <td>time</td>
+        <td>things</td>
+      </thead>
+      <tr>
+        <td>18.02.2020</td>
+        <td><div id="sleep_18022020"></div></td>
+        <td><b>ДК</b> <b>SM</b></td>
+      </tr>
+      <tr>
+        <td>19.02.2020</td>
+        <td><div id="sleep_19022020"></div></td>
+        <td><b>SM</b> <b>ЛРС</b> <b>РП</b> <b>ОНА</b></td>
+      </tr>
+    </table>
+
+    <script src="./js/times.js"></script>
+
+  </body>
+</html>
