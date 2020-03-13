@@ -46,7 +46,7 @@ var tP = 1.0;
 var firstTime = 1;
 
 function draw() {
-  if (firstTime || (millis() - 1000)) {
+  if (firstTime || (millis() - 1000<0)) {
     firstTime = 0;
     if (fq && !(fq === ""))
         $("#timePeriod").val(fq);
@@ -92,6 +92,6 @@ function genLink(){
   var sp = document.getElementById("textSize").value;
   var fqp = document.getElementById("timePeriod").value;
 
-  href += "?t=" + tp + "&s=" + sp + "&fq=" + fqp ;
+  href += "?t=" + encodeURIComponent(tp) + "&s=" + encodeURIComponent(sp) + "&fq=" + encodeURIComponent(fqp) ;
   alert("Location: " + href);
 }
