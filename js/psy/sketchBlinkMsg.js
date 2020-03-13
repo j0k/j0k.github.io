@@ -1,5 +1,6 @@
 
 var cText=255, cBack=0;
+var t,s,fq;
 function setup() {
   var clientWidth = document.body.clientWidth;
   var clientHeight = windowHeight;
@@ -10,6 +11,21 @@ function setup() {
   background(255, 255, 255);
   textAlign(CENTER, CENTER);
   tLast = millis();
+  var url = new URL(String(window.location));
+
+  t = url.searchParams.get("t");
+  s = url.searchParams.get("s");
+  fq = url.searchParams.get("fq");
+
+  if (t && !(t === ""))
+    $("#text").val(t);
+
+  if (s && !(s === ""))
+      $("#textSize").val(s);
+
+  if (fq && !(fq === ""))
+      $("#timePeriod").val(fq);
+
 }
 
 var tLast = 0;
