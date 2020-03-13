@@ -30,7 +30,9 @@ function setup() {
 
 var tLast = 0;
 var tP = 1.0;
+
 function draw() {
+  setProgress();
   background(cBack);
 
   var t = document.getElementById("text").value;
@@ -49,5 +51,17 @@ function changeColor(){
     cText = 255 - cText;
     cBack  = 255 - cBack;
     tLast = millis();
+  }
+
+}
+
+var lastP = 1;
+function setProgress(){
+  var but = $('#audio-progress-bar');
+  var p = but.width() / but.parent().width();
+  if (p != lastP){
+    tP = p;
+    lastP = p;
+    $("#timePeriod").val(p);
   }
 }
