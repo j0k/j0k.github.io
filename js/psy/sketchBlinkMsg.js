@@ -20,18 +20,38 @@ function setup() {
   if (t && !(t === ""))
     $("#text").val(t);
 
+  if (t == null){
+      t = t;
+  }
+
   if (s && !(s === ""))
       $("#textSize").val(s);
 
+  if (s == null){
+      s = "60";
+  }
+
   if (fq && !(fq === ""))
       $("#timePeriod").val(fq);
+
+  if (fq == null){
+      fq = "0.5";
+  }
 
 }
 
 var tLast = 0;
 var tP = 1.0;
 
+var firstTime = 1;
+
 function draw() {
+  if (firstTime || (millis() - 1000)) {
+    firstTime = 0;
+    if (fq && !(fq === ""))
+        $("#timePeriod").val(fq);
+  }
+
   setProgress();
   background(cBack);
 
@@ -52,7 +72,6 @@ function changeColor(){
     cBack  = 255 - cBack;
     tLast = millis();
   }
-
 }
 
 var lastP = 1;
@@ -64,4 +83,15 @@ function setProgress(){
     lastP = p;
     $("#timePeriod").val(p);
   }
+}
+
+function genLink(){
+  var href = window.location.origin + window.location.pathname;
+
+  var tp = document.getElementById("text").value; // text param
+  var sp = document.getElementById("textSize").value;
+  var fqp = document.getElementById("timePeriod").value;
+
+  href += "?t=" + tp + "&s=" + sp + "&fq=" + fqp ;
+  alert("Location: " + href);
 }
