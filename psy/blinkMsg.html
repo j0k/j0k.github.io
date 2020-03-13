@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Keep into Mind</title>
+
+    <script src="./../js/lib/jquery-3.4.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="./../js/lib/p5.min.js"></script>
+
+
+    <script type="text/javascript" src="./../js/lang.js"></script>
+    <script type="text/javascript" src="./../js/psy/sketchBlinkMsg.js"></script>
+
+    <style media="screen">
+      .audio-progress {
+  height: .5rem;
+  width: 100%;
+  background-color: #C0C0C0;
+}
+.audio-progress .bar {
+  height: 100%;
+  background-color: #E95F74;
+}
+
+#audio-progress-handle {
+  display: block;
+  position:absolute;
+  z-index: 1;
+  margin-top: -5px;
+  margin-left: -10px;
+  width: 10px;
+  height: 10px;
+  border: 4px solid #D3D5DF;
+  border-top-color: #D3D5DF;
+  border-right-color: #D3D5DF;
+  transform: rotate(45deg);
+  border-radius: 100%;
+  background-color: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+  cursor:pointer;
+}
+
+.draggable {
+  float: left; margin: 0 10px 10px 0;
+}
+    </style>
+
+
+  </head>
+  <body>
+    <table id="switchTable">
+      <tr>
+        <td>language:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+
+    <label for="text">
+      <span class="en">Text</span>
+      <span class="ru">Текст</span>
+    </label>
+    <input id="text" type="text" name="text" value="поехать на Шаврова, действуй!" size="60" >
+
+    <label for="textSize">
+      <span class="en">Text size:</span>
+      <span class="ru">Размер текста:</span>
+    </label>
+    <input id="textSize" type="text" name="textSize" value="60" size="3" >
+
+    <label for="">
+      <span class="en">Time period:</span>
+      <span class="ru">Задержка:</span>
+    </label>
+    <input id="timePeriod" type="text" name="timePeriod" value="0.30" size="4" >
+    <p>
+      <div id="audio-player-container">
+        <div class="audio-progress" id="audio-progress">
+          <div id="draggable-point" style="left:75%;position:absolute;" class="draggable ui-widget-content">
+            <div id="audio-progress-handle"></div>
+          </div>
+          <div id="audio-progress-bar" class="bar" style="width:75%">
+          </div>
+        </div>
+      </div>
+
+      <div id="posX"></div>
+    </p>
+
+    <center>
+      <p></p>
+      <div class="inner" id="sketch-holder">
+        <!-- Our sketch will go here! -->
+      </div>
+    </center>
+
+    <script type="text/javascript">
+      $('#draggable-point').draggable({
+        axis: 'x',
+        containment: "#audio-progress"
+      });
+
+      $('#draggable-point').draggable({
+        drag: function() {
+          var offset = $(this).offset();
+          var xPos = (100 * parseFloat($(this).css("left"))) / (parseFloat($(this).parent().css("width"))) + "%";
+
+          $('#audio-progress-bar').css({
+            'width': xPos
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
