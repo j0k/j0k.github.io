@@ -20,7 +20,14 @@ function handleLanuageChange(cb) {
 
 
 function ready() {
-   handleLanuageChange(document.getElementById('language'));
- }
+  var url = new URL(String(window.location));
+  var l = url.searchParams.get("l")
+  if (l === "en")
+    document.getElementById('language').checked = true;
+  else if (l === "ru")
+    document.getElementById('language').checked = false;
+
+  handleLanuageChange(document.getElementById('language'));
+}
 
 document.addEventListener("DOMContentLoaded", ready);
