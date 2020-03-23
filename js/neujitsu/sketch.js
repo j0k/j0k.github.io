@@ -14,12 +14,14 @@ function preload() {
 function setup() {
   var clientWidth = document.body.clientWidth;
   var clientHeight = windowHeight;
-  var imItem = document.getElementById('imBrainMask');
-  var canvas = createCanvas(imItem.offsetWidth-10, imItem.offsetHeight-10);
-  pg = createGraphics(clientWidth, clientHeight);
+  var imItem = document.getElementById('imObjBrainMask');
+  var canvas = createCanvas(imItem.offsetWidth, imItem.offsetHeight-10);
+  //var canvas = createCanvas(maskImage2.width, maskImage2.height);
+  //maskImage2
+  //pg = createGraphics(clientWidth, clientHeight);
 
   canvas.parent('sketch-holder');
-    background(255, 255, 255);
+  background(255, 255, 255);
   //createCanvas(maskImage.width-10, maskImage.height-10);
   //photo.mask(maskImage);
   image(photo, width/3-(photo.width/2), height/2-(photo.height/2));
@@ -34,7 +36,7 @@ var dc = 0.01;
 var c=0, cNext=1;
 function draw() {
   c = lerp(c,cNext,dc);
-  fill('rgba(0,0,0, 0.01)');
+  fill('rgba(0, 0, 0, 0.01)');
   noStroke();
   rect(0, 0, width, height);
   stroke(255);
