@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<!--
+ https://stackoverflow.com/questions/2802687/is-there-a-way-to-create-your-own-html-tag-in-html5
+ create style for different types of keywords in left table column
+-->
+<head>
+  <meta charset="utf-8">
+  <title>silkmind team page</title>
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+
+  <!-- <link rel="stylesheet" href="./css/milligram.css"> -->
+
+  <link rel="stylesheet" href="./css/switches.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/milligram-fix.css">
+  <link rel="stylesheet" href="./css/default.css">
+  <link rel="stylesheet" href="./css/images.css">
+  <!-- Yandex.Metrika counter -->
+
+  <script type="text/javascript" src="./js/jojslib.js"></script>
+  <script type="text/javascript" src="./js/lang.js"></script>
+  <script type="text/javascript">
+    (function(m, e, t, r, i, k, a) {
+      m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+      };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53377975, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/53377975" class="ava" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+</head>
+
+<body>
+<!-- <div class="margo super"></div> -->
+<div id="container" class="switchDiv">
+  <div id="left" style="padding-left: 10px; max-width: 20%; float:left">
+    <table id="switchTable">
+      <tr>
+        <td>lang:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
+      </tr>
+      <tr>
+        <td>menu:</td>
+        <td>
+          <div id="menuSwitch" class="switch">
+             <input type="checkbox" id="menu" disabled>
+             <label for="menu"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="right" >
+    <table id="tbl_nav">
+      <!-- class="come design" -->
+      <tr>
+        <td id="a1"><a href="#s_short_film" title="just short films">f</a></td>
+        <td id="a2"><a href="#s_tusion" title="tusion">t</a></td>
+        <td id="a3"><a href="#s_moments_dev" title="developmet moments">dm</a></td>
+        <td id="a4"><a href="#s_music" title="music momemts">muz</a></td>
+        <td id="a5"><a href="#s_performances" title="performances">pe</a></td>
+        <td id="a6"><a href="#s_lectures" title="Lectures">l</a></td>
+        <td id="a7"><a href="#s_people" title="people">p</a></td>
+        <td id="a8"><a href="#s_beauti_devmat" title="materials">m</a></td>
+        <td id="a9"><a href="#s_quotes" title="quotes">q</a></td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+
+<div id="page">
+<center>
+<span style="padding-top:20px;">
+Welcome Stranger! ☘️
+</span>
+
+ </center>
+
+   <div id="cf"  style="width: 35%; max-width: 400px; margin:auto; padding: 7px; text-align:center; display:block">
+     <img class="top" src="./img/profile_me.png" />
+     <img class="bottom" src="./img/handsBox.jpg" />
+
+   </div>
+
+  <!-- <img src="https://raw.githubusercontent.com/j0k/j0k.github.io/master/img/hands-a.gif" alt="" style="width: 35%; margin:auto; padding: 7px; text-align:center; display:block"> -->
+  <marquee style="font-family: Courier New, Courier, monospace;" bgcolor="#feebcb">
+    <b>Talking with me will improve the sexual energy of your brain which can be used everywhere.  🍏🥑🥝🏄🏻‍♀️🦇🦈🍎☘️🦄🌽🎪🐾🍉🥦🥒🦋🍅❤️👠🕶🌂🐒🦑🦕🐞. it's a joke =) </b></marquee>
+
+  <section name="neuropath">
+    <span class="en">
+      Hello! My name is Yuri and here you see the page for drafts, notes, links and other flow information.
+      My professional profile is a software and brain-computer interfaces engineering.
+      <span class="fontcolor05"> // My moto: everything is possile! </span>
+    </span>
+    <span class="ru">
+      Привет! Меня зовут Юра и это моя домашняя страничка для различных заметок, черновых записей, ссылок и
+      прочей проходящей информации. Что касается моих профессиональных навыков то это написание программ и создание систем для мозг-компьютерного взаимодействия.
+      <span class="fontcolor05"> // Девиз: всё возможно! </span>
+    </span>
+  </section>
+
+  <section>
+
+    <legend><center>Personalia:</center></legend>
+
+    contacts / resources / interactions:
+
+    <table class="tsketch">
+      <thead>
+
+      </thead>
+      <tbody>
+        <tr class="op04">
+          <td>context</td>
+          <td>data</td>
+          <td>action</td>
+        </tr>
+        <tr>
+          <td><ktc>#social-net</ktc> <p> <ktc>#blog</ktc> <ktc>#articles</ktc> <ktc>#dev</ktc> </td>
+          <td>
+            <ul>
+              <li><a target="_blank" href="https://github.com/j0k">j0k/git</a></li>
+              <li><a target="_blank" href="https://www.linkedin.com/in/yuri-konoplev/">linkedin</a></li>
+              <li><a target="_blank" href="http://t.me/bimodaling">tele</a></li>
+              <li><a target="_blank" href="https://www.facebook.com/yuri.konoplev">fb</a></li>
+              <li>insta: <a target="_blank" href="https://www.instagram.com/keytheorem/">@keytheorem</a></li>
+              <li><a target="_blank" href="mail:yuri@silkmind.com">@email</a></li>
+              <li><a target="_blank" href="https://medium.com/@j00000k">medium</a></li>
+              <li><a target="_blank" href="https://soundcloud.com/yuri-konoplev">soundcloud</a></li>
+              <li><a target="_blank" href="https://www.openprocessing.org/user/82413/">openprocessing: Jiordano Bruno</a></li>
+              <li><a target="_blank" href="https://calendly.com/silkmind/30min">schedule</a> meeting with me</li>
+            </ul>
+          </td>
+          <td>
+            <kta>read</kta><p>
+            <kta>pm</kta><p>
+            <kta>subscribe</kta> <p>
+            <kta>share</kta>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </section>
+
+<form style="background:#F4EEF6; border:1px solid #ccc;padding:1px;text-align:center;" action="https://tinyletter.com/silkmind" method="post" target="popupwindow" onsubmit="window.open('https://tinyletter.com/silkmind', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+  <label for="tlemail">SILK-MIND NEWS</label>
+    <input type="text" style="background:#ffffff; width:240px" name="email" id="tlemail" placeholder="@email" />
+  <input type="hidden" value="1" name="embed" /><input type="submit" value="Subscribe"/>
+
+</form>
+
+  Now more details. My full name is Yuri Konoplev also going as j0k, keytheorem,
+  NJ and etc... Definitely I like nicks and computer culture. It's my homepage so it's a place for drafts, notes and HTML experiments.
+   Some months ago I worked on social network developing at <a href="https://blog.wavesplatform.com/web3-0-the-road-ahead-for-waves-9bd8a51f63ce?source=---------2------------------">Waves</a> and also thought on
+    <a href="http://tusion.xyz">TuSion</a> neuroapp and
+  brain-computers in wide. As I see today tusion was the most interesting application
+  to check and turning in right mental state if you know how to use it. Reborn as Silk Mind.
+  If you are searching for a big unicorn project to invest - just follow "Silk Mind" rabbit :)
+
+  <br/><br/>
+
+  By the way I like to program and to develop concepts and sometimes develop principles for <a target="_blank" href="https://github.com/j0k/aml-intro">AML</a> (abstract macro language) with details and examples. It's still a too unstructed repo for computer
+  programming language.
+
+  <br/><br/>
+  In vision I prefer cold and hot shower with cold at the end, flexibility mindflow, meditation, antipsychiatry,
+  active mindset shaping and jumping into actions inspired with dreams,
+  interesting future and perception of reality without any limits or bans.
+
+  <br/><br/>
+  Feel free to ask me for any questions, to mention any detail, to share any idea or just speak out loud.
+   I really regard the reality AS IS without any prelabeling for good/normal/bad orientation inside it.
+    Everything with sense is OK and I agree that it's forbidden to forbid in wide (Il est interdit d’interdire).
+
+  <br/><br/>
+
+* all that was said above are my aspirations and I'm just only on the way.
+  <br/><br/>
+
+  <a target="_blank" href="https://docs.google.com/spreadsheets/d/1C5TdnowSDaez4svD468woP-b9lDrk57BShcnCzypPco/edit?usp=sharing">Here is my public shared google spreadsheet/excel document</a> to keep in touch in task-sense and keep the wave of
+  shared econony;) If you have any task for me, or we discussed something common and I still hadn't show any required reaction - plz push it. I will be glad both as you.
+
+  <p></p>
+    That homepage has an unstructed style with few comments and going to be in that state for some time.
+
+
+    <p></p>
+    <img src="./img/насвязи.jpg" alt="" style="width: 100%; max-width: 400px; margin:auto; padding: 7px; text-align:center; display:block">
+
+    glhf 🦋😚🧞‍💫
+    <br/>
+
+    <section name="subparts">
+      Sub pages are:
+      <ul>
+        <li><a href="./viz/index.html">Visualizations</a>. Here are examples of visualizations.</li>
+        <li><a href="./focus/index.html">Focus</a> psy-techical page. </li>
+        <li><a href="./just-mem-it/index.html">Just-mem-it</a> tool. Tool for memorizing and mind skills development. You can download it on <a href="https://github.com/j0k/just-mem-it">github</a>.</li>
+        <li><a href="./materials/snowflake.htmll">Snowflake</a> fractal page.</li>
+        <li><a href="./notes/index.html">Notes</a> in free form. #draft</li>
+      </ul>
+    </section>
+
+    <section name="stickers">
+      I really love stickers and see that stickers are mems. Section for stickers.
+    </section>
+
+    <section name="dex">
+      Section for life time tokens and DEX.
+    </section>
+
+    <section><a name="s_short_film"></a>
+      short films & movies:
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=kK3_vA867RQ">I need your vision [NY, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=5HXGzzFtBek">Кинопробы: фильм Дверь (эксперимент) [Шаврова, РУ, 2017]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=jxXkv-6seBI">doc: 9kino -> LS 2015</a></li>
+        <li><a href="https://www.youtube.com/watch?v=jZ1nG5P_ZjI">Hero Talk. Prologue and teaser for Video 360</a></li>
+        <li><a href="https://youtu.be/82ZzxNnXht0">#draft Square film</a> - combines screen records and free computer techniques. First try. [Jan. 2020]</li>
+      </ul>
+    </section>
+
+    <section><a name="s_tusion"></a>
+      tusion and how tuses works:
+      <ul>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=HxHZIzv2Kyc">all collections</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=mkOD6BHl4VI">vase filling</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=XGh0SoJRPhM">tuse: push-up everyday using neurogadget</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=Du6IxogNBeQ">JUST ANOTHER FUNNY TUSION DEMONSTRATION. KEEP CALM</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=JCChukMG0IM">TuSion: The First Fidget Spinner Controlled by Your Brain, VK FEST, 2017</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=hOpZMrmMlqA">TuSion VR DreamSpace 0x01, [Media-art hachathon, SPb 2017]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=OC7k7nBdLv8">Tusion with people</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=3wb9u-o6-Lg">Tusion Matrix</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=tYIBDtPxdag">TuSion - Cold and Hot Shower for You</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=f-LsbzSj6Og">Tusion: the Tuse Number Two</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=puGrTKwKFfI">TuSion: testing development of habits</a></li>
+        <li><a target="_blank" href="https://vk.com/video-135895482_456239034">TuSion:Jumper tuse</a></li>
+        <li><a target="_blank" href="https://vk.com/video-135895482_456239033">TuSion:Yin Yang tuse</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=MQ-WFo64kQ4">AFTER INCHAMP: Елена Ким, Александр Згода и наш TuSion</a></li>
+        <li><a target="_blank" href="https://vk.com/videos-156015?z=video-156015_456239183%2Fclub156015%2Fpl_-156015_-2">Tusion app</a> - corporate presentation</li>
+      </ul>
+    </section>
+
+    <section><a name="s_moments_dev"></a>
+      moments of dev flow
+      <ul>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=kVuJwjTQTbo">experiment introoo: Kil Skil</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=E7VyiIEF4qU&feature=youtu.be&t=409">Jeet Code Fu #1 [cyberspace]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=K-k0eYHbmqk">wallet 2 console - sign the message using waves-crypto</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=nShufJhDcco">Matlab, EEG Lab, ICA remove</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=farPP9QmweM">habi river with player</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=jZ1nG5P_ZjI">Crash video of Timos pre-demo. Oh-no.</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=XoaNIQqX-bg">First KilSkil Prototyping [Jan, 2019]</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_moments"></a>
+      moments:
+      <ul>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=8gUC3k-lKeU">Talking with Edward Potter [NY, 2018]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=Cc8_i1DpmBY">A new place for the Mind, tags:fly 2018</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=fNV5y1vcR80">Фрагменты путешествия на НеДеБройлевском по Луге, 2017</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=QWpUTCQQ1z8">DSD Raft Solutions: Спуск плотчеса на реку Мсту и первые часы на воде, 2016</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=ykpdDu3B6oc">Чудное знакомство, чудо дня и открытие Дома</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=-tEBhw4OKXI">ROMA [IT, 2018]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=tF1T2KGEQvI">backstage 0 [Zpsh, SPb, 2019]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=cA_DBTV3O6w">Момент! Hero Talk летит на финал Imagine Cup в Москву. 2016</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=Apu4fDqd4Tw">Интервью с Доктором Инкогнито [Nowhere, 2017]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=nhtfX5SFPeM">Tanglangquan demonstrations: небольшой отрывок из выступлений Кулака Богомола у Нарвских ворот [SPb, 2011]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=pmeRK96vcrY">Bujinkan - Demo 1 - [Spb, 2019]</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=G9T0ru_6OfA">Рита Ситалиева - Я? [Лирика]. [Moscow, July 2019]</a></li>
+
+      </ul>
+    </section>
+
+    <section><a name="s_music"></a>
+      music moments:
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=lwSzpz7s6zo">Amy Winehouse - Back To Black life Limassol cover, [CYPRUS, 2017]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=_N0ImtV9pRo">Chappi, Street muz [SPb/RU, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=YWNX98JH7bs">"Город которого нет", Бандитский Петербург, [Samovar, NY, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=CsXsHNNNSyQ">"Небо над землёй" [Samovar, NY, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=vf2tL68hYI4">Нам нужна одна победа, Я люблю тебя Россия [Samovar, NY, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=VT2M-ngRLNs">Until - Sting. Ivan's Algotrade Version [Limassol, CY, 2017]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=rlPuJ-U1kug">Выборг, Пассажир другой эпохи ЛМК Нон-Хьюман Энимал (Bloemfontein) [Квартирник, SPb, 2017]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=gDn8hP9WrLM">Сплин - Гандбол, Лимасол, 2017</a></li>
+        <li><a href="https://www.youtube.com/watch?v=DhgbVvB7euc">Сплин - Письмо (Бродский), Лимасол, 2017</a></li>
+        <li><a href="https://www.youtube.com/watch?v=k5SWMggN3os">BADDA BOO - УЛЕТАЮ кавер по версии ЗПШ 2017</a></li>
+        <li><a href="https://www.youtube.com/watch?v=mEZNRxUDaJM">5nizza - vesna - Пятница - Весна Кавер ЗПШ 2017</a></li>
+        <li><a href="https://www.youtube.com/watch?v=M6lzV5Id7iY">Flat music band (с Denis-ом) 2017</a></li>
+        <li><a href="https://www.youtube.com/watch?v=3OyXQrh1NvE">Мама анархия. ЗПШ 2017. Айдар</a></li>
+        <li><a href="https://www.youtube.com/watch?v=1moseAxpCgE">Bi-2 - Serebro. Би-2 - Серебро. Кавер. ЗПШ 2017</a></li>
+        <li><a href="https://youtu.be/DkVQrBg4mOY?t=91">ЗПШ 2017. кавер</a></li>
+        <li><a href="https://vk.com/video24147_456239177">Надя. Пятый элемент ЗПШ", ЗПШ 2017, пятый этаж, "Чайка"</a></li>
+        <li><a href="https://www.youtube.com/watch?v=6aDDmZPBcow">DocStory. Мстинское ущелье. Давай за. Кавер Любэ</a></li>
+        <li><a href="https://www.youtube.com/watch?v=NmGlSG3-tKQ">VR 4K 360 video Russian Tourists in USA: brave Colorado river rafting. Vysotsky Высоцкий Цыганская</a></li>
+        <li><a href="https://vk.com/video_ext.php?oid=24147&id=456239351&hash=4f2b7a771b10ff8b&hd=2">Аквариум - Город золотой [Лимасол, 2017]</a></li>
+        <li><a href="https://vk.com/video24147_456239326">Ленинград - Терминатор, [Лимасол, 2017]</a></li>
+        <li><a href="https://vk.com/video_ext.php?oid=72506440&id=171554759&hash=1e9434505e0e2193&hd=2">Музыка из фильма. Метро Петроградская. [Питер, 26.12.2015]</a></li>
+        <li><a href="https://vk.com/video24147_171356205">!!! Фрагмент выступления в метро. [Питер, 2015]</a></li>
+        <li><a href="https://vk.com/video24147_456239340">Наутилус — Я хочу быть с тобой [Лимасол, 2017]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=Y7vObuMz3Nk">АукцЫон - Девушки Поют [Москва, 2019]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=VVoqbnqov9k">АукцЫон - Птица, Мир тает. [Москва, 2019]</a></li>
+        <li><a href="https://youtu.be/zjfTwVje5Ew">Sunny song. NNK 5 Band. Песня и выступление. Добро и позитив // Moscow metro, 2019</a></li>
+        <li><a href="https://www.youtube.com/watch?v=K12ceBcrZYo">Танцы минус - Город - City (cover) // Saint-Петербург, metro, July 2019</a></li>
+        <li><a href="https://www.youtube.com/watch?v=j1sppro9KM0">Серебрянная свадьба - Черная речка - Наташа Гаркавенко (кавер) // Чистые пруды, Moscow, July 2019</a></li>
+        <li><a href="https://youtu.be/DcVxJ_8M8Tc">Nnk_5_band - метро [Москва, 08.2019].</a></li>
+        <li><a href="https://www.youtube.com/watch?v=cvPJ6ZBnWH8">Because - John Lennon Birthday [SPb, 2019.10.09].</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_performances"></a>
+      performances:
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=CMOHFYJ3b0M">[2] Rammellzee future screens // Red Bull Arts, New York, 2018</a></li>
+        <li><a href="https://www.youtube.com/watch?v=wbAzbJH3cNk">[1] Rammellzee future screens // Red Bull Arts, New York, 2018</a></li>
+        <li><a href="https://www.youtube.com/watch?v=veXA3ygPEUc">NY in spectacles, [NY, 2018]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=isOlvJBV-cg&t=11s">time of Chaos Construction 2016</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=gOAoMSVCS6Y">Into the night, квартирник Non-Human Animal, фрагмент, [Москва, 2019]</a></li>
+        <li><a target="_blank" href="https://vk.com/video24147_456239293">Поиск пути на школе Социальной Инженерии 2017, [Лен. Область, 2017]</a></li>
+        <li><a target="_blank" href="https://vk.com/video24147_456239150">Стихи. Кусочек вечера ЗПШ 2017 [база Восток, Лен.Обл., 2017]</a></li>
+      </ul>
+    </section>
+    <section>
+      <p></p>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <div class="container">
+
+        <div class="row">
+          <div class="column">
+            <button id="btn-decode" type="button" name="button">wish</button>
+          </div>
+          <div class="column">
+            <input id="enc-password" type="text" name="" value="" placeholder="12345">
+          </div>
+
+      </div>
+      <div id="decoded"></div>
+      <textarea id="enc-text" name="name" rows="8" cols="80" style="visibility: collapse;">U2FsdGVkX1+4rtbkQg8bPgc1yaYX6Ihzwx6aN9myCpSok8GsJ3JXAhwT93vsCnOxTX9Ur1MjWCa3AIYzNJwUwFfaNXmkukzr10bM+Db5mrNCc24OB2gfaD/IpU/jfexaY8SdjRT9ZKc9CPafIqdHLYmjicBRJ5OTH2r2h+UFzyAYsTt6rZw8oKe6pb5Ezjqqut9DJSBtRJMsp5jP8zfSdZUjnSQXEYv0ho8NokyICUFFLH9WtlvvaZ4gZqhfrLkD9lty3r9uYFtfRpB2fDpcu2UDGrEaR/drQ33pjW0mIbrIbAkuhM7DIchcMWHqo/ot/K08z/8L96x4wJooeelBi+6aUzfqFpAlzNcaPfuFhkfd6Jf69BSKa7S44MyrDeDD
+      </textarea>
+      <script type="text/javascript">
+        $('#btn-decode').on('click', function(){
+          var pass = $('#enc-password').val();
+          var htm = "not so simple!";
+          var go = 1;
+          if (pass === ""){
+            htm = "wish you a good day!";
+            go = 0;
+          }
+          if ((pass !== "12345") && go){
+            var et   = $('#enc-text').val().replace(/\s/g, '')
+            htm = jojslib.lib.CryptoJS.enc.Utf8.stringify(jojslib.lib.AES.decrypt(et, pass));
+          }
+          $('#decoded').html(htm);
+        });
+      </script>
+    </section>
+
+    <section><a name="s_lectures"></a>
+      lectures:
+      <ul>
+        <li>Prof. Irene Pepperberg <a href="https://www.youtube.com/watch?v=CVVE9Qrog70">"Cognitive and Communicative Abilities of Grey Parrots"</a> at SPbU, 1 June 2019</li>
+        <li><a href="https://www.youtube.com/watch?v=fMVMjEPGxIo">Brain Rogers about Winter Psychology School 2019</a></li>
+        <li><a href="https://www.youtube.com/watch?v=jrL7oVKj3Ow">Victor Allakhverdov on Winter Psychology School 2019</a></li>
+        <li><a href="https://www.youtube.com/watch?v=r7ukhHRq0Bo">Jorg Piringer, media-poetry 101 festival</a></li>
+        <li><a href="https://www.youtube.com/watch?v=hXaTAJPgufE">Rogers Brian - An Ecological and Evolutionary Approach to Perception // SPZH, SPb, 04/02/2018</a></li>
+        <li><a href="https://www.youtube.com/watch?v=i3AL1H_XUyg">Бакалаврская дипломная работа. Распознавание паттернов ЭЭГ // Татьяна Кряж, ИТМО, 2016</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_proj"></a>
+      long projects :
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=frU0E-OKlHo">aeMind Immersing Virtual Reality Control Device (IVoRy) [2016]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=7HE8dh-NvTM">IVoRy short pitch [2016]</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_aml"></a>
+      AML language + IDE prototyping
+      <ul>
+        <li>
+          <a href="https://www.youtube.com/watch?v=Es5bKCjetmc">IDE: prototyping: graph mode [8 May 2019, Moscow]</a>
+        </li>
+
+        <li>
+          <a href="https://github.com/j0k/algopractice/blob/master/docs/linkedList/linkedList.pdf">Reverse linked list</a> - algorithm visualization [7 Feb 2020, Spb]
+        </li>
+      </ul>
+    </section>
+
+    <section><a name="s_hackathons"></a>
+      hackathons & fu-projects:
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=jAhkzngImmg">DebitaFriend Demo at IQ Hack 2017 #iqhack2017 // SPb, 2017</a></li>
+        <li><a href="https://vk.com/videos-156015?z=video-156015_456239111%2Fclub156015%2Fpl_-156015_-2">TimeLapse at IQ Hack</a> #iqhack2017 2017 // SPb</li>
+        <li><a href="https://www.youtube.com/watch?v=eRY6b0xNWl8">The first step of LifeBoost project.</a></li>
+        <li><a href="https://www.youtube.com/watch?v=n2O0Zu6qBds">Проект Hero Talk. Imagine Cup: Russia Final. Innovation</a></li>
+        <li><a href="https://www.youtube.com/watch?v=CJMVQ48BDtU">VR TeleDev SDK meeting #3. video 360</a></li>
+        <li><a href="https://www.youtube.com/watch?v=F8R66uXh_ec">VisualSpace.ru: виртуальные видео, туры и виртуализация пространства.</a></li>
+        <li><a href="https://vk.com/video105828920_171618265">ВР тетрис, Аптекарский переулок, команда aeMind [2016]</a></li>
+        <li><a href="https://www.youtube.com/watch?v=ofU6NOmHmd0">KilSKil intro [with Ira, SPb, 2019]</a></li>
+
+      </ul>
+    </section>
+
+    <section><a name="s_psy"></a>
+      psy sample & experiments:
+      <ul>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=6vUoDeaHYOc">Пилотный авантюрный эксперимент с самовнушением в 360, СПб 2017</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/watch?v=u2kl_3YF-Cg">Тибетские поющие чаши. Виктор Огуй. Запись ЭЭГ.</a></li>
+        <li><a target="_blank" href="https://vk.com/video24147_456239113">WinEEG. Mitsar, Запись ЭЭГ.</a></li>
+        <li><a target="_blank" href="https://youtu.be/eevH5UgSAWg">Example of go-nogo experiment. Foundation of future mnemotechnic exp (why mnemo?).</a></li>
+      </ul>
+    </section>
+
+    <br />
+    <section><a name="s_people"></a>
+      developers, artists, scientists and people who feel:
+      <ol>
+        <li>
+          <a target="_blank" href="https://github.com/TheLarkInn">Sean Larkin: WebPack, JS, </a>
+          <br />
+          <a target="_blank" href="https://www.twitch.tv/thelarkinn/">twich.tv</a>
+          <br />
+          todo: to iframe it
+        </li>
+
+        <li>
+          <a target="_blank" href="http://refikanadol.com/about">Refik Anadol, media-artist, developer</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="http://gavwood.com/">Gavin Wood, ethereum co-founder, developer</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="https://sites.google.com/view/lyou/home">Touinova Lyoubov, artist</a>, insta:<a href="https://www.instagram.com/barbieblaster/">barbieblaster</a>, insta:<a href="https://www.instagram.com/heartwin.office/">heartwin.office</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="https://www.monicagagliano.com/">Monica Gagliano #cognition #plants</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="http://www.mattsly.com/">Matt Sly</a> homepage. Matt is a <a target="_blank" href="http://futureme.org/">FutureMe.Org</a> service creator. #life #dream #feel #I #You
+        </li>
+
+        <li>
+          <a target="_blank" href="https://www.crockford.com/muggles.html">Douglas Crockford</a> homepage. Douglas is a <a target="_blank" href="http://json.org/">JSON</a> format creator (JavaScript Object Notation). #js #json #dev #cs
+        </li>
+
+        <li>
+          <a target="_blank" href="https://roy.gbiv.com/">Roy T. Fielding</a> homepage. Roy is a REST architector ~creator both as HTTP early-commiter. Roy is also Apache co-founder and director of the Apache Software Foundation. Roy's <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_cv_2000.htm">CV</a>, <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">architecture dissertation</a>. #rest #dev #cs
+        </li>
+
+        <li>
+          <a target="_blank" href="https://blog.patricktriest.com/">Roy T. Fielding</a>
+            BREAK | BETTER : TUTORIALS, SIDE-PROJECTS, AND DATA-DRIVEN STORYTELLING #dev #web
+        </li>
+
+        <li>
+          <a target="_blank" href="http://yann.lecun.com/">Yann LeCun</a>
+            Neural Computer Scientist #dev #cnn #neural
+        </li>
+
+
+
+      </ol>
+    </section>
+
+    <section><a name="s_softengineers"></a>
+      developers and software engineers:
+      <ul>
+        <li><a target="_blank" href="https://konradhalas.pl/">Konrad Hałas</a> - software engineer, speaker and trainer</li>
+        <li><a target="_blank" href="http://www.juliandyke.com/">Julian Dyke</a> - an independent database consultant specialising in Oracle performance tuning and high availability including RAC and Data Guard.</li>
+        <li><a target="_blank" href="https://thomasknoll.info/">Thomas Knoll</a> - startup & ideas star</li>
+      </ul>
+
+      architecture:
+      <ul>
+        <li><a target="_blank" href="https://3xn.com/"> 3XN</a> - my liebe architecture company:) `We believe that architecute shapes behavior.`</li>
+      </ul>
+    </section>
+
+
+    <section><a name="s_beauti_devmat"></a>
+      beautiful dev materials:
+      <ol>
+        <li>
+          <a target="_blank" href="https://code.jsoftware.com/mediawiki/images/5/53/J602_RefCard_color_letter_current.pdf">J Reference Card for version 6.02 by Henry Rich</a>
+        </li>
+        <li>
+          <a target="_blank" href="http://flask-cheat-sheet.herokuapp.com/">Flask: The Cheat Sheet</a>
+        </li>
+      </ol>
+    </section>
+
+    <section><a name="s_useful_dev"></a>
+      useful dev materials:
+      <ol>
+        <li>
+          <a target="_blank" href="https://s3.us-east-2.amazonaws.com/prettyprinted/flask_cheatsheet.pdf">Flask Cheat Sheet and Quick Reference</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="https://docs.wavesplatform.com/en/ride/built-in-functions.html">Waves: RIDE built-in funcs</a>
+        </li>
+
+        <li>
+          <a target="_blank" href="https://tvm.ai/blog.html">TVM community blog</a>
+        </li>
+      </ol>
+
+      Atom IDE plugins:
+      <ol>
+        <li>
+          <a target="_blank" href="https://github.com/harmsk/atom-html-preview">atom-html-preview</a>
+        </li>
+      </ol>
+    </section>
+
+    <section><a name="s_socmech"></a>
+      cool and classic social mechanics:
+      <ul>
+        <li><a target="_blank" href="http://tcpcrypt.org/fame.php">Hall of fame</a> of tcpcrypt users</li>
+      </ul>
+    </section>
+
+    <section><a name="s_services"></a>
+      best services:
+      <ul>
+        <li><a target="_blank" href="http://scholar.google.com/">Scholar Google</a> - search in science way</li>
+        <li><a target="_blank" href="https://www.futureme.org">FutureMe org :: letters to the future.</a></li>
+        <li><a target="_blank" href="https://devhubapp.com/">Dev Hub App :: monitor-hub for github users.</a></li>
+        <li><a target="_blank" href="https://www.textifier.net/">Textifier</a> - Online Text Manipulation</li>
+        <li><a target="_blank" href="https://sivers.org/nowff">Now</a> - The /now page movement movement</li></li>
+        <li><a target="_blank" href="http://keygen-fm.ru">Keygen-FM</a> - radio with music from Keygens and other stuff [<a target="_blank" href="http://keygen-fm.ru/index_ru.html">RU v.</a>]</li></li>
+      </ul>
+
+      materials:
+      <ul>
+        <li><a target="_blank" href="http://anarplex.net/files/fau/">Guide</a> For The Unemployed But Not Helpless at anarplex.net</li>
+      </ul>
+    </section>
+
+    <section><a name="s_toolz"></a>
+      tool z:
+      <ul>
+        <li><a target="_blank" href="http://viz-js.com/"> JS visual tool for graphs.</a></li>
+        <li><a target="_blank" href="https://defuse.ca/online-x86-assembler.htm"> Online x86 / x64 Assembler and Disassembler</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_hackers"></a>
+      beauties of the baud:
+
+      <ul>
+        <li>agora lovecruft // patternsinthevoid :
+          <a target="_blank" href="https://www.patternsinthevoid.net/">site
+          </a>,
+          <a target="_blank" href="https://twitter.com/isislovecruft">twitter</a>
+        </li>
+
+        <li>Ilfak Guilfanov :
+          <a target="_blank" href="https://www.hexblog.com/">site</a>,
+          <a target="_blank" href="https://twitter.com/ilfak">twitter</a>
+        </li>
+
+        <li>Interocracy // cybersecurity //
+          <a target="_blank" href="https://interocracy.wordpress.com/software/">software</a>
+        </li>
+
+        <li>Cure53 Team - Fine penetration tests for fine websites // cybersecurity //
+          <a target="_blank" href="https://cure53.de/">web</a>
+        </li>
+
+        <li>Tim Berners-Lee invented the World Wide Web in 1989. //
+          <a target="_blank" href="https://www.w3.org/People/Berners-Lee/">link</a>
+        </li>
+
+        <li>Fedor Logachev. Fedor is more then creative developer and videogame artist. //
+          [<a target="_blank" href="https://www.patreon.com/fedorgames">link</a>],
+          [<a target="_blank" href="https://github.com/not-fl3/miniquad/">his cool opensource lib</a>]
+        </li>
+
+      </ul>
+    </section>
+
+    <section><a name="s_finance"></a>
+      finance section:
+      <ul>
+        <li><a target="_blank" href="https://www.forbes.com/real-time-billionaires/#dc52b023d788">Finance</a> - the world's real-time list of billionaires</li>
+      </ul>
+    </section>
+
+    <section><a name="s_flow"></a>
+      visual / flow / dataflow programming paradigm materials:
+      <ul>
+        <li><a target="_blank" href="https://github.com/shamansir/rpd">RPD — Reactive Patch Development</a></li>
+      </ul>
+    </section>
+
+    <section><a name="s_goodtry"></a>
+      Good tries, starts &amp; passion
+      <ul>
+        <li><a target="_blank" href="https://mitya8128.itch.io/jumping-caves">Jumping caves</a> - Mitya Ahmediev's arcade game prototype.
+          <p>Explore the space of randomly generated caves. Try to get to the upper exits and also try to collect coins as much as possible. Do not fall into deep!</p>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      My aside drafts:
+      <ul>
+      </ul>
+    </section>
+
+    <section><a name="s_quotes"></a>
+      dev arch quotes/цитатки про архитектуру:
+      <ul>
+        <li>
+          #dev Закон Конвея.
+          <p />
+          Любая организация, разрабатывающая систему, невольно будет формировать дизайн, структура которого повторяет структуру взаимодействий
+          внутри этой организации. // Мартин Роберт "Чистая Ахитектура. Искусство разработки программного обеспечения", СПб.::Питер, 2019, ISBN: 978-5-4461-0772-8
+        </li>
+
+        <li>
+          #dev #arch хорошая архитектура оставляет возможности открытыми. // МР "ЧА", Гл16
+        </li>
+
+        <li>
+          #dev #arch Хорошая архитектуа позволит создать монолитную систему, развёртываемую как один файл,
+           а затем превратить её в набор независимых единиц развёртывания и далее в независимые службы и/или микрослужбы.
+           Позднее ... она должна позволить обратить всё вспять и вновь вернуться к монолитной структуре. // МР "ЧА", Гл16
+        </li>
+
+        <li>
+          #dev #arch Реализация бизнес-правил должна быть самым независимым кодом в системе, готовым к многократному использованию. // МР "ЧА", Гл20
+        </li>
+
+        <li>
+          #dev #arch Простота тестирования является характерным признаком хорошей архитектуры. // МР "ЧА", Гл23
+        </li>
+
+        <li>
+          #dev #arch Первое правило проектирования программного обеспечения - идёт ли речь о тестируемости или о чём-то ещё - всегда одно: не зависеть ни от чего, что может часто меняться. // МР "ЧА", Гл28
+        </li>
+
+        <li>
+          #life Учись на собственном примере отвергать пример иной. N!ko - Те, что знают
+        </li>
+
+        <li>
+          #brain #hypno Понятие транса. Транс - это сфокусированный луч внимания внутри нас самих, проникающий сквозь сознательные заслоны,
+           активизирующий бессознательные ресурсы и исключающий все внешние стимулы. Это определение я использую [Бэтти Эриксон] и его же многократно
+           повторял Эриксон.
+        </li>
+
+        <li>
+          #efficiency #biz [1>50] Одна законченная задача лучше 50 начатых. Малкольм Форбс (из книги book inside: личная эффективность, Ицхак Пинтосевич)
+        </li>
+
+      </ul>
+    </section>
+
+    <section>
+      other motivate quotes / другие мотивационные цитаты:
+      <ul>
+        <li>
+          Будьте на виду. Всё равно где. Дайте шанс случаю столкнуться с вами.
+          <span class="fontcolor05">// Герри Беквит "Продавая незримое", Альпина, 2016</span>
+          <p> #worldview #sales
+        </li>
+
+        <li>
+          Свободу не получают. Свободу обретают.
+          <span class="fontcolor05">// фильм "Мечтатели", реж. Бернардо Бертолуччи, 2003</span>
+          <p> #worldview #free
+        </li>
+
+        <li>
+          Человек меньше всего говорит правду, когда говорит о себе. Дайте ему маску и он скажем вам правду.
+          <span class="fontcolor05">// Оскар Уаилд</span>
+          <p> #worldview #note #self
+        </li>
+
+        <li>
+          Существование невидимо для глаз.
+          <span class="fontcolor05">// Антуан де Сент, Экзюпери</span>
+          <p> #worldview #note #existence
+        </li>
+
+        <li>
+          Stay Hungry Stay Foolish.
+          <span class="fontcolor05">// Steve Jobs</span>
+          <p> #worldview #self-fulfillment #entrepreneurship
+        </li>
+
+        <li>
+          В психологии эстетики есть термин для обозначения момента, когда
+          тревога из-за встречи с чем-то новым сменяется удовольствием от его постижения.
+           Этот момент называется эстетическим озарением.
+          <span class="fontcolor05">// Дерек Томпсон "Хит мейкеры. Наука популярности в эпоху развлечений", Азбука-Бизнес, Москва 2018</span>
+          <p> #psychology #esthetics
+        </li>
+
+        <li>
+          Но откуда вы знаете, что всё было именно так.
+          <span class="fontcolor05">// Читатель</span>
+          <p> #note
+        </li>
+
+        <li>
+          яркое переживание настоящего момента - потрясающий источник вдохновения
+          <span class="fontcolor05">// Ника Бауман "Практика фокусировок", стр. 77</span>
+          <p> #psychology #практикафокусировок
+        </li>
+
+      </ul>
+    </section>
+
+    <section><a name="s_logic"></a>
+      tasks on logic / логические задачки:
+      <ol>
+        <li>
+          Имеется две верёвки. Не принципиально одинаковые они или различные. Каждая горит 1 час. Как измерить промежуток в 90 минут? (Верёвка может гореть неравномерно).
+        </li>
+      </ol>
+    </section>
+
+    <section><a name="s_news"></a>
+      startup stories / истории стартапов:
+      <ul>
+        <li><a target="_blank" href="https://basecamp.com/about/story">Basecamp (37signals)</a> - The story of Basecamp.</li>
+      </ul>
+
+      fine news streams / хорошие информационные потоки:
+      <ul>
+        <li><a target="_blank" href="https://tinyletter.com/TCTSweekly">TCTS weekly</a> - Think Cognitive Think Science</li>
+      </ul>
+    </section>
+
+    <section><a name="s_books"></a>
+      <ul>
+        <li>One thousand ways to make $1000 // F. C. Minaker // 1936 </li>
+        <li>Psychology and Space // Yu. Gagarin, V. Lebedev // Психология и космос // Гагарин и Лебедев // 1968</li>
+        <li>Motivation notes // A. A. Shaluto // Заметки о мотивации // А. А. Шалыто</li>
+        <li>Tao Te Ching // Laozi // Дао де дзин // Лао цзы [<a href="http://tao-te-ching.ru/">link</a>]</li>
+      </ul>
+    </section>
+
+    <section><a name="s_methods"></a>
+      <ul>
+        <li><b>Как сделать задачу работая при этом над эффективностью?</b>
+        <p>Записать в текстовый редактор задачу в формате:</p>
+        <p>[ ] - описание задачи: start:; plan:; finish:; real:; delta:;</p>
+        например:
+        <p>[+] - прочитать про классификацию X и выписать основные поинты: start:16:30; plan:20min; finish:17:10; real:40; delta:+20min;</p>
+        или:
+        <p>[+] - прочитать про классификацию X и выписать основные поинты: start:16:30; plan:20min; finish:16:40; real:10; delta:-10min;</p>
+
+        Если величина дельты =0 или &lt; 0, следовательно ты движешься быстрее запланированного. Если больше - =&gt; времени ушло больше чем ожидал. Идеально стремиться к 0. Вообщем метод хорош для тренировки точности в оценке времени и фокуса на задаче.
+        </li>
+
+        <li> Прямая спина - самое важное в создании и направленной деятельности.
+        </li>
+
+      </ul>
+    </section>
+
+    <section><a name="s_donation"></a>
+      finance connection
+      <ul>
+        <li>bitcoin: <a href="https://btc.com/3ErMxo2aL1zpv2xGjqFT5A2Z3z8xMW1ssq">3ErMxo2aL1zpv2xGjqFT5A2Z3z8xMW1ssq</a></li>
+        <li>waves: <a href="https://wavesexplorer.com/address/3P7hayhDgwD91F2Pkm9dv147UaeSZxikN9n">3P7hayhDgwD91F2Pkm9dv147UaeSZxikN9n</a></li>
+      </ul>
+
+
+    </section>
+  </div>
+
+  <img src="./img/vostok.png" alt="" style="width: 50%; margin:auto; padding: 7px; text-align:center; display:block; border:2px">
+</body>
+
+</html>

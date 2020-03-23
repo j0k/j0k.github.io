@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<!--
+ https://stackoverflow.com/questions/2802687/is-there-a-way-to-create-your-own-html-tag-in-html5
+ create style for different types of keywords in left table column
+-->
+<head>
+  <meta charset="utf-8">
+  <title>silkmind team page</title>
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+
+  <!-- <link rel="stylesheet" href="./css/milligram.css"> -->
+
+  <link rel="stylesheet" href="./css/switches.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/milligram-fix.css">
+  <link rel="stylesheet" href="./css/default.css">
+  <link rel="stylesheet" href="./css/images.css">
+  <!-- Yandex.Metrika counter -->
+
+  <script type="text/javascript" src="./js/jojslib.js"></script>
+  <script type="text/javascript" src="./js/lang.js"></script>
+  <script type="text/javascript">
+    (function(m, e, t, r, i, k, a) {
+      m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+      };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53377975, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/53377975" class="ava" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+  <style>
+    img {
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    figcaption {
+      text-align: center;
+    }
+
+    .vizTable1  td {
+      width: 50%;
+      vertical-align: bottom;
+    }
+
+    @media only screen and (orientation: landscape) {
+      .imgDesc {
+        width: 40%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<!-- <div class="margo super"></div> -->
+<div id="container" class="switchDiv">
+  <div id="left" style="padding-left: 10px; max-width: 20%; float:left">
+    <table id="switchTable">
+      <tr>
+        <td>lang:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
+      </tr>
+      <tr>
+        <td>menu:</td>
+        <td>
+          <div id="menuSwitch" class="switch">
+             <input type="checkbox" id="menu" disabled>
+             <label for="menu"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="right" >
+    <table id="tbl_nav">
+      <!-- class="come design" -->
+
+      <tr>
+        <td id="a1"><a href="./index.html" title="about">intro</a></td>
+        <td id="a2"><a href="./about.html" title="about">about</a></td>
+        <td id="a3"><a href="./neujitsu.html" title="neujitsu">neu-jitsu</a></td>
+      </tr>
+
+    </table>
+  </div>
+
+</div>
+
+<div id="page">
+
+<center>
+<span style="padding-top:20px;">
+</span>
+<p></p>
+<h1>Logo</h1>
+
+ </center>
+
+
+
+  <section name="neuropath">
+    <span class="en">
+      Logo on title page represents human brain shape with electroencephalography-styled (EEG) signal.
+      You can change high frequency EEG activity by clicking inside the brain picture and that mean
+       "brain became more active".
+       You will see
+       <a href="https://en.wikipedia.org/wiki/Wilder_Penfield">Penfields'</a>
+       <a href="https://en.wikipedia.org/wiki/Cortical_homunculus">homuncilus</a>
+        after mouse-hovering over the brain.
+        Homunculus represents how much brain releated to any sensor area like: visual, audial, taste and olfactory sensory channels. It's also known as cortex man.
+      <p></p>
+      <table class="vizTable1">
+        <tr>
+          <td>
+            <figure>
+              <img src="./img/logo/homunEn.jpg" alt="">
+              <figcaption>Cortical homunculus.</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="./img/logo/homunFullRu.jpg" alt="">
+              <figcaption>More neurons releated larger size. Size of individual body parts
+                  releated to sensory areas connected with them.</figcaption>
+            </figure>
+            <!-- https://pikabu.ru/story/lyudi_v_vashem_mozgu_gomunkulyus_penfilda_5879114 -->
+          </td>
+        </tr>
+      </table>
+      <p></p>
+      It's very interesting how lips, arms and tongue are well-represented in the brain.
+      <p></p>
+      There is a small person inside the brain. That animated picture shows self-presentation of ourself. In other words
+      our knowledge, perception and self-sense formed and molded inside us. If it's our part that we
+      can change, improve and develop as free as we can allow ourself. Brain is wonderful magic, isn't it?
+      <p></p>
+      <figure>
+        <img class="imgDesc" src="./img/logo/intro.gif" alt="">
+        <figcaption>Illustration: “formed self-presentation inside ourself.</figcaption>
+      </figure>
+      <p></p>
+      Logo inspired by icon of
+      <a href="https://bio.spbu.ru/faculty/departments/vnd/">Higher Nervous Activity and Psychophysiology Department</a>
+       of Biology Faculty at
+       <a href="https://en.wikipedia.org/wiki/Saint_Petersburg_State_University">Saint-Petersburg University (SPbSU)</a>
+      from which I was graduated in 2015.
+      <p></p>
+    </span>
+
+    <span class="ru">
+      Логотип на главной странице имеет форму мозга человека с образным изображением
+       электроэнцефалограммы (ЭЭГ) внутри.
+      По щелчку мыши внутри мозга изменяется мощность активности сигнала ЭЭГ в высокочастотном диапазоне,
+      что как бы говорит - “мозг стал работать активней”.
+      При наведении на мозг появляется <a href="https://en.wikipedia.org/wiki/Cortical_homunculus">гомункулус</a>
+       <a href="https://ru.wikipedia.org/wiki/%D0%9F%D0%B5%D0%BD%D1%84%D0%B8%D0%BB%D0%B4,_%D0%A3%D0%B0%D0%B9%D0%BB%D0%B4%D0%B5%D1%80_%D0%93%D1%80%D0%B5%D0%B9%D0%B2%D1%81">Пенфилда</a>,
+      который отражает примерное соотношение объёма мозга (для его сенсорных отделов), отвечающий за соотвествующую сенсорную зону:
+      тактильный канал рук и ног, осязательный для губ, вкусовой канал для языка во рту,
+       аудиальный канал (слух), зрительный канал (зрение), обоняние и ещё парочка.
+      <p></p>
+      <table class="vizTable1">
+        <tr>
+          <td>
+            <figure>
+              <img src="./img/logo/homunRu.jpg" alt="">
+              <figcaption>Кортикальный гомункулус</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="./img/logo/homunFullRu.jpg" alt="">
+              <figcaption>Больше нейронов = больший размер. Размер части тела (на рисунке) отражает представленность связанных с ней сенсорных отделов</figcaption>
+            </figure>
+            <!-- https://pikabu.ru/story/lyudi_v_vashem_mozgu_gomunkulyus_penfilda_5879114 -->
+          </td>
+        </tr>
+      </table>
+
+      <p></p>
+       Интересным представляется и то,
+      как хорошо представлены чувствительность рук, губ и языка в мозгу человека.
+      <p></p>
+      Внути мозга изображён человечек, метафорично (но логично!) отражающий то, что наше собственное представление о нас самих мы строим "самостоятельно"
+      и, в целом, имеем полную свободу для воплощения самых смелых идей в отношении себя путём создания и развития своего представления
+      о себе. Удивительная мозг штука, неправда ли?
+      <p></p>
+      <figure>
+        <img class="imgDesc" src="./img/logo/intro.gif" alt="">
+        <figcaption>Иллюстрация: “формируемое представление о самом себе в виде человека”. Представление внутри мозга.</figcaption>
+      </figure>
+
+      <p> </p>
+      Лого вднохновленно иконкой <a href="https://bio.spbu.ru/faculty/departments/vnd/">кафедры высшей нервной деятельности и психофизиологии</a>
+      биологического факультета
+      <a href="https://ru.wikipedia.org/wiki/%D0%A1%D0%B0%D0%BD%D0%BA%D1%82-%D0%9F%D0%B5%D1%82%D0%B5%D1%80%D0%B1%D1%83%D1%80%D0%B3%D1%81%D0%BA%D0%B8%D0%B9_%D0%B3%D0%BE%D1%81%D1%83%D0%B4%D0%B0%D1%80%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D1%83%D0%BD%D0%B8%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%82%D0%B5%D1%82">Санкт-Петербургского Университета (СПбГУ)</a>,
+       магистратуру которой я окончил
+      в 2015 году.
+
+    </span>
+    <center>
+      <figure>
+        <img src="./img/logo/vnd.gif" alt="">
+        <figcaption>
+          <span class="en">HNA&P Department</span>
+          <span class="ru">Иконка кафедры ВНДиП</span>
+        </figcaption>
+      </figure>
+
+    </center>
+  </section>
+
+  </div>
+
+
+</body>
+
+</html>

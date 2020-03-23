@@ -113,11 +113,11 @@ text-shadow: 0 1px 0 #afcb9b, 0 -1px 0 #6b8659;
 }
 
 #menuSwitch label i:before  {
-content: "ON";
+content: "OFF";
 }
 
 #menuSwitch input:checked + label i:before {
-content: "OFF";
+content: "ON";
 }
 
 #menuSwitch input:checked ~ p#hello:before {

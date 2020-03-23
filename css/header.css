@@ -42,7 +42,7 @@
 table#tbl_nav.come {
   position:fixed;
   /* position: absolute; */
-  font-family: "Courier New";
+  font-family: "Arial Black", Gadget, sans-serif;
   /* position: absolute; */
   left: 0px;
   font-weight: bold;

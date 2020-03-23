@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<!--
+ https://stackoverflow.com/questions/2802687/is-there-a-way-to-create-your-own-html-tag-in-html5
+ create style for different types of keywords in left table column
+-->
+<head>
+  <meta charset="utf-8">
+  <title>silkmind team page</title>
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+
+  <!-- <link rel="stylesheet" href="./css/milligram.css"> -->
+
+  <link rel="stylesheet" href="./../css/switches.css">
+  <link rel="stylesheet" href="./../css/header.css">
+  <link rel="stylesheet" href="./../css/milligram-fix.css">
+  <link rel="stylesheet" href="./../css/default.css">
+  <link rel="stylesheet" href="./../css/images.css">
+  <!-- Yandex.Metrika counter -->
+  <script src="./../js/lib/jquery-3.4.1.min.js"></script>
+  <script src="./../js/lib/p5.min.js"></script>
+
+  <script type="text/javascript" src="./../js/lang.js"></script>
+  <script type="text/javascript">
+    (function(m, e, t, r, i, k, a) {
+      m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+      };
+      m[i].l = 1 * new Date();
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(53377975, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/53377975" class="ava" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+  <style>
+    /* img {
+      text-align: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    } */
+
+    figcaption {
+      text-align: center;
+    }
+
+    .vizTable1  td {
+      width: 50%;
+      vertical-align: bottom;
+    }
+
+    @media only screen and (orientation: landscape) {
+      .imgDesc {
+        width: 40%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<!-- <div class="margo super"></div> -->
+<div id="container" class="switchDiv">
+  <div id="left" style="padding-left: 10px; max-width: 20%; float:left">
+    <table id="switchTable">
+      <tr>
+        <td>lang:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
+      </tr>
+      <tr>
+        <td>menu:</td>
+        <td>
+          <div id="menuSwitch" class="switch">
+             <input type="checkbox" id="menu" disabled>
+             <label for="menu"><i></i></label>
+         </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="right" >
+    <table id="tbl_nav">
+      <!-- class="come design" -->
+
+      <tr>
+        <td id="a1"><a href="./../index.html" title="about">intro</a></td>
+        <td id="a2"><a href="./../about.html" title="about">about</a></td>
+        <td id="a3"><a href="./index.html" title="neujitsu">neu-jitsu</a></td>
+      </tr>
+
+    </table>
+  </div>
+
+</div>
+
+<div id="page">
+
+<center>
+  <span style="padding-top:20px;">
+  </span>
+  <p></p>
+  <h1>
+    <span class="en">Neu-Jitsu</span>
+    <span class="ru">Ней-Джитсу</span>
+  </h1>
+ </center>
+  <section name="content"><a name="contentTable"></a>
+      <h3>
+        <span class="ru">
+          Содержание
+        </span>
+        <span class="en">
+          Content
+        </span>
+      </h3>
+
+      <span class="ru">
+        <ol>
+          <li><a href="#whatIsNeuJitsu">Что такое Ней-Джитсу?</a></li>
+        </ol>
+      </span>
+      <span class="en">
+        <ol>
+          <li><a href="#whatIsNeuJitsu">What is Neu-Jitsu?</a></li>
+        </ol>
+      </span>
+
+    </section>
+
+    <section><a name="whatIsNeuJitsu"></a>
+
+
+      <h4>
+        <span class="ru">
+          Что такое Ней-Джитсу?
+        </span>
+        <span class="en">
+          What is Neu-Jitsu?
+        </span>
+      </h4>
+
+      <span class="ru">
+        Ней-Джитсу - это искусство управление фокусом восприятия.
+        Фокусировка восприятия - одна из основ выражения себя, т.к. от того как воспринимаешь себя
+        и мир вокруг зависит то, как ты ощущаешь жизнь, мир и себя в нём, как живёшь, что делаешь,
+        чего желаешь и чего избегаешь.
+      </span>
+      <span class="en">
+        Neu-Jitsu - is a focus of perception controlling art. It's about how to control
+        self perception and it's focus. Perception focus is one of foundation idea
+         for advanced self-expression.
+         Who are you? How are you? What kind of world is? What do you accept or avoid?
+         Everything depends on its perception inside you - how brain percept it.
+      </span>
+
+      <span class="ru">
+        Человек существо во многом социальное и зачастую познаёт/раскрывает себя
+        во время общения/коммуникации. Частями Ней-Джитсу также являются
+        искусства приёма состяний другого и передачи своего состояния.
+      </span>
+      <span class="en">
+         Human can be considered as a social being and often self-cognize/reveal
+          during communication. Arts of mental state reception and self-state translation
+          are N-Ji parts.
+      </span>
+
+
+      <span class="ru">
+        Технический аспект искусства Ней-Джитсу заключается во владении активностью нервной системы и её организацией
+        во времени и пространстве. В искусстве особое внимание уделяется владению активностью головного мозга
+         и её индукции в свободной форме. Целью искусства, как боевого, является навык
+         управления воспиятием страха. Базовое упражнение - упражнение восприятия
+         чувства времени.
+      </span>
+      <span class="en">
+        Technical aspect of Neu-Jitsu art is a combination of a) regulation of nervous system activity and
+         b) its organization in time and space.
+        Brain activity and its induction takes special attention.
+        Fear resistence skill development is a N-Ji martial art purpose.
+        Time perception exercise is a basic exercise.
+      </span>
+
+    <center>
+      <figure>
+        <div style="margin:auto; text-align:center; display:block; position:relative; width: 35%; ">
+          <center>
+            <div class="" id="sketch-holder" style="position:absolute;">
+            </div>
+          </center>
+          <div id="imBrainMask" class="" style="left:0; top:-2px; position:relative;">
+            <img src="./../assets/brainMask3.png" alt="" >
+          </div>
+
+        </div>
+        <!-- <figcaption>Brain with it's flow activity with it EEG-Art representation.</figcaption> -->
+        <figcaption>
+          <span class="ru">
+            Фигура 1: Генератив "Арт-форма изменения потоков активности мозга". Изменение активности в генеративе подобно ветрам или океанским течениям.
+            Движение и цвет частиц отражает направление смещения максимумов активности и изменение мощности измеряемого электро-магнитного поля.
+          </span>
+          <span class="en">
+            Fig.1: Generative "Brain activity flow of the Brain in an art representation". Brain activity looks like winds or ocean currents.
+            Direction and color of the particles show the direction trend of activity maximums and the change
+             in measured electro-magnetic fields.
+          </span>
+        </figcaption>
+      </figure>
+    </center>
+  </section>
+
+<script src="./../js/neujitsu/sketch.js"></script>
+</body>
+
+</html>
