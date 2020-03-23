@@ -110,6 +110,10 @@ class Menu{
       window.open(urls[langInd], "_blank");
     }
 
+    this.items[4].action = function(){      
+      window.open("neujitsu/index.html", "_self");
+    }
+
     this.items[7].action = function(){
       window.open("logo.html", "_blank");
     }
@@ -117,7 +121,7 @@ class Menu{
 
     https://en.wikipedia.org/wiki/Brain%E2%80%93computer_interface
     this.items[0].active = false;
-    this.items[4].active = false;
+    // this.items[4].active = false;
     this.items[5].active = false;
     this.items[6].active = false;
 
