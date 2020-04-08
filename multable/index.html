@@ -3,63 +3,373 @@
   <head>
     <meta charset="utf-8">
     <title>multiplication table</title>
+    <script src="./../js/lib/jquery-3.4.1.min.js" defer></script>
+    <link rel="stylesheet" href="./../css/switches.css">
+    <style media="screen">
+      table,td {
+        border: 0.5px solid;
+      }
+
+      thead {
+        font-weight: bold;
+      }
+
+      td:nth-child(1) {
+        font-weight: bold;
+      }
+
+      #mulTable td {
+        text-align: right;
+      }
+
+      #mulTable tr:nth-child(1) {
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    <table>
+    <table id="switchTable">
       <tr>
-        <th>
-          <span class="d10">0</span>
-        </th>
-        <th>
-          <span class="d10">1</span>
-        </th>
-        <th>
-          <span class="d10">2</span>
-        </th>
-        <th>
-          <span class="d10">3</span>
-        </th>
-        <th>
-          <span class="d10">4</span>
-        </th>
-        <th>
-          <span class="d10">5</span>
-        </th>
-        <th>
-          <span class="d10">6</span>
-        </th>
-        <th>
-          <span class="d10">7</span>
-        </th>
-        <th>
-          <span class="d10">8</span>
-        </th>
-        <th>
-          <span class="d10">9</span>
-        </th>
-        <th>
-          <span class="d10">10</span>
-        </th>
-        <th>
-          <span class="d10">11</span>
-        </th>
-        <th>
-          <span class="d10">12</span>
-        </th>
-        <th>
-          <span class="d10">13</span>
-        </th>
-        <th>
-          <span class="d10">14</span>
-        </th>
-        <th>
-          <span class="d10">15</span>
-        </th>
-        <th>
-          <span class="d10">16</span>          
-        </th>
+        <td>language:</td>
+        <td>
+          <div class="switch">
+             <input type="checkbox" id="language" onclick='handleLanuageChange(this); createTable();' checked>
+             <label for="language"><i></i></label>
+         </div>
+        </td>
       </tr>
     </table>
 
+    <h2>
+      <span class="en">Bases</span>
+      <span class="ru">Основания</span>
+    </h2>
+
+    <div id="digs">
+
+    </div>
+
+    <h2>
+      <span class="en">Multiplication table</span>
+      <span class="ru">Таблица умножения</span>
+    </h2>
+    <table id="mulTable">
+
+
+    </table>
+    <br>
+    <table style="display:none">
+
+      <!-- head -->
+      <thead>
+        <td>
+          <span class="d10"></span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">1</span>
+        </td>
+        <td>
+          <span class="d10">2</span>
+        </td>
+        <td>
+          <span class="d10">3</span>
+        </td>
+        <td>
+          <span class="d10">4</span>
+        </td>
+        <td>
+          <span class="d10">5</span>
+        </td>
+        <td>
+          <span class="d10">6</span>
+        </td>
+        <td>
+          <span class="d10">7</span>
+        </td>
+        <td>
+          <span class="d10">8</span>
+        </td>
+        <td>
+          <span class="d10">9</span>
+        </td>
+        <td>
+          <span class="d10">10</span>
+        </td>
+        <td>
+          <span class="d10">11</span>
+        </td>
+        <td>
+          <span class="d10">12</span>
+        </td>
+        <td>
+          <span class="d10">13</span>
+        </td>
+        <td>
+          <span class="d10">14</span>
+        </td>
+        <td>
+          <span class="d10">15</span>
+        </td>
+        <td>
+          <span class="d10">16</span>
+        </td>
+      </thead>
+
+      <!-- 0 -->
+      <tr>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+      </tr>
+
+      <!-- 1 -->
+      <tr>
+        <td>
+          <span class="d10">1</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">1</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">2</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">3</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">4</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">5</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">6</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">7</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">8</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">9</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">10</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">11</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">12</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">13</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">14</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">15</span>
+        </td>
+        <td>
+          <!-- 1 x 0-->
+          <span class="d10">16</span>
+        </td>
+      </tr>
+
+      <!-- 2 -->
+      <tr>
+        <td>
+          <span class="d10">2</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">2</span>
+        </td>
+        <td>
+          <span class="d10">4</span>
+        </td>
+        <td>
+          <span class="d10">6</span>
+        </td>
+        <td>
+          <span class="d10">8</span>
+        </td>
+        <td>
+          <span class="d10">10</span>
+        </td>
+        <td>
+          <span class="d10">12</span>
+        </td>
+        <td>
+          <span class="d10">14</span>
+        </td>
+        <td>
+          <span class="d10">16</span>
+        </td>
+        <td>
+          <span class="d10">18</span>
+        </td>
+        <td>
+          <span class="d10">20</span>
+        </td>
+        <td>
+          <span class="d10">22</span>
+        </td>
+        <td>
+          <span class="d10">24</span>
+        </td>
+        <td>
+          <span class="d10">26</span>
+        </td>
+        <td>
+          <span class="d10">28</span>
+        </td>
+        <td>
+          <span class="d10">30</span>
+        </td>
+        <td>
+          <span class="d10">32</span>
+        </td>
+      </tr>
+
+      <!-- 3 -->
+      <tr>
+        <td>
+          <span class="d10">3</span>
+        </td>
+        <td>
+          <span class="d10">0</span>
+        </td>
+        <td>
+          <span class="d10">6</span>
+        </td>
+        <td>
+          <span class="d10">12</span>
+        </td>
+        <td>
+          <span class="d10">6</span>
+        </td>
+        <td>
+          <span class="d10">8</span>
+        </td>
+        <td>
+          <span class="d10">10</span>
+        </td>
+        <td>
+          <span class="d10">12</span>
+        </td>
+        <td>
+          <span class="d10">14</span>
+        </td>
+        <td>
+          <span class="d10">16</span>
+        </td>
+        <td>
+          <span class="d10">18</span>
+        </td>
+        <td>
+          <span class="d10">20</span>
+        </td>
+        <td>
+          <span class="d10">22</span>
+        </td>
+        <td>
+          <span class="d10">24</span>
+        </td>
+        <td>
+          <span class="d10">26</span>
+        </td>
+        <td>
+          <span class="d10">28</span>
+        </td>
+        <td>
+          <span class="d10">30</span>
+        </td>
+        <td>
+          <span class="d10">32</span>
+        </td>
+      </tr>
+
+    </table>
+
+    <script type="text/javascript" src="./js/script.js"></script>
+    <script type="text/javascript" src="./../js/lang.js"></script>
   </body>
 </html>
