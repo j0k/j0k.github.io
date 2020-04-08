@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Заметки</title>
+    <style media="screen">
+    /* This text is in Courier */
+    /* https://www.cssfontstack.com/Courier */
+      .code {
+      font-family: Courier;
+      }
+
+    </style>
   </head>
   <body>
     <h1>Заметки в свободной форме</h1>
@@ -84,9 +92,12 @@
 
       <li>
         <p>how to reach 1-st commit in git version control:</p>
-        <p>$ git log --reverse</p>
-        <p>$ git checkout #sha1_hash#</p>
-        <p>$ git checkout 425a7f900ed824caa5d4a93991542c70171539fe (for https://github.com/bitcoin/bitcoin)</p>
+        <div class="code">
+          <p>$ git log --reverse</p>
+          <p>$ git checkout #sha1_hash#</p>
+          <p>$ git checkout 425a7f900ed824caa5d4a93991542c70171539fe (for https://github.com/bitcoin/bitcoin)</p>
+        </div>
+
       </li>
     </ol>
   </body>

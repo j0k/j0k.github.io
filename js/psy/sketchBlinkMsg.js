@@ -93,5 +93,6 @@ function genLink(){
   var fqp = document.getElementById("timePeriod").value;
 
   href += "?t=" + encodeURIComponent(tp) + "&s=" + encodeURIComponent(sp) + "&fq=" + encodeURIComponent(fqp) ;
+  console.log(href);
   alert("Location: " + href);
 }
