@@ -41,7 +41,7 @@ function setup() {
 }
 
 var tLast = 0;
-var tP = 1.0;
+var tP = 1.0; //timePeriod
 
 var firstTime = 1;
 
@@ -63,7 +63,13 @@ function draw() {
   fill(cText)
   text(t, width/2, height/2);
   changeColor();
+  setHzLabel();
+}
 
+// re-code
+function setHzLabel(){
+  var hzElem = document.getElementById("hz");
+  hzElem.textContent = nf(1/tP, 1, 2);
 }
 
 function changeColor(){

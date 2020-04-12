@@ -10,7 +10,7 @@
 
 
     <script type="text/javascript" src="./../js/lang.js"></script>
-    <script type="text/javascript" src="./../js/psy/sketchBlinkMsg.js"></script>
+    <script type="text/javascript" src="./js/sketchBlinkMsg.js"></script>
 
     <style media="screen">
       .audio-progress {
@@ -78,7 +78,16 @@
       <span class="en">Time period:</span>
       <span class="ru">Задержка:</span>
     </label>
+
     <input id="timePeriod" type="text" name="timePeriod" value="0.30" size="4" >
+
+    <label for="">
+      <span class="en">Frequency (hz):</span>
+      <span class="ru">Частоты (Гц):</span>
+    </label>
+
+    <label id="hz" for="">10</label>
+
     <button type="button" name="button" onclick="genLink();">
       <span class="en">Generate link</span>
       <span class="ru">Сгенерировать линк</span>
