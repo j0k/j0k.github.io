@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Cyber-Ninjas computer-art school</title>
+
+    <link rel="stylesheet" href="./../css/switches.css">
+    <link rel="stylesheet" href="./../css/header.css">
+
+    <script type="text/javascript" src="./../js/lang.js"></script>
+    <style media="screen">
+      .headpad {
+        margin-top: 100px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container" class="switchDiv">
+      <div id="left" style="padding-left: 10px; max-width: 20%; float:left">
+        <table id="switchTable">
+          <tr>
+            <td>lang:</td>
+            <td>
+              <div class="switch">
+                 <input type="checkbox" id="language" onclick='handleLanuageChange(this);' checked>
+                 <label for="language"><i></i></label>
+             </div>
+            </td>
+          </tr>
+          <tr>
+            <td>menu:</td>
+            <td>
+              <div id="menuSwitch" class="switch">
+                 <input type="checkbox" id="menu" disabled>
+                 <label for="menu"><i></i></label>
+             </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <b>
+      <div class="headpad">
+        <span class="en">
+          Welcome to Computer-Art "Cyber-Ninjas" school !=)
+        </span>
+        <span class="ru">
+          Добро пожаловать в школу компьютерного искусства и мастертва "Кибер-Ниндзи" !=)
+        </span>
+      </div>
+    </b>
+
+    <p>
+      <span class="en">
+        Classes are held on Tuesdays and Fridays.
+      </span>
+      <span class="ru">
+        Занятия проводятся по вторникам и пятницам.
+      </span>
+    </p>
+
+    <p>
+      <span class="en">
+        Current theme is <b>"chat bots"</b> for Telegram.
+      </span>
+      <span class="ru">
+        Текущая тема - чат боты для Телеграмма.
+      </span>
+    </p>
+
+    <p>
+      <span class="en">
+        All questions:
+      </span>
+      <span class="ru">
+       По всем вопросам:
+      </span>
+      theo@silkmind.com.
+
+      <span class="en">
+        Please tag #cyberninjas in email topic.
+      </span>
+      <span class="ru">
+        При написании письма укажите хэштег #cyberninjas в названии.
+      </span>
+    </p>
+
+  </body>
+</html>
