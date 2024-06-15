@@ -9,7 +9,7 @@
 /*=== Reset Styles ===*/
 /*====================*/
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -30,6 +30,8 @@ body {
 	line-height:1;
 	color:black;
 	background:white;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 table {
 	border-collapse:separate;
