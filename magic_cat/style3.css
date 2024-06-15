@@ -1,0 +1,10 @@
+.videoautoplay #sect-banner picture {display:none;}
+.videoautoplay #sect-banner div.video {display:block;}
+
+.no-videoautoplay #sect-banner picture {display:block;}
+.no-videoautoplay #sect-banner div.video {display:none;}
+
+picture img {
+    margin-left: 50%;
+    transform: translateX(-50%);    
+}

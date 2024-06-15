@@ -1,0 +1,51 @@
+.wf-loading {visibility: hidden;}
+.wf-active {visibility: visible;}
+
+
+
+@media (min-width: 768px) {
+
+	#bottom-menu {
+		background-color:#FFFFFF;
+		padding-bottom: 0px;	
+	}
+	
+	a.level1, a.level1:visited  {
+		display: block;
+		font-size: 16px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		text-decoration:none;
+		color:#333;
+		text-transform:uppercase;
+	}
+	
+	a.level2  {
+		text-decoration:none;
+		font-size: 14px;
+		display: block;
+		color:#333;
+	}	
+	
+	#bottom-menu a.selected {color:#0077ba;}	
+	#bottom-menu a:hover {text-decoration:none;}	
+
+}
+
+@media (min-width: 992px) {
+
+		
+}
+@media (min-width: 1200px) {
+}
+
+
+
+
+
+
+
+
+
+
+

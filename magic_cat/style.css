@@ -1,0 +1,67 @@
+.slider-wrapper {
+	margin-top: 0px;
+	margin-bottom: 11px;
+	position: relative;
+	margin-top: 11px;	
+}
+
+.nivoSlider {
+}
+
+
+.slider-wrapper .nivo-controlNav {
+	width: 100%;
+	padding:0px;
+	margin:10px 0px 15px 0px ;
+}
+
+
+/* arrows */
+
+a.nivo-nextNav, a.nivo-prevNav {
+	background-repeat: no-repeat;
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	text-indent:-10000px; /*moving the default text*/
+	overflow:hidden; /*hiding the default text*/
+	background-position: center center;
+	margin-top:-50px;
+}
+
+.nivoSlider .nivo-directionNav a {
+	top:50%;
+}
+
+a.nivo-nextNav {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/right.png);
+}
+
+a:hover.nivo-nextNav {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/right_hover.png);
+}
+
+a.nivo-prevNav {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/left.png);
+}
+
+a:hover.nivo-prevNav {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/left_hover.png);
+}
+
+/* control */
+a.nivo-control {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/bull.svg);
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 20px;
+	text-indent:-10000px; /*moving the default text*/
+	overflow:hidden; /*hiding the default text*/
+	display: inline-block;
+	background-position: center center;
+	background-size: 11px 11px;
+}
+
+a.nivo-control.active {
+	background-image: url(/bitrix/templates/bootstrap3/components/bitrix/news.list/nivo_slider/images/bull_dynamic.svg);
+}
