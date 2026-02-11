@@ -1,1 +1,188 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>.</title><link rel="icon" type="image/png" href="/favicon.png"><script defer="defer" src="/static/js/main.b66d435f.js"></script><link href="/static/css/main.5b2d50cb.css" rel="stylesheet"></head><body><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yuri Konoplev</title>
+  <link rel="stylesheet" href="person/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://github.com/j0k/">j0k</a>
+    <span class="header-sep">•</span>
+    <span class="header-action" data-i18n="header.check">CHECK</span>
+    <div class="lang-toggle" aria-label="Language">
+      <a href="#" class="lang-option" data-lang="en" aria-label="English" title="English">EN</a>
+      <span class="lang-sep" aria-hidden="true">|</span>
+      <a href="#" class="lang-option" data-lang="ru" aria-label="Русский" title="Русский">RU</a>
+    </div>
+  </header>
+
+  <section class="resources-bar" id="resourcesBar">
+    <div class="resources-bar-controls">
+      <button type="button" class="resources-ctrl-btn" id="resourcesPlay" data-i18n-aria="aria.play" data-i18n-title="aria.play" aria-label="Play" title="Play">▶</button>
+      <button type="button" class="resources-ctrl-btn" id="resourcesPause" data-i18n-aria="aria.pause" data-i18n-title="aria.pause" aria-label="Pause" title="Pause">⏸</button>
+    </div>
+    <div class="resources-ticker-wrap">
+    <div class="resources-ticker" id="resourcesTicker">
+    <div class="resource" data-type="balance" data-i18n-title="resources.balance" title="Баланс (Инь Янь)">
+      <span class="resource-icon" aria-hidden="true">☯</span>
+      <span class="resource-value" id="resBalance">0</span>
+    </div>
+    <div class="resource" data-type="red_heart" data-i18n-title="resources.red_heart" title="Красное сердце">
+      <span class="resource-icon resource-icon--red" aria-hidden="true">❤</span>
+      <span class="resource-value" id="resRedHeart">0</span>
+    </div>
+    <div class="resource" data-type="love" data-i18n-title="resources.love" title="Любовь">
+      <span class="resource-icon" aria-hidden="true">♥</span>
+      <span class="resource-value" id="resLove">0</span>
+    </div>
+    <div class="resource" data-type="money" data-i18n-title="resources.money" title="Деньги">
+      <span class="resource-icon" aria-hidden="true">💰</span>
+      <span class="resource-value" id="resMoney">0</span>
+    </div>
+    <div class="resource" data-type="energy" data-i18n-title="resources.energy" title="Энергия">
+      <span class="resource-icon" aria-hidden="true">⚡</span>
+      <span class="resource-value" id="resEnergy">0</span>
+    </div>
+    <div class="resource" data-type="magic" data-i18n-title="resources.magic" title="Магия">
+      <span class="resource-icon" aria-hidden="true">✨</span>
+      <span class="resource-value" id="resMagic">0</span>
+    </div>
+    <div class="resource" data-type="tree" data-i18n-title="resources.tree" title="Дерево">
+      <span class="resource-icon" aria-hidden="true">🌳</span>
+      <span class="resource-value" id="resTree">0</span>
+    </div>
+    <div class="resource" data-type="joy" data-i18n-title="resources.joy" title="Радость">
+      <span class="resource-icon" aria-hidden="true">🌟</span>
+      <span class="resource-value" id="resJoy">0</span>
+    </div>
+    <div class="resource" data-type="goals" data-i18n-title="resources.goals" title="Цели">
+      <span class="resource-icon" aria-hidden="true">🎯</span>
+      <span class="resource-value" id="resGoals">0</span>
+    </div>
+    <div class="resource" data-type="dance" data-i18n-title="resources.dance" title="Танец">
+      <span class="resource-icon" aria-hidden="true">💃</span>
+      <span class="resource-value" id="resDance">0</span>
+    </div>
+    <div class="resource" data-type="body" data-i18n-title="resources.body" title="Тело">
+      <span class="resource-icon" aria-hidden="true">💪</span>
+      <span class="resource-value" id="resBody">0</span>
+    </div>
+    <div class="resource" data-type="boxing" data-i18n-title="resources.boxing" title="Бокс">
+      <span class="resource-icon" aria-hidden="true">🥊</span>
+      <span class="resource-value" id="resBoxing">0</span>
+    </div>
+    <div class="resource" data-type="mind" data-i18n-title="resources.mind" title="Мозг">
+      <span class="resource-icon" aria-hidden="true">🧠</span>
+      <span class="resource-value" id="resMind">0</span>
+    </div>
+    <div class="resource" data-type="awareness" data-i18n-title="resources.awareness" title="Осознанность">
+      <span class="resource-icon" aria-hidden="true">🧘</span>
+      <span class="resource-value" id="resAwareness">0</span>
+    </div>
+    <div class="resource" data-type="horses" data-i18n-title="resources.horses" title="Лошади">
+      <span class="resource-icon" aria-hidden="true">🐴</span>
+      <span class="resource-value" id="resHorses">0</span>
+    </div>
+    <div class="resource" data-type="golf" data-i18n-title="resources.golf" title="Гольф">
+      <span class="resource-icon" aria-hidden="true">⛳</span>
+      <span class="resource-value" id="resGolf">0</span>
+    </div>
+    <div class="resource" data-type="surf" data-i18n-title="resources.surf" title="Сёрф">
+      <span class="resource-icon" aria-hidden="true">🏄</span>
+      <span class="resource-value" id="resSurf">0</span>
+    </div>
+    <div class="resource" data-type="parachute" data-i18n-title="resources.parachute" title="Парашют">
+      <span class="resource-icon" aria-hidden="true">🪂</span>
+      <span class="resource-value" id="resParachute">0</span>
+    </div>
+    <div class="resource" data-type="tigers" data-i18n-title="resources.tigers" title="Тигры">
+      <span class="resource-icon" aria-hidden="true">🐯</span>
+      <span class="resource-value" id="resTigers">0</span>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <main class="page" id="homePage">
+    <div class="page-hero">
+      <div class="floating-zone" id="floatingZone" data-i18n-aria="floatingZone.aria" aria-label="Собирайте ресурсы, нажимая на иконки">
+        <!-- floating icons spawned by JS -->
+      </div>
+      <img src="person/img/me_bw_small.jpg" alt="Yuri Konoplev" class="photo">
+      <h1>Yuri Konoplev</h1>
+      <p class="tagline" data-i18n="bio.tagline">Personal page</p>
+      <p class="bio" data-i18n="bio.description">I'm a lifestyle entrepreneur.</p>
+    </div>
+    <nav class="links">
+      <a href="https://www.linkedin.com/in/yuri-konoplev/" data-i18n="links.linkedin">LinkedIn</a>
+      <a href="https://calendly.com/juri-konoplev-ddbs" target="_blank" rel="noopener" data-i18n="links.calendly">Book calendly</a>
+    </nav>
+    <div class="contact-actions">
+      <a href="mailto:juri.konoplev@gmail.com" class="btn-primary" data-i18n="actions.mail">MAIL-TO</a>
+      <a href="https://t.me/bimodaling?text=Hi%20Yuri.%20I'm%20on%20your%20personal%20site" class="btn-link" target="_blank" rel="noopener" data-i18n="actions.telegram">SEND TELEGRAM</a>
+      <a href="https://t.me/bimodaling?text=Hi%20Yuri%2C%20Let's%20make%20collab" class="btn-burgundy" target="_blank" rel="noopener" data-i18n="actions.colab">CO-LAB</a>
+    </div>
+  </main>
+
+  <section class="episodes" id="episodesSection">
+    <div class="episodes-header">
+      <h2 class="episodes-title" data-i18n="sections.episodes">Life Episodes</h2>
+      <div class="episodes-nav">
+        <button type="button" class="episodes-nav-btn prev" data-i18n-aria="aria.prev" aria-label="Previous">←</button>
+        <button type="button" class="episodes-nav-btn next" data-i18n-aria="aria.next" aria-label="Next">→</button>
+      </div>
+    </div>
+    <div class="episodes-track-wrap">
+      <ul class="episodes-list" id="episodesTrack"></ul>
+    </div>
+  </section>
+
+  <section class="products" id="productsSection">
+    <div class="products-header">
+      <h2 class="products-title" data-i18n="sections.products">Products</h2>
+      <div class="products-nav">
+        <button type="button" class="products-nav-btn prev" data-i18n-aria="aria.prev" aria-label="Previous">←</button>
+        <button type="button" class="products-nav-btn next" data-i18n-aria="aria.next" aria-label="Next">→</button>
+      </div>
+    </div>
+    <div class="products-track-wrap">
+      <ul class="products-list" id="productsTrack"></ul>
+    </div>
+  </section>
+
+  <section class="map-section" id="mapSection">
+    <h2 class="map-title" data-i18n="sections.map">Map</h2>
+    <div id="map" class="map-container"></div>
+  </section>
+
+  <article class="episode-detail" id="episodeDetail" hidden>
+    <div class="episode-detail-inner">
+      <a href="#" class="episode-back" id="episodeBack" data-i18n="episode.back">← Back to home</a>
+      <header class="episode-detail-header">
+        <span class="episode-detail-type" id="episodeDetailType"></span>
+        <h1 class="episode-detail-title" id="episodeDetailTitle"></h1>
+        <time class="episode-detail-year" id="episodeDetailYear"></time>
+      </header>
+      <div class="episode-detail-body" id="episodeDetailBody"></div>
+      <div class="episode-timeline-wrap" id="episodeTimelineWrap" hidden>
+        <h3 class="timeline-heading" data-i18n="episode.events">Events</h3>
+        <div class="episode-timeline" id="episodeTimeline"></div>
+      </div>
+      <div class="episode-detail-locations" id="episodeDetailLocations"></div>
+      <div class="map-wrap episode-map-wrap" id="episodeMapWrap" hidden>
+        <div id="episodeMap" class="map-container"></div>
+      </div>
+      <div class="episode-detail-links" id="episodeDetailLinks"></div>
+      <div class="episode-detail-photos" id="episodeDetailPhotos"></div>
+    </div>
+  </article>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="person/js/i18n.js"></script>
+  <script src="person/js/resources.js"></script>
+  <script src="person/js/app.js"></script>
+</body>
+</html>

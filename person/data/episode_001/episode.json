@@ -1,0 +1,20 @@
+{
+  "id": "episode_001",
+  "type": "chapter",
+  "title_en": "Current",
+  "title_ru": "Текущее",
+  "year": "2025",
+  "description_en": "What I'm up to right now. Building, exploring, staying curious.",
+  "description_ru": "Чем я занят сейчас. Строю, исследую, остаюсь любопытным.",
+  "cover": "img/me_bw_small.jpg",
+  "locations": [
+    { "name_en": "Moscow", "name_ru": "Москва", "lat": 55.7558, "lon": 37.6173 }
+  ],
+  "links": [],
+  "photos": [],
+  "events": [
+    { "date": "Jan 2025", "label_en": "Started", "label_ru": "Старт" },
+    { "date": "Mar 2025", "label_en": "Milestone", "label_ru": "Веха" },
+    { "date": "Jun 2025", "label_en": "Next step", "label_ru": "Следующий шаг" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "episode_003",
+  "type": "chapter",
+  "title_en": "Earlier",
+  "title_ru": "Раньше",
+  "year": "2023",
+  "description_en": "Another episode. Add photos by putting files in the episode folder and listing paths in the photos array.",
+  "description_ru": "Ещё один эпизод. Добавьте фото, положив файлы в папку эпизода и указав пути в массиве photos.",
+  "cover": null,
+  "locations": [
+    { "name_en": "Saint Petersburg", "name_ru": "Санкт-Петербург", "lat": 59.9343, "lon": 30.3351 }
+  ],
+  "links": [],
+  "photos": []
+}

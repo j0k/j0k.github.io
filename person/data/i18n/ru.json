@@ -1,0 +1,68 @@
+{
+  "header": {
+    "check": "CHECK"
+  },
+  "nav": {
+    "episodes": "Жизненные эпизоды",
+    "products": "Продукты",
+    "map": "Карта"
+  },
+  "bio": {
+    "tagline": "Личная страница",
+    "description": "Я предприниматель образа жизни."
+  },
+  "links": {
+    "linkedin": "LinkedIn",
+    "calendly": "Запись в календарь"
+  },
+  "actions": {
+    "mail": "MAIL-TO",
+    "telegram": "НАПИСАТЬ В ТЕЛЕГРАМ",
+    "colab": "КОЛЛАБ"
+  },
+  "sections": {
+    "episodes": "Жизненные эпизоды",
+    "products": "Продукты",
+    "map": "Карта"
+  },
+  "episode": {
+    "back": "← На главную",
+    "locations": "Локации",
+    "links": "Ссылки",
+    "photos": "Фото",
+    "events": "События"
+  },
+  "aria": {
+    "play": "Старт",
+    "pause": "Пауза",
+    "prev": "Назад",
+    "next": "Вперёд"
+  },
+  "floatingZone": {
+    "aria": "Собирайте ресурсы, нажимая на иконки"
+  },
+  "resources": {
+    "balance": "Баланс (Инь Янь)",
+    "red_heart": "Любовь",
+    "love": "Любовь",
+    "money": "Деньги",
+    "energy": "Энергия",
+    "magic": "Магия",
+    "tree": "Дерево",
+    "joy": "Радость",
+    "goals": "Цели",
+    "dance": "Танец",
+    "body": "Тело",
+    "boxing": "Бокс",
+    "mind": "Мозг",
+    "awareness": "Осознанность",
+    "horses": "Лошади",
+    "golf": "Гольф",
+    "surf": "Сёрф",
+    "parachute": "Парашют",
+    "tigers": "Тигры"
+  },
+  "episodeTypes": {
+    "chapter": "Глава"
+  }
+}

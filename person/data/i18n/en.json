@@ -1,0 +1,68 @@
+{
+  "header": {
+    "check": "CHECK"
+  },
+  "nav": {
+    "episodes": "Life Episodes",
+    "products": "Products",
+    "map": "Map"
+  },
+  "bio": {
+    "tagline": "Personal page",
+    "description": "I'm a lifestyle entrepreneur."
+  },
+  "links": {
+    "linkedin": "LinkedIn",
+    "calendly": "Book calendly"
+  },
+  "actions": {
+    "mail": "MAIL-TO",
+    "telegram": "SEND TELEGRAM",
+    "colab": "CO-LAB"
+  },
+  "sections": {
+    "episodes": "Life Episodes",
+    "products": "Products",
+    "map": "Map"
+  },
+  "episode": {
+    "back": "← Back to home",
+    "locations": "Locations",
+    "links": "Links",
+    "photos": "Photos",
+    "events": "Events"
+  },
+  "aria": {
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "floatingZone": {
+    "aria": "Collect resources by clicking icons"
+  },
+  "resources": {
+    "balance": "Balance (Yin Yang)",
+    "red_heart": "Love",
+    "love": "Love",
+    "money": "Money",
+    "energy": "Energy",
+    "magic": "Magic",
+    "tree": "Tree",
+    "joy": "Joy",
+    "goals": "Goals",
+    "dance": "Dance",
+    "body": "Body",
+    "boxing": "Boxing",
+    "mind": "Mind",
+    "awareness": "Awareness",
+    "horses": "Horses",
+    "golf": "Golf",
+    "surf": "Surf",
+    "parachute": "Parachute",
+    "tigers": "Tigers"
+  },
+  "episodeTypes": {
+    "chapter": "Chapter"
+  }
+}

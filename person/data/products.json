@@ -1,0 +1,19 @@
+[
+  { "title_en": "Software Engineering Consulting", "title_ru": "Консалтинг по разработке ПО" },
+  { "title_en": "Consulting", "title_ru": "Консалтинг" },
+  { "title_en": "Startup Venture Consulting", "title_ru": "Консалтинг для стартапов" },
+  { "title_en": "Consulting on KAIP", "title_ru": "Консалтинг по KAIP", "subtitle_en": "Kaip means Keep AI Prompts", "subtitle_ru": "KAIP — Keep AI Prompts" },
+  { "title_en": "Psychology consulting", "title_ru": "Психологический консалтинг" },
+  { "title_en": "Software Outsource (with Tatra)", "title_ru": "Аутсорс разработки (с Tatra)" },
+  { "title_en": "Python coding lessons", "title_ru": "Уроки Python" },
+  { "title_en": "Vibe-coding lessons", "title_ru": "Уроки vibe-coding" },
+  { "title_en": "J-coding lessons", "title_ru": "Уроки J-coding" },
+  { "title_en": "Stickers", "title_ru": "Стикеры" },
+  { "title_en": "Photo", "title_ru": "Фото" },
+  { "title_en": "Psychology talk", "title_ru": "Психологическая беседа" },
+  { "title_en": "Salto-Acro training", "title_ru": "Тренировка сальто и акро" },
+  { "title_en": "CFC fighting", "title_ru": "Участие в турнирах CFC", "subtitle_en": "For those who boxing", "subtitle_ru": "Для тех, кто в боксе" },
+  { "title_en": "Sushi master class", "title_ru": "Мастер-класс по суши" },
+  { "title_en": "Paired programming session", "title_ru": "Сессия парного программирования" },
+  { "title_en": "Personal AI-agent creation", "title_ru": "Создание персонального AI-агента" }
+]

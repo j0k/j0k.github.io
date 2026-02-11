@@ -1,0 +1,16 @@
+{
+  "id": "episode_002",
+  "type": "chapter",
+  "title_en": "Example episode",
+  "title_ru": "Пример эпизода",
+  "year": "2024",
+  "description_en": "A past chapter with multiple places and some links. You can add several locations, photos, and external links here.",
+  "description_ru": "Прошлая глава с несколькими местами и ссылками. Здесь можно добавить локации, фото и внешние ссылки.",
+  "cover": null,
+  "locations": [
+    { "name_en": "Berlin", "name_ru": "Берлин", "lat": 52.52, "lon": 13.405 },
+    { "name_en": "Amsterdam", "name_ru": "Амстердам", "lat": 52.3676, "lon": 4.9041 }
+  ],
+  "links": [{ "label_en": "Project", "label_ru": "Проект", "url": "https://github.com/j0k" }],
+  "photos": []
+}
