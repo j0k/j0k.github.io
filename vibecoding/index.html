@@ -56,6 +56,18 @@
     .lesson-card { cursor: pointer; border-radius: var(--vc-radius-sm); padding: 0.1rem 0; margin: 0 -0.25rem; transition: background var(--vc-transition); }
     .lesson-card:hover { background: rgba(0,0,0,0.02); }
     .lesson-card:focus-visible { outline: 2px solid var(--yc-orange); outline-offset: 2px; border-radius: var(--vc-radius-sm); }
+    .lesson-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+    .lesson-card-toggle { font-size: 0.85rem; color: var(--yc-orange); flex-shrink: 0; transition: transform var(--vc-transition); }
+    .lesson-card.expanded .lesson-card-toggle { transform: rotate(180deg); }
+    .lesson-card-body { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.06); }
+    .lesson-card.expanded .lesson-card-body { display: block; }
+    .lesson-detail-section { margin-bottom: 1rem; }
+    .lesson-detail-section:last-child { margin-bottom: 0; }
+    .lesson-detail-section h4 { font-size: 0.8rem; font-weight: 700; color: var(--yc-orange); margin: 0 0 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .lesson-detail-section ul, .lesson-detail-section p { font-size: 0.9rem; color: var(--text); line-height: 1.55; margin: 0 0 0.35rem; padding-left: 1.25rem; }
+    .lesson-detail-section ul { list-style: disc; }
+    .lesson-detail-section p { padding-left: 0; }
+    .lesson-detail-section .monetization { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: var(--vc-radius-sm); padding: 0.6rem 0.75rem; font-size: 0.85rem; color: #166534; margin-top: 0.5rem; }
     @media (max-width: 640px) {
       .vibecoding-page { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); padding-bottom: 2rem; box-sizing: border-box; }
       .timeline-vertical { padding-left: 1.35rem; }
@@ -111,105 +123,165 @@
       <div class="timeline-vertical" id="lessonsList">
         <!-- Lesson 1 -->
         <article class="timeline-item lesson-card" id="lesson-1" tabindex="0" data-lesson="1">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 1</div>
-          <div class="timeline-item-title" data-i18n="lesson.1.title">Среда и инструменты</div>
-          <p class="timeline-item-desc" data-i18n="lesson.1.desc">Настройка редактора, тема, шрифт, горячие клавиши. Минимум отвлечений — максимум потока.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">⌨</span><span data-i18n="info.1.a">Editor</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">🎨</span><span data-i18n="info.1.b">Theme</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">⚡</span><span data-i18n="info.1.c">Shortcuts</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 1</div>
+              <div class="timeline-item-title" data-i18n="lesson.1.title">Среда и инструменты</div>
+              <p class="timeline-item-desc" data-i18n="lesson.1.desc">Настройка редактора, тема, шрифт, горячие клавиши. Минимум отвлечений — максимум потока.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">⌨</span><span data-i18n="info.1.a">Editor</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">🎨</span><span data-i18n="info.1.b">Theme</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">⚡</span><span data-i18n="info.1.c">Shortcuts</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="1"></div>
         </article>
         <!-- Lesson 2 -->
         <article class="timeline-item lesson-card" id="lesson-2" tabindex="0" data-lesson="2">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 2</div>
-          <div class="timeline-item-title" data-i18n="lesson.2.title">Ритуал входа в код</div>
-          <p class="timeline-item-desc" data-i18n="lesson.2.desc">Как начать сессию так, чтобы быстро войти в состояние потока: дыхание, музыка, порядок на столе.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">🫁</span><span data-i18n="info.2.a">Breath</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">🎵</span><span data-i18n="info.2.b">Music</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">🖥</span><span data-i18n="info.2.c">Desk</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 2</div>
+              <div class="timeline-item-title" data-i18n="lesson.2.title">Ритуал входа в код</div>
+              <p class="timeline-item-desc" data-i18n="lesson.2.desc">Как начать сессию так, чтобы быстро войти в состояние потока: дыхание, музыка, порядок на столе.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">🫁</span><span data-i18n="info.2.a">Breath</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">🎵</span><span data-i18n="info.2.b">Music</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">🖥</span><span data-i18n="info.2.c">Desk</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="2"></div>
         </article>
         <!-- Lesson 3 -->
         <article class="timeline-item lesson-card" id="lesson-3" tabindex="0" data-lesson="3">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 3</div>
-          <div class="timeline-item-title" data-i18n="lesson.3.title">Один фокус — одна задача</div>
-          <p class="timeline-item-desc" data-i18n="lesson.3.desc">Синглтаскинг в коде: как резать задачу и не переключаться, пока не закончил.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">◎</span><span data-i18n="info.3.a">One task</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">→</span><span data-i18n="info.3.b">Done</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 3</div>
+              <div class="timeline-item-title" data-i18n="lesson.3.title">Один фокус — одна задача</div>
+              <p class="timeline-item-desc" data-i18n="lesson.3.desc">Синглтаскинг в коде: как резать задачу и не переключаться, пока не закончил.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">◎</span><span data-i18n="info.3.a">One task</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">→</span><span data-i18n="info.3.b">Done</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="3"></div>
         </article>
         <!-- Lesson 4 -->
         <article class="timeline-item lesson-card" id="lesson-4" tabindex="0" data-lesson="4">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 4</div>
-          <div class="timeline-item-title" data-i18n="lesson.4.title">Промпты для ИИ: ясно и по делу</div>
-          <p class="timeline-item-desc" data-i18n="lesson.4.desc">Как формулировать запросы к ИИ-ассистенту, чтобы получать полезный код и не терять контекст.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">💬</span><span data-i18n="info.4.a">Prompt</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">📎</span><span data-i18n="info.4.b">Context</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 4</div>
+              <div class="timeline-item-title" data-i18n="lesson.4.title">Промпты для ИИ: ясно и по делу</div>
+              <p class="timeline-item-desc" data-i18n="lesson.4.desc">Как формулировать запросы к ИИ-ассистенту, чтобы получать полезный код и не терять контекст.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">💬</span><span data-i18n="info.4.a">Prompt</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">📎</span><span data-i18n="info.4.b">Context</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="4"></div>
         </article>
         <!-- Lesson 5 -->
         <article class="timeline-item lesson-card" id="lesson-5" tabindex="0" data-lesson="5">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 5</div>
-          <div class="timeline-item-title" data-i18n="lesson.5.title">Рефакторинг без стресса</div>
-          <p class="timeline-item-desc" data-i18n="lesson.5.desc">Маленькие шаги, тесты, коммиты. Рефакторить так, чтобы не бояться сломать и не выгорать.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">🔄</span><span data-i18n="info.5.a">Steps</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.5.b">Tests</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 5</div>
+              <div class="timeline-item-title" data-i18n="lesson.5.title">Рефакторинг без стресса</div>
+              <p class="timeline-item-desc" data-i18n="lesson.5.desc">Маленькие шаги, тесты, коммиты. Рефакторить так, чтобы не бояться сломать и не выгорать.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">🔄</span><span data-i18n="info.5.a">Steps</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.5.b">Tests</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="5"></div>
         </article>
         <!-- Lesson 6 -->
         <article class="timeline-item lesson-card" id="lesson-6" tabindex="0" data-lesson="6">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 6</div>
-          <div class="timeline-item-title" data-i18n="lesson.6.title">Отладка в потоке</div>
-          <p class="timeline-item-desc" data-i18n="lesson.6.desc">Как дебажить спокойно: логи, брейкпоинты, гипотезы. Не паниковать — исследовать.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">🔍</span><span data-i18n="info.6.a">Logs</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">·</span><span data-i18n="info.6.b">Hypothesis</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 6</div>
+              <div class="timeline-item-title" data-i18n="lesson.6.title">Отладка в потоке</div>
+              <p class="timeline-item-desc" data-i18n="lesson.6.desc">Как дебажить спокойно: логи, брейкпоинты, гипотезы. Не паниковать — исследовать.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">🔍</span><span data-i18n="info.6.a">Logs</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">·</span><span data-i18n="info.6.b">Hypothesis</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="6"></div>
         </article>
         <!-- Lesson 7 -->
         <article class="timeline-item lesson-card" id="lesson-7" tabindex="0" data-lesson="7">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 7</div>
-          <div class="timeline-item-title" data-i18n="lesson.7.title">Пары и код-ревью с вайбом</div>
-          <p class="timeline-item-desc" data-i18n="lesson.7.desc">Вайбкодинг вдвоём: как проводить сессии и ревью так, чтобы было полезно и приятно.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">👥</span><span data-i18n="info.7.a">Pair</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.7.b">Review</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 7</div>
+              <div class="timeline-item-title" data-i18n="lesson.7.title">Пары и код-ревью с вайбом</div>
+              <p class="timeline-item-desc" data-i18n="lesson.7.desc">Вайбкодинг вдвоём: как проводить сессии и ревью так, чтобы было полезно и приятно.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">👥</span><span data-i18n="info.7.a">Pair</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.7.b">Review</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="7"></div>
         </article>
         <!-- Lesson 8 -->
         <article class="timeline-item lesson-card" id="lesson-8" tabindex="0" data-lesson="8">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 8</div>
-          <div class="timeline-item-title" data-i18n="lesson.8.title">Перерывы и выход из кода</div>
-          <p class="timeline-item-desc" data-i18n="lesson.8.desc">Когда остановиться, как отдохнуть и «закрыть» сессию, чтобы не тащить код в голове в постель.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">⏸</span><span data-i18n="info.8.a">Pause</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">🌙</span><span data-i18n="info.8.b">Wind down</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 8</div>
+              <div class="timeline-item-title" data-i18n="lesson.8.title">Перерывы и выход из кода</div>
+              <p class="timeline-item-desc" data-i18n="lesson.8.desc">Когда остановиться, как отдохнуть и «закрыть» сессию, чтобы не тащить код в голове в постель.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">⏸</span><span data-i18n="info.8.a">Pause</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">🌙</span><span data-i18n="info.8.b">Wind down</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="8"></div>
         </article>
         <!-- Lesson 9 -->
         <article class="timeline-item lesson-card" id="lesson-9" tabindex="0" data-lesson="9">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 9</div>
-          <div class="timeline-item-title" data-i18n="lesson.9.title">Долгие проекты без выгорания</div>
-          <p class="timeline-item-desc" data-i18n="lesson.9.desc">Ритм, цели, празднование маленьких побед. Как сохранять вайб на длинной дистанции.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">🏁</span><span data-i18n="info.9.a">Pace</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">🎯</span><span data-i18n="info.9.b">Wins</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 9</div>
+              <div class="timeline-item-title" data-i18n="lesson.9.title">Долгие проекты без выгорания</div>
+              <p class="timeline-item-desc" data-i18n="lesson.9.desc">Ритм, цели, празднование маленьких побед. Как сохранять вайб на длинной дистанции.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">🏁</span><span data-i18n="info.9.a">Pace</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">🎯</span><span data-i18n="info.9.b">Wins</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="9"></div>
         </article>
         <!-- Lesson 10 -->
         <article class="timeline-item lesson-card" id="lesson-10" tabindex="0" data-lesson="10">
-          <div class="timeline-item-num" data-i18n="lesson.num">Урок 10</div>
-          <div class="timeline-item-title" data-i18n="lesson.10.title">Свой вайбкодинг-чеклист</div>
-          <p class="timeline-item-desc" data-i18n="lesson.10.desc">Собираем персональный чеклист: что лично тебе помогает кодить в потоке и как это повторять.</p>
-          <div class="infographic" aria-hidden="true">
-            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.10.a">Checklist</span></span>
-            <span class="infographic-item"><span class="infographic-emoji">↻</span><span data-i18n="info.10.b">Repeat</span></span>
+          <div class="lesson-card-header">
+            <div>
+              <div class="timeline-item-num" data-i18n="lesson.num">Урок 10</div>
+              <div class="timeline-item-title" data-i18n="lesson.10.title">Свой вайбкодинг-чеклист</div>
+              <p class="timeline-item-desc" data-i18n="lesson.10.desc">Собираем персональный чеклист: что лично тебе помогает кодить в потоке и как это повторять.</p>
+              <div class="infographic" aria-hidden="true">
+                <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.10.a">Checklist</span></span>
+                <span class="infographic-item"><span class="infographic-emoji">↻</span><span data-i18n="info.10.b">Repeat</span></span>
+              </div>
+            </div>
+            <span class="lesson-card-toggle" aria-hidden="true">▾</span>
           </div>
+          <div class="lesson-card-body" data-lesson="10"></div>
         </article>
       </div>
     </section>
@@ -217,6 +289,119 @@
 
   <script>
     (function() {
+      var LESSONS_DETAIL = {
+        1: {
+          program: ['Обзор редакторов (VS Code, Cursor, др.): что выбрать под свой стек.', 'Тема и шрифт: контраст, моноширинность, размер. Настройка за 5 минут.', 'Горячие клавиши: 5–10 must-have под свою ОС. Без мыши — быстрее в потоке.', 'Уведомления и вкладки: как убрать лишнее и не дергаться.'],
+          exercises: ['Установить или проверить редактор; применить одну тему и один шрифт.', 'Выписать 5 горячих клавиш и один раз пройти типичную задачу только с клавиатуры.', 'Включить «не беспокоить» на 25 минут и сделать один маленький таск.'],
+          outcomes: ['Среда не отвлекает и поддерживает фокус.', 'Базовый мышечный набор «редактор + клавиши» закреплён.'],
+          duration: '25–40 мин',
+          pair: ['В паре: показать друг другу свою тему и 3 любимые клавиши; за 5 мин объяснить, зачем каждая.'],
+          monetization: 'Можно монетизировать: мини-гайд «Настрой редактор за 15 минут» (PDF/Notion), платный чеклист для онбординга в команду.'
+        },
+        2: {
+          program: ['Что такое ритуал входа: повторяемые действия, которые сигнализируют мозгу «сейчас код».', 'Дыхание: 2–3 минуты перед сессией (например, 4-4-4 или боксовое).', 'Музыка и звук: что помогает лично тебе (фокус-плейлисты, шум, тишина).', 'Порядок на столе и в табах: один проект — одна цель на сессию.'],
+          exercises: ['Придумать свой 3-минутный ритуал (дыхание + звук + один клик) и записать.', 'Провести его перед одной кодовой сессией и засечь, через сколько минут «въехал».', 'Повторить 3 дня подряд и скорректировать ритуал.'],
+          outcomes: ['Есть персональный ритуал входа в код.', 'Сокращается время «разгона» до потока.'],
+          duration: '30–45 мин (включая первую сессию с ритуалом)',
+          pair: ['В паре: по очереди провести ритуал друг для друга (один дышит, второй наблюдает за таймингом); обменяться плейлистами.'],
+          monetization: ''
+        },
+        3: {
+          program: ['Почему один фокус: многозадачность и переключения убивают поток.', 'Как резать задачу: «сделать фичу» → «написать функцию X», «добавить тест», «закоммитить».', 'Правило «не переключаться»: закрыть лишние вкладки, один таск в трекере на экране.', 'Микро-паузы между тасками: 1–2 мин, не в соцсети.'],
+          exercises: ['Взять одну реальную задачу и разбить на 3–5 шагов «не больше 25 мин каждый».', 'Взять один шаг и довести до конца без переключения (телефон в другую комнату).', 'Записать, что чаще всего отвлекает, и один раз заблокировать это на сессию.'],
+          outcomes: ['Умеешь дробить задачу и держать один фокус до завершения шага.', 'Меньше «половинчатых» состояний в голове.'],
+          duration: '35–50 мин',
+          pair: ['В паре: один формулирует задачу, второй режет её на шаги; поменяться ролями. Таймер 25 мин — оба делают только свой один шаг.'],
+          monetization: 'Можно монетизировать: воркшоп «Синглтаскинг в команде» для компаний, шаблон «разрезки» задач для трекера (Notion/Linear).'
+        },
+        4: {
+          program: ['Принцип ясного промпта: контекст + что нужно + формат ответа.', 'Примеры плохих и хороших запросов к ИИ (код, рефакторинг, тесты, объяснение).', 'Как не терять контекст: один чат — одна тема; явно указывать файлы и участки кода.', 'Итерация: уточняющие вопросы и «сделай короче / на TypeScript / с комментариями».'],
+          exercises: ['Написать 3 промпта к ИИ по своей текущей задаче (код, баг, рефакторинг).', 'Получить ответ и один раз уточнить промпт, чтобы улучшить результат.', 'Сохранить лучший шаблон промпта в сниппет или заметку.'],
+          outcomes: ['Получаешь от ИИ полезный код и не тратишь время на переспросы.', 'Есть свой шаблон промпта под типичные задачи.'],
+          duration: '40–55 мин',
+          pair: ['В паре: оба пишут промпт к одной и той же задаче; сравнить ответы ИИ и выбрать лучшую формулировку. Роль «ревьюера промптов» друг у друга.'],
+          monetization: 'Можно монетизировать: курс или консалт «Промпты для разработчиков», продажа шаблонов промптов (Notion/Gumroad), платные воркшопы в компаниях.'
+        },
+        5: {
+          program: ['Рефакторинг без паники: маленькие шаги, один тип изменений за раз.', 'Роль тестов: зелёный до и после. Когда тестов нет — хотя бы ручная проверка чеклистом.', 'Коммиты как точки отката: «сделал один шаг — закоммитил».', 'Когда остановиться: критерий «читаемо и предсказуемо», не «идеально».'],
+          exercises: ['Выбрать один маленький рефакторинг (например, переименование, вынос функции).', 'Перед изменением: зафиксировать текущее поведение (тест или чеклист).', 'Сделать 3–5 маленьких коммитов за одну сессию рефакторинга.'],
+          outcomes: ['Рефакторишь без стресса и с возможностью отката.', 'Привычка к «маленьким коммитам» в рефакторинге.'],
+          duration: '40–60 мин',
+          pair: ['В паре: один рефакторит, второй смотрит и напоминает «тест зелёный? коммит?»; потом поменяться. Обсудить, где было страшно и что помогло.'],
+          monetization: ''
+        },
+        6: {
+          program: ['Отладка как исследование: гипотеза → проверка → следующая гипотеза.', 'Логи и print/debugger: где ставить, что смотреть. Один поток данных за раз.', 'Брейкпоинты и пошаговое выполнение: когда логи не хватает.', 'Когда остановиться и попросить помощь: правило 15–20 минут.'],
+          exercises: ['Взять один реальный баг; записать 3 гипотезы до того как лезть в код.', 'Пройти баг с логированием или брейкпоинтами; зафиксировать, какая гипотеза сработала.', 'Один раз намеренно попросить коллегу или ИИ «посмотреть со стороны» после 15 мин тупика.'],
+          outcomes: ['Дебажишь спокойно, по шагам, без паники.', 'Понимаешь, когда пора остановиться и попросить помощь.'],
+          duration: '35–50 мин',
+          pair: ['В паре: «резиновая утка» — один описывает баг и гипотезы вслух, второй только слушает и задаёт уточняющие вопросы. Потом поменяться.'],
+          monetization: ''
+        },
+        7: {
+          program: ['Вайбкодинг вдвоём: общие правила (один экран, смена водитель/навигатор, таймер).', 'Как не убить вайб: критика идей, не человека; паузы на согласование.', 'Код-ревью с вайбом: чеклист, доброжелательный тон, «что улучшить» вместо «ты неправ».', 'Ретро по сессии: что помогло, что помешало — 5 минут в конце.'],
+          exercises: ['Провести одну 25-минутную парную сессию (реальная задача или учебная).', 'Сделать код-ревью одного PR друг друга по чеклисту «что понравилось + 1 предложение».', 'Записать 3 правила для своих будущих парных сессий.'],
+          outcomes: ['Умеешь проводить парную сессию и ревью без токсичности.', 'Есть чеклист и правила под свою команду или пару.'],
+          duration: '50–70 мин (включая сессию и ревью)',
+          pair: ['Все упражнения урока — парные по определению. Добавить: одна сессия в роли «фасилитатора», вторая — в роли «наблюдателя за вайбом».'],
+          monetization: 'Можно монетизировать: платные воркшопы «Парное программирование и мягкое ревью», фасилитация ретро в командах, продажа чеклиста и гайда по код-ревью.'
+        },
+        8: {
+          program: ['Когда останавливаться: таймеры (Помодоро, 90 мин), признаки усталости, «тупик» дольше 15 мин.', 'Перерыв: что делать (движение, глаза, вода), чего избегать (соцсети, новая сложная тема).', 'Выход из кода: ритуал «закрытия» — коммит, запись «где остановился», закрыть вкладки.', 'Граница работа/жизнь: не тащить код в кровать; «парковка» мыслей на бумагу.'],
+          exercises: ['Поставить таймер на 25 или 45 мин; по сигналу — перерыв 5 мин без экрана.', 'В конце одной сессии провести ритуал выхода (записать 1–2 предложения «что дальше»).', 'Один вечер после кода записать мысли на бумагу и не открывать редактор до утра.'],
+          outcomes: ['Есть привычка к перерывам и ритуалу выхода.', 'Меньше «кода в голове» после рабочего дня.'],
+          duration: '30–45 мин',
+          pair: ['В паре: напоминать друг другу о перерыве (если работаете в один период); в конце дня — короткий «выход» вдвоём (1 мин каждый: «остановился на X»).'],
+          monetization: ''
+        },
+        9: {
+          program: ['Долгий проект: почему вайб падает и как поддерживать ритм.', 'Цели и вехи: разбить на месяцы/недели; праздновать маленькие победы.', 'Ритм работы: регулярные сессии, сон, движение. Что режет вайб (недосып, хаос в задачах).', 'Антивыгорание: признаки, когда нужен перерыв не «5 минут», а день или неделя.'],
+          exercises: ['Выписать 3 ближайшие вехи своего текущего проекта и один способ «отпраздновать» каждую.', 'Один раз отказаться от «ещё один коммит» и закончить сессию по плану.', 'Составить личный чеклист «что забирает вайб» и «что возвращает».'],
+          outcomes: ['Есть план по вехам и ритму на длинной дистанции.', 'Понимаешь ранние признаки выгорания и что делать.'],
+          duration: '40–55 мин',
+          pair: ['В паре: обсудить свои вехи и способы праздновать; договориться напоминать друг другу о перерывах раз в неделю.'],
+          monetization: 'Можно монетизировать: гайд «Марафон без выгорания» для команд, платный аудит ритма и целей в проекте, мини-курс по антивыгоранию для разработчиков.'
+        },
+        10: {
+          program: ['Сводка марафона: среда, ритуалы, фокус, ИИ, рефакторинг, отладка, пары, перерывы, длинный проект.', 'Персональный чеклист: что из этого лично тебе подходит.', 'Как повторять: триггеры (время, место, «перед кодом»), привычка за 2–3 недели.', 'Обновление чеклиста: раз в месяц пересматривать и убирать/добавлять пункты.'],
+          exercises: ['Написать свой вайбкодинг-чеклист (5–10 пунктов) на основе уроков 1–9.', 'Один день жить по чеклисту полностью; вечером отметить, что сработало, что нет.', 'Поставить напоминание «пересмотреть чеклист» через месяц.'],
+          outcomes: ['Есть персональный чеклист «как кодить в потоке».', 'План по внедрению и обновлению чеклиста.'],
+          duration: '45–60 мин',
+          pair: ['В паре: обменяться чеклистами; дать друг другу по 1–2 предложения «что добавить или убрать». Договориться созвониться через месяц и сравнить обновлённые чеклисты.'],
+          monetization: 'Можно монетизировать: продажа шаблона чеклиста (Notion/PDF), платный «разбор твоего чеклиста» 1-on-1, марафон как продукт с доступом к материалам и комьюнити.'
+        }
+      };
+
+      function renderLessonBody(num) {
+        var data = LESSONS_DETAIL[num];
+        if (!data) return '';
+        var html = '';
+        html += '<div class="lesson-detail-section"><h4>Программа</h4><ul>';
+        (data.program || []).forEach(function(p) { html += '<li>' + p + '</li>'; });
+        html += '</ul></div>';
+        html += '<div class="lesson-detail-section"><h4>Упражнения</h4><ul>';
+        (data.exercises || []).forEach(function(e) { html += '<li>' + e + '</li>'; });
+        html += '</ul></div>';
+        html += '<div class="lesson-detail-section"><h4>По итогу осваиваем</h4><ul>';
+        (data.outcomes || []).forEach(function(o) { html += '<li>' + o + '</li>'; });
+        html += '</ul></div>';
+        html += '<div class="lesson-detail-section"><h4>Время</h4><p>' + (data.duration || '—') + '</p></div>';
+        html += '<div class="lesson-detail-section"><h4>Парные упражнения</h4><ul>';
+        (data.pair || []).forEach(function(p) { html += '<li>' + p + '</li>'; });
+        html += '</ul></div>';
+        if (data.monetization) {
+          html += '<div class="lesson-detail-section"><h4>На этом можно заработать</h4><p class="monetization">' + data.monetization + '</p></div>';
+        }
+        return html;
+      }
+
+      function fillLessonBodies() {
+        document.querySelectorAll('.lesson-card-body[data-lesson]').forEach(function(el) {
+          var num = el.getAttribute('data-lesson');
+          if (!el.innerHTML) el.innerHTML = renderLessonBody(parseInt(num, 10));
+        });
+      }
+
       var LANG = {
         ru: {
           'nav.home': 'На главную',
@@ -356,11 +541,14 @@
         bar.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToLesson(bar.getAttribute('data-target')); } });
       });
 
+      fillLessonBodies();
+
       document.querySelectorAll('.lesson-card').forEach(function(card) {
         card.addEventListener('click', function() {
-          var id = 'lesson-' + card.getAttribute('data-lesson');
-          var bar = document.querySelector('.timeline-bar-wrap[data-target="' + id + '"]');
-          if (bar) { bar.focus(); scrollToLesson('timelineRows'); }
+          var body = card.querySelector('.lesson-card-body');
+          if (body && !body.innerHTML) body.innerHTML = renderLessonBody(parseInt(card.getAttribute('data-lesson'), 10));
+          card.classList.toggle('expanded');
+          if (card.classList.contains('expanded')) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
         card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); } });
       });
