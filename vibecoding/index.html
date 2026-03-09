@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vibecoding Marathon · 10 Lessons</title>
+  <link rel="stylesheet" href="../person/css/style.css">
+  <style>
+    :root {
+      --vc-radius: 12px;
+      --vc-radius-sm: 8px;
+      --vc-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      --vc-shadow-hover: 0 8px 28px rgba(0,0,0,0.1);
+      --vc-border: 1px solid rgba(0,0,0,0.06);
+      --vc-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .vibecoding-page { max-width: 56rem; width: 100%; margin: 0 auto; padding-bottom: 3rem; }
+    .vibecoding-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+    .vibecoding-header a { color: var(--text); text-decoration: none; transition: color var(--vc-transition); }
+    .vibecoding-header a:hover { color: var(--yc-orange); }
+    .vibecoding-title { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; }
+    .lang-toggle-vc { display: inline-flex; align-items: center; border: 1px solid rgba(0,0,0,0.2); border-radius: var(--vc-radius-sm); padding: 0.2em 0.35em; gap: 0.25em; }
+    .lang-toggle-vc a { padding: 0.2em 0.5em; border-radius: 4px; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color var(--vc-transition), background var(--vc-transition); }
+    .lang-toggle-vc a:hover { color: var(--text); }
+    .lang-toggle-vc a.active { color: var(--yc-orange); background: rgba(242, 101, 34, 0.08); font-weight: 600; }
+    .vibecoding-intro { background: var(--header-bg); border-radius: var(--vc-radius); padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; border: var(--vc-border); box-shadow: var(--vc-shadow); line-height: 1.65; color: var(--text); transition: box-shadow var(--vc-transition); }
+    .vibecoding-intro:hover { box-shadow: var(--vc-shadow-hover); }
+    .vibecoding-intro p { margin: 0 0 0.85rem; }
+    .vibecoding-intro p:last-child { margin-bottom: 0; }
+    .timeline-section { background: var(--header-bg); border-radius: var(--vc-radius); padding: 1.5rem; margin-bottom: 1.75rem; border: var(--vc-border); box-shadow: var(--vc-shadow); transition: box-shadow var(--vc-transition); }
+    .timeline-section:hover { box-shadow: var(--vc-shadow-hover); }
+    .timeline-section h2 { font-size: 1.05rem; margin: 0 0 1rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.02em; }
+    .timeline-vertical { position: relative; padding-left: 1.75rem; }
+    .timeline-vertical::before { content: ''; position: absolute; left: 0.4rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: linear-gradient(180deg, var(--yc-orange) 0%, rgba(242,101,34,0.2) 100%); border-radius: 1px; }
+    .timeline-item { position: relative; padding-bottom: 1.75rem; scroll-margin-top: 1.5rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before { content: ''; position: absolute; left: -1.75rem; top: 0.45rem; width: 14px; height: 14px; border-radius: 50%; background: var(--yc-orange); border: 3px solid var(--header-bg); box-shadow: 0 0 0 1px rgba(0,0,0,0.12); transition: transform var(--vc-transition); }
+    .timeline-item:hover::before { transform: scale(1.15); }
+    .timeline-item-num { font-size: 0.7rem; font-weight: 700; color: var(--yc-orange); margin-bottom: 0.25rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .timeline-item-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+    .timeline-item-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 0.75rem; }
+    .infographic { display: grid; grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+    .infographic-item { background: rgba(242,101,34,0.06); border: 1px solid rgba(242,101,34,0.2); border-radius: var(--vc-radius-sm); padding: 0.5rem 0.6rem; font-size: 0.75rem; font-weight: 500; color: var(--text); text-align: center; cursor: default; transition: background var(--vc-transition), border-color var(--vc-transition), transform var(--vc-transition); }
+    .infographic-item:hover { background: rgba(242,101,34,0.12); border-color: var(--yc-orange); transform: translateY(-1px); }
+    .infographic-emoji { display: block; font-size: 1.25rem; margin-bottom: 0.25rem; line-height: 1; }
+    .timeline-axis { display: flex; justify-content: space-between; padding: 0.5rem 0; margin-bottom: 0.75rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .timeline-rows { position: relative; min-height: 56px; display: flex; align-items: stretch; gap: 3px; }
+    .timeline-row { position: relative; flex: 1; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+    .timeline-row .row-track { position: relative; flex: 1; height: 26px; background: rgba(168, 197, 232, 0.22); border-radius: 6px; overflow: visible; display: flex; align-items: center; justify-content: center; transition: background var(--vc-transition); }
+    .timeline-row .row-track:hover { background: rgba(168, 197, 232, 0.35); }
+    .timeline-bar-wrap { position: absolute; left: 2px; right: 2px; top: 2px; height: 22px; cursor: pointer; border-radius: 6px; background: linear-gradient(135deg, var(--yc-orange) 0%, #e55a1a 100%); transition: transform var(--vc-transition), box-shadow var(--vc-transition); display: flex; align-items: center; justify-content: center; }
+    .timeline-bar-wrap:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(242,101,34,0.4); }
+    .timeline-bar-wrap:focus-visible { outline: 2px solid var(--yc-orange); outline-offset: 2px; }
+    .timeline-bar-num { font-size: 0.75rem; font-weight: 800; color: #fff; line-height: 1; pointer-events: none; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+    .timeline-hint { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.6rem; }
+    .lesson-card { cursor: pointer; border-radius: var(--vc-radius-sm); padding: 0.1rem 0; margin: 0 -0.25rem; transition: background var(--vc-transition); }
+    .lesson-card:hover { background: rgba(0,0,0,0.02); }
+    .lesson-card:focus-visible { outline: 2px solid var(--yc-orange); outline-offset: 2px; border-radius: var(--vc-radius-sm); }
+    @media (max-width: 640px) {
+      .vibecoding-page { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); padding-bottom: 2rem; box-sizing: border-box; }
+      .timeline-vertical { padding-left: 1.35rem; }
+      .timeline-item::before { left: -1.35rem; width: 12px; height: 12px; }
+      .infographic { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://github.com/j0k/">j0k</a>
+    <span class="header-sep">·</span>
+    <a href="../index.html" data-i18n="nav.home">На главную</a>
+    <div class="lang-toggle-vc" aria-label="Language">
+      <a href="#" class="lang-option-vc active" data-lang="ru" aria-label="Русский">RU</a>
+      <a href="#" class="lang-option-vc" data-lang="en" aria-label="English">EN</a>
+    </div>
+  </header>
+
+  <main class="page vibecoding-page">
+    <div class="vibecoding-header">
+      <h1 class="vibecoding-title" data-i18n="title">Марафон по вайбкодингу</h1>
+      <a href="../index.html" data-i18n="nav.back">← Назад</a>
+    </div>
+
+    <div class="vibecoding-intro">
+      <p data-i18n="intro.p1">Вайбкодинг — это кодить в потоке: когда окружение, инструменты и состояние совпадают, а код пишется легко и с удовольствием. В этом марафоне 10 уроков: от настройки среды и ритуалов до работы с ИИ и поддержания фокуса.</p>
+      <p data-i18n="intro.p2">Ниже — таймлайн марафона. Клик по отрезку прокрутит к уроку; каждый урок можно скроллить и кликать.</p>
+    </div>
+
+    <section class="timeline-section" aria-label="Timeline">
+      <h2 data-i18n="timeline.heading">Таймлайн · 10 уроков</h2>
+      <div class="timeline-axis" id="timelineAxis">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+      </div>
+      <div class="timeline-rows" id="timelineRows">
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-1" role="button" tabindex="0"><span class="timeline-bar-num">1</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-2" role="button" tabindex="0"><span class="timeline-bar-num">2</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-3" role="button" tabindex="0"><span class="timeline-bar-num">3</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-4" role="button" tabindex="0"><span class="timeline-bar-num">4</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-5" role="button" tabindex="0"><span class="timeline-bar-num">5</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-6" role="button" tabindex="0"><span class="timeline-bar-num">6</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-7" role="button" tabindex="0"><span class="timeline-bar-num">7</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-8" role="button" tabindex="0"><span class="timeline-bar-num">8</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-9" role="button" tabindex="0"><span class="timeline-bar-num">9</span></div></div></div>
+        <div class="timeline-row"><div class="row-track"><div class="timeline-bar-wrap" data-target="lesson-10" role="button" tabindex="0"><span class="timeline-bar-num">10</span></div></div></div>
+      </div>
+      <p class="timeline-hint" data-i18n="timeline.hint">Клик по отрезку — переход к уроку</p>
+    </section>
+
+    <section class="timeline-section" aria-label="Lessons">
+      <h2 data-i18n="lessons.heading">Уроки</h2>
+      <div class="timeline-vertical" id="lessonsList">
+        <!-- Lesson 1 -->
+        <article class="timeline-item lesson-card" id="lesson-1" tabindex="0" data-lesson="1">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 1</div>
+          <div class="timeline-item-title" data-i18n="lesson.1.title">Среда и инструменты</div>
+          <p class="timeline-item-desc" data-i18n="lesson.1.desc">Настройка редактора, тема, шрифт, горячие клавиши. Минимум отвлечений — максимум потока.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">⌨</span><span data-i18n="info.1.a">Editor</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">🎨</span><span data-i18n="info.1.b">Theme</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">⚡</span><span data-i18n="info.1.c">Shortcuts</span></span>
+          </div>
+        </article>
+        <!-- Lesson 2 -->
+        <article class="timeline-item lesson-card" id="lesson-2" tabindex="0" data-lesson="2">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 2</div>
+          <div class="timeline-item-title" data-i18n="lesson.2.title">Ритуал входа в код</div>
+          <p class="timeline-item-desc" data-i18n="lesson.2.desc">Как начать сессию так, чтобы быстро войти в состояние потока: дыхание, музыка, порядок на столе.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">🫁</span><span data-i18n="info.2.a">Breath</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">🎵</span><span data-i18n="info.2.b">Music</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">🖥</span><span data-i18n="info.2.c">Desk</span></span>
+          </div>
+        </article>
+        <!-- Lesson 3 -->
+        <article class="timeline-item lesson-card" id="lesson-3" tabindex="0" data-lesson="3">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 3</div>
+          <div class="timeline-item-title" data-i18n="lesson.3.title">Один фокус — одна задача</div>
+          <p class="timeline-item-desc" data-i18n="lesson.3.desc">Синглтаскинг в коде: как резать задачу и не переключаться, пока не закончил.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">◎</span><span data-i18n="info.3.a">One task</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">→</span><span data-i18n="info.3.b">Done</span></span>
+          </div>
+        </article>
+        <!-- Lesson 4 -->
+        <article class="timeline-item lesson-card" id="lesson-4" tabindex="0" data-lesson="4">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 4</div>
+          <div class="timeline-item-title" data-i18n="lesson.4.title">Промпты для ИИ: ясно и по делу</div>
+          <p class="timeline-item-desc" data-i18n="lesson.4.desc">Как формулировать запросы к ИИ-ассистенту, чтобы получать полезный код и не терять контекст.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">💬</span><span data-i18n="info.4.a">Prompt</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">📎</span><span data-i18n="info.4.b">Context</span></span>
+          </div>
+        </article>
+        <!-- Lesson 5 -->
+        <article class="timeline-item lesson-card" id="lesson-5" tabindex="0" data-lesson="5">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 5</div>
+          <div class="timeline-item-title" data-i18n="lesson.5.title">Рефакторинг без стресса</div>
+          <p class="timeline-item-desc" data-i18n="lesson.5.desc">Маленькие шаги, тесты, коммиты. Рефакторить так, чтобы не бояться сломать и не выгорать.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">🔄</span><span data-i18n="info.5.a">Steps</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.5.b">Tests</span></span>
+          </div>
+        </article>
+        <!-- Lesson 6 -->
+        <article class="timeline-item lesson-card" id="lesson-6" tabindex="0" data-lesson="6">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 6</div>
+          <div class="timeline-item-title" data-i18n="lesson.6.title">Отладка в потоке</div>
+          <p class="timeline-item-desc" data-i18n="lesson.6.desc">Как дебажить спокойно: логи, брейкпоинты, гипотезы. Не паниковать — исследовать.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">🔍</span><span data-i18n="info.6.a">Logs</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">·</span><span data-i18n="info.6.b">Hypothesis</span></span>
+          </div>
+        </article>
+        <!-- Lesson 7 -->
+        <article class="timeline-item lesson-card" id="lesson-7" tabindex="0" data-lesson="7">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 7</div>
+          <div class="timeline-item-title" data-i18n="lesson.7.title">Пары и код-ревью с вайбом</div>
+          <p class="timeline-item-desc" data-i18n="lesson.7.desc">Вайбкодинг вдвоём: как проводить сессии и ревью так, чтобы было полезно и приятно.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">👥</span><span data-i18n="info.7.a">Pair</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.7.b">Review</span></span>
+          </div>
+        </article>
+        <!-- Lesson 8 -->
+        <article class="timeline-item lesson-card" id="lesson-8" tabindex="0" data-lesson="8">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 8</div>
+          <div class="timeline-item-title" data-i18n="lesson.8.title">Перерывы и выход из кода</div>
+          <p class="timeline-item-desc" data-i18n="lesson.8.desc">Когда остановиться, как отдохнуть и «закрыть» сессию, чтобы не тащить код в голове в постель.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">⏸</span><span data-i18n="info.8.a">Pause</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">🌙</span><span data-i18n="info.8.b">Wind down</span></span>
+          </div>
+        </article>
+        <!-- Lesson 9 -->
+        <article class="timeline-item lesson-card" id="lesson-9" tabindex="0" data-lesson="9">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 9</div>
+          <div class="timeline-item-title" data-i18n="lesson.9.title">Долгие проекты без выгорания</div>
+          <p class="timeline-item-desc" data-i18n="lesson.9.desc">Ритм, цели, празднование маленьких побед. Как сохранять вайб на длинной дистанции.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">🏁</span><span data-i18n="info.9.a">Pace</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">🎯</span><span data-i18n="info.9.b">Wins</span></span>
+          </div>
+        </article>
+        <!-- Lesson 10 -->
+        <article class="timeline-item lesson-card" id="lesson-10" tabindex="0" data-lesson="10">
+          <div class="timeline-item-num" data-i18n="lesson.num">Урок 10</div>
+          <div class="timeline-item-title" data-i18n="lesson.10.title">Свой вайбкодинг-чеклист</div>
+          <p class="timeline-item-desc" data-i18n="lesson.10.desc">Собираем персональный чеклист: что лично тебе помогает кодить в потоке и как это повторять.</p>
+          <div class="infographic" aria-hidden="true">
+            <span class="infographic-item"><span class="infographic-emoji">✓</span><span data-i18n="info.10.a">Checklist</span></span>
+            <span class="infographic-item"><span class="infographic-emoji">↻</span><span data-i18n="info.10.b">Repeat</span></span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      var LANG = {
+        ru: {
+          'nav.home': 'На главную',
+          'nav.back': '← Назад',
+          'title': 'Марафон по вайбкодингу',
+          'intro.p1': 'Вайбкодинг — это кодить в потоке: когда окружение, инструменты и состояние совпадают, а код пишется легко и с удовольствием. В этом марафоне 10 уроков: от настройки среды и ритуалов до работы с ИИ и поддержания фокуса.',
+          'intro.p2': 'Ниже — таймлайн марафона. Клик по отрезку прокрутит к уроку; каждый урок можно скроллить и кликать.',
+          'timeline.heading': 'Таймлайн · 10 уроков',
+          'timeline.hint': 'Клик по отрезку — переход к уроку',
+          'lessons.heading': 'Уроки',
+          'lesson.num': 'Урок',
+          'lesson.1.title': 'Среда и инструменты',
+          'lesson.1.desc': 'Настройка редактора, тема, шрифт, горячие клавиши. Минимум отвлечений — максимум потока.',
+          'info.1.a': 'Редактор', 'info.1.b': 'Тема', 'info.1.c': 'Клавиши',
+          'lesson.2.title': 'Ритуал входа в код',
+          'lesson.2.desc': 'Как начать сессию так, чтобы быстро войти в состояние потока: дыхание, музыка, порядок на столе.',
+          'info.2.a': 'Дыхание', 'info.2.b': 'Музыка', 'info.2.c': 'Стол',
+          'lesson.3.title': 'Один фокус — одна задача',
+          'lesson.3.desc': 'Синглтаскинг в коде: как резать задачу и не переключаться, пока не закончил.',
+          'info.3.a': 'Одна задача', 'info.3.b': 'Готово',
+          'lesson.4.title': 'Промпты для ИИ: ясно и по делу',
+          'lesson.4.desc': 'Как формулировать запросы к ИИ-ассистенту, чтобы получать полезный код и не терять контекст.',
+          'info.4.a': 'Промпт', 'info.4.b': 'Контекст',
+          'lesson.5.title': 'Рефакторинг без стресса',
+          'lesson.5.desc': 'Маленькие шаги, тесты, коммиты. Рефакторить так, чтобы не бояться сломать и не выгорать.',
+          'info.5.a': 'Шаги', 'info.5.b': 'Тесты',
+          'lesson.6.title': 'Отладка в потоке',
+          'lesson.6.desc': 'Как дебажить спокойно: логи, брейкпоинты, гипотезы. Не паниковать — исследовать.',
+          'info.6.a': 'Логи', 'info.6.b': 'Гипотеза',
+          'lesson.7.title': 'Пары и код-ревью с вайбом',
+          'lesson.7.desc': 'Вайбкодинг вдвоём: как проводить сессии и ревью так, чтобы было полезно и приятно.',
+          'info.7.a': 'Пара', 'info.7.b': 'Ревью',
+          'lesson.8.title': 'Перерывы и выход из кода',
+          'lesson.8.desc': 'Когда остановиться, как отдохнуть и «закрыть» сессию, чтобы не тащить код в голове в постель.',
+          'info.8.a': 'Пауза', 'info.8.b': 'Выход',
+          'lesson.9.title': 'Долгие проекты без выгорания',
+          'lesson.9.desc': 'Ритм, цели, празднование маленьких побед. Как сохранять вайб на длинной дистанции.',
+          'info.9.a': 'Ритм', 'info.9.b': 'Победы',
+          'lesson.10.title': 'Свой вайбкодинг-чеклист',
+          'lesson.10.desc': 'Собираем персональный чеклист: что лично тебе помогает кодить в потоке и как это повторять.',
+          'info.10.a': 'Чеклист', 'info.10.b': 'Повтор'
+        },
+        en: {
+          'nav.home': 'Home',
+          'nav.back': '← Back',
+          'title': 'Vibecoding Marathon',
+          'intro.p1': 'Vibecoding is coding in flow: when environment, tools, and state align, and code writes easily and with pleasure. This marathon has 10 lessons—from setting up your environment and rituals to working with AI and keeping focus.',
+          'intro.p2': 'Below is the marathon timeline. Click a segment to scroll to that lesson; everything is scrollable and clickable.',
+          'timeline.heading': 'Timeline · 10 lessons',
+          'timeline.hint': 'Click a segment to jump to the lesson',
+          'lessons.heading': 'Lessons',
+          'lesson.num': 'Lesson',
+          'lesson.1.title': 'Environment & tools',
+          'lesson.1.desc': 'Editor setup, theme, font, hotkeys. Fewer distractions—more flow.',
+          'info.1.a': 'Editor', 'info.1.b': 'Theme', 'info.1.c': 'Shortcuts',
+          'lesson.2.title': 'Ritual to enter code',
+          'lesson.2.desc': 'How to start a session so you get into flow quickly: breathing, music, a tidy desk.',
+          'info.2.a': 'Breath', 'info.2.b': 'Music', 'info.2.c': 'Desk',
+          'lesson.3.title': 'One focus, one task',
+          'lesson.3.desc': 'Single-tasking in code: how to slice tasks and not switch until done.',
+          'info.3.a': 'One task', 'info.3.b': 'Done',
+          'lesson.4.title': 'AI prompts: clear and to the point',
+          'lesson.4.desc': 'How to phrase requests to an AI assistant for useful code without losing context.',
+          'info.4.a': 'Prompt', 'info.4.b': 'Context',
+          'lesson.5.title': 'Refactoring without stress',
+          'lesson.5.desc': 'Small steps, tests, commits. Refactor so you don’t fear breaking things or burn out.',
+          'info.5.a': 'Steps', 'info.5.b': 'Tests',
+          'lesson.6.title': 'Debugging in flow',
+          'lesson.6.desc': 'How to debug calmly: logs, breakpoints, hypotheses. Don’t panic—investigate.',
+          'info.6.a': 'Logs', 'info.6.b': 'Hypothesis',
+          'lesson.7.title': 'Pairing and code review with vibe',
+          'lesson.7.desc': 'Vibecoding together: how to run sessions and reviews so they’re useful and enjoyable.',
+          'info.7.a': 'Pair', 'info.7.b': 'Review',
+          'lesson.8.title': 'Breaks and exiting code',
+          'lesson.8.desc': 'When to stop, how to rest and “close” a session so you’re not carrying code to bed.',
+          'info.8.a': 'Pause', 'info.8.b': 'Wind down',
+          'lesson.9.title': 'Long projects without burnout',
+          'lesson.9.desc': 'Pace, goals, celebrating small wins. How to keep the vibe on a long run.',
+          'info.9.a': 'Pace', 'info.9.b': 'Wins',
+          'lesson.10.title': 'Your vibecoding checklist',
+          'lesson.10.desc': 'Build a personal checklist: what helps you code in flow and how to repeat it.',
+          'info.10.a': 'Checklist', 'info.10.b': 'Repeat'
+        }
+      };
+
+      function docTitle(lang) {
+        document.title = lang === 'ru' ? 'Марафон по вайбкодингу · 10 уроков' : 'Vibecoding Marathon · 10 Lessons';
+      }
+      var currentLang = (function() {
+        try {
+          var s = localStorage.getItem('vibecoding-lang');
+          if (s === 'ru' || s === 'en') return s;
+        } catch (e) {}
+        return 'ru';
+      })();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        try { localStorage.setItem('vibecoding-lang', lang); } catch (e) {}
+        document.documentElement.lang = lang === 'ru' ? 'ru' : 'en';
+        var t = LANG[lang] || LANG.ru;
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          if (t[key] !== undefined) el.textContent = t[key];
+        });
+        document.querySelectorAll('.timeline-item').forEach(function(item) {
+          var n = item.getAttribute('data-lesson');
+          var numEl = item.querySelector('.timeline-item-num');
+          if (numEl && n) numEl.textContent = (lang === 'ru' ? 'Урок ' : 'Lesson ') + n;
+        });
+        document.querySelectorAll('.timeline-bar-wrap[data-target]').forEach(function(bar) {
+          var id = bar.getAttribute('data-target');
+          var key = 'lesson.' + (id && id.replace('lesson-', '')) + '.title';
+          if (t[key]) bar.setAttribute('title', t[key]);
+        });
+        document.querySelectorAll('.lang-option-vc').forEach(function(a) {
+          a.classList.toggle('active', a.getAttribute('data-lang') === lang);
+        });
+        docTitle(lang);
+      }
+
+      document.querySelectorAll('.lang-option-vc').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          applyLang(a.getAttribute('data-lang'));
+        });
+      });
+      applyLang(currentLang);
+
+      function scrollToLesson(id) {
+        var el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      document.getElementById('timelineRows').querySelectorAll('.timeline-bar-wrap[data-target]').forEach(function(bar) {
+        bar.addEventListener('click', function() { scrollToLesson(bar.getAttribute('data-target')); });
+        bar.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToLesson(bar.getAttribute('data-target')); } });
+      });
+
+      document.querySelectorAll('.lesson-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          var id = 'lesson-' + card.getAttribute('data-lesson');
+          var bar = document.querySelector('.timeline-bar-wrap[data-target="' + id + '"]');
+          if (bar) { bar.focus(); scrollToLesson('timelineRows'); }
+        });
+        card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); } });
+      });
+    })();
+  </script>
+</body>
+</html>
