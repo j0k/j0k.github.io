@@ -313,6 +313,21 @@
       color: var(--text-muted);
       white-space: nowrap;
     }
+    .calc-order-item-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .calc-order-item-delete {
+      font-size: 0.8rem;
+      color: #b91c1c;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .calc-order-item-delete:hover {
+      color: #ef4444;
+      text-decoration: underline;
+    }
     .calc-order-item-body {
       padding: 0.4rem 0.6rem 0.5rem;
       border-top: 1px solid rgba(0,0,0,0.04);
@@ -799,7 +814,10 @@
           html += '<div class="calc-order-item collapsed" data-idx="' + idx + '">';
           html += '<div class="calc-order-item-header">';
           html += '<div class="calc-order-item-main"><strong>' + headerText + '</strong></div>';
+          html += '<div class="calc-order-item-actions">';
           html += '<div class="calc-order-item-toggle">детали</div>';
+          html += '<button type="button" class="calc-order-item-delete" aria-label="Удалить позицию" title="Удалить позицию">[X]</button>';
+          html += '</div>';
           html += '</div>';
           html += '<div class="calc-order-item-body">';
           html += '<div class="calc-result-table">';
@@ -820,10 +838,26 @@
         }
         var headers = orderListEl.querySelectorAll('.calc-order-item-header');
         headers.forEach(function(h) {
-          h.addEventListener('click', function() {
+          h.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('.calc-order-item-delete')) {
+              return;
+            }
             var parent = h.closest('.calc-order-item');
             if (!parent) return;
             parent.classList.toggle('collapsed');
+          });
+        });
+        var deletes = orderListEl.querySelectorAll('.calc-order-item-delete');
+        deletes.forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var parent = btn.closest('.calc-order-item');
+            if (!parent) return;
+            var idxStr = parent.getAttribute('data-idx');
+            var idx = parseInt(idxStr, 10);
+            if (!isFinite(idx)) return;
+            orderItems.splice(idx, 1);
+            renderOrderList();
           });
         });
       }
