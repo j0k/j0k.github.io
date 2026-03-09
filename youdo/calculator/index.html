@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Калькулятор доставки нерудных материалов · Yuri Konoplev</title>
+  <link rel="stylesheet" href="../../person/css/style.css">
+  <style>
+    .calc-page {
+      max-width: 44rem;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2rem;
+      box-sizing: border-box;
+    }
+    .calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .calc-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    .calc-subtitle {
+      margin: 0.25rem 0 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .calc-back {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .calc-back:hover {
+      color: var(--yc-orange);
+    }
+    .calc-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    .calc-card,
+    .calc-result,
+    .calc-note {
+      background: var(--header-bg);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .calc-card h2,
+    .calc-result h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .calc-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.85rem;
+    }
+    .calc-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .calc-label span {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .calc-input,
+    .calc-select {
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.18);
+      padding: 0.4rem 0.6rem;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+      max-width: 14rem;
+    }
+    .calc-input:focus,
+    .calc-select:focus {
+      outline: 2px solid var(--yc-orange);
+      outline-offset: 2px;
+      border-color: var(--yc-orange);
+    }
+    .calc-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .calc-slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.15rem;
+    }
+    .calc-slider-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .calc-slider-inline input[type="range"] {
+      flex: 1;
+    }
+    .calc-slider-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .calc-radio-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.15rem;
+      font-size: 0.85rem;
+    }
+    .calc-radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .calc-radio-option span {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .calc-table-wrap {
+      margin-top: 1rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.06);
+      overflow: hidden;
+      background: rgba(255,255,255,0.6);
+    }
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .calc-table th,
+    .calc-table td {
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+    }
+    .calc-table th {
+      background: rgba(0,0,0,0.03);
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .calc-table tbody tr:nth-child(even) td {
+      background: rgba(0,0,0,0.01);
+    }
+    .calc-table td:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .calc-note {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .calc-note a {
+      color: var(--yc-orange);
+      text-decoration: none;
+    }
+    .calc-note a:hover {
+      text-decoration: underline;
+    }
+    .calc-result {
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+    }
+    .calc-result-empty {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .calc-result-table {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .calc-result-row {
+      display: table-row;
+    }
+    .calc-result-key {
+      display: table-cell;
+      width: 13ch;
+      max-width: 13ch;
+      padding: 0.15em 0.4em 0.15em 0;
+      vertical-align: top;
+      color: var(--text-muted);
+      font-size: 0.9em;
+      white-space: nowrap;
+      text-align: right;
+    }
+    .calc-result-sep {
+      display: table-cell;
+      width: 1ch;
+      max-width: 1ch;
+      padding: 0.15em 0.1em 0.15em 0;
+      vertical-align: top;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .calc-result-val {
+      display: table-cell;
+      padding: 0.15em 0;
+      vertical-align: top;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .calc-result-val--total {
+      font-weight: 600;
+      color: #1a365d;
+    }
+    .calc-result-val--num {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .calc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.03);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .calc-add-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: #fff;
+      color: var(--text);
+      font-size: 0.8rem;
+      cursor: pointer;
+      gap: 0.35rem;
+    }
+    .calc-add-btn:hover {
+      border-color: var(--yc-orange);
+      background: rgba(250, 245, 255, 0.85);
+      color: var(--text);
+    }
+    .calc-order {
+      margin-top: 1rem;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      padding-top: 0.8rem;
+    }
+    .calc-order-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .calc-order-header h2 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .calc-order-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .calc-order-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .calc-order-total {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text);
+      text-align: right;
+    }
+    .calc-order-item {
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.5);
+      overflow: hidden;
+    }
+    .calc-order-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.35rem 0.6rem;
+      cursor: pointer;
+      background: rgba(0,0,0,0.02);
+    }
+    .calc-order-item-main {
+      font-size: 0.78rem;
+    }
+    .calc-order-item-main strong {
+      font-weight: 600;
+    }
+    .calc-order-item-toggle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .calc-order-item-body {
+      padding: 0.4rem 0.6rem 0.5rem;
+      border-top: 1px solid rgba(0,0,0,0.04);
+    }
+    .calc-order-item.collapsed .calc-order-item-body {
+      display: none;
+    }
+    .calc-order-item.collapsed .calc-order-item-toggle::before {
+      content: '▸ ';
+    }
+    .calc-order-item:not(.collapsed) .calc-order-item-toggle::before {
+      content: '▾ ';
+    }
+    .calc-admin {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--header-bg);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem 1.1rem;
+      border: 1px dashed rgba(0,0,0,0.14);
+    }
+    .calc-admin-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.4rem;
+    }
+    .calc-admin-label-strong {
+      font-weight: 600;
+    }
+    .calc-admin-inner {
+      margin-top: 0.35rem;
+    }
+    .calc-admin table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.35rem;
+    }
+    .calc-admin th,
+    .calc-admin td {
+      padding: 0.25rem 0.4rem;
+      text-align: left;
+    }
+    .calc-admin th {
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .calc-admin td:last-child {
+      text-align: right;
+    }
+    .calc-admin-input {
+      width: 5rem;
+      max-width: 100%;
+      padding: 0.2rem 0.35rem;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.18);
+      font: inherit;
+      font-size: 0.75rem;
+      text-align: right;
+    }
+    @media (max-width: 720px) {
+      .calc-page {
+        padding: 1.25rem max(1rem, env(safe-area-inset-left)) 2rem max(1rem, env(safe-area-inset-right));
+      }
+      .calc-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .calc-card,
+      .calc-result,
+      .calc-note {
+        padding: 1rem 1rem;
+      }
+      .calc-input,
+      .calc-select {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://github.com/j0k/">j0k</a>
+    <span class="header-sep">·</span>
+    <a href="../../index.html">На главную</a>
+  </header>
+
+  <main class="page calc-page">
+    <header class="calc-header">
+      <div>
+        <h1 class="calc-title">Калькулятор доставки нерудных материалов</h1>
+        <p class="calc-subtitle">Для менеджера по продажам: цена материала + доставка, онлайн.</p>
+      </div>
+      <a class="calc-back" href="../../cv/cv.html">← CV · таймлайн</a>
+    </header>
+
+    <section class="calc-layout" aria-label="Калькулятор стоимости заказа">
+      <section class="calc-card">
+        <h2>Вводные</h2>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="materialSelect">Материал <span>(стоимость за 1 м³)</span></label>
+          <select id="materialSelect" class="calc-select">
+            <!-- options заполняются из JS -->
+          </select>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="volumeInput">Объём материала, м³</label>
+          <div class="calc-inline">
+            <input id="volumeInput" class="calc-input" type="number" min="0" step="1" value="10">
+            <span>0–1000 м³ · макс. 20 м³ за рейс</span>
+          </div>
+          <div class="calc-slider-row">
+            <div class="calc-slider-inline">
+              <input id="volumeSlider" type="range" min="0" max="1000" step="1" value="100">
+              <span class="calc-slider-hint" id="volumeSliderLabel">≈ 10 м³ · логарифмическая шкала</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <span class="calc-label">Тариф доставки</span>
+          <div class="calc-radio-row" role="radiogroup" aria-label="Тариф доставки">
+            <label class="calc-radio-option">
+              <input type="radio" name="tariff" value="base" checked>
+              <span>Базовый · 3 500 ₽ за рейс</span>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="tariff" value="plus">
+              <span>Базовый + доплата · 4 500 ₽ за рейс</span>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="tariff" value="manual">
+              <span>Ручной ввод · ₽/рейс</span>
+              <input id="manualDeliveryInput" class="calc-input" type="number" min="0" step="50" placeholder="например, 4000" style="max-width: 7rem;">
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <span class="calc-label">Параметры рейса</span>
+          <div class="calc-inline">
+            <span class="calc-badge">Вместимость машины: 20 м³</span>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <button type="button" class="calc-add-btn" id="calcAddBtn">
+            <span aria-hidden="true">➕</span>
+            <span>Добавить в заказ</span>
+          </button>
+          <span class="calc-slider-hint">Сохраняет текущую позицию в заказ справа.</span>
+        </div>
+
+        <div class="calc-table-wrap" aria-label="Справочник цен">
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th>Материал</th>
+                <th>Цена, ₽/м³</th>
+              </tr>
+            </thead>
+            <tbody id="materialsTableBody">
+            </tbody>
+          </table>
+          <table class="calc-table" style="border-top: 1px solid rgba(0,0,0,0.04);">
+            <thead>
+              <tr>
+                <th>Тариф доставки</th>
+                <th>Цена, ₽/рейс</th>
+              </tr>
+            </thead>
+            <tbody id="tariffsTableBody">
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="calc-result" aria-live="polite" id="calcResult">
+        <div class="calc-result-current">
+          <h2>Текущий расчёт</h2>
+          <div id="calcResultCurrentBody">
+            <div class="calc-result-empty">Введите объём и выберите параметры — здесь появится расчёт.</div>
+          </div>
+        </div>
+        <div class="calc-order" id="calcOrder">
+          <div class="calc-order-header">
+            <h2>Заказ</h2>
+            <span class="calc-order-count" id="calcOrderCount">0 позиций</span>
+          </div>
+          <div class="calc-order-list" id="calcOrderList"></div>
+          <div class="calc-order-total" id="calcOrderTotal"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="calc-note">
+      <div>Исходные требования к калькулятору — по задаче на YouDo: <a href="https://youdo.com/t14541853" target="_blank" rel="noopener">youdo.com/t14541853</a>.</div>
+    </section>
+
+    <section class="calc-admin" aria-label="Настройки цен (для администратора)">
+      <div class="calc-admin-toggle">
+        <label>
+          <input type="checkbox" id="adminToggle">
+          <span class="calc-admin-label-strong">Для администратора</span>
+        </label>
+        <span>служебный блок, клиент этого не видит</span>
+      </div>
+      <div class="calc-admin-inner" id="calcAdminInner" hidden>
+        <div>Здесь можно скорректировать цены материалов и тарифов доставки во время разговора с клиентом.</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Материал</th>
+              <th>Цена, ₽/м³</th>
+            </tr>
+          </thead>
+          <tbody id="adminMaterialsBody">
+          </tbody>
+        </table>
+        <table>
+          <thead>
+            <tr>
+              <th>Тариф</th>
+              <th>Цена, ₽/рейс</th>
+            </tr>
+          </thead>
+          <tbody id="adminTariffsBody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      var MATERIALS = {
+        sand: { name: 'Песок карьерный', price: 750, icon: '🏖️' },
+        crushed: { name: 'Щебень фр. 5–20', price: 1100, icon: '🧱' },
+        gravel: { name: 'Гравий', price: 950, icon: '🪨' },
+        screenings: { name: 'Отсев', price: 800, icon: '⚙️' }
+      };
+      var TARIFFS = {
+        base: { name: 'Базовый', price: 3500 },
+        plus: { name: 'Базовый + доплата', price: 4500 }
+      };
+      var TRUCK_CAPACITY = 20;
+
+      var materialEl = document.getElementById('materialSelect');
+      var volumeEl = document.getElementById('volumeInput');
+      var volumeSliderEl = document.getElementById('volumeSlider');
+      var volumeSliderLabelEl = document.getElementById('volumeSliderLabel');
+      var resultEl = document.getElementById('calcResult');
+      var currentBodyEl = document.getElementById('calcResultCurrentBody');
+      var tariffRadios = document.querySelectorAll('input[name="tariff"]');
+      var manualDeliveryEl = document.getElementById('manualDeliveryInput');
+      var materialsTableBody = document.getElementById('materialsTableBody');
+      var tariffsTableBody = document.getElementById('tariffsTableBody');
+      var adminToggle = document.getElementById('adminToggle');
+      var adminInner = document.getElementById('calcAdminInner');
+      var adminMaterialsBody = document.getElementById('adminMaterialsBody');
+      var adminTariffsBody = document.getElementById('adminTariffsBody');
+      var addBtn = document.getElementById('calcAddBtn');
+      var orderListEl = document.getElementById('calcOrderList');
+      var orderCountEl = document.getElementById('calcOrderCount');
+      var orderTotalEl = document.getElementById('calcOrderTotal');
+
+      var orderItems = [];
+      var lastCalcState = null;
+
+      function getTariffValue() {
+        for (var i = 0; i < tariffRadios.length; i++) {
+          if (tariffRadios[i].checked) return tariffRadios[i].value;
+        }
+        return 'base';
+      }
+
+      function formatMoney(value) {
+        return value.toLocaleString('ru-RU', { maximumFractionDigits: 0 });
+      }
+
+      var MAX_VOLUME = 1000;
+
+      function sliderToVolume(sliderValue) {
+        var t = Math.max(0, Math.min(1000, sliderValue)) / 1000;
+        var v = Math.expm1(t * Math.log(1 + MAX_VOLUME));
+        return Math.round(v);
+      }
+
+      function volumeToSlider(volume) {
+        var v = Math.max(0, Math.min(MAX_VOLUME, volume));
+        if (v === 0) return 0;
+        var t = Math.log(1 + v) / Math.log(1 + MAX_VOLUME);
+        return Math.round(t * 1000);
+      }
+
+      function updateSliderLabel(volume) {
+        if (!volumeSliderLabelEl) return;
+        volumeSliderLabelEl.textContent = '≈ ' + volume.toLocaleString('ru-RU') + ' м³ · логарифмическая шкала';
+      }
+
+      function renderMaterialsAndTariffs() {
+        if (materialEl) {
+          var current = materialEl.value;
+          var opts = '';
+          Object.keys(MATERIALS).forEach(function(key) {
+            var m = MATERIALS[key];
+            var label = (m.icon ? m.icon + ' ' : '') + m.name + ' · ' + formatMoney(m.price) + ' ₽/м³';
+            opts += '<option value="' + key + '">' + label + '</option>';
+          });
+          materialEl.innerHTML = opts;
+          if (current && MATERIALS[current]) {
+            materialEl.value = current;
+          }
+        }
+
+        if (materialsTableBody) {
+          var rows = '';
+          Object.keys(MATERIALS).forEach(function(key) {
+            var m = MATERIALS[key];
+            rows += '<tr><td>' + (m.icon ? m.icon + ' ' : '') + m.name + '</td><td>' + formatMoney(m.price) + '</td></tr>';
+          });
+          materialsTableBody.innerHTML = rows;
+        }
+
+        if (tariffsTableBody) {
+          var trows = '';
+          Object.keys(TARIFFS).forEach(function(key) {
+            var t = TARIFFS[key];
+            trows += '<tr><td>' + t.name + '</td><td>' + formatMoney(t.price) + '</td></tr>';
+          });
+          tariffsTableBody.innerHTML = trows;
+        }
+
+        if (adminMaterialsBody) {
+          var aRows = '';
+          Object.keys(MATERIALS).forEach(function(key) {
+            var m = MATERIALS[key];
+            aRows += '<tr><td>' + (m.icon ? m.icon + ' ' : '') + m.name + '</td><td><input class="calc-admin-input" type="number" min="0" step="50" value="' + m.price + '" data-kind="material" data-key="' + key + '"></td></tr>';
+          });
+          adminMaterialsBody.innerHTML = aRows;
+        }
+
+        if (adminTariffsBody) {
+          var aTrows = '';
+          Object.keys(TARIFFS).forEach(function(key) {
+            var t = TARIFFS[key];
+            aTrows += '<tr><td>' + t.name + '</td><td><input class="calc-admin-input" type="number" min="0" step="100" value="' + t.price + '" data-kind="tariff" data-key="' + key + '"></td></tr>';
+          });
+          adminTariffsBody.innerHTML = aTrows;
+        }
+
+        if (adminMaterialsBody || adminTariffsBody) {
+          var handler = function(e) {
+            var target = e.target;
+            if (!target || !target.classList || !target.classList.contains('calc-admin-input')) return;
+            var kind = target.getAttribute('data-kind');
+            var key = target.getAttribute('data-key');
+            var val = parseFloat(target.value);
+            if (!isFinite(val) || val < 0) val = 0;
+            target.value = String(val);
+            if (kind === 'material' && MATERIALS[key]) {
+              MATERIALS[key].price = val;
+            } else if (kind === 'tariff' && TARIFFS[key]) {
+              TARIFFS[key].price = val;
+            }
+            renderMaterialsAndTariffs();
+            recalc();
+          };
+          adminMaterialsBody.oninput = handler;
+          adminTariffsBody.oninput = handler;
+        }
+      }
+
+      function recalc() {
+        var materialKey = materialEl.value;
+        var material = MATERIALS[materialKey];
+        var tariffKey = getTariffValue();
+        var volume = parseFloat(String(volumeEl.value || '').replace(',', '.'));
+        var manualDelivery = manualDeliveryEl ? parseFloat(manualDeliveryEl.value) : NaN;
+        var hasManualDelivery = (tariffKey === 'manual') && isFinite(manualDelivery) && manualDelivery > 0;
+
+        if (!material || !isFinite(volume) || volume <= 0) {
+          if (currentBodyEl) {
+            currentBodyEl.innerHTML = '<div class="calc-result-empty">Введите объём и выберите параметры — здесь появится расчёт.</div>';
+          } else {
+            resultEl.innerHTML = '<div class="calc-result-empty">Введите объём и выберите параметры — здесь появится расчёт.</div>';
+          }
+          lastCalcState = null;
+          return;
+        }
+
+        if (tariffKey === 'manual' && !hasManualDelivery) {
+          if (currentBodyEl) {
+            currentBodyEl.innerHTML = '<div class="calc-result-empty">Укажите ручную стоимость доставки за рейс.</div>';
+          } else {
+            resultEl.innerHTML = '<div class="calc-result-empty">Укажите ручную стоимость доставки за рейс.</div>';
+          }
+          lastCalcState = null;
+          return;
+        }
+
+        var tariff = tariffKey === 'manual' ? null : TARIFFS[tariffKey];
+        if (!tariff && tariffKey !== 'manual') {
+          if (currentBodyEl) {
+            currentBodyEl.innerHTML = '<div class="calc-result-empty">Выберите тариф доставки.</div>';
+          } else {
+            resultEl.innerHTML = '<div class="calc-result-empty">Выберите тариф доставки.</div>';
+          }
+          lastCalcState = null;
+          return;
+        }
+
+        var capacity = TRUCK_CAPACITY;
+
+        var trips = Math.ceil(volume / capacity);
+        if (trips < 1) trips = 1;
+
+        var materialCost = material.price * volume;
+        var deliveryCostPerTrip;
+        var tariffName;
+        if (tariffKey === 'manual') {
+          deliveryCostPerTrip = manualDelivery;
+          tariffName = 'Ручной ввод';
+        } else {
+          deliveryCostPerTrip = tariff.price;
+          tariffName = tariff.name;
+        }
+        var deliveryCost = deliveryCostPerTrip * trips;
+        var total = materialCost + deliveryCost;
+
+        lastCalcState = {
+          materialKey: materialKey,
+          materialName: material.name,
+          materialIcon: material.icon || '',
+          materialPrice: material.price,
+          tariffKey: tariffKey,
+          tariffName: tariffName,
+          tariffPrice: deliveryCostPerTrip,
+          volume: volume,
+          capacity: capacity,
+          trips: trips,
+          materialCost: materialCost,
+          deliveryCost: deliveryCost,
+          total: total
+        };
+
+        var html = '<div class="calc-result-table">';
+        var matLabel = (material.icon ? material.icon + ' ' : '') + material.name + ' · ' + formatMoney(material.price) + ' ₽/м³';
+        html += '<div class="calc-result-row"><span class="calc-result-key">материал</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + matLabel + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">объём</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + volume.toFixed(1).replace('.', ',') + ' м³</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">ёмкость</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + capacity + ' м³ за рейс</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">рейсы</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + trips + '</span></div>';
+        var tariffLabel = tariffName + ' · ' + formatMoney(deliveryCostPerTrip) + ' ₽/рейс';
+        html += '<div class="calc-result-row"><span class="calc-result-key">тариф</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + tariffLabel + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">материал</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + formatMoney(materialCost) + ' ₽</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">доставка</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + formatMoney(deliveryCost) + ' ₽</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">итого</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total calc-result-val--num">' + formatMoney(total) + ' ₽</span></div>';
+        html += '</div>';
+
+        if (currentBodyEl) {
+          currentBodyEl.innerHTML = html;
+        } else {
+          resultEl.innerHTML = html;
+        }
+      }
+
+      function renderOrderList() {
+        if (!orderListEl || !orderCountEl) return;
+        if (orderItems.length === 0) {
+          orderListEl.innerHTML = '<div class="calc-result-empty">Заказ пока пуст.</div>';
+          orderCountEl.textContent = '0 позиций';
+          if (orderTotalEl) orderTotalEl.textContent = '';
+          return;
+        }
+        var totalAll = 0;
+        orderItems.forEach(function(item) { totalAll += item.total; });
+        orderCountEl.textContent = orderItems.length + ' поз.';
+        var html = '';
+        orderItems.forEach(function(item, idx) {
+          var matLabel = (item.materialIcon ? item.materialIcon + ' ' : '') + item.materialName;
+          var headerText = matLabel + ' · ' + item.volume.toFixed(1).replace('.', ',') + ' м³ · ' + item.trips + ' рейс(ов) · ' + formatMoney(item.total) + ' ₽';
+          html += '<div class="calc-order-item collapsed" data-idx="' + idx + '">';
+          html += '<div class="calc-order-item-header">';
+          html += '<div class="calc-order-item-main"><strong>' + headerText + '</strong></div>';
+          html += '<div class="calc-order-item-toggle">детали</div>';
+          html += '</div>';
+          html += '<div class="calc-order-item-body">';
+          html += '<div class="calc-result-table">';
+          html += '<div class="calc-result-row"><span class="calc-result-key">материал</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + matLabel + ' · ' + formatMoney(item.materialPrice) + ' ₽/м³</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">объём</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + item.volume.toFixed(1).replace('.', ',') + ' м³</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">ёмкость</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + item.capacity + ' м³ за рейс</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">рейсы</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + item.trips + '</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">тариф</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.tariffName + ' · ' + formatMoney(item.tariffPrice) + ' ₽/рейс</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">материал</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + formatMoney(item.materialCost) + ' ₽</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">доставка</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--num">' + formatMoney(item.deliveryCost) + ' ₽</span></div>';
+          html += '<div class="calc-result-row"><span class="calc-result-key">итого</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total calc-result-val--num">' + formatMoney(item.total) + ' ₽</span></div>';
+          html += '</div>';
+          html += '</div></div>';
+        });
+        orderListEl.innerHTML = html;
+        if (orderTotalEl) {
+          orderTotalEl.textContent = 'Итого по заказу: ' + formatMoney(totalAll) + ' ₽';
+        }
+        var headers = orderListEl.querySelectorAll('.calc-order-item-header');
+        headers.forEach(function(h) {
+          h.addEventListener('click', function() {
+            var parent = h.closest('.calc-order-item');
+            if (!parent) return;
+            parent.classList.toggle('collapsed');
+          });
+        });
+      }
+
+      materialEl.addEventListener('change', recalc);
+
+      volumeEl.addEventListener('input', function() {
+        var v = parseFloat(String(volumeEl.value || '').replace(',', '.'));
+        if (!isFinite(v) || v < 0) v = 0;
+        volumeEl.value = String(v);
+        if (volumeSliderEl) {
+          volumeSliderEl.value = String(volumeToSlider(v));
+        }
+        updateSliderLabel(v);
+        recalc();
+      });
+
+      if (volumeSliderEl) {
+        volumeSliderEl.addEventListener('input', function() {
+          var raw = parseInt(volumeSliderEl.value, 10);
+          if (!isFinite(raw)) raw = 0;
+          var v = sliderToVolume(raw);
+          volumeEl.value = String(v);
+          updateSliderLabel(v);
+          recalc();
+        });
+      }
+
+      if (manualDeliveryEl) {
+        manualDeliveryEl.addEventListener('input', function() {
+          var v = parseFloat(manualDeliveryEl.value);
+          if (!isFinite(v) || v < 0) v = 0;
+          manualDeliveryEl.value = v ? String(v) : '';
+          recalc();
+        });
+      }
+
+      Array.prototype.forEach.call(tariffRadios, function(r) {
+        r.addEventListener('change', recalc);
+      });
+
+      (function initVolume() {
+        var initialVolume = 10;
+        volumeEl.value = String(initialVolume);
+        if (volumeSliderEl) {
+          volumeSliderEl.value = String(volumeToSlider(initialVolume));
+          updateSliderLabel(initialVolume);
+        }
+      })();
+
+      renderMaterialsAndTariffs();
+
+      if (addBtn) {
+        addBtn.addEventListener('click', function() {
+          if (!lastCalcState) return;
+          orderItems.push(JSON.parse(JSON.stringify(lastCalcState)));
+          renderOrderList();
+        });
+      }
+
+      if (adminToggle && adminInner) {
+        adminToggle.addEventListener('change', function() {
+          adminInner.hidden = !adminToggle.checked;
+        });
+      }
+
+      recalc();
+      renderOrderList();
+    })();
+  </script>
+</body>
+</html>

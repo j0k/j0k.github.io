@@ -1,0 +1,684 @@
+PERSONAL INFORMATION
+Yuri Konoplev
+
+
+ 
+193318, Russia, Saint-Petersburg, prospect Pjatiletok, house 8, corpus 4, apt. 153
+ +7-911-219-7664      +7-812-440-12-74    
+juri.konoplev@gmail.com 
+
+
+ Skype: old3r-br0ther
+ Github: j0k
+ LinkedIn: yuri-konoplev
+ Fb: Yuri Konoplev
+ Tw: @keytheorem
+ Tele: @bimodaling
+ Homepage: juri-konoplev.pro
+Sex Male | Date of birth 01/01/1989 | Place of Birth Moscow 
+
+
+AREAS OF EXPERTISE AND INTEREST
+Graduated in Computer Science and Neuroscience. 6 years’ experience in software development: finance tech, neuro tech, blockchain, compression algorithms, Python, C++, Wolfram Mathematica and MATLAB. Familiar with Github flow and Unit testing. Areas of interest: signal processing, development and engineering in general, biofeedback protocols, virtual reality, brain-computer interfaces, human-computer interaction, computer languages, artificial intelligence, deep learning, algorithms, crypto-currencies and blockchain, automation, startups, lucid dreams, science communication and social psychology.
+
+Graduated in Computer Science and Neuroscience. 7 years’ experience in software development: finance
+tech, neuro tech, blockchain, compression algorithms, artificial intelligence, Python, C++, Wolfram
+Mathematica and MATLAB. Familiar with Github flow, Unit testing, microservice architecture and KISS
+principle. Areas of interest: software development and engineering in general, useful tools, AI and
+machine learning in general, coding styles, high-performance algorithms and optimization, recurrent
+neural networks, biofeedback protocols, start-ups,
+
+lucid dreams, science communication, assisting, zero-
+budget marketing, psychology and completed
+
+products with users. Develop paired programming
+practice, mastering SCRUM and 2-week sprints, use
+Kanban and learn LEAN.
+My today workflow is combining 80/20 principle and
+win-win approach, choosing most valuable and
+relevant targets. I determinate project foundation
+and proportionate targets to that foundation. If it’s
+necessary to deliver specific thing I mark it as
+important and focus my primary time on it. I build
+my daily process based on realistic timing and comfortable daily workflow with relax and body respect.
+Create pipeline which leads to success via small, visible and inspirable steps. Each teammate has own
+favorite things and worldview on how something can be done/delivered and what makes happy, I
+communicate with that point of view with respect and motivation. People’s difference and identities are
+additional forces for motion. When key target is clear it useful to project it into SMARTER target basis. I
+minimize time and risk to time for key targets. I create support targets and markup support area to
+highlight grounds for stable development. Some key metrics will be visible only in driving and after
+achieving some threshold. Part of result work can be copied from already done perfect works using
+“Copy It” principle. When something goes wrong for several cycles – I make focus on that fails, reframe
+approach, make change in effort points which look can play leverage role in solution, SWOT analysis also
+helps. By the way I’m flexible with described approach, any improvements or established rules. Suppose
+that for most moments key element is in proactive action and coordinated action (for team) and its
+good when it brings bright and desired future with ecological relation to the now moment.
+My chosen personal developing quality for 2023 is fast timings during negotiations.
+
+Launched 4 companies from ∅ : 2 in Russia [VR/languages], 1 in Cyprus [fintech/algotrading], 1 in USA [neurotech/mobile app]. Results: 2 fails, 1 - +/-, 1 – success [fintech]. 
+
+
+WORK EXPERIENCE
+ 
+
+ 2021.12 – 2022.07 Huawei, Cloud Gaming Team
+Role: Team-leader | full-time, St. Petersburg
+Keywords: upscaling, super-resolution, video/image processing, neural nets, #core #entertainment
+Used technologies:
+▪ PyTorch, Tensorflow, OpenCV
+▪ Clear.ML, Docker
+▪ Python
+In-short: as team we researched four dimensions to improve Cloud Gaming and Metaverse experience:
+1) video formats H.264, H.265, 2) popular games, 3) network and 4) CPU/GPU utilization. Result: focus on
+video with super-resolution for up-scaling. Created neural architectures, configurable learning
+infrastructure and web+console utils to check the result.
+Team size: 5 our team, 12 full-team with co-team in China, Company size: 500 000
+
+2020.03 – 2021.07
+
+
+Software Product (“Программный продукт”)
+Head of Artificial Intelligence Direction (St. Petersburg) // full time 
+
+Used technologies:
+Deep Learning with Tensor Flow & PyTorch
+Text understanding/ Emotion recognition / Transfer learning / Deep Net visualization
+Python / JS
+
+Launching AI projects for text and emotion recognitions & understanding. #beginning   
+Team size: 6  , Company size: 500+
+
+
+2019.08 – 2020.01 
+
+
+
+
+
+
+Adoria Soft
+Software Engineer // Distant work, full/part-time   
+
+Used technologies:
+Javascript, Typescript
+Java
+Blockchain cryptography
+
+I translated VeriBlock wallet from Java to JS and then into Typescript. It’s opensource now. We have decentralized team and efficiently used JIRA, github flow and calls inside the team.
+ 
+Team: 7 
+
+
+
+2019.03 – 2019.06 
+
+
+
+
+
+
+Waves Platform 
+Software Engineer at Social Net project // Moscow 
+
+Used technologies:
+RIDE for dApps,
+JavaScript, C++ for a little
+
+Our Social Net project was firstly mentioned here. The result of my work were 2 tools to work with Waves Blockchain and the smartcontract which works like social profile (with technical documentation). 
+ 
+Team size: 4  at the start, 9 at the end. Company size: 100+
+
+
+2016.12 -  
+
+
+
+
+
+
+TuSion – Tune your Vision
+Founder, CTO then C Research Officer // St. Petersburg , New York 
+Twitter
+Used technologies:
+Neuroheadsets: NeuroSky BrainWave, BrainLink, Muse
+Kotlin, Java, Android
+Processing for Generative Art
+
+TuSion is a platform and mobile app that improves cognitive abilities in terms of concentration and relaxation levels, reduces stress levels and helps treat some psychological problems. From other side Tusion is neural communication via Art App oriented for well-tuned brain development. It is like cold shower for your brain ☺ The main idea is to enhance plastic or liquid perception both as brain KPI. Imagine the perception game based on visual objects – that is Tusion. The foundation of Tusion is a big role of perception gestalts and A.Deikman and V.Petrenko papers on bimodal consciousness both rhythmic pictures. It’s the most beautiful app for neuroheadsets which I ever thought about. TuSion raised 170K euro from angel invester and Starta Accelerator, showed the app on World Mobile Congress (Barcelona), pitched startup at Polar Bear Pitching in Oulu (Finland), VK Fest, present app at SPIEF’2018 and pitched it lot of times in New York. We pivoted several times: from art to neurogaming then to mindfulness B2B app and then to neuromarketing tool. Also we organized 1 brain-hackathon at Ingria place (St.Petersburg) and have 600+ app downloads. 
+Team: 5-10 
+
+
+2017.08 – 2018.02 
+
+
+
+
+
+
+Contuur, Cryptology 
+Software engineer // Limassol, Cyprus 
+
+Used technologies:
+Python
+Kafka, Pandas, Postgresql
+REST API, WebSocket
+
+On the first step the main purpose was to build arbitrage robot for cryptoexchanges. We write 15+ market data dumpers for such exchanges like Bitfinex, Kraken, Poloniex. The infrastructure had the fine module style design with market data dumping gateways, trading gateways and strategy logic. It’s took us 3 months to start trading workflow and plus 2 months to start make profit. 
+ 
+Team: 3during first 3 months, then 7 people.
+
+
+
+2016.09 – 2017.02  
+
+
+
+
+
+
+Deep Learning Projects + Student Supervising
+
+Used technologies:
+Deep Learning
+Convolution NN, Deep NN, Caffe, DIGITS (nVidia)
+Regression
+Face recognition algorithms, 3d reconstruction algorithms
+
+Main purpose was to study some deep learning techniques via any classic task. The chosen task was the “Face landmark point detection”. Starting from that point I go through various photogrammetry techniques and 3d reconstruction approaches [DenseFace3D], object detection algorithms (YOLO), face alignment algorithms [1-3000fps],[2-FaceX], [DL-MultiTask] . Also I present two seminars on deep learning theme at ITMO University and take some students for co-working and co-creation process. The most outstanding results which I found on 3d reconstruction theme were Hao Li researches. The most outstanding both simple modification of DL nets which I studied – Kaiming He: Deep Residual Nets.
+Team: 2-25 
+
+
+2016 
+
+
+
+
+
+
+Hero Talk experimental project
+Co-Founder, Unity developer // St. Petersburg, Moscow  
+herotalk.xyz
+Used technologies:
+Video 360
+VR with Samsung Gear VR
+Learning foreign languages and cultures.
+Bootstrapping
+
+Slogan: “to show a man, to show the world”. This experimental project was founded during accelerating at the Founder Institute. Starting with idea of using generative VR and neurocinema for speech development I have introduced 360 degree video scenes for language learning. User becomes as a part of typical dialogs with native speakers inside 360 VR environment and experiences inside audio-visual context of various situations. Imagine forks inside video which gives you right feedback. That was all about learning languages and cultureelements in virtual reality.
+We have been developing the minimal valuable product and recorded 10+ hours of 360 video. Presentation at Imagine Cup Russian Final is here. 
+Team: 5 
+
+
+2014.08 – 2016
+
+
+
+
+
+
+
+Co-Founder of æMind IDENTiTy project // St. Petersburg 
+Developer of BCI, engineer preoccupied in HR, pitching, science communication
+www.mindidentity.com (closed)
+Used technologies: 
+Virtual Reality with Google Cardboard and Oculus
+Unity and C#, Python
+IVoRy Arduino-based device
+BCI NeuroSky Brainwave gadget
+We started the project at Science Hackday 2014. As a result of the 48h developing process we have produced mobile application in which you can control a player using ‘meditation’ and ‘attention’ parameters. We won the 1st prize – Best Tech. Idea. Afterwords we took part at the Intel RealSense Challenge 2015 and were in TOP250 ideas. Now the dominant of æMind has changed a bit - we developed the VR suit prototype. The patent was filed (RUS 2016131229/08) and we were nere to the first industrial sample.
+Team: 4 at start, 7 at maximum
+
+
+
+
+
+
+
+
+2012-2013 
+Developer at Automated Intelligence Systems Inc.
+
+
+www.aintsysgroup.com
+Key activities & used technologies:  
+
+Stock exchange programming
+C/C++, threads, boost; Python daemon
+Wolfram Mathematica
+Bitcoin Daemon patching
+Develop and research the multi-agent system for multi-currency economics
+
+
+#Finance tech sector 
+Team: 2, company size: 100+
+
+
+2010-2011
+
+
+
+Student-researcher and intern at EMC Corporation
+www.emc.com
+Key activities & used technologies:  
+Compression algorithms with JPEG target
+MATLAB, C/C++
+#Cloud and virtualization sector 
+Team: 5+ men, company >16 000 people
+Supervised by Ph.D. I. Bocharova my team and me did the first part of the project together. 
+I was among 5 students who researched JPEG compression improvements. I become the EMC intern after MATLAB unit and demonstration were finished. My work at EMC was focused on JPEG recompression algorithm implementation for EMC filesystem. C++ was used as a primary language. We recompressed JPEG files by 17% on average.
+
+
+POST-GRADUATE EDUCATION
+
+
+
+2015 – 2019 (pause)
+
+Ph.D. (Physiology)
+
+
+N.P. Bechtereva Human Brain Institute, Russian Academy of Sciences
+→ Neurobiology of Action Programming Laboratory
+Supervised by Dr. of Biology, Prof., J. D. Kropotov
+Generally, I was free roaming between neurofeedback, brain-computer interfacing and their combinations. I ran an experiment on the visual categorization process., measured EEG and presented visual stimuli for a short time (100 ms), also testees are asked to press the button in special visual cases. In fact, we measure event-related categorization components which I hope to use for BCI. TuSion company was inspired during PhD. F	
+
+
+EDUCATION AND TRAINING
+
+
+
+2013 – 2015
+
+
+
+MS in Biology, profile: neurobiology and psychophysiology
+
+
+Saint-Petersburg State University (SPbSU)
+→ Biology Faculty
+→→ Higher Nervous Activity and Psychophysiology Department.
+Diploma thesis: “Memory consolidation research with Θ–rhythm neurofeedback technique usage”,
+supervised by Ph.D., Assistant Prof., I. E. Kanunikov.
+More than 80 EEG experiments were hold using Θ–rhythm music neurofeedback protocol which I have developed using MATLAB and OpenVIBE.
+The key point to go back to the University was an aspiration to get fine basis in Brain Sciences and Biology in general. After all the world vision was incredibly changed. Each day activity got psychology and physiology dimensions. On the one hand, Saint-Petersburg University shared various approaches of human understanding and research. On the other hand, enough practice hours were spent on animal behavior, EEG, ERP, ECG, acoustics, neuronal colonies and cells topics.
+
+
+
+
+2010-2012  
+2006-2010
+
+Master Degree in Computer Science
+Bachelor Degree in Computer Science
+National Research University of Information Technologies, Mechanics and Optics, Saint-Petersurg
+→ Faculty of Information Technologies and Programming
+→→ Computer Technologies Department
+MS diploma thesis: “Falman neural nets layers generation with genetic programming approach usage”, supervised by prof., dr. of Technical Sciences, I. P. Gurov
+BS diploma thesis: “A set of algorithms and programs for behavioral risks assessment in information lack terms”, supervised by prof., dr. of Phys.-Math. Science, A. L. Tulupev
+
+My first neural network, first Common Python Compiler in Common Lisp, first Internet shop, first algorithms of genetic programming, first Markov chain speaking bot for social network VK were coded here. Common Python compiler transformed to dialog programming concept and AML proto language. 
+
+
+2003-2006
+2002-2003
+
+
+Graduated from Physics-Mathematics Lyceum № 30
+Laboratory for Continuous Mathematical Education
+Saint-Petersburg
+
+
+
+
+ADDTITONAL TRAINING
+
+2018.09 – 2018.11
+
+Accelerator program: Startup School
+YC Online Track
+
+
+2018.08 – 2018.11
+
+Accelerator program at Starta Ventures for TuSion startup 
+
+
+Offline Track in New York  + 130k$ investment
+
+
+2015 – 2018
+
+Diploma in French Civilization
+
+
+French University College in Saint-Petersburg (at SPbSU)
+→ Specializaions: law and philosophy
+Topics as civil code, concept and nature of the Contract, French law reformation, law novels, the principle of responsibility, law proofs and proof principles, mechanisms of law transfer, contact compilation terms form the basis of the Law courses. 
+Philosophy themes: emancipation, renaissance, French and Russian revolutions, modern revolution ideas and their decline, disillusion, un-idealization and ideal horizon, Russian avant-garde, existence orientation and disorientation, world and political visions, theoretical interpretation and practical transformation.
+2015 Fall
+
+
+
+Accelerator program
+
+
+Founder Institute in Saint-Petersburg
+→ The program was about startups. Startups are being done here. FI is an idea-stage accelerator.
+Main topics: idea development, costumer development, business plans and finance metrics, revenue steps, legal concepts, roles, market research, marketing basics, hiring, outsourcing, sales, presentation and publicity. Here we have mentors, experts, advisors and journalists. Hero Talk project was born here. During 3 months we were developing projects and were meeting for pitching, listening for experts on Mondays. After all, I think that FI is a big step at the beginning of the entrepreneurship road.
+#Startups and entrepreneurship
+
+
+
+
+
+Courses:
+
+
+ Creative Programming for Digital Media & Mobile Apps (2014) [Coursera]
+ Malicious Software and its Underground Economy: Two Sides to Every Story (2014) [Coursera]
+ An Introduction to Consumer Neuroscience & Neuromarketing (2016) [Coursera]
+ Art & Ideas: Teaching with Themes (2016) [Coursera]
+ Mastring web3.0 with Waves: RIDE for dApps (2019) [Waves | Stepic.ru]
+ Cryptography I, author: Dan Boneh (2019) [Coursera]
+ Building AI Powered Chatbots Without Programming (2019) [Coursera]
+
+
+PERSONAL SKILLS
+ 
+
+
+Mother tongue(s)
+Russian
+
+
+
+
+Other language(s)
+UNDERSTANDING 
+SPEAKING 
+WRITING 
+Listening 
+Reading 
+Spoken interaction 
+Spoken production 
+
+
+English
+Advanced
+Proficient
+Advanced
+Advanced
+Intermediate
+German
+Basics
+Basics
+Basics
+Basics
+Basics
+Chinese
+-
+Starting
+-
+Early beginning
+Starting
+
+
+Communication skills
+Fine communication and leadership skills. I am very socialized person and participated as a member of various clubs and organizations: dance and experimental music clubs, judo, karate, wing-chun, aikido and wu-shu sections, coders and biologists teams, volunteering, painting and scientist schools. People and horizontal communication my best friends.
+
+
+Organisational / managerial skills
+Supervised Highest Mathematics bachelor student Tatiana Kryazh at ITMO University with theme “Recognition EEG Patterns”. Tatiana successfully graduated at 17 June 2017.   
+Organized HeroTalk (2016) and aeMind IDENTiTy (2014) (Co-Founder) startups.
+Organized the ITMO student team for Microsoft Imagine Cup 2015, 
+the team won St.Petersburg stage winners and participate at All-Russian MS IC Final. 
+Organized the aeMind team for Intel RealSense Challenge 2015. Awarded as one of TOP250 projects.
+Managed one developer during my work at AIS (2013).
+Hold 200 EEG experiments with people during my MS at SPbSU and PhD at IHB RAS.
+Co-organized night lucid-dream experiments at SPbSU (in team with V. Skabelkin) (2014).
+Organized A. N. Shepovalnikov’s public lecture at SPbSU (2014).
+Presented a social project “Multi-Disciplinary Society: Synesthesies” at Sense Land Forum, Vladimir, 2015.
+
+
+Computer languages
+
+
+1999 - 2000
+Basic, my first language
+2000 - 2006
+Pascal, Delphi
+2003 - now
+C
+2007 - now
+C++
+2003 – now
+2005 – now
+Perl
+complex shell scripts: Perl, BASH, awk, sed
+2004 - [2013]
+Assembler
+2007 - now
+Java
+2008 - 2010, 2014 - now
+C#, C# inside Unity
+2010 - now
+Python. Py is my common language by the way.
+2010 - now
+Mathematica
+2011 – rare now
+2011 – now
+2011 - now
+2013 – now
+2017 - now
+2019 – now
+2019-now
+Common Lisp with Schema. I opened None-language on January 2016. 
+J (APL/J)
+AML, sometimes I develop principles, examples and snippets for that language. 
+JavaScript and Node.Js
+Kotlin
+RIDE for decentralized applications (smartcontracts)
+Typescript. like it.
+
+
+Computer skills
+MS Windows and Linux with 6 years on Gentoo Linux. 
+
+These programming libs I were used in different times: Socket, QT (PyQT, PyQWT), MFC, WinAPI, TJPG, OpenGL, DirectX, Tk, AIChip, Apache Thrift, Clojuratica, QuickFIX, CppTcl & CppTk, Bitcoind, Boost, Pandas. Have deal with OllyDbg and IDA Pro. Also I used Caffe and DIGITS frameworks for deep learning for a bit. Love Kafka as stream DB.
+
+Summing up, I am inclined in high-level notations that can be improved by problem-depended concepts. DSL is a good example. Also I appreciate graceful concepts which lie within APL(J) languages; that way of thinking leads to succinctly understanding of the problem. C++ was the primary language wherever I have worked before Waves. I prefer Python, Perl and inter-language communication. Also I experienced with neurogadgets such as Emotiv Headset, Neurosky Brainwave, MUSE and clinical EEG devices like MITSAR.
+
+
+
+
+Awards & achievements
+
+
+2019
+2018
+Launched homepage at silkmind.com
+Acceleration in New York Accelerator with a super high-tech neuro startup TuSion.
+2018
+Profitable arbitrage trading strategy developed from ZERO (with team in Cyprus).
+2017
+
+
+My first supervised bachelor student Tatiana Kryazh who graduated from ITMO University, with BS. Tatiana’s diploma theme was “Recognition of EEG Patterns”.
+2017
+1st place at Visual Art hackathon (VR nomination) with TuSion VR Space app, SPb
+2017
+Won 4000$ at Legal School International at Ingria accelerator for startup law support.
+2016
+Microsoft Imagine Cup Final with proj. Hero Talk (Moscow)
+2016
+Project: VR Tetris: existence. Prize on AR & VR Hackathon at St.Petersburg
+2015
+Our Microsoft Imagine Cup team aeMind IDEntiTY won North-Western subregion final
+2015
+First grant. S.M.A.R.T. & IIDF, Bortnikov foundation
+Project: “Development of the psychology and psychophysiology interactive model of two-side
+human interaction and virtual reality. Conscious and unconscious changes of measured 
+psychophysiology parameters are used for model controlling”.
+Total: 8.000 USD
+2015
+Intel Real Sense Challenge, TOP250 ideas. Won: NUC PC & 2 RealSense Cameras
+2014
+First registered night lucid dream using EEG at Biology Faculty (in team with V. Skabelkin). We repeat a classic LaBerge experiment with TDCS. The idea was to send a message using eye-movement during sleep-state with support of Ursula Voss reports style. Also I classify it as my greatest hack ^.
+2014
+Saint-Petersburg Science Hackday, 1st place: best tech idea
+2013
+
+
+A.I. Contest” at www.CoderCharts.com, TOP5 winners
+Coderchars was similar to modern hackerrank.
+2003
+3rd place at programming contest among Saint-Petersburg Schools for of the eighth grade pupils.
+
+
+
+
+Developed tools 
+
+
+
+
+2020
+
+
+
+
+
+
+2013
+Just Mem It (JMI) tool – tool for memory and skill development. 
+About. Tool based on forgetting curve idea. You add information you want to memorise in terms of title, description and hint. Then choose a reminder scale for example: 20 minutes, then 8 hour, 1 day, 1 week and so on. JMI will pop-up with reminder window.  
+Used technologies: Python 3.7 with dataclasses and TK (tkinter).
+Links: git, development flow and time calculator for remind scales.
+
+fp – file preload tool. Fp generates C code for preloading binary code (like .dll and .so) before running any program. Was useful for solving conflicts in Linux packages.  
+Links: git. 
+
+Volunteering 
+
+
+  2019
+
+2013-2015
+  2006
+Chaos Constructions 2019. CC is a largest Computer Art festival in Russia; best demo party. SPb
+Took part in 20+ of psychology experiments at SPbSU, Psychology Faculty.
+Volunteer at ACM ICPC 2006-2007 semi-finals (North-western sub region), SPb
+
+Teaching 
+
+
+2019.07 – 2019.08
+
+2016.10 - 2016.12
+
+
+2014
+
+
+ASP.NET + MVC at Full-stack programming school #ingoscode. Collaborative educ project between Phoenix educ-company, Ingostrah company and MIPT, [25 students], Moscow
+
+Course “Algorithms of Brain-Computer Interface (BCI)”, ITMO University
+Discussing and implementing modern algorithms of BCI with Computer Science students.
+After course had two students on themes: BCI+DeepLearning.
+Public lecture for high school pupils on topic “Dreams. History of somnology. Waking sleep cycle. Modern hypothesis”, SPbSU Open Lecture initiative
+
+
+Oral reports
+
+
+2019
+inchamp.ru: Can neurotechnologies help to grow a super-genie child?  
+2018
+“Brain-Computer is talking”, Y.Konoplev, Winter Psychology School at SPbSU
+2016
+“Review of data-smashing processing principle”, Y. Konoplev, IEEE International Symposium «Video and audio signal processing in the context of Neurotechnologies», SPb, Russia
+2016
+“Hacking the unconscious physiology”, Y. Konoplev, HackMeeting 0x13, Italy, Pisa
+2012
+“Falman Neural Nets Layers Generation with Genetic Programming Approach Usage”, Y. Konoplev, SPISOK 2012 (SPbSU), SPb, Russia
+
+
+
+
+Schools & Conferences
+Brain-Computer Interfaces meetups in NY, Oct-Nov 2018
+International Art-therapy Conference IX, Moscow, May 18-20, 2018
+Social Engineering School, August 2016, August 2017 
+Sense Land: Young scientists and teachers of IT. Vladimirskaja area, July 2016
+International Winter Psychology School at Saint-Peterburg State University, Leningradskaja area, Vostok-6, 2014, 2015, 2016, 2017, 2018, 2019
+Complexity Session, Skolkovo Open University, Moscow, 2015
+Healthy and Damaged Brain, IHB RAS, St.Petersburg, 2015
+Sense Land: Non-profit Social Orgranizations, Vladimirskaja area, 2015
+St.Petersburg International Innovation Forum, SPb, 2014
+Technological brokers for Science-Industry Communication, ITMO, SPb, 2014
+Summer neurolinquistic school “Introduction to the Contemprorary Neurolinquistics”, HSE, Moscow, 2013
+High-performance Computing and Computer Modelling: The Big Data World, ITMO, SPb, 2013
+
+
+Driving licence
+
+
+Yes
+Patents
+2016.07.28
+
+
+
+
+
+
+A
+System and method for virtual object managing
+[number: 2016131229/08 (048521), in Russia]
+Co-author with V. Konovalov, S. Kapulkin and A. Bilichenko.
+This patent support aeMind IDEntity startup and describes the principle of interpretation motor micromovement and its translation to full-range movements inside virtual reality.
+
+ 
+Publications
+2018
+
+
+
+2012
+A
+Grin-Yatsenko, V. A., Othmer, S., Ponomarev, V. A., Evdokimov, S. A., Konoplev, Y. Y., & Kropotov, J. D. 
+Infra-Low Frequency Neurofeedback in Depression: Three case studies
+NeuroRegulation, 5(1), 2018
+
+Yuri Y. Konoplev, [2012] 
+Falman Neural Nets Layers Generation with Genetic Programming Approach Usage
+Conferences: KMU 2012: Computer Technologies and Artificial Intelligence Section, SPISOK 2012 
+
+
+
+
+
+References
+
+
+
+
+
+
+
+
+Anatoly Abramovich Shalyto
+Head of Programming Technologies Department at Information Technologies Mechanics and Optics University, Ph.D., Dr. of Technical Sciences, Prof.
+anatoly.shalyto@gmail.com, shalyto@mail.ifmo.ru
+http://is.ifmo.ru/
+
+Igor Evgenivich Kanunikov
+Head of Electroencephalography Laboratory at Saint-Petersburg State University, Ph.D., Assistant Prof. 
+igorkan@mail.ru
+http://www.bio.spbu.ru/staff/id45_iek.php 
+
+Victoria Anatolievna Knazeva
+Secretary and Senior Lecturer at Higher Nervous Activity and Psychophysiology Department, Biology Faculty, Saint-Petersburg State University, Ph.D.
+vnd@spbu.ru, v.knyazeva@spbu.ru 
+http://www.bio.spbu.ru/faculty/departments/vnd/
+

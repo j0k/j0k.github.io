@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CV · Таймлайн · Yuri Konoplev</title>
+  <link rel="stylesheet" href="../person/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <style>
+    .cv-page { max-width: 52rem; width: 100%; margin: 0 auto; }
+    .cv-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .cv-header a { color: var(--text); text-decoration: none; }
+    .cv-header a:hover { color: var(--yc-orange); }
+    .cv-title { font-size: 1.5rem; font-weight: 600; margin: 0; }
+    .map-section { margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); background: var(--header-bg); }
+    .map-section h2 { font-size: 1.1rem; margin: 0; padding: 0.75rem 1.25rem; color: var(--text-muted); font-weight: 500; }
+    #cvMap { width: 100%; height: 280px; }
+    .timeline-section { background: var(--header-bg); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem; border: 1px solid rgba(0,0,0,0.06); }
+    .timeline-section h2 { font-size: 1.1rem; margin: 0 0 0.5rem; color: var(--text-muted); font-weight: 500; }
+    .timeline-zoom { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .timeline-zoom span { font-size: 0.85rem; color: var(--text-muted); }
+    .timeline-zoom-btn { width: 2rem; height: 2rem; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px; background: #fff; color: var(--text); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s, color 0.2s; }
+    .timeline-zoom-btn:hover { background: var(--yc-orange); color: #fff; border-color: var(--yc-orange); }
+    .timeline-axis { display: flex; justify-content: space-between; padding: 0 0 0.5rem; margin-bottom: 0.5rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid #ddd; }
+    .timeline-axis span { flex: 0 0 auto; }
+    .timeline-rows { position: relative; min-height: 320px; cursor: grab; user-select: none; }
+    .timeline-rows:active { cursor: grabbing; }
+    .timeline-rows.dragging { cursor: grabbing; }
+    .timeline-scrollbar { margin-top: 0.75rem; height: 14px; position: relative; }
+    .timeline-scrollbar-track { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.08); border-radius: 7px; cursor: pointer; }
+    .timeline-scrollbar-thumb { position: absolute; top: 2px; bottom: 2px; min-width: 24px; border-radius: 5px; background: var(--yc-orange); cursor: grab; }
+    .timeline-scrollbar-thumb:active { cursor: grabbing; }
+    .timeline-scrollbar-thumb.dragging { cursor: grabbing; }
+    .timeline-row { position: relative; min-height: 36px; margin-bottom: 6px; display: flex; align-items: center; }
+    .timeline-row .row-label { width: 140px; flex-shrink: 0; font-size: 0.85rem; font-weight: 500; color: var(--text); }
+    .timeline-row .row-label--collapse { cursor: pointer; }
+    .timeline-row .row-label--collapse:hover { color: var(--yc-orange); }
+    .timeline-row .row-label--clickable { cursor: pointer; }
+    .timeline-row .row-label--clickable:hover { color: var(--yc-orange); }
+    .timeline-bar-wrap.timeline-bar--collapsed .timeline-bar { border: 1px dashed rgba(0,0,0,0.2); }
+    .timeline-row--group-header { background: rgba(168, 197, 232, 0.12); border-radius: 4px; margin-bottom: 4px; }
+    .timeline-row--group-header .row-track { background: rgba(168, 197, 232, 0.2); }
+    .timeline-row--sub { margin-bottom: 5px; }
+    .timeline-row--sub .row-label { padding-left: 1.25rem; font-size: 0.8rem; font-weight: 400; }
+    .timeline-bar--span { opacity: 0.45; pointer-events: none; }
+    .timeline-row .row-track { position: relative; flex: 1; min-height: 22px; height: 22px; background: rgba(168, 197, 232, 0.25); border-radius: 4px; overflow: visible; }
+    .timeline-bar-wrap { position: absolute; top: 2px; height: 18px; cursor: pointer; z-index: 1; }
+    .timeline-bar-wrap:hover .timeline-bar { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .timeline-bar-wrap:focus-within .timeline-bar { outline: 2px solid var(--yc-orange); outline-offset: 2px; }
+    .timeline-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; transition: transform 0.15s, box-shadow 0.15s; }
+    .timeline-bar.bar--company { background: #2c5282; }
+    .timeline-bar.bar--startup { background: var(--yc-orange); }
+    .timeline-bar.bar--research { background: #276749; }
+    .timeline-bar.bar--education { background: #0d9488; }
+    .timeline-bar.bar--hospitality { background: #c2410c; }
+    .timeline-bar.bar--sport { background: #1d4ed8; }
+    .timeline-bar.bar--other { background: #64748b; }
+    .timeline-bar.bar--now { background: #553c9a; }
+    .timeline-legend { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.08); font-size: 0.8rem; color: var(--text-muted); }
+    .timeline-legend-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .timeline-legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .timeline-bar-label { position: absolute; left: 100%; top: 0; margin-left: 6px; font-size: 0.75rem; font-weight: 500; color: #1a365d; white-space: normal; line-height: 1.35; max-width: 220px; pointer-events: none; background: rgba(253, 250, 243, 0.92); padding: 2px 6px; border-radius: 2px; }
+    .detail-panel { background: var(--header-bg); border-radius: 8px; padding: 1.25rem 1.5rem; border: 1px solid rgba(0,0,0,0.06); min-height: 120px; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace; font-size: 0.9rem; }
+    .detail-panel.empty { color: var(--text-muted); font-style: italic; }
+    .detail-panel .detail-table { display: table; width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .detail-panel .detail-row { display: table-row; }
+    .detail-panel .detail-key { display: table-cell; width: 10ch; max-width: 10ch; padding: 0.2em 0.4em 0.2em 0; vertical-align: top; color: var(--text-muted); font-size: 0.9em; white-space: nowrap; text-align: right; }
+    .detail-panel .detail-sep { display: table-cell; width: 1ch; max-width: 1ch; padding: 0.2em 0.1em 0.2em 0; vertical-align: top; color: var(--text-muted); text-align: center; }
+    .detail-panel .detail-val { display: table-cell; padding: 0.2em 0; vertical-align: top; color: var(--text); line-height: 1.5; word-break: break-word; }
+    .detail-panel .detail-val.detail-val--body { font-family: inherit; line-height: 1.6; }
+    .detail-panel .detail-val.detail-val--body p { margin: 0 0 0.4em; }
+    .detail-panel .detail-val.detail-val--body p:last-child { margin-bottom: 0; }
+    @media (max-width: 640px) {
+      body { overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+      .page.cv-page { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); box-sizing: border-box; }
+      .cv-header { flex-direction: column; align-items: flex-start; }
+      .map-section, .timeline-section, .detail-panel { margin-left: 0; margin-right: 0; max-width: 100%; box-sizing: border-box; }
+      .timeline-section { padding-left: 0; padding-right: 0; }
+      .timeline-rows { min-height: 280px; }
+      .timeline-row .row-label { width: 100px; font-size: 0.8rem; }
+      .timeline-bar-label { max-width: 160px; }
+      .timeline-legend { gap: 0.5rem 1rem; }
+      .detail-panel { padding: 1rem max(1rem, env(safe-area-inset-right)); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://github.com/j0k/">j0k</a>
+    <span class="header-sep">·</span>
+    <a href="../index.html">На главную</a>
+  </header>
+
+  <main class="page cv-page">
+    <div class="cv-header">
+      <h1 class="cv-title">Таймлайн · работы и проекты</h1>
+      <a href="cv_minimal_v1_ru.md">CV (текст)</a>
+    </div>
+
+    <section class="map-section" aria-label="Карта">
+      <h2>Карта · клик по событию переносит сюда</h2>
+      <div id="cvMap"></div>
+    </section>
+
+    <section class="timeline-section" aria-label="Таймлайн активностей">
+      <h2>Клик по отрезку — что происходило</h2>
+      <div class="timeline-zoom">
+        <button type="button" class="timeline-zoom-btn" id="timelinePanLeft" title="Влево" aria-label="Влево">←</button>
+        <button type="button" class="timeline-zoom-btn" id="timelinePanRight" title="Вправо" aria-label="Вправо">→</button>
+        <button type="button" class="timeline-zoom-btn" id="timelineZoomOut" title="Отдалить" aria-label="Отдалить">−</button>
+        <span id="timelineRangeLabel">2010 — 2025</span>
+        <button type="button" class="timeline-zoom-btn" id="timelineZoomIn" title="Приблизить" aria-label="Приблизить">+</button>
+      </div>
+      <div class="timeline-legend" aria-label="Легенда">
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#2c5282"></span>Компания</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:var(--yc-orange)"></span>Стартап</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#276749"></span>Исследования</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#0d9488"></span>Обучение</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#c2410c"></span>Общепит</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#1d4ed8"></span>Спорт</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#64748b"></span>Другое</span>
+        <span class="timeline-legend-item"><span class="timeline-legend-swatch" style="background:#553c9a"></span>Сейчас</span>
+      </div>
+      <div class="timeline-axis" id="timelineAxis"></div>
+      <div class="timeline-rows" id="timelineRows" title="Тянуть влево‑вправо — сдвиг; колёсико — приблизить/отдалить"></div>
+      <div class="timeline-scrollbar" id="timelineScrollbar" title="Ползунок — перемещение по годам">
+        <div class="timeline-scrollbar-track" id="timelineScrollbarTrack"></div>
+        <div class="timeline-scrollbar-thumb" id="timelineScrollbarThumb"></div>
+      </div>
+    </section>
+
+    <section class="detail-panel empty" id="detailPanel" aria-live="polite">
+      Выберите отрезок на таймлайне — здесь появится описание.
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      var MIN_YEAR = 2002;
+      var MAX_YEAR = 2026;
+      var viewStart = 2010;
+      var viewEnd = 2025.5;
+      var expandedPhases = {};
+
+      function toFraction(yearMonth) {
+        return (yearMonth - viewStart) / (viewEnd - viewStart);
+      }
+
+      function updateAxis() {
+        var axis = document.getElementById('timelineAxis');
+        if (!axis) return;
+        var range = viewEnd - viewStart;
+        var step = range <= 3 ? 0.5 : range <= 8 ? 1 : 2;
+        var labels = [];
+        var y = Math.floor(viewStart * 2) / 2;
+        while (y <= viewEnd + 0.01) {
+          labels.push(y === Math.floor(y) ? String(Math.floor(y)) : y.toFixed(1));
+          y += step;
+        }
+        axis.innerHTML = labels.map(function(l) { return '<span>' + l + '</span>'; }).join('');
+      }
+
+      function updateRangeLabel() {
+        var el = document.getElementById('timelineRangeLabel');
+        if (el) el.textContent = Math.floor(viewStart) + ' — ' + (viewEnd === Math.floor(viewEnd) ? Math.floor(viewEnd) : viewEnd.toFixed(1));
+      }
+
+      function updateScrollbar() {
+        var thumb = document.getElementById('timelineScrollbarThumb');
+        if (!thumb) return;
+        var fullRange = MAX_YEAR - MIN_YEAR;
+        var leftPct = ((viewStart - MIN_YEAR) / fullRange) * 100;
+        var widthPct = ((viewEnd - viewStart) / fullRange) * 100;
+        thumb.style.left = leftPct + '%';
+        thumb.style.width = Math.max(4, widthPct) + '%';
+      }
+
+      var LOC = {
+        spb: [59.9343, 30.3351],
+        itmo: [59.9256, 30.3106],
+        moscow: [55.7558, 37.6173],
+        ny: [40.7128, -74.006],
+        limassol: [34.6857, 33.042],
+        limassolOmonoias: [34.67, 33.012]
+      };
+
+      function periodStr(start, end) {
+        var s = Math.floor(start);
+        var e = Math.floor(end);
+        return s === e ? String(s) : s + '–' + e;
+      }
+
+      var tusionPhases = [
+        { id: 'tusion_idea', start: 2015, end: 2016.92, label: 'Идея, аспирантура ИМЧ', body: '<p>Формирование идеи TuSion: платформа и приложение для нейрогарнитур — концентрация, релаксация, восприятие. Учёба в аспирантуре ИМЧ РАН (нейробиология программирования действия), интерес к нейронауке и бимодальному сознанию. Идея «холодный душ для мозга».</p>', lat: LOC.spb[0], lng: LOC.spb[1], placeName: 'Санкт-Петербург, ИМЧ РАН' },
+        { id: 'tusion_itmo', start: 2016.5, end: 2017.5, label: 'Первые пробы, ИТМО', body: '<p>Акселерация в ИТМО Future Technologies. Первые пробы продукта, работа с нейрогарнитурами (NeuroSky, BrainLink, Muse), Kotlin, Java, Android. Формирование команды и видения.</p>', lat: LOC.itmo[0], lng: LOC.itmo[1], placeName: 'ИТМО, Санкт-Петербург' },
+        { id: 'tusion_cyprus', start: 2017.5, end: 2018.25, label: 'Кипр, первый инвестор', body: '<p>Жизнь и работа на Кипре (Лимассол). Первый инвестор TuSion — Владимир Новиков (конец 2017). Офис: Omonoias 19, Constantinides Building, Limassol. Параллельно работа в Contuur (арбитражный робот для криптобирж).</p>', lat: LOC.limassolOmonoias[0], lng: LOC.limassolOmonoias[1], placeName: 'Omonoias 19, Limassol' },
+        { id: 'tusion_starta', start: 2018.67, end: 2018.92, label: 'Starta New York', body: '<p>Starta Accelerator в Нью-Йорке (август — ноябрь 2018). Привлечение 130k$ от Starta Ventures. Питчи, менторство, выход на международную сцену. Часть пути к общему объёму инвестиций 170K€.</p>', lat: LOC.ny[0], lng: LOC.ny[1], placeName: 'New York' },
+        { id: 'tusion_pivots', start: 2019, end: 2021.5, label: 'Пивоты', body: '<p>Несколько пивотов продукта: от нейро-арта к нейроиграм, затем приложение для медитаций (mindfulness B2B), затем инструмент для нейромаркетинга. World Mobile Congress (Барселона), Polar Bear Pitching (Оулу), VK Fest, SPIEF’2018. Мозговой хакатон в «Инжинириуме», 600+ установок приложения.</p>', lat: LOC.spb[0], lng: LOC.spb[1], placeName: 'Санкт-Петербург' },
+        { id: 'tusion_closure', start: 2021.5, end: 2021.99, label: 'Закрытие', body: '<p>Закрытие компании TuSion (декабрь 2021). Итог пути: от идеи в аспирантуре до международных питчей и живых пользователей; опыт привлечения инвестиций, пивотов и работы распределённой команды.</p>', lat: LOC.spb[0], lng: LOC.spb[1], placeName: 'Санкт-Петербург' }
+      ];
+
+      var items = [
+        { id: 'emc', label: 'EMC', start: 2010, end: 2011.99, type: 'company', period: '2010–2011', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Интерн в EMC (облако и виртуализация). Исследование и реализация JPEG-пережатия для файловой системы EMC — в среднем ~17% уменьшение размера. MATLAB, C/C++. Научный руководитель — к.ф.-м.н. И. Бочарова; один из пяти студентов по теме JPEG. Команда 5+, компания 16 000+.</p>' },
+        { id: 'ais', label: 'AIS', start: 2012, end: 2013.99, type: 'company', period: '2012–2013', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Automated Intelligence Systems Inc., финтех. Разработка и исследование многоагентной системы для мультивалютной экономики. C/C++, потоки, Boost; Python-демон; Wolfram Mathematica; патчи Bitcoin-демона. Команда 2, компания 100+.</p>' },
+        { id: 'aemind', label: 'æMind IDENTiTy', start: 2014.67, end: 2016.99, type: 'startup', period: '2014–2016', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>В 2014 году мы пришли на Science Hackday в Петербурге без готового продукта — только идея связать мозг и виртуальную реальность. За 48 часов собрали мобильное приложение: игроком управляешь не джойстиком, а параметрами «медитация» и «внимание» с нейрогарнитуры NeuroSky. Жюри дало нам первое место — лучшая техническая идея. Так родился проект æMind IDENTiTy.</p><p>Дальше было участие в Intel RealSense Challenge 2015 (TOP250), прототип VR-костюма, подача патента (RUS 2016131229/08). Команда выросла с четырёх до семи человек.</p>' },
+        { id: 'herotalk', label: 'Hero Talk', start: 2016, end: 2016.99, type: 'startup', period: '2016', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Hero Talk родился на акселераторе Founder Institute в Петербурге. Идея — 360° видео для изучения языков в VR: пользователь внутри сцен с носителями, типичные диалоги и ситуации, разветвления и обратная связь. Сняли и смонтировали больше десяти часов 360° контента, вышли в финал Imagine Cup по России. Команда — пять человек. «Показать человека — показать мир».</p>' },
+        { id: 'dl', label: 'Deep Learning + ИТМО', start: 2016.75, end: 2017.17, type: 'research', period: '2016–2017', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Исследование и обучение: детекция лицевых ориентиров, фотограмметрия, 3D-реконструкция (DenseFace3D), YOLO, выравнивание лиц. Caffe, DIGITS (nVidia). Два семинара по deep learning в ИТМО, совместная работа со студентами. Команда 2–25.</p>' },
+        { id: 'tusion', label: 'TuSion', type: 'startup', phases: tusionPhases },
+        { id: 'contuur', label: 'Contuur, Кипр', start: 2017.67, end: 2018.17, type: 'company', period: '2017–2018', lat: LOC.limassol[0], lng: LOC.limassol[1], body: '<p>В Лимассоле втроём начали с нуля: арбитражный робот для криптобирж. 15+ дамперов рыночных данных (Bitfinex, Kraken, Poloniex и др.), модульная архитектура — шлюзы данных, торговые шлюзы, стратегии. Через три месяца запустили торговлю, ещё через два — в прибыль. Потом команда выросла до семи. Python, Kafka, PostgreSQL, REST, WebSocket.</p>' },
+        { id: 'waves', label: 'Waves', start: 2019.25, end: 2019.5, type: 'company', period: '2019', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Software Engineer в проекте Social Net, Москва. RIDE для dApps, JavaScript, C++. Два инструмента для Waves Blockchain и смарт-контракт-профиль с документацией. Команда 4→9, компания 100+.</p>' },
+        { id: 'adoria', label: 'Adoria Soft', start: 2019.67, end: 2020.08, type: 'company', period: '2019–2020', body: '<p>Удалённо: перенос кошелька VeriBlock с Java на JS и затем на TypeScript — сейчас open source. JavaScript, TypeScript, Java, блокчейн-криптография. JIRA, GitHub flow, распределённая команда из семи человек.</p>' },
+        { id: 'pp', label: '«Программный продукт»', start: 2020.25, end: 2021.58, type: 'company', period: '2020–2021', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Руководитель направления искусственного интеллекта, СПб. Запуск AI-проектов: распознавание и понимание текста и эмоций. TensorFlow, PyTorch, Python, JS. Transfer learning, визуализация сетей. Команда 6, компания 500+.</p>' },
+        { id: 'huawei', label: 'Huawei', start: 2021.92, end: 2022.58, type: 'company', period: '2021–2022', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Cloud Gaming Team, team-lead, СПб. Исследование четырёх направлений для облачного гейминга и метавселенных; фокус на супер-разрешении и апскейлинге видео. Нейроархитектуры, пайплайн обучения (PyTorch, TensorFlow, OpenCV, Clear.ML, Docker), веб- и консольные утилиты. Команда 5, взаимодействие с командой в Китае. Компания ~500K.</p>' },
+        { id: 'now', label: 'Сейчас', start: 2022.58, end: 2025.25, type: 'now', period: '2022 — н.в.', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>После Huawei — проба других ролей: общепит (касса, открытие точки на фесте), логистика, колл-центр. Параллельно — фриланс по разработке, проекты с AI-инструментами; в 2023 — выступление на конкурсе ЛТЦ в Москве с проектом Катюша AI. City Fight Championship: участие и организация турниров (уличные бои по правилам бокса) — провёл четыре турнира.</p><p>Для меня это образ жизни: баланс между разными ролями, телом, осознанностью и тем, что я продолжаю собирать продукты и выступать с идеями.</p>' },
+        { id: 'sushi_wok', label: '🍣 Суши-Вок', start: 2022.7, end: 2023.1, type: 'hospitality', period: '2022–2023', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Общепит: касса, работа на точке. Суши-Вок.</p>' },
+        { id: 'coffee3', label: '☕ Coffee3', start: 2023.1, end: 2023.6, type: 'hospitality', period: '2023', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Общепит: кофейня Coffee3.</p>' },
+        { id: 'darkside', label: '🍴 Dark-Side', start: 2023.6, end: 2024.2, type: 'hospitality', period: '2023–2024', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Общепит: Dark-Side, открытие точки на фесте.</p>' },
+        { id: 'fire50', label: '🚒 Пожарный инспектор ПЧ-50', start: 2024.42, end: 2024.58, type: 'other', period: 'июнь–июль 2024', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Пожарный инспектор в Пожарной части 50. Пожарка, июнь–июль 2024.</p>' },
+        { id: 'cfc', label: '🥊 City Fight Championship', start: 2025, end: 2026, type: 'sport', period: '2025–2026', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Участие и организация турниров City Fight Championship (CFC) — уличные бои по правилам бокса. Провёл четыре турнира.</p>' },
+        { id: 'taxi', label: '🚕 Такси', start: 2024.67, end: 2025.5, type: 'other', period: 'авг. 2024 — н.в.', lat: LOC.moscow[0], lng: LOC.moscow[1], body: '<p>Такси с августа 2024.</p>' },
+        { id: 'edu_lyceum', label: 'Лицей № 30', start: 2002, end: 2006, type: 'education', period: '2002–2006', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Физико-математический лицей № 30, Лаборатория непрерывного математического образования, Санкт-Петербург.</p>' },
+        { id: 'edu_itmo_bs', label: 'ИТМО, бакалавр', start: 2006, end: 2010, type: 'education', period: '2006–2010', lat: LOC.itmo[0], lng: LOC.itmo[1], body: '<p>Бакалавр компьютерных наук, ИТМО, факультет информационных технологий и программирования, кафедра компьютерных технологий. Диплом: «Алгоритмы и программы оценки поведенческих рисков в условиях нехватки информации» (рук. проф. А.Л. Тулупов). Первая нейросеть, компилятор Common Python на Common Lisp, первый интернет-магазин, генетическое программирование, марковский бот для VK.</p>' },
+        { id: 'edu_itmo_ms', label: 'ИТМО, магистр', start: 2010, end: 2012, type: 'education', period: '2010–2012', lat: LOC.itmo[0], lng: LOC.itmo[1], body: '<p>Магистр компьютерных наук, ИТМО. Диплом: «Генерация слоёв сетей Фальмана с использованием генетического программирования» (рук. проф. И.П. Гуров).</p>' },
+        { id: 'edu_spbu', label: 'СПбГУ, биология', start: 2013, end: 2015, type: 'education', period: '2013–2015', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Магистр биологии, нейробиология и психофизиология, СПбГУ, биологический факультет, кафедра ВНД и психофизиологии. Диплом: «Исследование консолидации памяти с Θ-ритм нейрофидбеком» (рук. к.б.н. И.Е. Кануников). 80+ ЭЭГ-экспериментов, протокол Θ-ритм музыкального нейрофидбека (MATLAB, OpenVIBE).</p>' },
+        { id: 'edu_phd', label: 'Аспирантура ИМЧ РАН', start: 2015, end: 2019, type: 'education', period: '2015–2019', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Кандидат наук (физиология), Институт мозга человека им. Н.П. Бехтеревой РАН, лаборатория нейробиологии программирования действия. Научный руководитель — д.б.н., проф. Ю.Д. Кропотов. Нейрообратная связь, интерфейсы мозг–компьютер, эксперимент по зрительной категоризации. TuSion зародился в период аспирантуры.</p>' },
+        { id: 'edu_french', label: 'Французский колледж', start: 2015, end: 2018, type: 'education', period: '2015–2018', lat: LOC.spb[0], lng: LOC.spb[1], body: '<p>Диплом по французской цивилизации, Французский университетский колледж при СПбГУ. Специализации: право и философия.</p>' }
+      ];
+
+      function renderBar(item) {
+        var leftF = toFraction(item.start);
+        var rightF = toFraction(item.end);
+        if (rightF <= 0 || leftF >= 1) return null;
+        var left = Math.max(0, leftF) * 100;
+        var right = Math.min(1, rightF) * 100;
+        var width = right - left;
+        if (width < 2) width = 2;
+        var wrap = document.createElement('div');
+        wrap.className = 'timeline-bar-wrap';
+        wrap.style.left = left + '%';
+        wrap.style.width = width + '%';
+        wrap.title = item.label + ' · ' + item.period;
+        wrap.setAttribute('role', 'button');
+        wrap.setAttribute('tabindex', '0');
+        wrap.setAttribute('data-id', item.id);
+        var bar = document.createElement('div');
+        bar.className = 'timeline-bar bar--' + item.type;
+        bar.style.width = '100%';
+        var label = document.createElement('span');
+        label.className = 'timeline-bar-label';
+        label.textContent = item.label;
+        wrap.appendChild(bar);
+        wrap.appendChild(label);
+        wrap.addEventListener('click', function() { showDetail(item.id); });
+        wrap.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDetail(item.id); } });
+        return wrap;
+      }
+
+      function renderPhaseBar(phase, type) {
+        var leftF = toFraction(phase.start);
+        var rightF = toFraction(phase.end);
+        if (rightF <= 0 || leftF >= 1) return null;
+        var left = Math.max(0, leftF) * 100;
+        var right = Math.min(1, rightF) * 100;
+        var width = right - left;
+        if (width < 2) width = 2;
+        var wrap = document.createElement('div');
+        wrap.className = 'timeline-bar-wrap';
+        wrap.style.left = left + '%';
+        wrap.style.width = width + '%';
+        wrap.title = phase.label + ' · ' + periodStr(phase.start, phase.end);
+        wrap.setAttribute('role', 'button');
+        wrap.setAttribute('tabindex', '0');
+        wrap.setAttribute('data-id', phase.id);
+        var bar = document.createElement('div');
+        bar.className = 'timeline-bar bar--' + type + ' timeline-bar--phase';
+        bar.style.width = '100%';
+        var label = document.createElement('span');
+        label.className = 'timeline-bar-label';
+        label.textContent = phase.label;
+        wrap.appendChild(bar);
+        wrap.appendChild(label);
+        wrap.addEventListener('click', function() { showDetail(phase.id); });
+        wrap.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDetail(phase.id); } });
+        return wrap;
+      }
+
+      function renderCollapsedPhasesBar(item) {
+        var phases = item.phases;
+        var rangeStart = phases[0].start;
+        var rangeEnd = phases[0].end;
+        phases.forEach(function(p) {
+          if (p.start < rangeStart) rangeStart = p.start;
+          if (p.end > rangeEnd) rangeEnd = p.end;
+        });
+        var leftF = toFraction(rangeStart);
+        var rightF = toFraction(rangeEnd);
+        if (rightF <= 0 || leftF >= 1) return null;
+        var left = Math.max(0, leftF) * 100;
+        var right = Math.min(1, rightF) * 100;
+        var width = right - left;
+        if (width < 2) width = 2;
+        var wrap = document.createElement('div');
+        wrap.className = 'timeline-bar-wrap timeline-bar--collapsed';
+        wrap.style.left = left + '%';
+        wrap.style.width = width + '%';
+        wrap.title = item.label + ' · нажмите, чтобы развернуть эпизоды';
+        wrap.setAttribute('role', 'button');
+        wrap.setAttribute('tabindex', '0');
+        wrap.setAttribute('data-expand-id', item.id);
+        var bar = document.createElement('div');
+        bar.className = 'timeline-bar bar--' + item.type;
+        bar.style.width = '100%';
+        var label = document.createElement('span');
+        label.className = 'timeline-bar-label';
+        label.textContent = item.label + ' ▶ ' + phases.length + ' эпизодов';
+        wrap.appendChild(bar);
+        wrap.appendChild(label);
+        wrap.addEventListener('click', function() {
+          expandedPhases[item.id] = true;
+          renderTimeline();
+        });
+        wrap.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandedPhases[item.id] = true; renderTimeline(); } });
+        return wrap;
+      }
+
+      function renderGroupSpanBar(item) {
+        var phases = item.phases;
+        var rangeStart = phases[0].start;
+        var rangeEnd = phases[0].end;
+        phases.forEach(function(p) {
+          if (p.start < rangeStart) rangeStart = p.start;
+          if (p.end > rangeEnd) rangeEnd = p.end;
+        });
+        var leftF = toFraction(rangeStart);
+        var rightF = toFraction(rangeEnd);
+        if (rightF <= 0 || leftF >= 1) return null;
+        var left = Math.max(0, leftF) * 100;
+        var right = Math.min(1, rightF) * 100;
+        var width = right - left;
+        if (width < 2) width = 2;
+        var wrap = document.createElement('div');
+        wrap.className = 'timeline-bar-wrap timeline-bar--span';
+        wrap.style.left = left + '%';
+        wrap.style.width = width + '%';
+        var bar = document.createElement('div');
+        bar.className = 'timeline-bar bar--' + item.type;
+        bar.style.width = '100%';
+        wrap.appendChild(bar);
+        return wrap;
+      }
+
+      function renderExpandedPhaseGroup(item) {
+        var rangeStart = item.phases[0].start;
+        var rangeEnd = item.phases[0].end;
+        item.phases.forEach(function(p) {
+          if (p.start < rangeStart) rangeStart = p.start;
+          if (p.end > rangeEnd) rangeEnd = p.end;
+        });
+        if (rangeEnd < viewStart || rangeStart > viewEnd) return [];
+        var rows = [];
+        var headerRow = document.createElement('div');
+        headerRow.className = 'timeline-row timeline-row--phases timeline-row--group-header';
+        var label = document.createElement('span');
+        label.className = 'row-label row-label--collapse';
+        label.textContent = item.label + ' ▼';
+        label.title = 'Свернуть эпизоды';
+        label.setAttribute('role', 'button');
+        label.setAttribute('tabindex', '0');
+        label.addEventListener('click', function() {
+          expandedPhases[item.id] = false;
+          renderTimeline();
+        });
+        label.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandedPhases[item.id] = false; renderTimeline(); } });
+        var track = document.createElement('div');
+        track.className = 'row-track';
+        var spanBar = renderGroupSpanBar(item);
+        if (spanBar) track.appendChild(spanBar);
+        headerRow.appendChild(label);
+        headerRow.appendChild(track);
+        rows.push(headerRow);
+        item.phases.forEach(function(phase) {
+          if (phase.end < viewStart || phase.start > viewEnd) return;
+          var subRow = document.createElement('div');
+          subRow.className = 'timeline-row timeline-row--sub';
+          var subLabel = document.createElement('span');
+          subLabel.className = 'row-label row-label--clickable';
+          subLabel.textContent = phase.label;
+          subLabel.title = phase.label + ' · ' + periodStr(phase.start, phase.end);
+          subLabel.setAttribute('role', 'button');
+          subLabel.setAttribute('tabindex', '0');
+          subLabel.addEventListener('click', function() { showDetail(phase.id); });
+          subLabel.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDetail(phase.id); } });
+          var subTrack = document.createElement('div');
+          subTrack.className = 'row-track';
+          var phaseBar = renderPhaseBar(phase, item.type);
+          if (phaseBar) subTrack.appendChild(phaseBar);
+          subRow.appendChild(subLabel);
+          subRow.appendChild(subTrack);
+          rows.push(subRow);
+        });
+        return rows;
+      }
+
+      function renderRow(item) {
+        if (item.phases) {
+          var isExpanded = expandedPhases[item.id];
+          var rangeStart = item.phases[0].start;
+          var rangeEnd = item.phases[0].end;
+          item.phases.forEach(function(p) {
+            if (p.start < rangeStart) rangeStart = p.start;
+            if (p.end > rangeEnd) rangeEnd = p.end;
+          });
+          if (rangeEnd < viewStart || rangeStart > viewEnd) return null;
+          if (isExpanded) {
+            return renderExpandedPhaseGroup(item);
+          }
+          var row = document.createElement('div');
+          row.className = 'timeline-row timeline-row--phases';
+          var label = document.createElement('span');
+          label.className = 'row-label row-label--clickable';
+          label.textContent = item.label + ' ▶';
+          label.title = 'Развернуть эпизоды';
+          label.setAttribute('role', 'button');
+          label.setAttribute('tabindex', '0');
+          label.addEventListener('click', function() {
+            expandedPhases[item.id] = true;
+            renderTimeline();
+          });
+          label.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); expandedPhases[item.id] = true; renderTimeline(); } });
+          var track = document.createElement('div');
+          track.className = 'row-track';
+          var collapsedBar = renderCollapsedPhasesBar(item);
+          if (!collapsedBar) return null;
+          track.appendChild(collapsedBar);
+          row.appendChild(label);
+          row.appendChild(track);
+          return row;
+        }
+        if (item.end < viewStart || item.start > viewEnd) return null;
+        var row = document.createElement('div');
+        row.className = 'timeline-row';
+        var label = document.createElement('span');
+        label.className = 'row-label row-label--clickable';
+        label.textContent = item.label;
+        label.title = item.label + ' · ' + item.period;
+        label.setAttribute('role', 'button');
+        label.setAttribute('tabindex', '0');
+        label.addEventListener('click', function() { showDetail(item.id); });
+        label.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDetail(item.id); } });
+        var track = document.createElement('div');
+        track.className = 'row-track';
+        var bar = renderBar(item);
+        if (!bar) return null;
+        track.appendChild(bar);
+        row.appendChild(label);
+        row.appendChild(track);
+        return row;
+      }
+
+      function renderTimeline() {
+        var container = document.getElementById('timelineRows');
+        if (!container) return;
+        container.innerHTML = '';
+        items.forEach(function(item) {
+          var row = renderRow(item);
+          if (Array.isArray(row)) {
+            row.forEach(function(r) { container.appendChild(r); });
+          } else if (row) {
+            container.appendChild(row);
+          }
+        });
+        updateAxis();
+        updateRangeLabel();
+        updateScrollbar();
+      }
+
+      function zoomIn() {
+        var center = (viewStart + viewEnd) / 2;
+        var range = (viewEnd - viewStart) * 0.6;
+        if (range < 2) return;
+        viewStart = center - range / 2;
+        viewEnd = center + range / 2;
+        viewStart = Math.max(MIN_YEAR, viewStart);
+        viewEnd = Math.min(MAX_YEAR, viewEnd);
+        if (viewEnd - viewStart < 2) { viewStart = center - 1; viewEnd = center + 1; }
+        renderTimeline();
+      }
+
+      function zoomOut() {
+        var center = (viewStart + viewEnd) / 2;
+        var range = (viewEnd - viewStart) * 1.4;
+        range = Math.min(range, MAX_YEAR - MIN_YEAR);
+        viewStart = center - range / 2;
+        viewEnd = center + range / 2;
+        viewStart = Math.max(MIN_YEAR, viewStart);
+        viewEnd = Math.min(MAX_YEAR, viewEnd);
+        renderTimeline();
+      }
+
+      function pan(delta) {
+        var range = viewEnd - viewStart;
+        viewStart += delta;
+        viewEnd += delta;
+        if (viewStart < MIN_YEAR) {
+          viewStart = MIN_YEAR;
+          viewEnd = MIN_YEAR + range;
+        }
+        if (viewEnd > MAX_YEAR) {
+          viewEnd = MAX_YEAR;
+          viewStart = MAX_YEAR - range;
+        }
+        renderTimeline();
+      }
+
+      function panLeft() {
+        var range = viewEnd - viewStart;
+        pan(-Math.max(range * 0.15, 0.25));
+      }
+
+      function panRight() {
+        var range = viewEnd - viewStart;
+        pan(Math.max(range * 0.15, 0.25));
+      }
+
+      renderTimeline();
+
+      document.getElementById('timelineZoomIn').addEventListener('click', zoomIn);
+      document.getElementById('timelineZoomOut').addEventListener('click', zoomOut);
+      document.getElementById('timelinePanLeft').addEventListener('click', panLeft);
+      document.getElementById('timelinePanRight').addEventListener('click', panRight);
+
+      (function() {
+        var target = document.getElementById('timelineRows');
+        if (!target) return;
+        target.addEventListener('wheel', function(e) {
+          if (e.deltaY === 0) return;
+          e.preventDefault();
+          if (e.deltaY < 0) zoomIn();
+          else zoomOut();
+        }, { passive: false });
+      })();
+
+      (function() {
+        var target = document.getElementById('timelineRows');
+        if (!target) return;
+        var dragging = false;
+        var startX, startViewStart, startViewEnd;
+        function getTrackWidth() {
+          var track = target.querySelector('.row-track');
+          return track ? track.offsetWidth : 300;
+        }
+        function onMove(e) {
+          if (!dragging) return;
+          var range = startViewEnd - startViewStart;
+          var trackWidth = getTrackWidth();
+          var deltaYears = (e.clientX - startX) * (range / trackWidth);
+          viewStart = startViewStart - deltaYears;
+          viewEnd = startViewEnd - deltaYears;
+          var rangeLen = viewEnd - viewStart;
+          if (viewStart < MIN_YEAR) {
+            viewStart = MIN_YEAR;
+            viewEnd = MIN_YEAR + rangeLen;
+          }
+          if (viewEnd > MAX_YEAR) {
+            viewEnd = MAX_YEAR;
+            viewStart = MAX_YEAR - rangeLen;
+          }
+          startX = e.clientX;
+          startViewStart = viewStart;
+          startViewEnd = viewEnd;
+          renderTimeline();
+        }
+        function onUp() {
+          if (!dragging) return;
+          dragging = false;
+          target.classList.remove('dragging');
+          document.body.style.userSelect = '';
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        target.addEventListener('mousedown', function(e) {
+          if (e.target.closest('.timeline-bar-wrap')) return;
+          e.preventDefault();
+          dragging = true;
+          startX = e.clientX;
+          startViewStart = viewStart;
+          startViewEnd = viewEnd;
+          target.classList.add('dragging');
+          document.body.style.userSelect = 'none';
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onUp);
+        });
+      })();
+
+      (function() {
+        var trackEl = document.getElementById('timelineScrollbarTrack');
+        var thumbEl = document.getElementById('timelineScrollbarThumb');
+        if (!trackEl || !thumbEl) return;
+        var fullRange = MAX_YEAR - MIN_YEAR;
+
+        function trackXToView(clientX) {
+          var rect = trackEl.getBoundingClientRect();
+          var x = clientX - rect.left;
+          var fraction = Math.max(0, Math.min(1, x / rect.width));
+          var range = viewEnd - viewStart;
+          var centerYear = MIN_YEAR + fraction * fullRange;
+          viewStart = centerYear - range / 2;
+          viewEnd = centerYear + range / 2;
+          if (viewStart < MIN_YEAR) {
+            viewStart = MIN_YEAR;
+            viewEnd = MIN_YEAR + range;
+          }
+          if (viewEnd > MAX_YEAR) {
+            viewEnd = MAX_YEAR;
+            viewStart = MAX_YEAR - range;
+          }
+          renderTimeline();
+        }
+
+        trackEl.addEventListener('click', function(e) {
+          if (e.target === thumbEl) return;
+          e.preventDefault();
+          trackXToView(e.clientX);
+        });
+
+        var thumbDragging = false;
+        var gripOffset = 0;
+
+        thumbEl.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var rect = trackEl.getBoundingClientRect();
+          var thumbRect = thumbEl.getBoundingClientRect();
+          gripOffset = e.clientX - thumbRect.left;
+          thumbDragging = true;
+          thumbEl.classList.add('dragging');
+          document.body.style.userSelect = 'none';
+
+          function onThumbMove(e) {
+            if (!thumbDragging) return;
+            var rect = trackEl.getBoundingClientRect();
+            var x = e.clientX - rect.left - gripOffset;
+            var fraction = x / rect.width;
+            var range = viewEnd - viewStart;
+            var viewSpan = range / fullRange;
+            fraction = Math.max(0, Math.min(1 - viewSpan, fraction));
+            viewStart = MIN_YEAR + fraction * fullRange;
+            viewEnd = viewStart + range;
+            renderTimeline();
+          }
+          function onThumbUp() {
+            thumbDragging = false;
+            thumbEl.classList.remove('dragging');
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', onThumbMove);
+            document.removeEventListener('mouseup', onThumbUp);
+          }
+          document.addEventListener('mousemove', onThumbMove);
+          document.addEventListener('mouseup', onThumbUp);
+        });
+      })();
+
+      var panel = document.getElementById('detailPanel');
+      var detailCache = {};
+      var typeLabels = { company: 'Компания', startup: 'Стартап', research: 'Исследования', education: 'Обучение', hospitality: 'Общепит', sport: 'Спорт', other: 'Другое', now: 'Сейчас' };
+
+      items.forEach(function(item) {
+        if (item.phases) {
+          item.phases.forEach(function(phase) {
+            detailCache[phase.id] = {
+              label: item.label + ' · ' + phase.label,
+              period: periodStr(phase.start, phase.end),
+              type: item.type,
+              body: phase.body,
+              lat: phase.lat,
+              lng: phase.lng,
+              placeName: phase.placeName
+            };
+          });
+        } else {
+          detailCache[item.id] = item;
+        }
+      });
+
+      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      function showDetail(id) {
+        var item = detailCache[id];
+        if (!item) return;
+        panel.classList.remove('empty');
+        var typeStr = (item.type && typeLabels[item.type]) ? typeLabels[item.type] : '';
+        var rows = [
+          { key: 'название', val: esc(item.label) },
+          { key: 'период',   val: esc(item.period) },
+          { key: 'тип',      val: esc(typeStr) },
+          { key: 'место',    val: esc(item.placeName || '') }
+        ].filter(function(r) { return r.val !== ''; });
+        rows.push({ key: 'описание', val: item.body, body: true });
+        var html = '<div class="detail-table">';
+        rows.forEach(function(r) {
+          html += '<div class="detail-row"><span class="detail-key">' + r.key + '</span><span class="detail-sep">:</span><span class="detail-val' + (r.body ? ' detail-val--body">' : '">') + r.val + '</span></div>';
+        });
+        html += '</div>';
+        panel.innerHTML = html;
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (typeof cvMap !== 'undefined' && item.lat != null && item.lng != null) {
+          cvMap.flyTo([item.lat, item.lng], 11, { duration: 0.8 });
+        }
+      }
+    })();
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    (function() {
+      var cvMapEl = document.getElementById('cvMap');
+      if (!cvMapEl) return;
+      var cvMap = L.map('cvMap').setView([50, 25], 3);
+      cvMap.attributionControl.setPrefix('');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(cvMap);
+      window.cvMap = cvMap;
+    })();
+  </script>
+</body>
+</html>
