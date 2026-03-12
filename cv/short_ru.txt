@@ -5,6 +5,8 @@ GitHub: https://github.com/j0k  ·  LinkedIn: https://linkedin.com/in/yuri-konop
 Стек: Python/C++/JS/TS/Wolfram Mathematica, ML/DL (PyTorch/TensorFlow)
 Домен: разработка ПО, анализ видео/изображения/ЭЭГ, блокчейн/криптография/финтех, продуктовые прототипы, growth marketing и исследовательские пайплайны.
 
+Навыки: #gitflow #kanban #коммуникация #парное_программирование #80/20 #сотрудничество #стартапы #CursorAI
+
 Сейчас: 
 - разработка и разработка с помощью AI (Cursor); (2025-2026)
 - несколько проектов на заказ (в т.ч. ma8ka.com, многопользовательская игра в Telegram) (2025)
