@@ -85,7 +85,7 @@
       function periodStr(start, end) {
         var s = Math.floor(start);
         var e = Math.floor(end);
-        return s === e ? String(s) : s + 'â€“' + e;
+        return s === e ? String(s) : s + '–' + e;
       }
 
       function getItemYearRange(item) {
@@ -111,7 +111,7 @@
               list.push({
                 start: p.start,
                 end: p.end,
-                label: (item.label ? item.label + ' Â· ' : '') + (p.label || ''),
+                label: (item.label ? item.label + ' · ' : '') + (p.label || ''),
                 id: p.id
               });
             });
@@ -241,7 +241,7 @@
           if (phase.lat == null || phase.lng == null) return;
           out.push({
             id: phase.id,
-            label: 'TuSion Â· ' + phase.label,
+            label: 'TuSion · ' + phase.label,
             icon: phase.icon || 'ðŸ§ ',
             lat: phase.lat,
             lng: phase.lng
@@ -262,7 +262,7 @@
         wrap.className = 'timeline-bar-wrap';
         wrap.style.left = left + '%';
         wrap.style.width = width + '%';
-        wrap.title = item.label + ' Â· ' + item.period;
+        wrap.title = item.label + ' · ' + item.period;
         wrap.setAttribute('role', 'button');
         wrap.setAttribute('tabindex', '0');
         wrap.setAttribute('data-id', item.id);
@@ -292,7 +292,7 @@
         wrap.className = 'timeline-bar-wrap';
         wrap.style.left = left + '%';
         wrap.style.width = width + '%';
-        wrap.title = phase.label + ' Â· ' + periodStr(phase.start, phase.end);
+        wrap.title = phase.label + ' · ' + periodStr(phase.start, phase.end);
         wrap.setAttribute('role', 'button');
         wrap.setAttribute('tabindex', '0');
         wrap.setAttribute('data-id', phase.id);
@@ -409,7 +409,7 @@
           var subLabel = document.createElement('span');
           subLabel.className = 'row-label row-label--clickable';
           subLabel.textContent = phase.label || '';
-          subLabel.title = (phase.label || '') + (phase.start != null && phase.end != null ? ' Â· ' + periodStr(phase.start, phase.end) : '');
+          subLabel.title = (phase.label || '') + (phase.start != null && phase.end != null ? ' · ' + periodStr(phase.start, phase.end) : '');
           subLabel.setAttribute('role', 'button');
           subLabel.setAttribute('tabindex', '0');
           subLabel.addEventListener('click', function(e) { showDetail(phase.id, e); });
@@ -466,7 +466,7 @@
         var label = document.createElement('span');
         label.className = 'row-label row-label--clickable';
         label.textContent = (item.icon ? item.icon + ' ' : '') + item.label;
-        label.title = item.label + ' Â· ' + item.period;
+        label.title = item.label + ' · ' + item.period;
         label.setAttribute('role', 'button');
         label.setAttribute('tabindex', '0');
         label.addEventListener('click', function(e) { showDetail(item.id, e); });
@@ -836,7 +836,7 @@
           if (item.phases) {
             item.phases.forEach(function(phase) {
               detailCache[phase.id] = {
-                label: item.label + ' Â· ' + phase.label,
+                label: item.label + ' · ' + phase.label,
                 period: periodStr(phase.start, phase.end),
                 type: item.type,
                 body: phase.body,
@@ -862,6 +862,15 @@
           { key: 'стек',     val: esc(stackStr) },
           { key: 'место',    val: esc(item.placeName || '') }
         ].filter(function(r) { return r.val !== ''; });
+        if (item.methodology) {
+          rows.push({ key: 'методол.', val: esc(item.methodology) });
+        }
+        if (item.specialization) {
+          rows.push({ key: 'специал.', val: esc(item.specialization) });
+        }
+        if (item.site) {
+          rows.push({ key: 'сайт', val: '<a href="' + esc(item.site) + '" target="_blank" rel="noopener">' + esc(item.site) + '</a>' });
+        }
         rows.push({ key: 'описание', val: item.body, body: true });
         var html = '<div class="detail-table">';
         rows.forEach(function(r) {
