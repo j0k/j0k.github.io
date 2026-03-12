@@ -24,7 +24,7 @@ GitHub: https://github.com/j0k  ·  LinkedIn: https://linkedin.com/in/yuri-konop
 
 Опыт коммерческой разработки (7+ лет):
 - 2021–2022 · Huawei Cloud Gaming (team lead): супер-разрешение/апскейлинг, нейроархитектуры и пайплайн обучения, утилиты для команды.
-- 2020–2021 · XD soft, ООО «Программный продукт» (рук. проекта): запуск AI-направления (Python + NLP, emotion recognition) и интеграция ML-моделей в продакшн-продукты i.moscow.
+- 2020–2021 · XD soft, ООО «Программный продукт» (рук. проекта): запуск AI-направления (Python + NLP, emotion recognition) и интеграция ML-моделей в продукты https://i.moscow.
 - 2019 · Waves (software engineer): RIDE/dApps; смарт-контракт профиль для социальной сети в блокчейне Waves; команда 4→9.
 - 2017–2018 · Contuur (Кипр, Лимассол): арбитражный робот для криптобирж; Python + Kafka + MongoDB + Grafana; выход в прибыль; команда 3→7.
 - 2016–2021 · TuSion (founder/CTO→CRO): нейротех-продукт, акселерация Starta Accelerator, New-York City, US. привлечено 170K$, 600+ установок, несколько пивотов; в декабре 2021 компанию закрыли.
