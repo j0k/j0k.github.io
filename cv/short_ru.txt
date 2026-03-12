@@ -2,7 +2,7 @@
 
 GitHub: https://github.com/j0k  ·  LinkedIn: https://linkedin.com/in/yuri-konoplev  ·  Site: https://juri-konoplev.pro
 
-Стек: Python/C++/JS/TS, ML/DL (PyTorch/TensorFlow)
+Стек: Python/C++/JS/TS/Wolfram Mathematica, ML/DL (PyTorch/TensorFlow)
 Домен: разработка ПО, анализ видео/изображения/ЭЭГ, блокчейн/криптография/финтех, продуктовые прототипы, growth marketing и исследовательские пайплайны.
 
 Сейчас: 
@@ -10,7 +10,7 @@ GitHub: https://github.com/j0k  ·  LinkedIn: https://linkedin.com/in/yuri-konop
 - несколько проектов на заказ (в т.ч. ma8ka.com, многопользовательская игра в Telegram) (2025)
 - создание и развитие методологии разработки Keep AI Prompts (2025)
     https://gitverse.ru/j0k/Keep_AI_Prompts
-- ставка на AI-агентов; (2025)
+- ставка на AI-агентов; (2025) — Happy Banana Solutions: https://t.me/happybananasolutions
 - проект «Катюша AI» (голосовой бизнес-ассистент); (2023, 2025)
     https://github.com/j0k/Katusha
     https://github.com/j0k/Catherine-AI
