@@ -116,6 +116,146 @@
       height: 1.05rem;
     }
 
+    /* Timeline (scoped; CV-like but for weeks) */
+    .calc-timeline { margin-top: 0.35rem; }
+    .calc-timeline .calc-order-header { cursor: pointer; user-select: none; }
+    .calc-timeline .calc-order-header h2 { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .calc-timeline-openhint { color: var(--text-muted); font-size: 0.78rem; font-weight: 500; }
+    .calc-timeline-actions { display: inline-flex; align-items: center; gap: 0.35rem; margin-left: 0.2rem; }
+    .calc-timeline-iconbtn {
+      width: 1.9rem;
+      height: 1.9rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .calc-timeline-iconbtn:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.2); color: var(--yc-orange); }
+    .calc-timeline-iconbtn.is-active { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.22); color: var(--text); }
+    .calc-timeline-zoom { display: flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0 0.6rem; flex-wrap: wrap; }
+    .calc-timeline-range { font-size: 0.85rem; color: var(--text-muted); }
+    .calc-timeline-btn {
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .calc-timeline-btn:hover { background: var(--yc-orange); color: #fff; border-color: var(--yc-orange); }
+    .calc-timeline-scrollbar { margin-top: 0.25rem; height: 14px; position: relative; }
+    .calc-timeline-scrollbar-track { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.08); border-radius: 7px; cursor: pointer; }
+    .calc-timeline-scrollbar-thumb { position: absolute; top: 2px; bottom: 2px; min-width: 24px; border-radius: 5px; background: #111; cursor: grab; }
+    .calc-timeline-scrollbar-thumb:active { cursor: grabbing; }
+    .calc-timeline-scrollbar-thumb.dragging { cursor: grabbing; }
+    .calc-timeline-axis { display: flex; justify-content: space-between; padding: 0 0 0.4rem; margin: 0.65rem 0 0.5rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid #ddd; }
+    .calc-timeline-axis span { flex: 0 0 auto; }
+    .calc-timeline-rows { position: relative; min-height: 180px; cursor: grab; user-select: none; }
+    .calc-timeline-rows:active { cursor: grabbing; }
+    .calc-timeline-rows.dragging { cursor: grabbing; }
+    .calc-timeline.is-select-mode .calc-timeline-rows { cursor: text; user-select: text; }
+    .calc-timeline.is-select-mode .calc-timeline-rows:active { cursor: text; }
+    .calc-timeline.is-select-mode .calc-timeline-rows.dragging { cursor: text; }
+    .calc-timeline-row { position: relative; z-index: 1; min-height: 32px; margin-bottom: 6px; display: flex; align-items: center; }
+    .calc-timeline-row.calc-timeline-row--group { background: rgba(168, 197, 232, 0.12); border-radius: 4px; margin-bottom: 4px; }
+    .calc-timeline-row .row-label { width: 140px; flex-shrink: 0; font-size: 0.82rem; font-weight: 550; color: var(--text); }
+    .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 1.25rem; font-size: 0.78rem; font-weight: 450; }
+    .calc-timeline-row .row-track { position: relative; flex: 1; min-height: 20px; height: 20px; background: rgba(168, 197, 232, 0.25); border-radius: 4px; overflow: visible; }
+    .calc-timeline-row.calc-timeline-row--group .row-track { background: rgba(168, 197, 232, 0.2); }
+    .calc-timeline-bar-wrap { position: absolute; top: 2px; height: 16px; cursor: pointer; z-index: 1; }
+    .calc-timeline-bar-wrap:hover .calc-timeline-bar { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
+    .calc-timeline-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; transition: transform 0.15s, box-shadow 0.15s; }
+    .calc-timeline-bar.bar--discovery { background: #0d9488; }
+    .calc-timeline-bar.bar--dev { background: #2c5282; }
+    .calc-timeline-bar.bar--test { background: #c2410c; }
+    .calc-timeline-bar.bar--release { background: #553c9a; }
+
+    .calc-timeline-tooltip {
+      position: fixed;
+      z-index: 200;
+      max-width: min(420px, calc(100vw - 2rem));
+      background: var(--header-bg);
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      padding: 0.6rem 0.75rem;
+      font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      display: none;
+      user-select: text;
+    }
+    .calc-timeline-tooltip.is-open { display: block; }
+    .calc-timeline-tooltip .muted { color: var(--text-muted); }
+
+    .calc-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 180;
+      display: none;
+    }
+    .calc-modal.is-open { display: block; }
+    .calc-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.42);
+    }
+    .calc-modal-dialog {
+      position: relative;
+      max-width: min(980px, calc(100vw - 2rem));
+      margin: 6vh auto;
+      background: var(--header-bg);
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 10px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.28);
+      overflow: hidden;
+    }
+    .calc-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .calc-modal-title { font-weight: 650; color: var(--text); }
+    .calc-modal-close {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.2rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .calc-modal-close:hover { background: rgba(0,0,0,0.04); color: var(--yc-orange); border-color: rgba(0,0,0,0.2); }
+    .calc-modal-body { padding: 0.85rem 1rem 1.1rem; }
+
+    .calc-timeline--modal .calc-timeline-rows { min-height: 420px; }
+    .calc-timeline--modal .calc-timeline-row { min-height: 40px; }
+    .calc-timeline--modal .calc-timeline-row .row-label { width: 220px; font-size: 0.9rem; }
+    .calc-timeline--modal .calc-timeline-row.calc-timeline-row--sub .row-label { font-size: 0.86rem; }
+    .calc-timeline--modal .calc-timeline-row .row-track { height: 24px; min-height: 24px; }
+    .calc-timeline--modal .calc-timeline-bar-wrap { height: 20px; top: 2px; }
+    .calc-timeline--modal .calc-timeline-btn { width: 2.2rem; height: 2.2rem; }
+
     .calc-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
@@ -326,6 +466,12 @@
       .calc-layout { grid-template-columns: minmax(0,1fr); }
       .calc-card, .calc-result, .calc-note { padding: 1rem 1rem; }
       .calc-input, .calc-select { max-width: 100%; }
+      .calc-timeline-axis { font-size: 0.7rem; }
+      .calc-timeline-row .row-label { width: 105px; font-size: 0.78rem; }
+      .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 0.9rem; font-size: 0.75rem; }
+      .calc-timeline-tooltip { font-size: 0.82rem; }
+      .calc-modal-dialog { margin: 1rem auto; max-width: calc(100vw - 1rem); }
+      .calc-timeline--modal .calc-timeline-row .row-label { width: 130px; }
     }
   </style>
 </head>
@@ -601,6 +747,35 @@
           <div class="calc-order-list" id="calcOrderList"></div>
           <div class="calc-order-total" id="calcOrderTotal" style="text-align:right; margin-top:0.55rem; font-weight:650; color: var(--text);"></div>
         </div>
+
+        <div class="calc-timeline" id="calcTimeline">
+          <div class="calc-order-header" style="margin-top: 0.85rem;">
+            <h2 data-i18n="timeline.title">
+              Timeline
+              <span class="calc-timeline-actions" aria-hidden="true">
+                <button type="button" class="calc-timeline-iconbtn" id="calcTimelineExpandBtn" title="Открыть крупно" aria-label="Открыть крупно">⤢</button>
+                <button type="button" class="calc-timeline-iconbtn" id="calcTimelineSelectBtn" title="Режим выделения" aria-label="Режим выделения">⎚</button>
+              </span>
+            </h2>
+            <span class="calc-order-count" id="calcTimelineMeta" data-i18n="timeline.empty">Пока пусто</span>
+          </div>
+
+          <div class="calc-timeline-zoom" aria-label="Timeline controls">
+            <button type="button" class="calc-timeline-btn" id="calcTimelinePanLeft" title="Влево" aria-label="Влево">←</button>
+            <button type="button" class="calc-timeline-btn" id="calcTimelinePanRight" title="Вправо" aria-label="Вправо">→</button>
+            <button type="button" class="calc-timeline-btn" id="calcTimelineZoomOut" title="Отдалить" aria-label="Отдалить">−</button>
+            <span id="calcTimelineRangeLabel" class="calc-timeline-range">0–0w</span>
+            <button type="button" class="calc-timeline-btn" id="calcTimelineZoomIn" title="Приблизить" aria-label="Приблизить">+</button>
+          </div>
+
+          <div class="calc-timeline-scrollbar" id="calcTimelineScrollbar" title="Ползунок — перемещение по неделям">
+            <div class="calc-timeline-scrollbar-track" id="calcTimelineScrollbarTrack"></div>
+            <div class="calc-timeline-scrollbar-thumb" id="calcTimelineScrollbarThumb"></div>
+          </div>
+
+          <div class="calc-timeline-axis" id="calcTimelineAxis"></div>
+          <div class="calc-timeline-rows" id="calcTimelineRows" title="Тянуть влево‑вправо — сдвиг; колёсико — зум"></div>
+        </div>
       </section>
     </section>
 
@@ -608,6 +783,19 @@
       <strong data-i18n="note.strong">Важно:</strong> <span data-i18n="note.text">расчёт ориентировочный. Реальная стоимость зависит от ТЗ, качества входных данных, требований к безопасности и срокам согласований.</span>
     </section>
   </main>
+
+  <div class="calc-modal" id="calcTimelineModal" aria-hidden="true">
+    <div class="calc-modal-backdrop" id="calcTimelineModalBackdrop"></div>
+    <div class="calc-modal-dialog" role="dialog" aria-modal="true" aria-label="Timeline">
+      <div class="calc-modal-header">
+        <div class="calc-modal-title" data-i18n="timeline.modalTitle">План · этапы (подробно)</div>
+        <button type="button" class="calc-modal-close" id="calcTimelineModalClose" aria-label="Close">×</button>
+      </div>
+      <div class="calc-modal-body">
+        <div id="calcTimelineModalMount"></div>
+      </div>
+    </div>
+  </div>
 
   <script>
     (function() {
@@ -679,6 +867,20 @@
           'result.weeksUnitApprox': 'недель (≈)',
           'result.weeksUnit': 'недель',
           'result.detailsKey': 'детали',
+          'timeline.title': 'План · этапы',
+          'timeline.empty': 'Пока пусто',
+          'timeline.rangeWeeks': 'нед.',
+          'timeline.modalTitle': 'План · этапы (подробно)',
+          'timeline.expandAria': 'Открыть план крупно',
+          'timeline.selectAria': 'Режим выделения/копирования',
+          'phase.discovery': 'аналитика',
+          'phase.dev': 'разработка',
+          'phase.test': 'тестирование',
+          'phase.release': 'релиз',
+          'timeline.tooltip.phase': 'этап',
+          'timeline.tooltip.item': 'позиция',
+          'timeline.tooltip.unit': 'опция',
+          'timeline.tooltip.duration': 'длительность',
           'note.strong': 'Важно:',
           'note.text': 'расчёт ориентировочный. Реальная стоимость зависит от ТЗ, качества входных данных, требований к безопасности и срокам согласований.'
         },
@@ -748,6 +950,20 @@
           'result.weeksUnitApprox': 'weeks (≈)',
           'result.weeksUnit': 'weeks',
           'result.detailsKey': 'details',
+          'timeline.title': 'Plan · phases',
+          'timeline.empty': 'Empty',
+          'timeline.rangeWeeks': 'w',
+          'timeline.modalTitle': 'Plan · phases (detailed)',
+          'timeline.expandAria': 'Open plan in large view',
+          'timeline.selectAria': 'Selection/copy mode',
+          'phase.discovery': 'discovery',
+          'phase.dev': 'development',
+          'phase.test': 'testing',
+          'phase.release': 'release',
+          'timeline.tooltip.phase': 'phase',
+          'timeline.tooltip.item': 'item',
+          'timeline.tooltip.unit': 'option',
+          'timeline.tooltip.duration': 'duration',
           'note.strong': 'Note:',
           'note.text': 'this estimate is approximate. Final cost depends on scope, input quality, security requirements, and review cycles.'
         }
@@ -760,6 +976,15 @@
         return d[key] != null ? d[key] : key;
       }
 
+      function esc(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
       function applyI18n(lang) {
         var dict = I18N[lang] || I18N.ru;
         CURRENT_LANG = lang;
@@ -769,6 +994,8 @@
           var k = el.getAttribute('data-i18n');
           if (dict[k] != null) el.textContent = dict[k];
         });
+        if (tlExpandBtnEl) tlExpandBtnEl.setAttribute('aria-label', t('timeline.expandAria'));
+        if (tlSelectBtnEl) tlSelectBtnEl.setAttribute('aria-label', t('timeline.selectAria'));
         // special case: some labels have multiple spans with data-i18n and other text nodes handled above.
 
         // Toggle active lang options (same classes as main page)
@@ -794,6 +1021,7 @@
             renderAddonsUI();
             recalc();
             renderOrderList();
+            renderTimelineFromOrder();
           });
         });
         renderDynamicLabels(initial);
@@ -1088,6 +1316,32 @@
       var orderCountEl = document.getElementById('calcOrderCount');
       var orderTotalEl = document.getElementById('calcOrderTotal');
 
+      // timeline DOM
+      var tlWrapEl = document.getElementById('calcTimeline');
+      var tlMetaEl = document.getElementById('calcTimelineMeta');
+      var tlAxisEl = document.getElementById('calcTimelineAxis');
+      var tlRowsEl = document.getElementById('calcTimelineRows');
+      var tlRangeLabelEl = document.getElementById('calcTimelineRangeLabel');
+      var tlPanLeftBtn = document.getElementById('calcTimelinePanLeft');
+      var tlPanRightBtn = document.getElementById('calcTimelinePanRight');
+      var tlZoomOutBtn = document.getElementById('calcTimelineZoomOut');
+      var tlZoomInBtn = document.getElementById('calcTimelineZoomIn');
+      var tlScrollbarEl = document.getElementById('calcTimelineScrollbar');
+      var tlScrollbarTrackEl = document.getElementById('calcTimelineScrollbarTrack');
+      var tlScrollbarThumbEl = document.getElementById('calcTimelineScrollbarThumb');
+
+      // timeline modal
+      var tlModalEl = document.getElementById('calcTimelineModal');
+      var tlModalBackdropEl = document.getElementById('calcTimelineModalBackdrop');
+      var tlModalCloseEl = document.getElementById('calcTimelineModalClose');
+      var tlModalMountEl = document.getElementById('calcTimelineModalMount');
+      var tlExpandBtnEl = document.getElementById('calcTimelineExpandBtn');
+      var tlSelectBtnEl = document.getElementById('calcTimelineSelectBtn');
+      var tlOriginalParent = null;
+      var tlOriginalNext = null;
+      var tlModalOpen = false;
+      var tlSelectMode = false;
+
       var orderItems = [];
 
       var typeSectionEls = document.querySelectorAll('.calc-type-section');
@@ -1142,6 +1396,362 @@
         if (v === 'one') return 1;
         if (v === 'two') return 2;
         return 3;
+      }
+
+      // --------- Timeline engine (weeks viewport) ----------
+      var tlState = {
+        minWeek: 0,
+        maxWeek: 0,
+        viewStart: 0,
+        viewEnd: 12,
+        rows: []
+      };
+
+      var tlTooltipEl = null;
+      function tlEnsureTooltip() {
+        if (tlTooltipEl) return tlTooltipEl;
+        tlTooltipEl = document.createElement('div');
+        tlTooltipEl.className = 'calc-timeline-tooltip';
+        tlTooltipEl.id = 'calcTimelineTooltip';
+        document.body.appendChild(tlTooltipEl);
+        return tlTooltipEl;
+      }
+      function tlHideTooltip() {
+        if (!tlTooltipEl) return;
+        tlTooltipEl.classList.remove('is-open');
+      }
+      function tlShowTooltipAt(clientX, clientY, html) {
+        var el = tlEnsureTooltip();
+        el.innerHTML = html;
+        el.classList.add('is-open');
+        var pad = 12;
+        var x = clientX + 14;
+        var y = clientY + 14;
+        // clamp after content is set
+        var rect = el.getBoundingClientRect();
+        x = Math.min(x, window.innerWidth - rect.width - pad);
+        y = Math.min(y, window.innerHeight - rect.height - pad);
+        x = Math.max(pad, x);
+        y = Math.max(pad, y);
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+      }
+
+      function tlClampViewport() {
+        var minW = tlState.minWeek;
+        var maxW = tlState.maxWeek;
+        if (!isFinite(minW)) minW = 0;
+        if (!isFinite(maxW) || maxW < minW) maxW = minW;
+        var span = Math.max(1, tlState.viewEnd - tlState.viewStart);
+        if (span > (maxW - minW)) span = Math.max(1, maxW - minW);
+        if (tlState.viewStart < minW) {
+          tlState.viewStart = minW;
+          tlState.viewEnd = minW + span;
+        }
+        if (tlState.viewEnd > maxW) {
+          tlState.viewEnd = maxW;
+          tlState.viewStart = maxW - span;
+        }
+        if (tlState.viewStart < minW) tlState.viewStart = minW;
+        if (tlState.viewEnd < tlState.viewStart + 0.5) tlState.viewEnd = tlState.viewStart + 0.5;
+      }
+
+      function tlToFraction(week) {
+        var range = tlState.viewEnd - tlState.viewStart;
+        if (range <= 0) return 0;
+        return (week - tlState.viewStart) / range;
+      }
+
+      function tlUpdateRangeLabel() {
+        if (!tlRangeLabelEl) return;
+        function fmt(w) {
+          var v = Math.round(w * 10) / 10;
+          return (v % 1 === 0) ? String(Math.round(v)) : v.toFixed(1);
+        }
+        tlRangeLabelEl.textContent = fmt(tlState.viewStart) + '–' + fmt(tlState.viewEnd) + t('timeline.rangeWeeks');
+      }
+
+      function tlUpdateAxis() {
+        if (!tlAxisEl) return;
+        var range = tlState.viewEnd - tlState.viewStart;
+        var step = range <= 8 ? 1 : range <= 16 ? 2 : range <= 32 ? 4 : 8;
+        var labels = [];
+        var start = Math.floor(tlState.viewStart / step) * step;
+        if (start < 0) start = 0;
+        var w = start;
+        while (w <= tlState.viewEnd + 0.001) {
+          labels.push(w);
+          w += step;
+        }
+        tlAxisEl.innerHTML = labels.map(function(v) { return '<span>' + v + '</span>'; }).join('');
+      }
+
+      function tlUpdateScrollbar() {
+        if (!tlScrollbarThumbEl) return;
+        var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
+        var leftPct = ((tlState.viewStart - tlState.minWeek) / fullRange) * 100;
+        var widthPct = ((tlState.viewEnd - tlState.viewStart) / fullRange) * 100;
+        tlScrollbarThumbEl.style.left = leftPct + '%';
+        tlScrollbarThumbEl.style.width = Math.max(6, widthPct) + '%';
+      }
+
+      function tlRenderRows() {
+        if (!tlRowsEl) return;
+        var rows = tlState.rows || [];
+        if (!rows.length) {
+          tlRowsEl.innerHTML = '';
+          return;
+        }
+
+        var html = '';
+        rows.forEach(function(r) {
+          var rowCls = 'calc-timeline-row' + (r.kind === 'group' ? ' calc-timeline-row--group' : ' calc-timeline-row--sub');
+          html += '<div class="' + rowCls + '">';
+          html += '  <div class="row-label">' + (r.label || '') + '</div>';
+          html += '  <div class="row-track">';
+          (r.segments || []).forEach(function(s) {
+            var l = Math.max(0, Math.min(1, tlToFraction(s.start))) * 100;
+            var rr = Math.max(0, Math.min(1, tlToFraction(s.end))) * 100;
+            var w = Math.max(0.5, rr - l);
+            var phaseKey = s.phaseKey || 'dev';
+            html += '    <div class="calc-timeline-bar-wrap" style="left:' + l + '%; width:' + w + '%" data-tip="' + encodeURIComponent(JSON.stringify(s.tip || {})) + '">';
+            html += '      <div class="calc-timeline-bar bar--' + phaseKey + '"></div>';
+            html += '    </div>';
+          });
+          html += '  </div>';
+          html += '</div>';
+        });
+        tlRowsEl.innerHTML = html;
+
+        // tooltip handlers
+        tlRowsEl.querySelectorAll('.calc-timeline-bar-wrap').forEach(function(el) {
+          function readTip() {
+            try {
+              var raw = el.getAttribute('data-tip') || '';
+              return raw ? JSON.parse(decodeURIComponent(raw)) : {};
+            } catch (e) { return {}; }
+          }
+          el.addEventListener('mouseenter', function(e) {
+            var tip = readTip();
+            var html = '';
+            if (tip.item) html += '<div><span class="muted">' + esc(t('timeline.tooltip.item')) + ':</span> ' + esc(tip.item) + '</div>';
+            if (tip.unit) html += '<div><span class="muted">' + esc(t('timeline.tooltip.unit')) + ':</span> ' + esc(tip.unit) + '</div>';
+            if (tip.phase) html += '<div><span class="muted">' + esc(t('timeline.tooltip.phase')) + ':</span> ' + esc(tip.phase) + '</div>';
+            if (tip.duration) html += '<div><span class="muted">' + esc(t('timeline.tooltip.duration')) + ':</span> ' + esc(tip.duration) + '</div>';
+            if (tip.why) html += '<div style="margin-top:0.35rem;">' + esc(tip.why) + '</div>';
+            tlShowTooltipAt(e.clientX, e.clientY, html || '<div class="muted">...</div>');
+          });
+          el.addEventListener('mousemove', function(e) {
+            if (!tlTooltipEl || !tlTooltipEl.classList.contains('is-open')) return;
+            tlShowTooltipAt(e.clientX, e.clientY, tlTooltipEl.innerHTML);
+          });
+          el.addEventListener('mouseleave', function() {
+            tlHideTooltip();
+          });
+        });
+      }
+
+      function tlSetData(rows, maxWeek) {
+        tlState.rows = rows || [];
+        tlState.minWeek = 0;
+        tlState.maxWeek = Math.max(0, maxWeek || 0);
+        if (tlState.viewEnd <= tlState.viewStart) {
+          tlState.viewStart = 0;
+          tlState.viewEnd = Math.min(12, tlState.maxWeek || 12);
+        }
+        if (tlState.viewEnd === 0) tlState.viewEnd = 12;
+        tlClampViewport();
+        tlUpdateRangeLabel();
+        tlUpdateAxis();
+        tlUpdateScrollbar();
+        tlRenderRows();
+      }
+
+      function tlPan(deltaWeeks) {
+        tlState.viewStart += deltaWeeks;
+        tlState.viewEnd += deltaWeeks;
+        tlClampViewport();
+        tlUpdateRangeLabel();
+        tlUpdateAxis();
+        tlUpdateScrollbar();
+        tlRenderRows();
+      }
+
+      function tlZoom(factor, aroundWeek) {
+        var center = (aroundWeek != null) ? aroundWeek : (tlState.viewStart + tlState.viewEnd) / 2;
+        var span = (tlState.viewEnd - tlState.viewStart) * factor;
+        span = Math.max(1, Math.min(span, Math.max(1, tlState.maxWeek - tlState.minWeek)));
+        tlState.viewStart = center - span / 2;
+        tlState.viewEnd = center + span / 2;
+        tlClampViewport();
+        tlUpdateRangeLabel();
+        tlUpdateAxis();
+        tlUpdateScrollbar();
+        tlRenderRows();
+      }
+
+      function tlInitInteractions() {
+        if (!tlRowsEl) return;
+        if (tlPanLeftBtn) tlPanLeftBtn.addEventListener('click', function() { tlPan(-(tlState.viewEnd - tlState.viewStart) * 0.2); });
+        if (tlPanRightBtn) tlPanRightBtn.addEventListener('click', function() { tlPan((tlState.viewEnd - tlState.viewStart) * 0.2); });
+        if (tlZoomOutBtn) tlZoomOutBtn.addEventListener('click', function() { tlZoom(1.25); });
+        if (tlZoomInBtn) tlZoomInBtn.addEventListener('click', function() { tlZoom(0.8); });
+
+        // drag to pan
+        var dragging = false;
+        var startX = 0;
+        var startViewStart = 0;
+        function pxToWeeks(dx) {
+          var rect = tlRowsEl.getBoundingClientRect();
+          var usable = Math.max(120, rect.width - 140);
+          var range = tlState.viewEnd - tlState.viewStart;
+          return (dx / usable) * range;
+        }
+        tlRowsEl.addEventListener('mousedown', function(e) {
+          if (tlSelectMode) return;
+          dragging = true;
+          startX = e.clientX;
+          startViewStart = tlState.viewStart;
+          tlRowsEl.classList.add('dragging');
+          tlHideTooltip();
+        });
+        window.addEventListener('mousemove', function(e) {
+          if (!dragging) return;
+          var dx = e.clientX - startX;
+          var delta = -pxToWeeks(dx);
+          var span = tlState.viewEnd - tlState.viewStart;
+          tlState.viewStart = startViewStart + delta;
+          tlState.viewEnd = tlState.viewStart + span;
+          tlClampViewport();
+          tlUpdateRangeLabel();
+          tlUpdateAxis();
+          tlUpdateScrollbar();
+          tlRenderRows();
+        });
+        window.addEventListener('mouseup', function() {
+          if (!dragging) return;
+          dragging = false;
+          tlRowsEl.classList.remove('dragging');
+        });
+
+        // wheel to zoom
+        tlRowsEl.addEventListener('wheel', function(e) {
+          if (tlSelectMode) return;
+          e.preventDefault();
+          var rect = tlRowsEl.getBoundingClientRect();
+          var x = e.clientX - rect.left;
+          var usable = Math.max(120, rect.width - 140);
+          var frac = Math.max(0, Math.min(1, (x - 140) / usable));
+          var around = tlState.viewStart + frac * (tlState.viewEnd - tlState.viewStart);
+          var factor = e.deltaY > 0 ? 1.15 : 0.87;
+          tlZoom(factor, around);
+        }, { passive: false });
+
+        // scrollbar interactions
+        if (tlScrollbarTrackEl) {
+          tlScrollbarTrackEl.addEventListener('click', function(e) {
+            var rect = tlScrollbarTrackEl.getBoundingClientRect();
+            var frac = (e.clientX - rect.left) / rect.width;
+            frac = Math.max(0, Math.min(1, frac));
+            var span = tlState.viewEnd - tlState.viewStart;
+            var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
+            tlState.viewStart = tlState.minWeek + frac * fullRange - span / 2;
+            tlState.viewEnd = tlState.viewStart + span;
+            tlClampViewport();
+            tlUpdateRangeLabel();
+            tlUpdateAxis();
+            tlUpdateScrollbar();
+            tlRenderRows();
+          });
+        }
+        if (tlScrollbarThumbEl) {
+          var sbDragging = false;
+          var sbStartX = 0;
+          var sbStartLeft = 0;
+          tlScrollbarThumbEl.addEventListener('mousedown', function(e) {
+            sbDragging = true;
+            sbStartX = e.clientX;
+            sbStartLeft = tlState.viewStart;
+            tlScrollbarThumbEl.classList.add('dragging');
+            e.preventDefault();
+          });
+          window.addEventListener('mousemove', function(e) {
+            if (!sbDragging) return;
+            var rect = tlScrollbarTrackEl.getBoundingClientRect();
+            var dx = e.clientX - sbStartX;
+            var fracDelta = dx / rect.width;
+            var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
+            var deltaWeeks = fracDelta * fullRange;
+            var span = tlState.viewEnd - tlState.viewStart;
+            tlState.viewStart = sbStartLeft + deltaWeeks;
+            tlState.viewEnd = tlState.viewStart + span;
+            tlClampViewport();
+            tlUpdateRangeLabel();
+            tlUpdateAxis();
+            tlUpdateScrollbar();
+            tlRenderRows();
+          });
+          window.addEventListener('mouseup', function() {
+            if (!sbDragging) return;
+            sbDragging = false;
+            tlScrollbarThumbEl.classList.remove('dragging');
+          });
+        }
+      }
+
+      function tlOpenModal() {
+        if (!tlModalEl || !tlModalMountEl || !tlWrapEl) return;
+        if (tlModalOpen) return;
+        tlModalOpen = true;
+        tlOriginalParent = tlWrapEl.parentElement;
+        tlOriginalNext = tlWrapEl.nextSibling;
+
+        tlWrapEl.classList.add('calc-timeline--modal');
+        tlModalMountEl.appendChild(tlWrapEl);
+        tlModalEl.classList.add('is-open');
+        tlModalEl.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        // re-render after layout change
+        setTimeout(function() {
+          tlClampViewport();
+          tlUpdateRangeLabel();
+          tlUpdateAxis();
+          tlUpdateScrollbar();
+          tlRenderRows();
+        }, 0);
+      }
+
+      function tlCloseModal() {
+        if (!tlModalEl || !tlWrapEl) return;
+        if (!tlModalOpen) return;
+        tlModalOpen = false;
+
+        tlHideTooltip();
+        tlModalEl.classList.remove('is-open');
+        tlModalEl.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+
+        tlWrapEl.classList.remove('calc-timeline--modal');
+        if (tlOriginalParent) {
+          if (tlOriginalNext) tlOriginalParent.insertBefore(tlWrapEl, tlOriginalNext);
+          else tlOriginalParent.appendChild(tlWrapEl);
+        }
+
+        setTimeout(function() {
+          tlClampViewport();
+          tlUpdateRangeLabel();
+          tlUpdateAxis();
+          tlUpdateScrollbar();
+          tlRenderRows();
+        }, 0);
+      }
+
+      function tlSetSelectMode(on) {
+        tlSelectMode = !!on;
+        if (tlWrapEl) tlWrapEl.classList.toggle('is-select-mode', tlSelectMode);
+        if (tlSelectBtnEl) tlSelectBtnEl.classList.toggle('is-active', tlSelectMode);
+        tlHideTooltip();
       }
 
       // --------- Init selects ----------
@@ -1209,8 +1819,26 @@
           renderOrderList();
         });
 
+        // open modal by clicking the timeline header
+        if (tlWrapEl) {
+          var hdr = tlWrapEl.querySelector('.calc-order-header');
+          if (hdr) hdr.addEventListener('click', function(e) {
+            // avoid toggles/buttons bubbling
+            if (e.target && e.target.closest && e.target.closest('button')) return;
+            tlOpenModal();
+          });
+        }
+        if (tlExpandBtnEl) tlExpandBtnEl.addEventListener('click', function(e) { e.stopPropagation(); tlOpenModal(); });
+        if (tlSelectBtnEl) tlSelectBtnEl.addEventListener('click', function(e) { e.stopPropagation(); tlSetSelectMode(!tlSelectMode); });
+        if (tlModalBackdropEl) tlModalBackdropEl.addEventListener('click', tlCloseModal);
+        if (tlModalCloseEl) tlModalCloseEl.addEventListener('click', tlCloseModal);
+        window.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') tlCloseModal();
+        });
+
         // initial
         initLangToggle();
+        tlInitInteractions();
         setTypeVisibility(productEl.value);
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
         integrationsBadgeEl.textContent = integrationsSliderEl.value;
@@ -1246,16 +1874,37 @@
         var details = [];
         var isEn = CURRENT_LANG === 'en';
 
+        // breakdown placeholders (so we can render timeline later)
+        var platform = null;
+        var platformDays = 0;
+        var backendDays = 0;
+        var adminDays = 0;
+        var payDays = 0;
+
+        var channels = 1;
+        var channelsDays = 0;
+        var ragDays = 0;
+        var citDays = 0;
+        var toolsEnabled = false;
+        var toolsCount = 0;
+        var toolsDays = 0;
+
+        var mode = null;
+        var modeDays = 0;
+        var voiceDays = 0;
+        var memDays = 0;
+        var guardDays = 0;
+
         // per-type extras
         if (typeKey === 'software') {
-          var platform = softwarePlatformEl ? softwarePlatformEl.value : 'web';
-          var platformDays = { web: 0, web_mobile: 10, full: 22 }[platform] || 0;
+          platform = softwarePlatformEl ? softwarePlatformEl.value : 'web';
+          platformDays = { web: 0, web_mobile: 10, full: 22 }[platform] || 0;
           typeExtras += platformDays;
           details.push((isEn ? 'Platform: ' : 'Платформа: ') + platform);
 
-          var backendDays = getCheckedNumber(softwareBackendCb) ? 8 : 0;
-          var adminDays = getCheckedNumber(softwareAdminCb) ? 5 : 0;
-          var payDays = getCheckedNumber(softwarePaymentsCb) ? 7 : 0;
+          backendDays = getCheckedNumber(softwareBackendCb) ? 8 : 0;
+          adminDays = getCheckedNumber(softwareAdminCb) ? 5 : 0;
+          payDays = getCheckedNumber(softwarePaymentsCb) ? 7 : 0;
 
           typeExtras += backendDays + adminDays + payDays;
           if (backendDays) details.push(isEn ? 'Backend/roles' : 'Backend/права');
@@ -1264,16 +1913,16 @@
         }
 
         if (typeKey === 'chatbot') {
-          var channels = getChannelsFactor(); // 1..3
-          var channelsDays = Math.max(0, channels - 1) * 6; // beyond base
+          channels = getChannelsFactor(); // 1..3
+          channelsDays = Math.max(0, channels - 1) * 6; // beyond base
           typeExtras += channelsDays;
           details.push((isEn ? 'Channels: ' : 'Каналы: ') + channels);
 
-          var ragDays = chatRagCb && chatRagCb.checked ? 14 : 0;
-          var citDays = chatCitationsCb && chatCitationsCb.checked ? 5 : 0;
-          var toolsEnabled = chatToolsCb && chatToolsCb.checked;
-          var toolsCount = parseInt(chatToolsSliderEl.value, 10) || 0;
-          var toolsDays = toolsEnabled ? toolsCount * 6 : 0;
+          ragDays = chatRagCb && chatRagCb.checked ? 14 : 0;
+          citDays = chatCitationsCb && chatCitationsCb.checked ? 5 : 0;
+          toolsEnabled = chatToolsCb && chatToolsCb.checked;
+          toolsCount = parseInt(chatToolsSliderEl.value, 10) || 0;
+          toolsDays = toolsEnabled ? toolsCount * 6 : 0;
 
           typeExtras += ragDays + citDays + toolsDays;
           if (ragDays) details.push(isEn ? 'RAG/search' : 'RAG/поиск');
@@ -1282,14 +1931,14 @@
         }
 
         if (typeKey === 'ai') {
-          var mode = aiModeEl ? aiModeEl.value : 'text';
-          var modeDays = { text: 0, rag: 14, agent: 28 }[mode] || 0;
+          mode = aiModeEl ? aiModeEl.value : 'text';
+          modeDays = { text: 0, rag: 14, agent: 28 }[mode] || 0;
           typeExtras += modeDays;
           details.push((isEn ? 'Mode: ' : 'Режим: ') + mode);
 
-          var voiceDays = aiVoiceCb && aiVoiceCb.checked ? 10 : 0;
-          var memDays = aiMemoryCb && aiMemoryCb.checked ? 9 : 0;
-          var guardDays = aiGuardCb && aiGuardCb.checked ? 8 : 0;
+          voiceDays = aiVoiceCb && aiVoiceCb.checked ? 10 : 0;
+          memDays = aiMemoryCb && aiMemoryCb.checked ? 9 : 0;
+          guardDays = aiGuardCb && aiGuardCb.checked ? 8 : 0;
 
           typeExtras += voiceDays + memDays + guardDays;
           if (voiceDays) details.push(isEn ? 'Voice' : 'Голос');
@@ -1300,18 +1949,21 @@
         var urgencyMult = URGENCY[urgencyKey] || 1.0;
         var addonsDays = 0;
         var addonsPicked = [];
+        var addonsKeys = [];
         var lang = isEn ? 'en' : 'ru';
         ADDONS.forEach(function(a) {
           if (selectedAddons[a.key]) {
             addonsDays += addonDaysForType(a, typeKey);
             if (a.label && a.label[lang]) addonsPicked.push(a.label[lang]);
+            addonsKeys.push(a.key);
           }
         });
         if (addonsPicked.length) {
           details.push((isEn ? 'GTM: ' : 'GTM: ') + addonsPicked.join('; '));
         }
 
-        var personDays = (baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays) * urgencyMult;
+        var rawPersonDays = (baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays) * urgencyMult;
+        var personDays = rawPersonDays;
         personDays = Math.max(5, Math.round(personDays));
 
         var calendarDays = Math.max(5, Math.ceil(personDays / teamSize));
@@ -1330,8 +1982,11 @@
           tierKey: tierKey,
           tierName: tier.name,
           complexity: complexityLabel(complexityKey),
+          complexityKey: complexityKey,
           urgency: urgencyKey,
+          urgencyMult: urgencyMult,
           personDays: personDays,
+          rawPersonDays: rawPersonDays,
           calendarWeeks: calendarWeeks,
           cost: cost,
           costMin: costMin,
@@ -1340,8 +1995,30 @@
           team: teamSize,
           scenarioCount: scenarioCount,
           integrationsCount: integrationsCount,
+          baseDays: baseDays,
+          extraScenariosDays: extraScenarios,
+          extraIntegrationsDays: extraIntegrations,
+          platform: platform,
+          platformDays: platformDays,
+          backendDays: backendDays,
+          adminDays: adminDays,
+          payDays: payDays,
+          channels: channels,
+          channelsDays: channelsDays,
+          ragDays: ragDays,
+          citationsDays: citDays,
+          toolsEnabled: toolsEnabled,
+          toolsCount: toolsCount,
+          toolsDays: toolsDays,
+          mode: mode,
+          modeDays: modeDays,
+          voiceDays: voiceDays,
+          memoryDays: memDays,
+          guardDays: guardDays,
+          addonsDays: addonsDays,
           details: details,
-          addons: addonsPicked
+          addons: addonsPicked,
+          addonsKeys: addonsKeys
         };
       }
 
@@ -1366,6 +2043,248 @@
         resultCurrentBodyEl.innerHTML = html;
       }
 
+      function buildOrderTimelineV1() {
+        function unitLabel(key, lang) {
+          var m = {
+            core: { ru: '🧱 База (ядро)', en: '🧱 Core' },
+            scenarios: { ru: '🧠 Сценарии (сверх базы)', en: '🧠 Extra scenarios' },
+            integrations: { ru: '🔌 Интеграции (сверх базы)', en: '🔌 Extra integrations' },
+            platform: { ru: '🖥 Платформа', en: '🖥 Platform' },
+            backend: { ru: '🔐 Backend + права', en: '🔐 Backend + roles' },
+            admin: { ru: '📊 Админка + аналитика', en: '📊 Admin + analytics' },
+            payments: { ru: '💳 Оплаты/заказы', en: '💳 Payments/orders' },
+            channels: { ru: '📡 Каналы (доп.)', en: '📡 Channels (extra)' },
+            rag: { ru: '📚 RAG / база знаний', en: '📚 RAG / knowledge base' },
+            citations: { ru: '🧷 Цитаты/ссылки', en: '🧷 Citations' },
+            tools: { ru: '🧰 Инструменты/действия', en: '🧰 Tools/actions' },
+            mode: { ru: '🧠 Режим ассистента', en: '🧠 Assistant mode' },
+            voice: { ru: '🎙 Голос (STT/TTS)', en: '🎙 Voice (STT/TTS)' },
+            memory: { ru: '🧠 Память', en: '🧠 Memory' },
+            guard: { ru: '🛡 Guardrails', en: '🛡 Guardrails' }
+          };
+          return (m[key] && m[key][lang]) ? m[key][lang] : key;
+        }
+
+        function phaseSplitForUnit(unitKey) {
+          // discovery/dev/test/release
+          var splits = {
+            core: { discovery: 0.15, dev: 0.6, test: 0.2, release: 0.05 },
+            scenarios: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            integrations: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            platform: { discovery: 0.05, dev: 0.75, test: 0.15, release: 0.05 },
+            backend: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            admin: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            payments: { discovery: 0.1, dev: 0.6, test: 0.25, release: 0.05 },
+            channels: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
+            rag: { discovery: 0.15, dev: 0.6, test: 0.2, release: 0.05 },
+            citations: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
+            tools: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            mode: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            voice: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
+            memory: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
+            guard: { discovery: 0.1, dev: 0.55, test: 0.3, release: 0.05 }
+          };
+          return splits[unitKey] || splits.core;
+        }
+
+        function addonSplit(key) {
+          // reasonable defaults from business outline
+          var m = {
+            exec_summary: { discovery: 0.9, dev: 0.1, test: 0.0, release: 0.0 },
+            market_analysis: { discovery: 1.0, dev: 0.0, test: 0.0, release: 0.0 },
+            product_overview: { discovery: 0.85, dev: 0.15, test: 0.0, release: 0.0 },
+            target_users: { discovery: 1.0, dev: 0.0, test: 0.0, release: 0.0 },
+            mechanics_scenarios: { discovery: 0.6, dev: 0.35, test: 0.05, release: 0.0 },
+            metrics_feedback: { discovery: 0.25, dev: 0.55, test: 0.15, release: 0.05 },
+            revenue_model: { discovery: 0.7, dev: 0.25, test: 0.05, release: 0.0 },
+            marketing_distribution: { discovery: 0.9, dev: 0.1, test: 0.0, release: 0.0 },
+            launch_strategy: { discovery: 0.9, dev: 0.1, test: 0.0, release: 0.0 },
+            roadmap: { discovery: 1.0, dev: 0.0, test: 0.0, release: 0.0 },
+            risks_limits: { discovery: 0.9, dev: 0.05, test: 0.05, release: 0.0 }
+          };
+          return m[key] || { discovery: 1.0, dev: 0.0, test: 0.0, release: 0.0 };
+        }
+
+        function normalizeSplit(split) {
+          var sum = (split.discovery || 0) + (split.dev || 0) + (split.test || 0) + (split.release || 0);
+          if (!sum) return { discovery: 0, dev: 1, test: 0, release: 0 };
+          return {
+            discovery: (split.discovery || 0) / sum,
+            dev: (split.dev || 0) / sum,
+            test: (split.test || 0) / sum,
+            release: (split.release || 0) / sum
+          };
+        }
+
+        function makeSegments(itemStart, totalWeeks, unitKey, unitLabelText, whyText, split) {
+          var s = normalizeSplit(split);
+          var phases = [
+            { key: 'discovery', label: t('phase.discovery'), cls: 'discovery', frac: s.discovery },
+            { key: 'dev', label: t('phase.dev'), cls: 'dev', frac: s.dev },
+            { key: 'test', label: t('phase.test'), cls: 'test', frac: s.test },
+            { key: 'release', label: t('phase.release'), cls: 'release', frac: s.release }
+          ];
+          var out = [];
+          var cur = itemStart;
+          phases.forEach(function(p, idx) {
+            var w = (idx === phases.length - 1) ? (itemStart + totalWeeks - cur) : totalWeeks * p.frac;
+            if (w <= 0.02) return;
+            var a = cur;
+            var b = cur + w;
+            cur = b;
+            out.push({
+              start: a,
+              end: b,
+              phaseKey: p.cls,
+              tip: {
+                item: itemStart.itemLabel || '',
+                unit: unitLabelText,
+                phase: p.label,
+                duration: (Math.round((b - a) * 10) / 10) + ' ' + t('result.weeksUnit'),
+                why: whyText || ''
+              }
+            });
+          });
+          return out;
+        }
+
+        var lang = CURRENT_LANG === 'en' ? 'en' : 'ru';
+        var rows = [];
+        var offset = 0;
+
+        orderItems.forEach(function(item, idx) {
+          var itemLabel = (lang === 'en' ? ('Item ' + (idx + 1)) : ('Позиция ' + (idx + 1)));
+          var groupLabel = itemLabel + ': ' + item.typeName + ' · ' + item.tierName + ' · ' + item.complexity;
+          var itemStart = offset;
+          var itemWeeks = Math.max(1, parseFloat(item.calendarWeeks) || 0);
+          var itemEnd = itemStart + itemWeeks;
+
+          // units in person-days (already includes urgency in rawPersonDays -> we scale to item.personDays)
+          var units = [];
+          function pushUnit(k, days, why) {
+            if (!days || days <= 0) return;
+            units.push({ key: k, days: days, why: why || '' });
+          }
+
+          pushUnit('core', Math.max(0, item.baseDays || 0), lang === 'en' ? 'Core build work.' : 'Базовая разработка продукта.');
+          pushUnit('scenarios', Math.max(0, item.extraScenariosDays || 0), lang === 'en' ? 'More use cases require more logic + tests.' : 'Доп. сценарии = больше логики и тестов.');
+          pushUnit('integrations', Math.max(0, item.extraIntegrationsDays || 0), lang === 'en' ? 'External APIs/CRM/payments add integration work.' : 'Внешние интеграции добавляют работу по API/данным.');
+
+          if (item.typeKey === 'software') {
+            pushUnit('platform', Math.max(0, item.platformDays || 0), lang === 'en' ? 'More platforms = more UI + build + QA.' : 'Больше платформ = больше UI/сборок/QA.');
+            pushUnit('backend', Math.max(0, item.backendDays || 0), lang === 'en' ? 'Auth/roles/data layer require backend work.' : 'Аутентификация/права/данные требуют backend-работ.');
+            pushUnit('admin', Math.max(0, item.adminDays || 0), lang === 'en' ? 'Admin + analytics adds screens and metrics.' : 'Админка и аналитика добавляют экраны и метрики.');
+            pushUnit('payments', Math.max(0, item.payDays || 0), lang === 'en' ? 'Payments require integrations and testing.' : 'Оплаты требуют интеграций и тестирования.');
+          }
+          if (item.typeKey === 'chatbot') {
+            pushUnit('channels', Math.max(0, item.channelsDays || 0), lang === 'en' ? 'Multiple channels require adapters + QA.' : 'Несколько каналов = адаптеры и QA.');
+            pushUnit('rag', Math.max(0, item.ragDays || 0), lang === 'en' ? 'RAG needs ingestion, retrieval, eval.' : 'RAG = загрузка данных, поиск, качество.');
+            pushUnit('citations', Math.max(0, item.citationsDays || 0), lang === 'en' ? 'Citations need source mapping and UX.' : 'Цитаты требуют маппинга источников и UX.');
+            pushUnit('tools', Math.max(0, item.toolsDays || 0), lang === 'en' ? 'Tools/actions require safe API calls.' : 'Инструменты требуют безопасных действий через API.');
+          }
+          if (item.typeKey === 'ai') {
+            pushUnit('mode', Math.max(0, item.modeDays || 0), lang === 'en' ? 'RAG/Agent modes add architecture and QA.' : 'Режимы RAG/Agent добавляют архитектуру и QA.');
+            pushUnit('voice', Math.max(0, item.voiceDays || 0), lang === 'en' ? 'STT/TTS pipeline + latency/quality work.' : 'STT/TTS = пайплайн, задержки, качество.');
+            pushUnit('memory', Math.max(0, item.memoryDays || 0), lang === 'en' ? 'Long-term memory needs storage and policies.' : 'Память = хранилище и политики.');
+            pushUnit('guard', Math.max(0, item.guardDays || 0), lang === 'en' ? 'Guardrails require rules, tests, monitoring.' : 'Guardrails = правила, тесты, мониторинг.');
+          }
+
+          // add-ons as units
+          (item.addonsKeys || []).forEach(function(k) {
+            var addon = null;
+            for (var i = 0; i < ADDONS.length; i++) if (ADDONS[i].key === k) addon = ADDONS[i];
+            var d = addon ? addonDaysForType(addon, item.typeKey) : 0;
+            var why = addon && addon.help && addon.help[lang] ? addon.help[lang] : '';
+            if (d > 0) units.push({ key: 'addon:' + k, days: d, why: why, addonKey: k });
+          });
+
+          // scale unit days to match item.personDays (after rounding/min)
+          var rawTotal = 0;
+          units.forEach(function(u) { rawTotal += (u.days || 0) * (item.urgencyMult || 1); });
+          var targetDays = Math.max(1, item.personDays || 1);
+          var scale = rawTotal > 0 ? (targetDays / rawTotal) : 1;
+          var weeksExact = (targetDays / Math.max(1, item.team || 1)) / 5;
+          var weeksTarget = itemWeeks;
+          var weeksScale = weeksExact > 0 ? (weeksTarget / weeksExact) : 1;
+
+          // compute per-unit total weeks
+          var unitRows = [];
+          units.forEach(function(u) {
+            var scaledDays = (u.days || 0) * (item.urgencyMult || 1) * scale;
+            var w = (scaledDays / Math.max(1, item.team || 1)) / 5 * weeksScale;
+            if (w <= 0.05) return;
+            var label = u.key.indexOf('addon:') === 0
+              ? (function() {
+                  var kk = u.addonKey;
+                  for (var i = 0; i < ADDONS.length; i++) {
+                    if (ADDONS[i].key === kk) return (ADDONS[i].icon || '✨') + ' ' + (ADDONS[i].label && ADDONS[i].label[lang] ? ADDONS[i].label[lang] : kk);
+                  }
+                  return '✨ ' + kk;
+                })()
+              : unitLabel(u.key, lang);
+
+            var split = (u.key.indexOf('addon:') === 0) ? addonSplit(u.addonKey) : phaseSplitForUnit(u.key);
+            unitRows.push({ label: label, key: u.key, why: u.why || '', weeks: w, split: split });
+          });
+
+          // group segments: aggregate phase totals across all units, then lay sequentially across itemWeeks
+          var phaseTotals = { discovery: 0, dev: 0, test: 0, release: 0 };
+          unitRows.forEach(function(ur) {
+            var s = normalizeSplit(ur.split);
+            phaseTotals.discovery += ur.weeks * s.discovery;
+            phaseTotals.dev += ur.weeks * s.dev;
+            phaseTotals.test += ur.weeks * s.test;
+            phaseTotals.release += ur.weeks * s.release;
+          });
+          var phaseSum = phaseTotals.discovery + phaseTotals.dev + phaseTotals.test + phaseTotals.release;
+          if (phaseSum <= 0.001) phaseSum = 1;
+          var groupSplit = {
+            discovery: phaseTotals.discovery / phaseSum,
+            dev: phaseTotals.dev / phaseSum,
+            test: phaseTotals.test / phaseSum,
+            release: phaseTotals.release / phaseSum
+          };
+
+          // stash label for tooltip builder
+          var itemStartObj = { itemLabel: groupLabel, valueOf: function() { return itemStart; } };
+
+          rows.push({
+            kind: 'group',
+            label: groupLabel,
+            segments: makeSegments(itemStartObj, itemWeeks, 'group', (lang === 'en' ? 'Overall' : 'Итого'), (lang === 'en' ? 'Aggregated phases for this order item.' : 'Сводное разбиение по этапам для этой позиции.'), groupSplit)
+          });
+
+          unitRows.forEach(function(ur) {
+            rows.push({
+              kind: 'sub',
+              label: ur.label,
+              segments: makeSegments(itemStartObj, ur.weeks, ur.key, ur.label, ur.why, ur.split)
+            });
+          });
+
+          offset = itemEnd;
+        });
+
+        return { rows: rows, maxWeek: offset };
+      }
+
+      function renderTimelineFromOrder() {
+        if (!tlWrapEl) return;
+        if (!orderItems || orderItems.length === 0) {
+          if (tlMetaEl) tlMetaEl.textContent = t('timeline.empty');
+          tlSetData([], 0);
+          return;
+        }
+        var data = buildOrderTimelineV1();
+        if (tlMetaEl) {
+          var totalW = Math.round((data.maxWeek || 0) * 10) / 10;
+          tlMetaEl.textContent = (CURRENT_LANG === 'en'
+            ? (orderItems.length + ' items · ' + totalW + 'w')
+            : (orderItems.length + ' поз. · ' + totalW + ' нед.'));
+        }
+        tlSetData(data.rows, data.maxWeek);
+      }
+
       function renderOrderList() {
         if (!orderListEl || !orderCountEl) return;
 
@@ -1373,6 +2292,7 @@
           orderListEl.innerHTML = '<div class="calc-result-empty">' + t('order.empty') + '</div>';
           orderCountEl.textContent = t('order.countEmpty');
           if (orderTotalEl) orderTotalEl.textContent = '';
+          renderTimelineFromOrder();
           return;
         }
 
@@ -1429,6 +2349,8 @@
             });
           }
         });
+
+        renderTimelineFromOrder();
       }
 
       // start
