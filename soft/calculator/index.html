@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Software Calculator · Yuri Konoplev</title>
+  <link rel="stylesheet" href="../../person/css/style.css">
+  <style>
+    .calc-page {
+      max-width: 44rem;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2rem;
+      box-sizing: border-box;
+    }
+    .calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .calc-title {
+      font-size: 1.35rem;
+      font-weight: 650;
+      margin: 0;
+    }
+    .calc-subtitle {
+      margin: 0.25rem 0 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .calc-back {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .calc-back:hover { color: var(--yc-orange); text-decoration: underline; }
+    .lang-toggle.calc-lang-toggle { margin-left: auto; }
+
+    .calc-help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: #fff;
+      color: var(--text-muted);
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+      line-height: 1;
+      margin-left: 0.35rem;
+      flex: 0 0 auto;
+    }
+    .calc-help-btn:hover { color: var(--text); border-color: rgba(0,0,0,0.28); }
+    .calc-help {
+      margin: 0.35rem 0 0.45rem 1.4rem;
+      padding: 0.5rem 0.6rem;
+      border-left: 3px solid rgba(0,0,0,0.12);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      background: rgba(0,0,0,0.02);
+      border-radius: 6px;
+      display: none;
+    }
+    .calc-help.is-open { display: block; }
+
+    .calc-addons-list { display: grid; gap: 0.35rem; }
+    .calc-addon-row {
+      display: grid;
+      grid-template-columns: 1.15rem 1fr auto;
+      gap: 0.6rem;
+      align-items: start;
+      padding: 0.35rem 0.2rem;
+      border-radius: 6px;
+    }
+    .calc-addon-row:hover { background: rgba(0,0,0,0.02); }
+    .calc-addon-main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .calc-addon-titleline {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .calc-addon-badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: rgba(0,0,0,0.02);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 0.1rem 0.45rem;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+    .calc-addon-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding-top: 0.05rem;
+    }
+    .calc-addon-checkbox {
+      margin-top: 0.2rem;
+      width: 1.05rem;
+      height: 1.05rem;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .calc-card,
+    .calc-result,
+    .calc-note {
+      background: var(--header-bg);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .calc-card h2,
+    .calc-result h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .calc-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.85rem;
+    }
+    .calc-label {
+      font-size: 0.85rem;
+      font-weight: 550;
+      color: var(--text);
+    }
+    .calc-label span {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .calc-input,
+    .calc-select {
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.18);
+      padding: 0.45rem 0.6rem;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+      max-width: 16rem;
+    }
+    .calc-input:focus,
+    .calc-select:focus {
+      outline: 2px solid var(--yc-orange);
+      outline-offset: 2px;
+      border-color: var(--yc-orange);
+    }
+
+    .calc-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .calc-radio-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-top: 0.1rem;
+      font-size: 0.85rem;
+    }
+    .calc-radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--text);
+    }
+    .calc-radio-option span {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .calc-slider-row {
+      margin-top: 0.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .calc-slider-inline { display: flex; align-items: center; gap: 0.6rem; }
+    .calc-slider-inline input[type="range"] { flex: 1; }
+    .calc-slider-hint { font-size: 0.75rem; color: var(--text-muted); }
+
+    .calc-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.03);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .calc-add-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.18);
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text);
+      user-select: none;
+    }
+    .calc-add-btn:hover { border-color: var(--yc-orange); background: rgba(250, 245, 255, 0.85); }
+
+    .calc-result {
+      display: flex;
+      flex-direction: column;
+    }
+    .calc-result-current { margin-bottom: 1rem; }
+    .calc-result-table {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .calc-result-row { display: table-row; }
+    .calc-result-key {
+      display: table-cell;
+      width: 12ch;
+      max-width: 12ch;
+      padding: 0.15em 0.4em 0.15em 0;
+      vertical-align: top;
+      color: var(--text-muted);
+      white-space: nowrap;
+      text-align: right;
+    }
+    .calc-result-sep { display: table-cell; width: 1ch; max-width: 1ch; vertical-align: top; color: var(--text-muted); text-align: center; }
+    .calc-result-val { display: table-cell; padding: 0.15em 0.1em; vertical-align: top; color: var(--text); word-break: break-word; }
+    .calc-result-val--total { font-weight: 650; color: #1a365d; }
+
+    .calc-result-empty { color: var(--text-muted); font-style: italic; }
+
+    .calc-order { margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid rgba(0,0,0,0.06); }
+    .calc-order-header { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.4rem; }
+    .calc-order-count { font-size: 0.75rem; color: var(--text-muted); }
+    .calc-order-list { display: flex; flex-direction: column; gap: 0.45rem; }
+    .calc-order-item {
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.55);
+      overflow: hidden;
+    }
+    .calc-order-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      padding: 0.5rem 0.6rem;
+      cursor: pointer;
+      background: rgba(0,0,0,0.02);
+    }
+    .calc-order-item-main { font-size: 0.85rem; }
+    .calc-order-item-main strong { font-weight: 650; }
+    .calc-order-item-delete {
+      font-size: 0.85rem;
+      color: #b91c1c;
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 0.1rem 0.35rem;
+    }
+    .calc-order-item-delete:hover { text-decoration: underline; color: #ef4444; }
+    .calc-order-item-body { display: none; padding: 0.55rem 0.65rem; border-top: 1px solid rgba(0,0,0,0.04); }
+    .calc-order-item:not(.collapsed) .calc-order-item-body { display: block; }
+
+    .calc-type-sections { margin-top: 0.25rem; }
+    .calc-type-section { display: none; }
+    .calc-type-section.is-active { display: block; }
+
+    .calc-table-wrap {
+      margin-top: 0.85rem;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.06);
+      overflow: hidden;
+      background: rgba(255,255,255,0.65);
+    }
+    .calc-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .calc-table th, .calc-table td { padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+    .calc-table th { background: rgba(0,0,0,0.03); color: var(--text-muted); font-weight: 650; border-bottom: 1px solid rgba(0,0,0,0.04); }
+    .calc-table td:last-child { text-align: right; white-space: nowrap; }
+
+    .calc-note {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .calc-note strong { color: var(--text); }
+
+    @media (max-width: 720px) {
+      .calc-page { padding: 1.25rem max(1rem, env(safe-area-inset-left)) 2rem max(1rem, env(safe-area-inset-right)); }
+      .calc-layout { grid-template-columns: minmax(0,1fr); }
+      .calc-card, .calc-result, .calc-note { padding: 1rem 1rem; }
+      .calc-input, .calc-select { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="https://github.com/j0k/">j0k</a>
+    <span class="header-sep">·</span>
+    <a href="../../index.html" data-i18n="nav.home">На главную</a>
+    <div class="lang-toggle calc-lang-toggle" aria-label="Language">
+      <a href="#" class="lang-option" data-lang="en" aria-label="English" title="English">EN</a>
+      <span class="lang-sep" aria-hidden="true">|</span>
+      <a href="#" class="lang-option" data-lang="ru" aria-label="Русский" title="Русский">RU</a>
+    </div>
+  </header>
+
+  <main class="page calc-page">
+    <header class="calc-header">
+      <div>
+        <h1 class="calc-title" data-i18n="title">Калькулятор разработки софта · чат-ботов · AI ассистентов</h1>
+        <p class="calc-subtitle" data-i18n="subtitle">Ориентировочная оценка бюджета и сроков. Собери линейку в «Заказ».</p>
+      </div>
+      <a class="calc-back" href="../../cv/cv.html" data-i18n="nav.cv">← CV · таймлайн</a>
+    </header>
+
+    <section class="calc-layout" aria-label="Калькулятор оценки проекта">
+      <section class="calc-card">
+        <h2 data-i18n="sections.inputs">Вводные</h2>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="productSelect" data-i18n="fields.product">Тип разработки</label>
+          <select id="productSelect" class="calc-select"></select>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="tierSelect"><span data-i18n="fields.tier">Пакет</span> <span data-i18n="fields.tierHint">(уровень готовности)</span></label>
+          <select id="tierSelect" class="calc-select"></select>
+        </div>
+
+        <div class="calc-form-row">
+          <span class="calc-label" data-i18n="fields.complexity">Сложность</span>
+          <div class="calc-radio-row" role="radiogroup" aria-label="Сложность">
+            <label class="calc-radio-option">
+              <input type="radio" name="complexity" value="low" checked>
+              <strong data-i18n="complexity.low">Низкая</strong>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="complexity" value="mid">
+              <strong data-i18n="complexity.mid">Средняя</strong>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="complexity" value="high">
+              <strong data-i18n="complexity.high">Высокая</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="teamSizeSelect"><span data-i18n="fields.team">Команда</span> <span data-i18n="fields.teamHint">(чел. в разработке)</span></label>
+          <select id="teamSizeSelect" class="calc-select">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+
+        <div class="calc-form-row">
+          <span class="calc-label" data-i18n="fields.urgency">Срочность</span>
+          <div class="calc-radio-row" role="radiogroup" aria-label="Срочность">
+            <label class="calc-radio-option">
+              <input type="radio" name="urgency" value="normal" checked>
+              <strong data-i18n="urgency.normal">Обычные сроки</strong>
+              <span data-i18n="urgency.normalHint">множитель 1.0</span>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="urgency" value="fast">
+              <strong data-i18n="urgency.fast">Ускорение</strong>
+              <span data-i18n="urgency.fastHint">множитель 1.15</span>
+            </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="urgency" value="urgent">
+              <strong data-i18n="urgency.urgent">Срочно</strong>
+              <span data-i18n="urgency.urgentHint">множитель 1.35</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="rateInput"><span data-i18n="fields.rate">Рейт команды</span> <span data-i18n="fields.rateHint">(₽/чел-день)</span></label>
+          <div class="calc-inline">
+            <input id="rateInput" class="calc-input" type="number" min="10000" step="1000" value="35000">
+            <span class="calc-badge" data-i18n="defaults.rate">по умолчанию: 35 000 ₽/чел-день</span>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="scenarioSlider"><span data-i18n="fields.scenarios">Объём сценариев</span> <span data-i18n="fields.scenariosHint">(use cases)</span></label>
+          <div class="calc-slider-row">
+            <div class="calc-slider-inline">
+              <input id="scenarioSlider" type="range" min="1" max="12" step="1" value="6">
+              <span class="calc-badge" id="scenarioBadge">6</span>
+            </div>
+            <div class="calc-slider-hint" id="scenarioHint">минимум: 1, максимум: 12</div>
+          </div>
+        </div>
+
+        <div class="calc-form-row">
+          <label class="calc-label" for="integrationsSlider"><span data-i18n="fields.integrations">Интеграции</span> <span data-i18n="fields.integrationsHint">(API / CRM / платежи / БД)</span></label>
+          <div class="calc-slider-row">
+            <div class="calc-slider-inline">
+              <input id="integrationsSlider" type="range" min="0" max="10" step="1" value="2">
+              <span class="calc-badge" id="integrationsBadge">2</span>
+            </div>
+            <div class="calc-slider-hint" data-i18n="fields.integrationsHelp">0 = без внешних интеграций</div>
+          </div>
+        </div>
+
+        <div class="calc-type-sections">
+          <!-- SOFTWARE -->
+          <div class="calc-type-section" data-type="software">
+            <div class="calc-form-row">
+              <span class="calc-label">Платформа</span>
+              <select id="softwarePlatformSelect" class="calc-select">
+                <option value="web" selected>Web (сайт/кабинет)</option>
+                <option value="web_mobile">Web + Mobile</option>
+                <option value="full">Web + Mobile + Desktop</option>
+              </select>
+            </div>
+
+            <div class="calc-form-row">
+              <span class="calc-label">Что нужно из «коробки»</span>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="softwareBackendCb">
+                <strong>Backend + роли/права</strong>
+                <span>(аутентификация, БД)</span>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="softwareAdminCb" checked>
+                <strong>Админка + аналитика</strong>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="softwarePaymentsCb">
+                <strong>Оплаты/заказы</strong>
+                <span>(требует интеграций)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- CHATBOT -->
+          <div class="calc-type-section" data-type="chatbot">
+            <div class="calc-form-row">
+              <span class="calc-label">Каналы</span>
+              <select id="chatChannelsSelect" class="calc-select">
+                <option value="one" selected>1 канал (например, Telegram)</option>
+                <option value="two">2 канала</option>
+                <option value="three">3 канала</option>
+              </select>
+            </div>
+
+            <div class="calc-form-row">
+              <span class="calc-label">Знания и логика</span>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="chatRagCb" checked>
+                <strong>RAG / поиск по базе знаний</strong>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="chatCitationsCb">
+                <strong>Ссылки/цитаты на источники</strong>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="chatToolsCb" checked>
+                <strong>Инструменты (запись/заказ/CRM)</strong>
+              </label>
+            </div>
+
+            <div class="calc-form-row">
+              <label class="calc-label" for="chatToolsSlider">Сколько ключевых инструментов</label>
+              <div class="calc-slider-row">
+                <div class="calc-slider-inline">
+                  <input id="chatToolsSlider" type="range" min="0" max="4" step="1" value="1">
+                  <span class="calc-badge" id="chatToolsBadge">1</span>
+                </div>
+                <div class="calc-slider-hint">0 = без интегрированных действий</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI ASSISTANT -->
+          <div class="calc-type-section" data-type="ai">
+            <div class="calc-form-row">
+              <span class="calc-label">Режим ассистента</span>
+              <select id="aiModeSelect" class="calc-select">
+                <option value="text" selected>Текстовый ассистент (диалоги)</option>
+                <option value="rag">RAG ассистент (документы/знания)</option>
+                <option value="agent">AI-агент (инструменты/действия)</option>
+              </select>
+            </div>
+
+            <div class="calc-form-row">
+              <span class="calc-label">Доп. возможности</span>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="aiVoiceCb">
+                <strong>Голос (STT/TTS)</strong>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="aiMemoryCb" checked>
+                <strong>Память / долговременный контекст</strong>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="aiGuardCb" checked>
+                <strong>Ограничения/guardrails</strong>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-form-row" id="addonsRow">
+          <span class="calc-label" data-i18n="addons.title">Опции запуска/продукта</span>
+          <div class="calc-slider-hint" data-i18n="addons.hint">Это “пакет” из бизнес-части (исследования/монетизация/маркетинг и т.п.), который добавляет работу и влияет на стоимость.</div>
+          <div id="addonsList"></div>
+        </div>
+
+        <div class="calc-table-wrap" aria-label="Линейка пакетов">
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th data-i18n="tiers.table.tier">Пакет</th>
+                <th data-i18n="tiers.table.goal">Назначение</th>
+                <th data-i18n="tiers.table.included">Включено</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>MVP</strong></td>
+                <td data-i18n="tiers.mvp.goal">быстро проверить ценность</td>
+                <td data-i18n="tiers.mvp.included">основа + базовый сценарий + базовая интеграция</td>
+              </tr>
+              <tr>
+                <td><strong>Production</strong></td>
+                <td data-i18n="tiers.production.goal">рабочий продукт для пользователей</td>
+                <td data-i18n="tiers.production.included">несколько сценариев + валидации + UI/UX + метрики</td>
+              </tr>
+              <tr>
+                <td><strong>Scale</strong></td>
+                <td data-i18n="tiers.scale.goal">выдержать рост и качество</td>
+                <td data-i18n="tiers.scale.included">глубокие интеграции + контроль качества ответов + масштабирование</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="calc-form-row" style="margin-top: 0.95rem;">
+          <button type="button" class="calc-add-btn" id="calcAddBtn" aria-label="Добавить текущую позицию в заказ">
+            <span aria-hidden="true">➕</span>
+            <span data-i18n="actions.add">Добавить в заказ</span>
+          </button>
+          <span class="calc-slider-hint" data-i18n="actions.addHint">Сохраняет текущий расчет справа.</span>
+        </div>
+      </section>
+
+      <section class="calc-result" aria-live="polite" id="calcResult">
+        <div class="calc-result-current">
+          <h2 data-i18n="sections.current">Текущий расчёт</h2>
+          <div id="calcResultCurrentBody" class="calc-result-empty" data-i18n="placeholders.currentEmpty">Выберите параметры — здесь появится оценка.</div>
+        </div>
+
+        <div class="calc-order" id="calcOrder">
+          <div class="calc-order-header">
+            <h2 data-i18n="sections.order">Заказ</h2>
+            <span class="calc-order-count" id="calcOrderCount" data-i18n="order.countEmpty">0 позиций</span>
+          </div>
+          <div class="calc-order-list" id="calcOrderList"></div>
+          <div class="calc-order-total" id="calcOrderTotal" style="text-align:right; margin-top:0.55rem; font-weight:650; color: var(--text);"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="calc-note">
+      <strong data-i18n="note.strong">Важно:</strong> <span data-i18n="note.text">расчёт ориентировочный. Реальная стоимость зависит от ТЗ, качества входных данных, требований к безопасности и срокам согласований.</span>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      // --------- i18n ----------
+      var I18N = {
+        ru: {
+          'meta.title': 'Калькулятор разработки софта · Yuri Konoplev',
+          'nav.home': 'На главную',
+          'nav.cv': '← CV · таймлайн',
+          'title': 'Калькулятор разработки софта · чат-ботов · AI ассистентов',
+          'subtitle': 'Ориентировочная оценка бюджета и сроков. Собери линейку в «Заказ».',
+          'sections.inputs': 'Вводные',
+          'fields.product': 'Тип разработки',
+          'fields.tier': 'Пакет',
+          'fields.tierHint': '(уровень готовности)',
+          'fields.complexity': 'Сложность',
+          'complexity.low': 'Низкая',
+          'complexity.mid': 'Средняя',
+          'complexity.high': 'Высокая',
+          'fields.team': 'Команда',
+          'fields.teamHint': '(чел. в разработке)',
+          'fields.urgency': 'Срочность',
+          'urgency.normal': 'Обычные сроки',
+          'urgency.normalHint': 'множитель 1.0',
+          'urgency.fast': 'Ускорение',
+          'urgency.fastHint': 'множитель 1.15',
+          'urgency.urgent': 'Срочно',
+          'urgency.urgentHint': 'множитель 1.35',
+          'fields.rate': 'Рейт команды',
+          'fields.rateHint': '(₽/чел-день)',
+          'defaults.rate': 'по умолчанию: 35 000 ₽/чел-день',
+          'fields.scenarios': 'Объём сценариев',
+          'fields.scenariosHint': '(use cases)',
+          'fields.integrations': 'Интеграции',
+          'fields.integrationsHint': '(API / CRM / платежи / БД)',
+          'fields.integrationsHelp': '0 = без внешних интеграций',
+          'tiers.table.tier': 'Пакет',
+          'tiers.table.goal': 'Назначение',
+          'tiers.table.included': 'Включено',
+          'tiers.mvp.goal': 'быстро проверить ценность',
+          'tiers.mvp.included': 'основа + базовый сценарий + базовая интеграция',
+          'tiers.production.goal': 'рабочий продукт для пользователей',
+          'tiers.production.included': 'несколько сценариев + валидации + UI/UX + метрики',
+          'tiers.scale.goal': 'выдержать рост и качество',
+          'tiers.scale.included': 'глубокие интеграции + контроль качества ответов + масштабирование',
+          'addons.title': 'Опции запуска/продукта',
+          'addons.hint': 'Это “пакет” из бизнес-части (исследования/монетизация/маркетинг и т.п.), который добавляет работу и влияет на стоимость.',
+          'addons.helpAria': 'Почему это влияет на цену',
+          'actions.add': 'Добавить в заказ',
+          'actions.addHint': 'Сохраняет текущий расчет справа.',
+          'actions.addAria': 'Добавить текущую позицию в заказ',
+          'sections.current': 'Текущий расчёт',
+          'sections.order': 'Заказ',
+          'placeholders.currentEmpty': 'Выберите параметры — здесь появится оценка.',
+          'order.countEmpty': '0 позиций',
+          'order.empty': 'Заказ пока пуст.',
+          'order.total': 'Итого',
+          'order.details': 'детали',
+          'order.openAria': 'Открыть детали позиции',
+          'order.deleteAria': 'Удалить',
+          'result.typeKey': 'тип',
+          'result.complexityKey': 'сложн.',
+          'result.scenariosKey': 'сценар.',
+          'result.integrationsKey': 'интегр.',
+          'result.effortKey': 'труд.',
+          'result.termKey': 'срок',
+          'result.budgetKey': 'бюджет',
+          'result.personDaysUnit': 'чел.-дней',
+          'result.weeksUnitApprox': 'недель (≈)',
+          'result.weeksUnit': 'недель',
+          'result.detailsKey': 'детали',
+          'note.strong': 'Важно:',
+          'note.text': 'расчёт ориентировочный. Реальная стоимость зависит от ТЗ, качества входных данных, требований к безопасности и срокам согласований.'
+        },
+        en: {
+          'meta.title': 'Software Calculator · Yuri Konoplev',
+          'nav.home': 'Home',
+          'nav.cv': '← CV · timeline',
+          'title': 'Software · Chatbot · AI Assistant Calculator',
+          'subtitle': 'Rough estimate of budget and timeline. Add items to “Order”.',
+          'sections.inputs': 'Inputs',
+          'fields.product': 'Work type',
+          'fields.tier': 'Package',
+          'fields.tierHint': '(readiness level)',
+          'fields.complexity': 'Complexity',
+          'complexity.low': 'Low',
+          'complexity.mid': 'Medium',
+          'complexity.high': 'High',
+          'fields.team': 'Team',
+          'fields.teamHint': '(dev headcount)',
+          'fields.urgency': 'Urgency',
+          'urgency.normal': 'Normal',
+          'urgency.normalHint': 'multiplier 1.0',
+          'urgency.fast': 'Fast',
+          'urgency.fastHint': 'multiplier 1.15',
+          'urgency.urgent': 'Urgent',
+          'urgency.urgentHint': 'multiplier 1.35',
+          'fields.rate': 'Day rate',
+          'fields.rateHint': '(RUB / person-day)',
+          'defaults.rate': 'default: 35,000 RUB / person-day',
+          'fields.scenarios': 'Use cases',
+          'fields.scenariosHint': '(scenarios)',
+          'fields.integrations': 'Integrations',
+          'fields.integrationsHint': '(API / CRM / payments / DB)',
+          'fields.integrationsHelp': '0 = no external integrations',
+          'tiers.table.tier': 'Package',
+          'tiers.table.goal': 'Goal',
+          'tiers.table.included': 'Included',
+          'tiers.mvp.goal': 'validate value quickly',
+          'tiers.mvp.included': 'core + base scenario + base integration',
+          'tiers.production.goal': 'usable product',
+          'tiers.production.included': 'multiple scenarios + validations + UI/UX + metrics',
+          'tiers.scale.goal': 'handle growth',
+          'tiers.scale.included': 'deep integrations + answer quality control + scaling',
+          'addons.title': 'Go-to-market / product options',
+          'addons.hint': 'These options cover the “business” part (research, monetization, marketing, etc.). They add real work and therefore affect cost.',
+          'addons.helpAria': 'Why this affects price',
+          'actions.add': 'Add to order',
+          'actions.addHint': 'Saves the current estimate on the right.',
+          'actions.addAria': 'Add current item to order',
+          'sections.current': 'Current estimate',
+          'sections.order': 'Order',
+          'placeholders.currentEmpty': 'Choose parameters — estimate will appear here.',
+          'order.countEmpty': '0 items',
+          'order.empty': 'Order is empty.',
+          'order.total': 'Total',
+          'order.details': 'details',
+          'order.openAria': 'Open item details',
+          'order.deleteAria': 'Delete',
+          'result.typeKey': 'type',
+          'result.complexityKey': 'complex.',
+          'result.scenariosKey': 'use cases',
+          'result.integrationsKey': 'integr.',
+          'result.effortKey': 'effort',
+          'result.termKey': 'time',
+          'result.budgetKey': 'budget',
+          'result.personDaysUnit': 'person-days',
+          'result.weeksUnitApprox': 'weeks (≈)',
+          'result.weeksUnit': 'weeks',
+          'result.detailsKey': 'details',
+          'note.strong': 'Note:',
+          'note.text': 'this estimate is approximate. Final cost depends on scope, input quality, security requirements, and review cycles.'
+        }
+      };
+
+      var CURRENT_LANG = 'ru';
+
+      function t(key) {
+        var d = I18N[CURRENT_LANG] || I18N.ru;
+        return d[key] != null ? d[key] : key;
+      }
+
+      function applyI18n(lang) {
+        var dict = I18N[lang] || I18N.ru;
+        CURRENT_LANG = lang;
+        document.documentElement.lang = lang;
+        if (dict['meta.title']) document.title = dict['meta.title'];
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var k = el.getAttribute('data-i18n');
+          if (dict[k] != null) el.textContent = dict[k];
+        });
+        // special case: some labels have multiple spans with data-i18n and other text nodes handled above.
+
+        // Toggle active lang options (same classes as main page)
+        document.querySelectorAll('.lang-option').forEach(function(a) {
+          a.classList.toggle('active', a.getAttribute('data-lang') === lang);
+        });
+      }
+
+      function initLangToggle() {
+        var saved = null;
+        try { saved = localStorage.getItem('lang'); } catch (e) {}
+        var initial = (saved === 'en' || saved === 'ru') ? saved : 'ru';
+        applyI18n(initial);
+        if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
+        document.querySelectorAll('.lang-option').forEach(function(a) {
+          a.addEventListener('click', function(e) {
+            e.preventDefault();
+            var lang = a.getAttribute('data-lang');
+            try { localStorage.setItem('lang', lang); } catch (e) {}
+            applyI18n(lang);
+            renderDynamicLabels(lang);
+            if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
+            renderAddonsUI();
+            recalc();
+            renderOrderList();
+          });
+        });
+        renderDynamicLabels(initial);
+        renderAddonsUI();
+      }
+
+      function renderDynamicLabels(lang) {
+        var isEn = lang === 'en';
+        // Select options rebuilt here to reflect language.
+        var products = isEn ? {
+          software: { name: 'Software development', icon: '💻' },
+          chatbot: { name: 'Chatbot', icon: '🤖' },
+          ai: { name: 'AI assistant', icon: '🧠' }
+        } : {
+          software: { name: 'Разработка софта', icon: '💻' },
+          chatbot: { name: 'Чат-бот', icon: '🤖' },
+          ai: { name: 'AI ассистент', icon: '🧠' }
+        };
+        var tiers = isEn ? {
+          mvp: { name: 'MVP' },
+          production: { name: 'Production' },
+          scale: { name: 'Scale' }
+        } : {
+          mvp: { name: 'MVP' },
+          production: { name: 'Production' },
+          scale: { name: 'Scale' }
+        };
+
+        // Preserve current selections
+        var pCur = productEl && productEl.value;
+        var tCur = tierEl && tierEl.value;
+        if (productEl) {
+          var pOpts = '';
+          Object.keys(products).forEach(function(key) {
+            var p = products[key];
+            pOpts += '<option value="' + key + '">' + p.icon + ' ' + p.name + '</option>';
+          });
+          productEl.innerHTML = pOpts;
+          if (pCur) productEl.value = pCur;
+        }
+        if (tierEl) {
+          var tOpts = '';
+          Object.keys(tiers).forEach(function(key) {
+            tOpts += '<option value="' + key + '">' + tiers[key].name + '</option>';
+          });
+          tierEl.innerHTML = tOpts;
+          if (tCur) tierEl.value = tCur;
+        }
+      }
+
+      // --------- Add-ons (from cv/тренажор_бизнес.md structure) ----------
+      var ADDONS = [
+        {
+          key: 'exec_summary',
+          icon: '🧾',
+          label: { ru: 'Резюме продукта (1 страница)', en: 'Executive summary (one-pager)' },
+          help: {
+            ru: 'Формулируем проблему, ценность, сегменты, формат и критерии успеха. Это снижает риск “делаем не то”, но требует времени на структуру и правки.',
+            en: 'Align problem, value, target users, format, and success criteria on one page. Reduces “building the wrong thing” risk, but takes time to write and iterate.'
+          },
+          days: { software: 2, chatbot: 2, ai: 2 }
+        },
+        {
+          key: 'market_analysis',
+          icon: '🔎',
+          label: { ru: 'Анализ рынка (сегменты/конкуренты)', en: 'Market analysis (segments/competitors)' },
+          help: {
+            ru: 'Исследование рынка и конкурентов: поиск, сравнение, выводы и позиционирование. Обычно добавляет 1–2 недели аналитики/интервью.',
+            en: 'Market + competitor research: discovery, comparisons, positioning. Often adds 1–2 weeks of analysis/interviews.'
+          },
+          days: { software: 8, chatbot: 7, ai: 8 }
+        },
+        {
+          key: 'product_overview',
+          icon: '🧩',
+          label: { ru: 'Концепция продукта (формат/сущности/цикл)', en: 'Product overview (format/entities/loop)' },
+          help: {
+            ru: 'Определяем формат, сущности, ключевые экраны/состояния и цикл использования. Уменьшает переделки, но требует проработки.',
+            en: 'Define format, entities, key screens/states, and usage loop. Reduces rework but requires upfront design.'
+          },
+          days: { software: 5, chatbot: 4, ai: 5 }
+        },
+        {
+          key: 'target_users',
+          icon: '👥',
+          label: { ru: 'ЦА и сценарии использования (use cases)', en: 'Target users & use cases' },
+          help: {
+            ru: 'Сегментация пользователей и формализация use cases влияет на UX, сценарии, метрики и архитектуру. Это discovery-работа.',
+            en: 'User segments and use cases shape UX, scenarios, metrics, and architecture. This is discovery work.'
+          },
+          days: { software: 4, chatbot: 4, ai: 5 }
+        },
+        {
+          key: 'mechanics_scenarios',
+          icon: '🎮',
+          label: { ru: 'Механики и сценарии (решения/последствия)', en: 'Training mechanics & scenarios' },
+          help: {
+            ru: 'Проработка сценариев/механик: дерево решений, ограничения, состояния, последствия. Больше механик → больше логики и тестов.',
+            en: 'Scenario/mechanics design: decision trees, constraints, states, consequences. More mechanics = more logic + tests.'
+          },
+          days: { software: 10, chatbot: 8, ai: 10 }
+        },
+        {
+          key: 'metrics_feedback',
+          icon: '📈',
+          label: { ru: 'Метрики и обратная связь (прогресс/рекомендации)', en: 'Metrics & feedback (progress/recommendations)' },
+          help: {
+            ru: 'События, расчёты, дешборды и тексты рекомендаций. Повышает ценность, но добавляет аналитику и реализацию.',
+            en: 'Events, calculations, dashboards, and recommendation copy. Higher value, but adds analytics + implementation work.'
+          },
+          days: { software: 7, chatbot: 6, ai: 7 }
+        },
+        {
+          key: 'revenue_model',
+          icon: '💰',
+          label: { ru: 'Монетизация (тарифы/лицензии)', en: 'Revenue model (pricing/licensing)' },
+          help: {
+            ru: 'Модель монетизации влияет на тарифы, лимиты, paywall, биллинг и условия. Даже без платежей нужна проработка.',
+            en: 'Monetization affects tiers, limits, paywall, billing, and terms. Even without payments, design work is needed.'
+          },
+          days: { software: 4, chatbot: 4, ai: 5 }
+        },
+        {
+          key: 'marketing_distribution',
+          icon: '📣',
+          label: { ru: 'Маркетинг и дистрибуция (каналы/демо)', en: 'Marketing & distribution strategy' },
+          help: {
+            ru: 'Каналы привлечения, демо, контент, партнёрства. Часто требует лендинги/аналитику/трекинг и влияет на объём работы.',
+            en: 'Acquisition channels, demos, content, partnerships. Often requires landing/tracking/analytics and impacts scope.'
+          },
+          days: { software: 6, chatbot: 6, ai: 7 }
+        },
+        {
+          key: 'launch_strategy',
+          icon: '🚀',
+          label: { ru: 'Стратегия запуска (MVP/альфа/бета)', en: 'Launch strategy (MVP/alpha/beta)' },
+          help: {
+            ru: 'План релизов, пилоты, критерии готовности, обратная связь. Это экономит переделки, но требует планирования.',
+            en: 'Release stages, pilots, readiness criteria, feedback loops. Saves rework but requires planning.'
+          },
+          days: { software: 4, chatbot: 4, ai: 4 }
+        },
+        {
+          key: 'roadmap',
+          icon: '🛠',
+          label: { ru: 'Дорожная карта разработки (v0/v1/v2)', en: 'Development roadmap (v0/v1/v2)' },
+          help: {
+            ru: 'Декомпозиция, приоритизация, зависимости и оценки. Обычно 1–2 итерации уточнений.',
+            en: 'Decomposition, prioritization, dependencies, estimates. Typically 1–2 refinement iterations.'
+          },
+          days: { software: 4, chatbot: 4, ai: 4 }
+        },
+        {
+          key: 'risks_limits',
+          icon: '⚠️',
+          label: { ru: 'Риски и ограничения', en: 'Risks & limitations' },
+          help: {
+            ru: 'Где продукт “ломается”, что не моделируем, границы ответственности. Снижает стоимость ошибок и ожиданий.',
+            en: 'Failure modes, what is out of scope, responsibility boundaries. Reduces costly surprises and expectation gaps.'
+          },
+          days: { software: 3, chatbot: 3, ai: 3 }
+        }
+      ];
+
+      var selectedAddons = {}; // key -> true
+
+      function addonDaysForType(addon, typeKey) {
+        if (!addon || !addon.days) return 0;
+        return addon.days[typeKey] || 0;
+      }
+
+      function renderAddonsUI() {
+        var typeKey = productEl ? productEl.value : 'software';
+        var listEl = document.getElementById('addonsList');
+        if (!listEl) return;
+
+        var lang = CURRENT_LANG === 'en' ? 'en' : 'ru';
+        var html = '<div class="calc-addons-list">';
+        ADDONS.forEach(function(a) {
+          var checked = !!selectedAddons[a.key];
+          var label = (a.label && a.label[lang]) ? a.label[lang] : a.key;
+          var help = (a.help && a.help[lang]) ? a.help[lang] : '';
+          var days = addonDaysForType(a, typeKey);
+          var daysText = '+' + String(days) + 'd';
+          var icon = a.icon || '✨';
+          html += '<div class="calc-addon-row">';
+          html += '  <input type="checkbox" class="calc-addon-cb calc-addon-checkbox" data-addon-key="' + a.key + '"' + (checked ? ' checked' : '') + '>';
+          html += '  <div class="calc-addon-main">';
+          html += '    <div class="calc-addon-titleline">';
+          html += '      <strong>' + icon + ' ' + label + '</strong>';
+          html += '    </div>';
+          html += '    <div class="calc-help" id="help_' + a.key + '">' + help + '</div>';
+          html += '  </div>';
+          html += '  <div class="calc-addon-actions">';
+          html += '    <span class="calc-addon-badge">(' + daysText + ')</span>';
+          html += '    <button type="button" class="calc-help-btn" data-help-key="' + a.key + '" aria-label="' + t('addons.helpAria') + '">?</button>';
+          html += '  </div>';
+          html += '</div>';
+        });
+        html += '</div>';
+        listEl.innerHTML = html;
+
+        listEl.querySelectorAll('.calc-addon-cb').forEach(function(cb) {
+          cb.addEventListener('change', function() {
+            var k = cb.getAttribute('data-addon-key');
+            if (!k) return;
+            if (cb.checked) selectedAddons[k] = true;
+            else delete selectedAddons[k];
+            recalc();
+          });
+        });
+        listEl.querySelectorAll('.calc-help-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var k = btn.getAttribute('data-help-key');
+            var el = k ? document.getElementById('help_' + k) : null;
+            if (!el) return;
+            el.classList.toggle('is-open');
+          });
+        });
+      }
+
+      // --------- Models (оценка в человеко-днях) ----------
+      var PRODUCTS = {
+        software: { name: 'Разработка софта', icon: '💻' },
+        chatbot: { name: 'Чат-бот', icon: '🤖' },
+        ai: { name: 'AI ассистент', icon: '🧠' }
+      };
+
+      var TIERS = {
+        mvp: { name: 'MVP' },
+        production: { name: 'Production' },
+        scale: { name: 'Scale' }
+      };
+
+      // baseDays[type][tier][complexity]
+      // complexity: low / mid / high
+      var BASE_DAYS = {
+        software: {
+          mvp:        { low: 18, mid: 28, high: 42 },
+          production: { low: 28, mid: 40, high: 62 },
+          scale:      { low: 45, mid: 62, high: 95 }
+        },
+        chatbot: {
+          mvp:        { low: 14, mid: 22, high: 34 },
+          production: { low: 22, mid: 34, high: 54 },
+          scale:      { low: 36, mid: 52, high: 78 }
+        },
+        ai: {
+          mvp:        { low: 16, mid: 26, high: 40 },
+          production: { low: 26, mid: 40, high: 62 },
+          scale:      { low: 42, mid: 60, high: 92 }
+        }
+      };
+
+      var COMPLEXITY_LABEL = {
+        ru: { low: 'Низкая', mid: 'Средняя', high: 'Высокая' },
+        en: { low: 'Low', mid: 'Medium', high: 'High' }
+      };
+
+      function complexityLabel(key) {
+        var m = COMPLEXITY_LABEL[CURRENT_LANG] || COMPLEXITY_LABEL.ru;
+        return m[key] || key;
+      }
+
+      // urgency multipliers
+      var URGENCY = { normal: 1.0, fast: 1.15, urgent: 1.35 };
+
+      // scenario/integration extras (only beyond base)
+      var SCENARIO_BASE = 3;
+      var INTEGRATIONS_BASE = 1;
+
+      var SCENARIO_PER = { software: 1.2, chatbot: 0.8, ai: 1.0 };
+      var INTEGRATION_PER = { software: 2.0, chatbot: 1.0, ai: 1.6 };
+
+      // --------- DOM ----------
+      var productEl = document.getElementById('productSelect');
+      var tierEl = document.getElementById('tierSelect');
+      var teamSizeEl = document.getElementById('teamSizeSelect');
+      var rateEl = document.getElementById('rateInput');
+
+      var scenarioSliderEl = document.getElementById('scenarioSlider');
+      var scenarioBadgeEl = document.getElementById('scenarioBadge');
+      var integrationsSliderEl = document.getElementById('integrationsSlider');
+      var integrationsBadgeEl = document.getElementById('integrationsBadge');
+
+      var scenarioHintEl = document.getElementById('scenarioHint');
+
+      var resultCurrentBodyEl = document.getElementById('calcResultCurrentBody');
+
+      var addBtn = document.getElementById('calcAddBtn');
+      var orderListEl = document.getElementById('calcOrderList');
+      var orderCountEl = document.getElementById('calcOrderCount');
+      var orderTotalEl = document.getElementById('calcOrderTotal');
+
+      var orderItems = [];
+
+      var typeSectionEls = document.querySelectorAll('.calc-type-section');
+
+      // type-specific elements
+      var softwarePlatformEl = document.getElementById('softwarePlatformSelect');
+      var softwareBackendCb = document.getElementById('softwareBackendCb');
+      var softwareAdminCb = document.getElementById('softwareAdminCb');
+      var softwarePaymentsCb = document.getElementById('softwarePaymentsCb');
+
+      var chatChannelsEl = document.getElementById('chatChannelsSelect');
+      var chatRagCb = document.getElementById('chatRagCb');
+      var chatCitationsCb = document.getElementById('chatCitationsCb');
+      var chatToolsCb = document.getElementById('chatToolsCb');
+      var chatToolsSliderEl = document.getElementById('chatToolsSlider');
+      var chatToolsBadgeEl = document.getElementById('chatToolsBadge');
+
+      var aiModeEl = document.getElementById('aiModeSelect');
+      var aiVoiceCb = document.getElementById('aiVoiceCb');
+      var aiMemoryCb = document.getElementById('aiMemoryCb');
+      var aiGuardCb = document.getElementById('aiGuardCb');
+
+      var complexityRadios = document.querySelectorAll('input[name="complexity"]');
+      var urgencyRadios = document.querySelectorAll('input[name="urgency"]');
+
+      function formatMoney(value) {
+        var v = Math.round(value);
+        return v.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      function getComplexity() {
+        for (var i = 0; i < complexityRadios.length; i++) {
+          if (complexityRadios[i].checked) return complexityRadios[i].value;
+        }
+        return 'low';
+      }
+
+      function getUrgency() {
+        for (var i = 0; i < urgencyRadios.length; i++) {
+          if (urgencyRadios[i].checked) return urgencyRadios[i].value;
+        }
+        return 'normal';
+      }
+
+      function getCheckedNumber(checkboxEl) {
+        return checkboxEl && checkboxEl.checked ? 1 : 0;
+      }
+
+      function getChannelsFactor() {
+        if (!chatChannelsEl) return 1;
+        var v = chatChannelsEl.value;
+        if (v === 'one') return 1;
+        if (v === 'two') return 2;
+        return 3;
+      }
+
+      // --------- Init selects ----------
+      function init() {
+        // Options are rendered by renderDynamicLabels() to support i18n.
+
+        // Options are rendered by renderDynamicLabels() to support i18n.
+
+        function setTypeVisibility(typeKey) {
+          typeSectionEls.forEach(function(el) {
+            var ok = el.getAttribute('data-type') === typeKey;
+            el.classList.toggle('is-active', ok);
+          });
+        }
+
+        productEl.addEventListener('change', function() {
+          setTypeVisibility(productEl.value);
+          renderAddonsUI();
+          recalc();
+        });
+
+        scenarioSliderEl.addEventListener('input', function() {
+          var v = parseInt(scenarioSliderEl.value, 10);
+          scenarioBadgeEl.textContent = String(v);
+          recalc();
+        });
+        integrationsSliderEl.addEventListener('input', function() {
+          var v = parseInt(integrationsSliderEl.value, 10);
+          integrationsBadgeEl.textContent = String(v);
+          recalc();
+        });
+
+        chatToolsSliderEl.addEventListener('input', function() {
+          var v = parseInt(chatToolsSliderEl.value, 10);
+          chatToolsBadgeEl.textContent = String(v);
+          recalc();
+        });
+
+        // common changes
+        tierEl.addEventListener('change', recalc);
+        teamSizeEl.addEventListener('change', recalc);
+        rateEl.addEventListener('input', recalc);
+        Array.prototype.forEach.call(complexityRadios, function(r) { r.addEventListener('change', recalc); });
+        Array.prototype.forEach.call(urgencyRadios, function(r) { r.addEventListener('change', recalc); });
+
+        // type-specific changes
+        if (softwarePlatformEl) softwarePlatformEl.addEventListener('change', recalc);
+        if (softwareBackendCb) softwareBackendCb.addEventListener('change', recalc);
+        if (softwareAdminCb) softwareAdminCb.addEventListener('change', recalc);
+        if (softwarePaymentsCb) softwarePaymentsCb.addEventListener('change', recalc);
+
+        if (chatChannelsEl) chatChannelsEl.addEventListener('change', recalc);
+        if (chatRagCb) chatRagCb.addEventListener('change', recalc);
+        if (chatCitationsCb) chatCitationsCb.addEventListener('change', recalc);
+        if (chatToolsCb) chatToolsCb.addEventListener('change', recalc);
+        if (aiModeEl) aiModeEl.addEventListener('change', recalc);
+        if (aiVoiceCb) aiVoiceCb.addEventListener('change', recalc);
+        if (aiMemoryCb) aiMemoryCb.addEventListener('change', recalc);
+        if (aiGuardCb) aiGuardCb.addEventListener('change', recalc);
+
+        addBtn.addEventListener('click', function() {
+          var state = buildCurrentState();
+          if (!state) return;
+          orderItems.push(state);
+          renderOrderList();
+        });
+
+        // initial
+        initLangToggle();
+        setTypeVisibility(productEl.value);
+        scenarioBadgeEl.textContent = scenarioSliderEl.value;
+        integrationsBadgeEl.textContent = integrationsSliderEl.value;
+        if (chatToolsBadgeEl) chatToolsBadgeEl.textContent = chatToolsSliderEl.value;
+        recalc();
+      }
+
+      function buildCurrentState() {
+        var typeKey = productEl.value;
+        if (!BASE_DAYS[typeKey]) return null;
+
+        var tierKey = tierEl.value;
+        if (!BASE_DAYS[typeKey][tierKey]) return null;
+
+        var complexityKey = getComplexity();
+        var urgencyKey = getUrgency();
+
+        var teamSize = parseFloat(teamSizeEl.value);
+        if (!isFinite(teamSize) || teamSize < 1) teamSize = 3;
+
+        var rate = parseFloat(rateEl.value);
+        if (!isFinite(rate) || rate <= 0) rate = 35000;
+
+        var scenarioCount = parseInt(scenarioSliderEl.value, 10) || SCENARIO_BASE;
+        var integrationsCount = parseInt(integrationsSliderEl.value, 10) || 0;
+
+        // personDays calculation
+        var baseDays = BASE_DAYS[typeKey][tierKey][complexityKey];
+        var extraScenarios = Math.max(0, scenarioCount - SCENARIO_BASE) * SCENARIO_PER[typeKey];
+        var extraIntegrations = Math.max(0, integrationsCount - INTEGRATIONS_BASE) * INTEGRATION_PER[typeKey];
+
+        var typeExtras = 0;
+        var details = [];
+        var isEn = CURRENT_LANG === 'en';
+
+        // per-type extras
+        if (typeKey === 'software') {
+          var platform = softwarePlatformEl ? softwarePlatformEl.value : 'web';
+          var platformDays = { web: 0, web_mobile: 10, full: 22 }[platform] || 0;
+          typeExtras += platformDays;
+          details.push((isEn ? 'Platform: ' : 'Платформа: ') + platform);
+
+          var backendDays = getCheckedNumber(softwareBackendCb) ? 8 : 0;
+          var adminDays = getCheckedNumber(softwareAdminCb) ? 5 : 0;
+          var payDays = getCheckedNumber(softwarePaymentsCb) ? 7 : 0;
+
+          typeExtras += backendDays + adminDays + payDays;
+          if (backendDays) details.push(isEn ? 'Backend/roles' : 'Backend/права');
+          if (adminDays) details.push(isEn ? 'Admin/analytics' : 'Админка/аналитика');
+          if (payDays) details.push(isEn ? 'Payments/orders' : 'Оплаты/заказы');
+        }
+
+        if (typeKey === 'chatbot') {
+          var channels = getChannelsFactor(); // 1..3
+          var channelsDays = Math.max(0, channels - 1) * 6; // beyond base
+          typeExtras += channelsDays;
+          details.push((isEn ? 'Channels: ' : 'Каналы: ') + channels);
+
+          var ragDays = chatRagCb && chatRagCb.checked ? 14 : 0;
+          var citDays = chatCitationsCb && chatCitationsCb.checked ? 5 : 0;
+          var toolsEnabled = chatToolsCb && chatToolsCb.checked;
+          var toolsCount = parseInt(chatToolsSliderEl.value, 10) || 0;
+          var toolsDays = toolsEnabled ? toolsCount * 6 : 0;
+
+          typeExtras += ragDays + citDays + toolsDays;
+          if (ragDays) details.push(isEn ? 'RAG/search' : 'RAG/поиск');
+          if (citDays) details.push(isEn ? 'Citations' : 'Цитаты');
+          if (toolsDays) details.push((isEn ? 'Tools: ' : 'Инструменты: ') + toolsCount);
+        }
+
+        if (typeKey === 'ai') {
+          var mode = aiModeEl ? aiModeEl.value : 'text';
+          var modeDays = { text: 0, rag: 14, agent: 28 }[mode] || 0;
+          typeExtras += modeDays;
+          details.push((isEn ? 'Mode: ' : 'Режим: ') + mode);
+
+          var voiceDays = aiVoiceCb && aiVoiceCb.checked ? 10 : 0;
+          var memDays = aiMemoryCb && aiMemoryCb.checked ? 9 : 0;
+          var guardDays = aiGuardCb && aiGuardCb.checked ? 8 : 0;
+
+          typeExtras += voiceDays + memDays + guardDays;
+          if (voiceDays) details.push(isEn ? 'Voice' : 'Голос');
+          if (memDays) details.push(isEn ? 'Memory' : 'Память');
+          if (guardDays) details.push('Guardrails');
+        }
+
+        var urgencyMult = URGENCY[urgencyKey] || 1.0;
+        var addonsDays = 0;
+        var addonsPicked = [];
+        var lang = isEn ? 'en' : 'ru';
+        ADDONS.forEach(function(a) {
+          if (selectedAddons[a.key]) {
+            addonsDays += addonDaysForType(a, typeKey);
+            if (a.label && a.label[lang]) addonsPicked.push(a.label[lang]);
+          }
+        });
+        if (addonsPicked.length) {
+          details.push((isEn ? 'GTM: ' : 'GTM: ') + addonsPicked.join('; '));
+        }
+
+        var personDays = (baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays) * urgencyMult;
+        personDays = Math.max(5, Math.round(personDays));
+
+        var calendarDays = Math.max(5, Math.ceil(personDays / teamSize));
+        var calendarWeeks = Math.max(1, Math.round((calendarDays / 5) * 10) / 10);
+
+        var cost = personDays * rate;
+        var costMin = cost * 0.85;
+        var costMax = cost * 1.15;
+
+        var type = PRODUCTS[typeKey];
+        var tier = TIERS[tierKey];
+
+        return {
+          typeKey: typeKey,
+          typeName: type.icon + ' ' + type.name,
+          tierKey: tierKey,
+          tierName: tier.name,
+          complexity: complexityLabel(complexityKey),
+          urgency: urgencyKey,
+          personDays: personDays,
+          calendarWeeks: calendarWeeks,
+          cost: cost,
+          costMin: costMin,
+          costMax: costMax,
+          rate: rate,
+          team: teamSize,
+          scenarioCount: scenarioCount,
+          integrationsCount: integrationsCount,
+          details: details,
+          addons: addonsPicked
+        };
+      }
+
+      function recalc() {
+        var state = buildCurrentState();
+        if (!state) {
+          resultCurrentBodyEl.innerHTML = '<div class="calc-result-empty">' + t('placeholders.currentEmpty') + '</div>';
+          return;
+        }
+
+        var html = '';
+        html += '<div class="calc-result-table">';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.typeKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.typeName + ' · ' + state.tierName + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.complexityKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.complexity + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.scenariosKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.scenarioCount + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.integrationsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.integrationsCount + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.calendarWeeks + ' ' + t('result.weeksUnitApprox') + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(state.costMin) + '–' + formatMoney(state.costMax) + '</span></div>';
+        html += '</div>';
+
+        resultCurrentBodyEl.innerHTML = html;
+      }
+
+      function renderOrderList() {
+        if (!orderListEl || !orderCountEl) return;
+
+        if (orderItems.length === 0) {
+          orderListEl.innerHTML = '<div class="calc-result-empty">' + t('order.empty') + '</div>';
+          orderCountEl.textContent = t('order.countEmpty');
+          if (orderTotalEl) orderTotalEl.textContent = '';
+          return;
+        }
+
+        var totalAll = 0;
+        orderItems.forEach(function(it) { totalAll += it.cost; });
+        orderCountEl.textContent = CURRENT_LANG === 'en' ? (orderItems.length + ' items') : (orderItems.length + ' поз.');
+        if (orderTotalEl) orderTotalEl.textContent = t('order.total') + ': ' + formatMoney(totalAll);
+
+        var html = '';
+        orderItems.forEach(function(item, idx) {
+          var head = item.typeName + ' · ' + item.tierName + ' · ' + item.complexity;
+          var headRight = formatMoney(item.costMin) + '–' + formatMoney(item.costMax);
+          html += '<div class="calc-order-item collapsed" data-idx="' + idx + '">';
+          html += '  <div class="calc-order-item-header" role="button" tabindex="0" aria-label="' + t('order.openAria') + '">';
+          html += '    <div class="calc-order-item-main"><strong>' + head + '</strong></div>';
+          html += '    <div style="display:flex; align-items:center; gap:0.6rem;">';
+          html += '      <div class="calc-order-item-toggle" style="color:var(--text-muted); font-size:0.8rem;">' + t('order.details') + '</div>';
+          html += '      <div class="calc-order-item-delete" data-delete-idx="' + idx + '" aria-label="' + t('order.deleteAria') + '">[X]</div>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '  <div class="calc-order-item-body">';
+          html += '    <div class="calc-result-table">';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.calendarWeeks + ' ' + t('result.weeksUnit') + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(item.costMin) + '–' + formatMoney(item.costMax) + '</span></div>';
+          if (item.details && item.details.length) {
+            html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.detailsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.details.join(', ') + '</span></div>';
+          }
+          html += '    </div>';
+          html += '  </div>';
+          html += '</div>';
+        });
+
+        orderListEl.innerHTML = html;
+
+        // toggle/collapse + delete
+        orderListEl.querySelectorAll('.calc-order-item').forEach(function(parent) {
+          parent.classList.add('collapsed');
+          var header = parent.querySelector('.calc-order-item-header');
+          var del = parent.querySelector('.calc-order-item-delete');
+          if (header) {
+            header.addEventListener('click', function(e) {
+              if (e.target && e.target.classList && e.target.classList.contains('calc-order-item-delete')) return;
+              parent.classList.toggle('collapsed');
+            });
+          }
+          if (del) {
+            del.addEventListener('click', function(e) {
+              e.stopPropagation();
+              var idx = parseInt(del.getAttribute('data-delete-idx') || '', 10);
+              if (!isFinite(idx)) return;
+              orderItems.splice(idx, 1);
+              renderOrderList();
+            });
+          }
+        });
+      }
+
+      // start
+      init();
+    })();
+  </script>
+</body>
+</html>
+
