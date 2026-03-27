@@ -69,6 +69,29 @@
       display: none;
     }
     .calc-help.is-open { display: block; }
+    .calc-collapse-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.7);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.45rem 0.6rem;
+      cursor: pointer;
+      text-align: left;
+    }
+    .calc-collapse-trigger .calc-label { margin: 0; }
+    .calc-collapse-trigger .caret {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: transform 0.15s;
+    }
+    .calc-collapse-trigger.is-open .caret { transform: rotate(180deg); }
+    .calc-collapse-body { margin-top: 0.45rem; display: none; }
+    .calc-collapse-body.is-open { display: block; }
 
     .calc-addons-list { display: grid; gap: 0.35rem; }
     .calc-addon-row {
@@ -875,9 +898,14 @@
         </div>
 
         <div class="calc-form-row" id="addonsRow">
-          <span class="calc-label" data-i18n="addons.title">Опции запуска/продукта</span>
-          <div class="calc-slider-hint" data-i18n="addons.hint">Это “пакет” из бизнес-части (исследования/монетизация/маркетинг и т.п.), который добавляет работу и влияет на стоимость.</div>
-          <div id="addonsList"></div>
+          <button type="button" class="calc-collapse-trigger" id="addonsToggleBtn" aria-expanded="false" aria-controls="addonsBody">
+            <span class="calc-label" data-i18n="addons.title">Опции запуска/продукта</span>
+            <span class="caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="calc-collapse-body" id="addonsBody">
+            <div class="calc-slider-hint" data-i18n="addons.hint">Это “пакет” из бизнес-части (исследования/монетизация/маркетинг и т.п.), который добавляет работу и влияет на стоимость.</div>
+            <div id="addonsList"></div>
+          </div>
         </div>
 
         <div class="calc-table-wrap" aria-label="Линейка пакетов">
@@ -937,7 +965,7 @@
             <div class="calc-rate-grid">
               <label class="calc-rate-cell">
                 <span>USD (RUB)</span>
-                <input id="calcRateUsdInput" type="number" min="1" step="0.01" value="92">
+                <input id="calcRateUsdInput" type="number" min="1" step="0.01" value="81.38">
               </label>
               <label class="calc-rate-cell">
                 <span>USDT (RUB)</span>
@@ -1415,6 +1443,8 @@
       ];
 
       var selectedAddons = {}; // key -> true
+      var addonsToggleBtnEl = document.getElementById('addonsToggleBtn');
+      var addonsBodyEl = document.getElementById('addonsBody');
 
       function addonDaysForType(addon, typeKey) {
         if (!addon || !addon.days) return 0;
@@ -1468,6 +1498,27 @@
             if (!el) return;
             el.classList.toggle('is-open');
           });
+        });
+      }
+
+      function setAddonsOpen(open) {
+        var on = !!open;
+        if (addonsBodyEl) addonsBodyEl.classList.toggle('is-open', on);
+        if (addonsToggleBtnEl) {
+          addonsToggleBtnEl.classList.toggle('is-open', on);
+          addonsToggleBtnEl.setAttribute('aria-expanded', on ? 'true' : 'false');
+        }
+      }
+
+      function initAddonsCollapse() {
+        var saved = null;
+        try { saved = localStorage.getItem('addons_open'); } catch (e) {}
+        setAddonsOpen(saved === '1');
+        if (!addonsToggleBtnEl) return;
+        addonsToggleBtnEl.addEventListener('click', function() {
+          var on = !!(addonsBodyEl && addonsBodyEl.classList.contains('is-open'));
+          setAddonsOpen(!on);
+          try { localStorage.setItem('addons_open', !on ? '1' : '0'); } catch (e) {}
         });
       }
 
@@ -1641,7 +1692,7 @@
       var urgencyRadios = document.querySelectorAll('input[name="urgency"]');
       var CURRENT_CURRENCY = 'rub';
       // Approx conversion: RUB per unit.
-      var CURRENCY_DEFAULT_RUB_RATE = { rub: 1, usd: 92, usdt: 92, btc: 7000000 };
+      var CURRENCY_DEFAULT_RUB_RATE = { rub: 1, usd: 81.38, usdt: 92, btc: 7000000 };
       var CURRENCY_RUB_RATE = {
         rub: CURRENCY_DEFAULT_RUB_RATE.rub,
         usd: CURRENCY_DEFAULT_RUB_RATE.usd,
@@ -2293,6 +2344,7 @@
         initLangToggle();
         initCurrencyToggle();
         initRatePanel();
+        initAddonsCollapse();
         tlInitInteractions();
         setTypeVisibility(productEl.value);
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
