@@ -123,6 +123,8 @@
       margin-top: 0.35rem;
       width: 100%;
       min-width: 0;
+      /* Must match .row-label width so axis/scrollbar align with .row-track (bars use % of track only). */
+      --tl-label-w: 140px;
     }
     .calc-timeline .calc-order-header { cursor: pointer; user-select: none; }
     .calc-timeline .calc-order-header h2 { display: inline-flex; align-items: center; gap: 0.4rem; }
@@ -161,12 +163,28 @@
       transition: background 0.2s, color 0.2s;
     }
     .calc-timeline-btn:hover { background: var(--yc-orange); color: #fff; border-color: var(--yc-orange); }
-    .calc-timeline-scrollbar { margin-top: 0.25rem; height: 14px; position: relative; }
+    .calc-timeline-scrollbar {
+      margin-top: 0.25rem;
+      height: 14px;
+      position: relative;
+      padding-left: var(--tl-label-w);
+      box-sizing: border-box;
+    }
     .calc-timeline-scrollbar-track { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.08); border-radius: 7px; cursor: pointer; }
     .calc-timeline-scrollbar-thumb { position: absolute; top: 2px; bottom: 2px; min-width: 24px; border-radius: 5px; background: #111; cursor: grab; }
     .calc-timeline-scrollbar-thumb:active { cursor: grabbing; }
     .calc-timeline-scrollbar-thumb.dragging { cursor: grabbing; }
-    .calc-timeline-axis { display: flex; justify-content: space-between; padding: 0 0 0.4rem; margin: 0.65rem 0 0.5rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid #ddd; }
+    .calc-timeline-axis {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 0 0.4rem;
+      padding-left: var(--tl-label-w);
+      margin: 0.65rem 0 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid #ddd;
+      box-sizing: border-box;
+    }
     .calc-timeline-axis span { flex: 0 0 auto; user-select: text; -webkit-user-select: text; cursor: text; }
     .calc-timeline-rows {
       position: relative;
@@ -200,7 +218,8 @@
     }
     .calc-timeline-row.calc-timeline-row--group { background: rgba(168, 197, 232, 0.12); border-radius: 4px; margin-bottom: 4px; }
     .calc-timeline-row .row-label {
-      width: 140px;
+      box-sizing: border-box;
+      width: var(--tl-label-w);
       flex-shrink: 0;
       font-size: 0.82rem;
       font-weight: 550;
@@ -304,9 +323,12 @@
     .calc-modal-close:hover { background: rgba(0,0,0,0.04); color: var(--yc-orange); border-color: rgba(0,0,0,0.2); }
     .calc-modal-body { padding: 0.85rem 1rem 1.1rem; }
 
+    .calc-timeline.calc-timeline--modal {
+      --tl-label-w: 220px;
+    }
     .calc-timeline--modal .calc-timeline-rows { min-height: 420px; }
     .calc-timeline--modal .calc-timeline-row { min-height: 40px; }
-    .calc-timeline--modal .calc-timeline-row .row-label { width: 220px; font-size: 0.9rem; }
+    .calc-timeline--modal .calc-timeline-row .row-label { font-size: 0.9rem; }
     .calc-timeline--modal .calc-timeline-row.calc-timeline-row--sub .row-label { font-size: 0.86rem; }
     .calc-timeline--modal .calc-timeline-row .row-track { height: 24px; min-height: 24px; }
     .calc-timeline--modal .calc-timeline-bar-wrap { height: 20px; top: 2px; }
@@ -535,12 +557,13 @@
       .calc-layout { grid-template-columns: minmax(0,1fr); }
       .calc-card, .calc-result, .calc-note { padding: 1rem 1rem; }
       .calc-input, .calc-select { max-width: 100%; }
+      .calc-timeline { --tl-label-w: 105px; }
+      .calc-timeline.calc-timeline--modal { --tl-label-w: 130px; }
       .calc-timeline-axis { font-size: 0.7rem; }
-      .calc-timeline-row .row-label { width: 105px; font-size: 0.78rem; }
+      .calc-timeline-row .row-label { font-size: 0.78rem; }
       .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 0.9rem; font-size: 0.75rem; }
       .calc-timeline-tooltip { font-size: 0.82rem; }
       .calc-modal-dialog { margin: 1rem auto; max-width: calc(100vw - 1rem); }
-      .calc-timeline--modal .calc-timeline-row .row-label { width: 130px; }
     }
   </style>
 </head>
@@ -1398,6 +1421,12 @@
 
       // timeline DOM
       var tlWrapEl = document.getElementById('calcTimeline');
+      function tlLabelWidthPx() {
+        if (!tlWrapEl) return 140;
+        var raw = getComputedStyle(tlWrapEl).getPropertyValue('--tl-label-w').trim();
+        var n = parseFloat(raw);
+        return isFinite(n) && n > 0 ? n : 140;
+      }
       var tlMetaEl = document.getElementById('calcTimelineMeta');
       var tlAxisEl = document.getElementById('calcTimelineAxis');
       var tlRowsEl = document.getElementById('calcTimelineRows');
@@ -1736,7 +1765,8 @@
         var startViewStart = 0;
         function pxToWeeks(dx) {
           var rect = tlRowsEl.getBoundingClientRect();
-          var usable = Math.max(120, rect.width - 140);
+          var lw = tlLabelWidthPx();
+          var usable = Math.max(120, rect.width - lw);
           var range = tlState.viewEnd - tlState.viewStart;
           return (dx / usable) * range;
         }
@@ -1775,8 +1805,9 @@
           e.preventDefault();
           var rect = tlRowsEl.getBoundingClientRect();
           var x = e.clientX - rect.left;
-          var usable = Math.max(120, rect.width - 140);
-          var frac = Math.max(0, Math.min(1, (x - 140) / usable));
+          var lw = tlLabelWidthPx();
+          var usable = Math.max(120, rect.width - lw);
+          var frac = Math.max(0, Math.min(1, (x - lw) / usable));
           var around = tlState.viewStart + frac * (tlState.viewEnd - tlState.viewStart);
           var factor = e.deltaY > 0 ? 1.15 : 0.87;
           tlZoom(factor, around);
