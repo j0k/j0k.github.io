@@ -1524,16 +1524,31 @@
 
       // --------- Models (оценка в человеко-днях) ----------
       var PRODUCTS = {
-        software: { name: 'Разработка софта', icon: '💻' },
-        chatbot: { name: 'Чат-бот', icon: '🤖' },
-        ai: { name: 'AI ассистент', icon: '🧠' }
+        software: { icon: '💻', name: { ru: 'Разработка софта', en: 'Software development' } },
+        chatbot: { icon: '🤖', name: { ru: 'Чат-бот', en: 'Chatbot' } },
+        ai: { icon: '🧠', name: { ru: 'AI ассистент', en: 'AI assistant' } }
       };
 
       var TIERS = {
-        mvp: { name: 'MVP' },
-        production: { name: 'Production' },
-        scale: { name: 'Scale' }
+        mvp: { name: { ru: 'MVP', en: 'MVP' } },
+        production: { name: { ru: 'Production', en: 'Production' } },
+        scale: { name: { ru: 'Scale', en: 'Scale' } }
       };
+
+      function productDisplayName(typeKey, lang) {
+        var p = PRODUCTS[typeKey];
+        if (!p) return typeKey || '';
+        var l = (lang === 'en') ? 'en' : 'ru';
+        var name = (p.name && (p.name[l] || p.name.ru || p.name.en)) || typeKey;
+        return (p.icon ? (p.icon + ' ') : '') + name;
+      }
+
+      function tierDisplayName(tierKey, lang) {
+        var t = TIERS[tierKey];
+        if (!t) return tierKey || '';
+        var l = (lang === 'en') ? 'en' : 'ru';
+        return (t.name && (t.name[l] || t.name.ru || t.name.en)) || tierKey;
+      }
 
       // baseDays[type][tier][complexity]
       // complexity: low / mid / high
@@ -2498,14 +2513,13 @@
         var costMin = cost * 0.85;
         var costMax = cost * 1.15;
 
-        var type = PRODUCTS[typeKey];
-        var tier = TIERS[tierKey];
+        var langKey = CURRENT_LANG === 'en' ? 'en' : 'ru';
 
         return {
           typeKey: typeKey,
-          typeName: type.icon + ' ' + type.name,
+          typeName: productDisplayName(typeKey, langKey),
           tierKey: tierKey,
-          tierName: tier.name,
+          tierName: tierDisplayName(tierKey, langKey),
           complexity: complexityLabel(complexityKey),
           complexityKey: complexityKey,
           urgency: urgencyKey,
@@ -2686,7 +2700,10 @@
 
         orderItems.forEach(function(item, idx) {
           var itemLabel = (lang === 'en' ? ('Item ' + (idx + 1)) : ('Позиция ' + (idx + 1)));
-          var groupLabel = itemLabel + ': ' + item.typeName + ' · ' + item.tierName + ' · ' + item.complexity;
+          var itemTypeName = productDisplayName(item.typeKey, lang);
+          var itemTierName = tierDisplayName(item.tierKey, lang);
+          var itemComplexity = item.complexityKey ? complexityLabel(item.complexityKey) : (item.complexity || '');
+          var groupLabel = itemLabel + ': ' + itemTypeName + ' · ' + itemTierName + ' · ' + itemComplexity;
           var itemStart = offset;
           var itemWeeks = Math.max(0.1, parseFloat(item.calendarWeeks) || 0);
           if (!isFinite(itemWeeks)) itemWeeks = 1;
@@ -2859,7 +2876,10 @@
 
         var html = '';
         orderItems.forEach(function(item, idx) {
-          var head = item.typeName + ' · ' + item.tierName + ' · ' + item.complexity;
+          var itemTypeName = productDisplayName(item.typeKey, CURRENT_LANG);
+          var itemTierName = tierDisplayName(item.tierKey, CURRENT_LANG);
+          var itemComplexity = item.complexityKey ? complexityLabel(item.complexityKey) : (item.complexity || '');
+          var head = itemTypeName + ' · ' + itemTierName + ' · ' + itemComplexity;
           var headRight = formatMoney(item.costMin) + '–' + formatMoney(item.costMax);
           html += '<div class="calc-order-item collapsed" data-idx="' + idx + '">';
           html += '  <div class="calc-order-item-header" role="button" tabindex="0" aria-label="' + t('order.openAria') + '">';
