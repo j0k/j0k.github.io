@@ -1292,6 +1292,7 @@
             applyI18n(lang);
             renderDynamicLabels(lang);
             syncTierForComplexity();
+            syncUrgencyForComplexity();
             if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
             if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
             renderAddonsUI();
@@ -1302,6 +1303,7 @@
         });
         renderDynamicLabels(initial);
         syncTierForComplexity();
+        syncUrgencyForComplexity();
         renderAddonsUI();
       }
 
@@ -1911,6 +1913,26 @@
         if (onlyMvp) tierEl.value = 'mvp';
       }
 
+      function syncUrgencyForComplexity() {
+        var cx = getComplexity();
+        var blockUrgent = cx === 'ultra';
+        var urgentInput = null;
+        var fallbackInput = null;
+        Array.prototype.forEach.call(urgencyRadios, function(r) {
+          if (r.value === 'urgent') {
+            urgentInput = r;
+          } else if (r.value === 'fast') {
+            fallbackInput = r;
+          }
+        });
+        if (!urgentInput) return;
+        urgentInput.disabled = blockUrgent;
+        if (blockUrgent && urgentInput.checked) {
+          if (fallbackInput) fallbackInput.checked = true;
+          else urgencyRadios[0].checked = true;
+        }
+      }
+
       // --------- Timeline engine (weeks viewport) ----------
       var tlState = {
         minWeek: 0,
@@ -2343,6 +2365,7 @@
           r.addEventListener('change', function() {
             syncTeamOptionsForComplexity();
             syncTierForComplexity();
+            syncUrgencyForComplexity();
             recalc();
           });
         });
@@ -2401,6 +2424,7 @@
         if (chatToolsBadgeEl) chatToolsBadgeEl.textContent = chatToolsSliderEl.value;
         syncTeamOptionsForComplexity();
         syncTierForComplexity();
+        syncUrgencyForComplexity();
         recalc();
       }
 
