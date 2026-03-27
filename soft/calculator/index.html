@@ -2070,6 +2070,16 @@
         tlState.viewEnd = minW + span;
       }
 
+      function tlFitContentView() {
+        var minW = tlState.minWeek;
+        var maxW = tlState.maxWeek;
+        if (!isFinite(minW)) minW = 0;
+        if (!isFinite(maxW) || maxW < minW) maxW = minW;
+        var span = Math.max(1, (maxW - minW) + 0.5);
+        tlState.viewStart = minW;
+        tlState.viewEnd = minW + span;
+      }
+
       function tlClampViewport() {
         var minW = tlState.minWeek;
         var maxW = tlState.maxWeek;
@@ -2239,7 +2249,7 @@
         if (tlZoomOutBtn) tlZoomOutBtn.addEventListener('click', function() { tlZoom(1.25); });
         if (tlZoomInBtn) tlZoomInBtn.addEventListener('click', function() { tlZoom(0.8); });
         if (tlFitBtnEl) tlFitBtnEl.addEventListener('click', function() {
-          tlFitDefaultView();
+          tlFitContentView();
           tlUpdateRangeLabel();
           tlUpdateAxis();
           tlUpdateScrollbar();
