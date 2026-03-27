@@ -1765,6 +1765,7 @@
       var CURRENT_CURRENCY = 'rub';
       // Approx conversion: RUB per unit.
       var CURRENCY_DEFAULT_RUB_RATE = { rub: 1, usd: 81.38, usdt: 81.38, btc: 7000000 };
+      var CURRENCY_RATES_SCHEMA_VERSION = 2;
       var CURRENCY_RUB_RATE = {
         rub: CURRENCY_DEFAULT_RUB_RATE.rub,
         usd: CURRENCY_DEFAULT_RUB_RATE.usd,
@@ -1861,18 +1862,25 @@
         if (!saved) return;
         try {
           var parsed = JSON.parse(saved);
+          var ver = Number(parsed.v || 1);
           var usd = Number(parsed.usd);
           var usdt = Number(parsed.usdt);
           var btc = Number(parsed.btc);
           if (isFinite(usd) && usd > 0) CURRENCY_RUB_RATE.usd = usd;
           if (isFinite(usdt) && usdt > 0) CURRENCY_RUB_RATE.usdt = usdt;
           if (isFinite(btc) && btc > 0) CURRENCY_RUB_RATE.btc = btc;
+          // Migration for legacy saved defaults: keep USDT equal to USD from v2 onward.
+          if (ver < CURRENCY_RATES_SCHEMA_VERSION && Math.abs(CURRENCY_RUB_RATE.usdt - 92) < 0.0001) {
+            CURRENCY_RUB_RATE.usdt = CURRENCY_RUB_RATE.usd;
+            persistRates();
+          }
         } catch (e) {}
       }
 
       function persistRates() {
         try {
           localStorage.setItem('calc_currency_rates', JSON.stringify({
+            v: CURRENCY_RATES_SCHEMA_VERSION,
             usd: CURRENCY_RUB_RATE.usd,
             usdt: CURRENCY_RUB_RATE.usdt,
             btc: CURRENCY_RUB_RATE.btc
