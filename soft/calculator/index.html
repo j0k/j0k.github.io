@@ -648,7 +648,12 @@
     .calc-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
     .calc-table th, .calc-table td { padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
     .calc-table th { background: rgba(0,0,0,0.03); color: var(--text-muted); font-weight: 650; border-bottom: 1px solid rgba(0,0,0,0.04); }
-    .calc-table td:last-child { text-align: right; white-space: nowrap; }
+    .calc-table td:last-child {
+      text-align: left;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
 
     .calc-note {
       margin-top: 1.25rem;
