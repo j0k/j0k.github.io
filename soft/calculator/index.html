@@ -875,27 +875,27 @@
           <!-- AI ASSISTANT -->
           <div class="calc-type-section" data-type="ai">
             <div class="calc-form-row">
-              <span class="calc-label">Режим ассистента</span>
+              <span class="calc-label" data-i18n="fields.aiMode">Режим ассистента</span>
               <select id="aiModeSelect" class="calc-select">
-                <option value="text" selected>Текстовый ассистент (диалоги)</option>
-                <option value="rag">RAG ассистент (документы/знания)</option>
-                <option value="agent">AI-агент (инструменты/действия)</option>
+                <option value="text" selected data-i18n="fields.aiMode.text">Текстовый ассистент (диалоги)</option>
+                <option value="rag" data-i18n="fields.aiMode.rag">RAG ассистент (документы/знания)</option>
+                <option value="agent" data-i18n="fields.aiMode.agent">AI-агент (инструменты/действия)</option>
               </select>
             </div>
 
             <div class="calc-form-row">
-              <span class="calc-label">Доп. возможности</span>
+              <span class="calc-label" data-i18n="fields.aiExtras">Доп. возможности</span>
               <label class="calc-radio-option">
                 <input type="checkbox" id="aiVoiceCb">
-                <strong>Голос (STT/TTS)</strong>
+                <strong data-i18n="fields.aiVoice">Голос (STT/TTS)</strong>
               </label>
               <label class="calc-radio-option">
                 <input type="checkbox" id="aiMemoryCb" checked>
-                <strong>Память / долговременный контекст</strong>
+                <strong data-i18n="fields.aiMemory">Память / долговременный контекст</strong>
               </label>
               <label class="calc-radio-option">
                 <input type="checkbox" id="aiGuardCb" checked>
-                <strong>Ограничения/guardrails</strong>
+                <strong data-i18n="fields.aiGuard">Ограничения/guardrails</strong>
               </label>
             </div>
           </div>
@@ -1090,6 +1090,14 @@
           'fields.softwareAdmin': 'Админка + аналитика',
           'fields.softwarePayments': 'Оплаты/заказы',
           'fields.softwarePaymentsHint': '(требует интеграций)',
+          'fields.aiMode': 'Режим ассистента',
+          'fields.aiMode.text': 'Текстовый ассистент (диалоги)',
+          'fields.aiMode.rag': 'RAG ассистент (документы/знания)',
+          'fields.aiMode.agent': 'AI-агент (инструменты/действия)',
+          'fields.aiExtras': 'Доп. возможности',
+          'fields.aiVoice': 'Голос (STT/TTS)',
+          'fields.aiMemory': 'Память / долговременный контекст',
+          'fields.aiGuard': 'Ограничения/guardrails',
           'tiers.table.tier': 'Пакет',
           'tiers.table.goal': 'Назначение',
           'tiers.table.included': 'Включено',
@@ -1185,6 +1193,14 @@
           'fields.softwareAdmin': 'Admin + analytics',
           'fields.softwarePayments': 'Payments/orders',
           'fields.softwarePaymentsHint': '(requires integrations)',
+          'fields.aiMode': 'Assistant mode',
+          'fields.aiMode.text': 'Text assistant (dialogs)',
+          'fields.aiMode.rag': 'RAG assistant (documents/knowledge)',
+          'fields.aiMode.agent': 'AI agent (tools/actions)',
+          'fields.aiExtras': 'Extra capabilities',
+          'fields.aiVoice': 'Voice (STT/TTS)',
+          'fields.aiMemory': 'Memory / long-term context',
+          'fields.aiGuard': 'Guardrails/constraints',
           'tiers.table.tier': 'Package',
           'tiers.table.goal': 'Goal',
           'tiers.table.included': 'Included',
