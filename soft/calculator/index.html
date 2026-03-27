@@ -454,6 +454,33 @@
     .calc-slider-inline { display: flex; align-items: center; gap: 0.6rem; }
     .calc-slider-inline input[type="range"] { flex: 1; }
     .calc-slider-hint { font-size: 0.75rem; color: var(--text-muted); }
+    .calc-equity-box {
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 0.55rem 0.6rem;
+      background: rgba(255,255,255,0.6);
+      margin-bottom: 0.85rem;
+    }
+    .calc-equity-box .calc-label { margin-bottom: 0.25rem; display: inline-block; }
+    .calc-equity-inline { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
+    .calc-equity-input {
+      width: 92px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.16);
+      padding: 0.28rem 0.4rem;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+    .calc-equity-viz {
+      margin-top: 0.55rem;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      padding: 0.45rem 0.5rem;
+      background: rgba(255,255,255,0.65);
+    }
+    .calc-equity-viz svg { width: 100%; height: 120px; display: block; }
+    .calc-equity-viz-note { margin-top: 0.3rem; font-size: 0.74rem; color: var(--text-muted); }
 
     .calc-badge {
       display: inline-flex;
@@ -782,6 +809,23 @@
           </div>
         </div>
 
+        <div class="calc-form-row calc-equity-box" id="equityBoxRow">
+          <span class="calc-label" data-i18n="equity.title">No-code + share stakes</span>
+          <label class="calc-radio-option">
+            <input type="checkbox" id="equityNoCodeCb">
+            <strong data-i18n="equity.noCode">Код не нужен (strategy only)</strong>
+          </label>
+          <label class="calc-radio-option">
+            <input type="checkbox" id="equityShareCb">
+            <strong data-i18n="equity.share">Share stakes</strong>
+          </label>
+          <div class="calc-equity-inline">
+            <label class="calc-label" for="equityStakeInput" data-i18n="equity.stakeLabel">Доля, %</label>
+            <input id="equityStakeInput" class="calc-equity-input" type="number" min="0" max="50" step="0.5" value="10">
+            <span class="calc-slider-hint" data-i18n="equity.floorHint">Авто floor для cash-платежа включен</span>
+          </div>
+        </div>
+
         <div class="calc-form-row">
           <label class="calc-label" for="rateInput"><span data-i18n="fields.rate">Рейт команды</span> <span data-i18n="fields.rateHint">(₽/чел-час)</span></label>
           <div class="calc-inline">
@@ -1036,6 +1080,7 @@
             </div>
           </div>
           <div id="calcResultCurrentBody" class="calc-result-empty" data-i18n="placeholders.currentEmpty">Выберите параметры — здесь появится оценка.</div>
+          <div class="calc-equity-viz" id="calcEquityViz" style="display:none;"></div>
         </div>
 
         <div class="calc-order" id="calcOrder">
@@ -1129,6 +1174,12 @@
           'fields.rate': 'Рейт команды',
           'fields.rateHint': '(₽/чел-час)',
           'defaults.rate': 'по умолчанию: 4 375 ₽/чел-час',
+          'equity.title': 'No-code + share stakes',
+          'equity.noCode': 'Код не нужен (strategy only)',
+          'equity.share': 'Share stakes',
+          'equity.stakeLabel': 'Доля, %',
+          'equity.floorHint': 'Авто floor для cash-платежа включен',
+          'equity.disclaimer': 'Модель ориентировочная; юридические условия доли/вестинга согласуются отдельно.',
           'fields.scenarios': 'Объём сценариев',
           'fields.scenariosHint': '(use cases)',
           'fields.integrations': 'Интеграции',
@@ -1198,6 +1249,10 @@
           'result.effortKey': 'труд.',
           'result.termKey': 'срок',
           'result.budgetKey': 'бюджет',
+          'result.budgetBaseKey': 'база cash',
+          'result.equityDiscountKey': 'скидка equity',
+          'result.cashFloorKey': 'cash floor',
+          'result.budgetFinalKey': 'итог cash',
           'result.personDaysUnit': 'чел.-дней',
           'result.weeksUnitApprox': 'недель (≈)',
           'result.weeksUnit': 'недель',
@@ -1249,6 +1304,12 @@
           'fields.rate': 'Hourly rate',
           'fields.rateHint': '(USD / person-hour)',
           'defaults.rate': 'default: 53.75 USD / person-hour',
+          'equity.title': 'No-code + share stakes',
+          'equity.noCode': 'No code needed (strategy only)',
+          'equity.share': 'Share stakes',
+          'equity.stakeLabel': 'Stake, %',
+          'equity.floorHint': 'Auto cash floor is enabled',
+          'equity.disclaimer': 'This is an estimate model; legal equity/vesting terms are agreed separately.',
           'fields.scenarios': 'Use cases',
           'fields.scenariosHint': '(scenarios)',
           'fields.integrations': 'Integrations',
@@ -1318,6 +1379,10 @@
           'result.effortKey': 'effort',
           'result.termKey': 'time',
           'result.budgetKey': 'budget',
+          'result.budgetBaseKey': 'base cash',
+          'result.equityDiscountKey': 'equity discount',
+          'result.cashFloorKey': 'cash floor',
+          'result.budgetFinalKey': 'cash final',
           'result.personDaysUnit': 'person-days',
           'result.weeksUnitApprox': 'weeks (≈)',
           'result.weeksUnit': 'weeks',
@@ -1756,6 +1821,10 @@
       var addBtn = document.getElementById('calcAddBtn');
       var addBtnTop = document.getElementById('calcAddBtnTop');
       var orderBtn = document.getElementById('calcOrderBtn');
+      var equityNoCodeCb = document.getElementById('equityNoCodeCb');
+      var equityShareCb = document.getElementById('equityShareCb');
+      var equityStakeInputEl = document.getElementById('equityStakeInput');
+      var equityVizEl = document.getElementById('calcEquityViz');
       var orderListEl = document.getElementById('calcOrderList');
       var orderCountEl = document.getElementById('calcOrderCount');
       var orderTotalEl = document.getElementById('calcOrderTotal');
@@ -1904,6 +1973,71 @@
           return formatMoney(minRub) + '–' + formatMoneyPlus(topRub);
         }
         return formatMoney(minRub) + '–' + formatMoney(maxRub);
+      }
+
+      function clampStakePct(v) {
+        var n = Number(v);
+        if (!isFinite(n)) return 0;
+        if (n < 0) return 0;
+        if (n > 50) return 50;
+        return Math.round(n * 10) / 10;
+      }
+
+      function currentEquityInputs() {
+        return {
+          noCodeMode: !!(equityNoCodeCb && equityNoCodeCb.checked),
+          shareStakesEnabled: !!(equityShareCb && equityShareCb.checked),
+          shareStakePct: clampStakePct(equityStakeInputEl ? equityStakeInputEl.value : 0)
+        };
+      }
+
+      function persistEquityInputs() {
+        try {
+          var x = currentEquityInputs();
+          localStorage.setItem('calc_equity_settings', JSON.stringify(x));
+        } catch (e) {}
+      }
+
+      function restoreEquityInputs() {
+        var saved = null;
+        try { saved = localStorage.getItem('calc_equity_settings'); } catch (e) {}
+        if (!saved) return;
+        try {
+          var x = JSON.parse(saved);
+          if (equityNoCodeCb) equityNoCodeCb.checked = !!x.noCodeMode;
+          if (equityShareCb) equityShareCb.checked = !!x.shareStakesEnabled;
+          if (equityStakeInputEl) equityStakeInputEl.value = String(clampStakePct(x.shareStakePct));
+        } catch (e) {}
+      }
+
+      function updateEquityUiState() {
+        if (!equityStakeInputEl || !equityShareCb) return;
+        equityStakeInputEl.disabled = !equityShareCb.checked;
+      }
+
+      function renderEquityCurve(stakePct) {
+        if (!equityVizEl) return;
+        var s = clampStakePct(stakePct);
+        var disc = Math.min(s, 40);
+        var w = 320;
+        var h = 120;
+        var p = 20;
+        var xMax = 50;
+        var yMax = 40;
+        function x(v) { return p + (v / xMax) * (w - p * 2); }
+        function y(v) { return (h - p) - (v / yMax) * (h - p * 2); }
+        var line = 'M' + x(0) + ' ' + y(0) + ' L' + x(40) + ' ' + y(40) + ' L' + x(50) + ' ' + y(40);
+        var html = '';
+        html += '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Equity discount curve">';
+        html += '<line x1="' + p + '" y1="' + y(0) + '" x2="' + (w - p) + '" y2="' + y(0) + '" stroke="currentColor" opacity="0.25"/>';
+        html += '<line x1="' + p + '" y1="' + y(40) + '" x2="' + (w - p) + '" y2="' + y(40) + '" stroke="currentColor" opacity="0.15"/>';
+        html += '<line x1="' + p + '" y1="' + p + '" x2="' + p + '" y2="' + (h - p) + '" stroke="currentColor" opacity="0.25"/>';
+        html += '<path d="' + line + '" fill="none" stroke="#2c5282" stroke-width="2"/>';
+        html += '<circle cx="' + x(s) + '" cy="' + y(disc) + '" r="4" fill="#c2410c"/>';
+        html += '</svg>';
+        html += '<div class="calc-equity-viz-note">' + esc('stake: ' + s + '% → discount: ' + disc + '%') + '</div>';
+        html += '<div class="calc-equity-viz-note">' + esc(t('equity.disclaimer')) + '</div>';
+        equityVizEl.innerHTML = html;
       }
 
       function syncRateInputForLangChange(fromLang, toLang) {
@@ -2574,6 +2708,13 @@
         if (gameMultiplayerCb) gameMultiplayerCb.addEventListener('change', recalc);
         if (gameMonetizationCb) gameMonetizationCb.addEventListener('change', recalc);
         if (gameLiveopsCb) gameLiveopsCb.addEventListener('change', recalc);
+        if (equityNoCodeCb) equityNoCodeCb.addEventListener('change', function() { persistEquityInputs(); recalc(); });
+        if (equityShareCb) equityShareCb.addEventListener('change', function() { updateEquityUiState(); persistEquityInputs(); recalc(); });
+        if (equityStakeInputEl) equityStakeInputEl.addEventListener('input', function() {
+          equityStakeInputEl.value = String(clampStakePct(equityStakeInputEl.value));
+          persistEquityInputs();
+          recalc();
+        });
 
         function addCurrentToOrder() {
           var state = buildCurrentState();
@@ -2618,6 +2759,8 @@
         initCurrencyToggle();
         initRatePanel();
         initAddonsCollapse();
+        restoreEquityInputs();
+        updateEquityUiState();
         tlInitInteractions();
         setTypeVisibility(productEl.value);
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
@@ -2815,8 +2958,25 @@
           high:  { min: 0.85, max: 2.00 },
           ultra: { min: 0.85, max: 2.50 }
         }[complexityKey] || { min: 0.85, max: 1.15 };
+        var cashBeforeEquity = cost;
         var costMin = cost * rangeMult.min;
         var costMax = cost * rangeMult.max;
+
+        var eq = currentEquityInputs();
+        var equityDiscountPct = eq.shareStakesEnabled ? Math.min(eq.shareStakePct, 40) : 0;
+        var discountFactor = 1 - equityDiscountPct / 100;
+        var floorByComplexity = {
+          low: 300000,
+          mid: 700000,
+          high: 1800000,
+          ultra: 4500000
+        }[complexityKey] || 300000;
+        var cashFloor = Math.max(cashBeforeEquity * 0.35, floorByComplexity);
+        var cashAfterEquity = eq.shareStakesEnabled ? Math.max(cashBeforeEquity * discountFactor, cashFloor) : cashBeforeEquity;
+        var costMinFinal = eq.shareStakesEnabled ? Math.max(costMin * discountFactor, Math.max(costMin * 0.35, floorByComplexity)) : costMin;
+        var costMaxFinal = eq.shareStakesEnabled ? Math.max(costMax * discountFactor, Math.max(costMax * 0.35, floorByComplexity)) : costMax;
+        if (eq.noCodeMode) details.push(isEn ? 'No-code mode' : 'Режим без кода');
+        if (eq.shareStakesEnabled) details.push((isEn ? 'Share stakes: ' : 'Доля: ') + eq.shareStakePct + '%');
 
         var langKey = CURRENT_LANG === 'en' ? 'en' : 'ru';
 
@@ -2833,8 +2993,15 @@
           rawPersonDays: rawPersonDays,
           calendarWeeks: calendarWeeks,
           cost: cost,
-          costMin: costMin,
-          costMax: costMax,
+          costMin: costMinFinal,
+          costMax: costMaxFinal,
+          cashBeforeEquity: cashBeforeEquity,
+          equityDiscountPct: equityDiscountPct,
+          cashFloor: cashFloor,
+          cashAfterEquity: cashAfterEquity,
+          noCodeMode: eq.noCodeMode,
+          shareStakesEnabled: eq.shareStakesEnabled,
+          shareStakePct: eq.shareStakePct,
           rate: rate,
           team: teamSize,
           teamCostMult: teamCostMult,
@@ -2890,10 +3057,19 @@
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.integrationsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.integrationsCount + '</span></div>';
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.calendarWeeks + ' ' + t('result.weeksUnitApprox') + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetBaseKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + formatMoney(state.cashBeforeEquity) + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.equityDiscountKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + (Math.round(state.equityDiscountPct * 10) / 10) + '%</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.cashFloorKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + formatMoney(state.cashFloor) + '</span></div>';
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatBudgetRange(state.costMin, state.costMax, state.complexityKey) + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetFinalKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(state.cashAfterEquity) + '</span></div>';
         html += '</div>';
 
         resultCurrentBodyEl.innerHTML = html;
+        if (equityVizEl) {
+          var show = state.shareStakesEnabled;
+          equityVizEl.style.display = show ? '' : 'none';
+          if (show) renderEquityCurve(state.shareStakePct);
+        }
       }
 
       function buildOrderTimelineV1() {
@@ -3216,7 +3392,7 @@
         }
 
         var totalAll = 0;
-        orderItems.forEach(function(it) { totalAll += it.cost; });
+        orderItems.forEach(function(it) { totalAll += (it.cashAfterEquity != null ? it.cashAfterEquity : it.cost); });
         orderCountEl.textContent = CURRENT_LANG === 'en' ? (orderItems.length + ' items') : (orderItems.length + ' поз.');
         if (orderTotalEl) orderTotalEl.textContent = t('order.total') + ': ' + formatMoney(totalAll);
 
@@ -3239,7 +3415,11 @@
           html += '    <div class="calc-result-table">';
           html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
           html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.calendarWeeks + ' ' + t('result.weeksUnit') + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetBaseKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + formatMoney(item.cashBeforeEquity != null ? item.cashBeforeEquity : item.cost) + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.equityDiscountKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + (Math.round((item.equityDiscountPct || 0) * 10) / 10) + '%</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.cashFloorKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + formatMoney(item.cashFloor != null ? item.cashFloor : 0) + '</span></div>';
           html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatBudgetRange(item.costMin, item.costMax, item.complexityKey) + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetFinalKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(item.cashAfterEquity != null ? item.cashAfterEquity : item.cost) + '</span></div>';
           if (item.details && item.details.length) {
             html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.detailsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.details.join(', ') + '</span></div>';
           }
