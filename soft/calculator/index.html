@@ -801,7 +801,7 @@
           <!-- SOFTWARE -->
           <div class="calc-type-section" data-type="software">
             <div class="calc-form-row">
-              <span class="calc-label">Платформа</span>
+              <span class="calc-label" data-i18n="fields.platform">Платформа</span>
               <select id="softwarePlatformSelect" class="calc-select">
                 <option value="web" selected>Web (сайт/кабинет)</option>
                 <option value="web_mobile">Web + Mobile</option>
@@ -811,20 +811,20 @@
             </div>
 
             <div class="calc-form-row">
-              <span class="calc-label">Что нужно из «коробки»</span>
+              <span class="calc-label" data-i18n="fields.softwareBox">Что нужно из «коробки»</span>
               <label class="calc-radio-option">
                 <input type="checkbox" id="softwareBackendCb">
-                <strong>Backend + роли/права</strong>
-                <span>(аутентификация, БД)</span>
+                <strong data-i18n="fields.softwareBackend">Backend + роли/права</strong>
+                <span data-i18n="fields.softwareBackendHint">(аутентификация, БД)</span>
               </label>
               <label class="calc-radio-option">
                 <input type="checkbox" id="softwareAdminCb" checked>
-                <strong>Админка + аналитика</strong>
+                <strong data-i18n="fields.softwareAdmin">Админка + аналитика</strong>
               </label>
               <label class="calc-radio-option">
                 <input type="checkbox" id="softwarePaymentsCb">
-                <strong>Оплаты/заказы</strong>
-                <span>(требует интеграций)</span>
+                <strong data-i18n="fields.softwarePayments">Оплаты/заказы</strong>
+                <span data-i18n="fields.softwarePaymentsHint">(требует интеграций)</span>
               </label>
             </div>
           </div>
@@ -1078,6 +1078,13 @@
           'fields.integrations': 'Интеграции',
           'fields.integrationsHint': '(API / CRM / платежи / БД)',
           'fields.integrationsHelp': '0 = без внешних интеграций',
+          'fields.platform': 'Платформа',
+          'fields.softwareBox': 'Что нужно из «коробки»',
+          'fields.softwareBackend': 'Backend + роли/права',
+          'fields.softwareBackendHint': '(аутентификация, БД)',
+          'fields.softwareAdmin': 'Админка + аналитика',
+          'fields.softwarePayments': 'Оплаты/заказы',
+          'fields.softwarePaymentsHint': '(требует интеграций)',
           'tiers.table.tier': 'Пакет',
           'tiers.table.goal': 'Назначение',
           'tiers.table.included': 'Включено',
@@ -1165,6 +1172,13 @@
           'fields.integrations': 'Integrations',
           'fields.integrationsHint': '(API / CRM / payments / DB)',
           'fields.integrationsHelp': '0 = no external integrations',
+          'fields.platform': 'Platform',
+          'fields.softwareBox': 'What should be included out of the box',
+          'fields.softwareBackend': 'Backend + roles/permissions',
+          'fields.softwareBackendHint': '(authentication, DB)',
+          'fields.softwareAdmin': 'Admin + analytics',
+          'fields.softwarePayments': 'Payments/orders',
+          'fields.softwarePaymentsHint': '(requires integrations)',
           'tiers.table.tier': 'Package',
           'tiers.table.goal': 'Goal',
           'tiers.table.included': 'Included',
