@@ -918,11 +918,11 @@
           'fields.teamHint': '(чел. в разработке)',
           'fields.urgency': 'Срочность',
           'urgency.normal': 'Обычные сроки',
-          'urgency.normalHint': 'множитель 1.0',
+          'urgency.normalHint': 'надбавка 0 · базовый срок',
           'urgency.fast': 'Ускорение',
-          'urgency.fastHint': 'множитель 1.15',
+          'urgency.fastHint': 'надбавка +15% к стоимости · срок короче',
           'urgency.urgent': 'Срочно',
-          'urgency.urgentHint': 'множитель 1.35',
+          'urgency.urgentHint': 'надбавка +35% к стоимости · срок короче',
           'fields.rate': 'Рейт команды',
           'fields.rateHint': '(₽/чел-день)',
           'defaults.rate': 'по умолчанию: 35 000 ₽/чел-день',
@@ -1001,11 +1001,11 @@
           'fields.teamHint': '(dev headcount)',
           'fields.urgency': 'Urgency',
           'urgency.normal': 'Normal',
-          'urgency.normalHint': 'multiplier 1.0',
+          'urgency.normalHint': 'no surcharge · baseline schedule',
           'urgency.fast': 'Fast',
-          'urgency.fastHint': 'multiplier 1.15',
+          'urgency.fastHint': '+15% cost · shorter timeline',
           'urgency.urgent': 'Urgent',
-          'urgency.urgentHint': 'multiplier 1.35',
+          'urgency.urgentHint': '+35% cost · shorter timeline',
           'fields.rate': 'Day rate',
           'fields.rateHint': '(RUB / person-day)',
           'defaults.rate': 'default: 35,000 RUB / person-day',
@@ -1388,7 +1388,7 @@
         return m[key] || key;
       }
 
-      // urgency multipliers
+      // Urgency: multiplies billable person-days (cost). Same factor divides calendar length (rush = shorter wall-clock).
       var URGENCY = { normal: 1.0, fast: 1.15, urgent: 1.35 };
 
       // scenario/integration extras (only beyond base)
@@ -2140,11 +2140,13 @@
           details.push((isEn ? 'GTM: ' : 'GTM: ') + addonsPicked.join('; '));
         }
 
-        var rawPersonDays = (baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays) * urgencyMult;
-        var personDays = rawPersonDays;
-        personDays = Math.max(5, Math.round(personDays));
+        var scopePersonDays = baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays;
+        var rawPersonDays = scopePersonDays * urgencyMult;
+        var personDays = Math.max(5, Math.round(rawPersonDays));
 
-        var calendarDays = Math.max(5, Math.ceil(personDays / teamSize));
+        // Calendar from work scope (not inflated by urgency cost); higher urgency compresses wall-clock.
+        var baseCalendarDays = Math.max(1, Math.ceil(scopePersonDays / teamSize));
+        var calendarDays = Math.max(5, Math.ceil(baseCalendarDays / urgencyMult));
         var calendarWeeks = Math.max(1, Math.round((calendarDays / 5) * 10) / 10);
 
         var cost = personDays * rate;
