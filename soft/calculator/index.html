@@ -841,6 +841,11 @@
                 <strong data-i18n="fields.softwarePayments">Оплаты/заказы</strong>
                 <span data-i18n="fields.softwarePaymentsHint">(требует интеграций)</span>
               </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="softwareBlockchainCb">
+                <strong data-i18n="fields.softwareBlockchain">Blockchain Софт</strong>
+                <span data-i18n="fields.softwareBlockchainHint">(смарт-контракты / кошельки)</span>
+              </label>
             </div>
           </div>
 
@@ -1106,6 +1111,8 @@
           'fields.softwareAdmin': 'Админка + аналитика',
           'fields.softwarePayments': 'Оплаты/заказы',
           'fields.softwarePaymentsHint': '(требует интеграций)',
+          'fields.softwareBlockchain': 'Blockchain Софт',
+          'fields.softwareBlockchainHint': '(смарт-контракты / кошельки)',
           'fields.aiMode': 'Режим ассистента',
           'fields.aiMode.text': 'Текстовый ассистент (диалоги)',
           'fields.aiMode.rag': 'RAG ассистент (документы/знания)',
@@ -1213,6 +1220,8 @@
           'fields.softwareAdmin': 'Admin + analytics',
           'fields.softwarePayments': 'Payments/orders',
           'fields.softwarePaymentsHint': '(requires integrations)',
+          'fields.softwareBlockchain': 'Blockchain software',
+          'fields.softwareBlockchainHint': '(smart contracts / wallets)',
           'fields.aiMode': 'Assistant mode',
           'fields.aiMode.text': 'Text assistant (dialogs)',
           'fields.aiMode.rag': 'RAG assistant (documents/knowledge)',
@@ -1760,6 +1769,7 @@
       var softwareBackendCb = document.getElementById('softwareBackendCb');
       var softwareAdminCb = document.getElementById('softwareAdminCb');
       var softwarePaymentsCb = document.getElementById('softwarePaymentsCb');
+      var softwareBlockchainCb = document.getElementById('softwareBlockchainCb');
 
       var chatChannelsEl = document.getElementById('chatChannelsSelect');
       var chatRagCb = document.getElementById('chatRagCb');
@@ -2485,6 +2495,7 @@
         if (softwareBackendCb) softwareBackendCb.addEventListener('change', recalc);
         if (softwareAdminCb) softwareAdminCb.addEventListener('change', recalc);
         if (softwarePaymentsCb) softwarePaymentsCb.addEventListener('change', recalc);
+        if (softwareBlockchainCb) softwareBlockchainCb.addEventListener('change', recalc);
 
         if (chatChannelsEl) chatChannelsEl.addEventListener('change', recalc);
         if (chatRagCb) chatRagCb.addEventListener('change', recalc);
@@ -2595,6 +2606,7 @@
         var backendDays = 0;
         var adminDays = 0;
         var payDays = 0;
+        var blockchainDays = 0;
 
         var channels = 1;
         var channelsDays = 0;
@@ -2628,11 +2640,13 @@
           backendDays = getCheckedNumber(softwareBackendCb) ? 8 : 0;
           adminDays = getCheckedNumber(softwareAdminCb) ? 5 : 0;
           payDays = getCheckedNumber(softwarePaymentsCb) ? 7 : 0;
+          blockchainDays = getCheckedNumber(softwareBlockchainCb) ? 18 : 0;
 
-          typeExtras += backendDays + adminDays + payDays;
+          typeExtras += backendDays + adminDays + payDays + blockchainDays;
           if (backendDays) details.push(isEn ? 'Backend/roles' : 'Backend/права');
           if (adminDays) details.push(isEn ? 'Admin/analytics' : 'Админка/аналитика');
           if (payDays) details.push(isEn ? 'Payments/orders' : 'Оплаты/заказы');
+          if (blockchainDays) details.push(isEn ? 'Blockchain software' : 'Blockchain Софт');
         }
 
         if (typeKey === 'chatbot') {
@@ -2742,6 +2756,7 @@
           backendDays: backendDays,
           adminDays: adminDays,
           payDays: payDays,
+          blockchainDays: blockchainDays,
           channels: channels,
           channelsDays: channelsDays,
           ragDays: ragDays,
@@ -2792,6 +2807,7 @@
             backend: { ru: '🔐 Backend + права', en: '🔐 Backend + roles' },
             admin: { ru: '📊 Админка + аналитика', en: '📊 Admin + analytics' },
             payments: { ru: '💳 Оплаты/заказы', en: '💳 Payments/orders' },
+            blockchain: { ru: '⛓ Blockchain софт', en: '⛓ Blockchain software' },
             channels: { ru: '📡 Каналы (доп.)', en: '📡 Channels (extra)' },
             rag: { ru: '📚 RAG / база знаний', en: '📚 RAG / knowledge base' },
             citations: { ru: '🧷 Цитаты/ссылки', en: '🧷 Citations' },
@@ -2814,6 +2830,7 @@
             backend: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
             admin: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
             payments: { discovery: 0.1, dev: 0.6, test: 0.25, release: 0.05 },
+            blockchain: { discovery: 0.15, dev: 0.65, test: 0.15, release: 0.05 },
             channels: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
             rag: { discovery: 0.15, dev: 0.6, test: 0.2, release: 0.05 },
             citations: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
@@ -2943,6 +2960,7 @@
             pushPost('backend', Math.max(0, item.backendDays || 0), lang === 'en' ? 'Auth/roles/data layer require backend work.' : 'Аутентификация/права/данные требуют backend-работ.');
             pushPost('admin', Math.max(0, item.adminDays || 0), lang === 'en' ? 'Admin + analytics adds screens and metrics.' : 'Админка и аналитика добавляют экраны и метрики.');
             pushPost('payments', Math.max(0, item.payDays || 0), lang === 'en' ? 'Payments require integrations and testing.' : 'Оплаты требуют интеграций и тестирования.');
+            pushPost('blockchain', Math.max(0, item.blockchainDays || 0), lang === 'en' ? 'Smart contracts, wallet flows, and chain integrations add specialized backend and QA work.' : 'Смарт-контракты, кошельки и интеграции с сетью добавляют специализированную backend-работу и QA.');
           }
           if (item.typeKey === 'chatbot') {
             pushPost('channels', Math.max(0, item.channelsDays || 0), lang === 'en' ? 'Multiple channels require adapters + QA.' : 'Несколько каналов = адаптеры и QA.');
