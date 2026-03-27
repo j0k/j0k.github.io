@@ -643,17 +643,17 @@
             <label class="calc-radio-option">
               <input type="radio" name="urgency" value="normal" checked>
               <strong data-i18n="urgency.normal">Обычные сроки</strong>
-              <span data-i18n="urgency.normalHint">множитель 1.0</span>
+              <span data-i18n="urgency.normalHint">базовая цена · базовый срок</span>
             </label>
             <label class="calc-radio-option">
               <input type="radio" name="urgency" value="fast">
               <strong data-i18n="urgency.fast">Ускорение</strong>
-              <span data-i18n="urgency.fastHint">множитель 1.15</span>
+              <span data-i18n="urgency.fastHint">в 1.5 раза быстрее · в 1.5 раза дороже</span>
             </label>
             <label class="calc-radio-option">
               <input type="radio" name="urgency" value="urgent">
               <strong data-i18n="urgency.urgent">Срочно</strong>
-              <span data-i18n="urgency.urgentHint">множитель 1.35</span>
+              <span data-i18n="urgency.urgentHint">в 2 раза быстрее · в 2 раза дороже</span>
             </label>
           </div>
         </div>
@@ -918,11 +918,11 @@
           'fields.teamHint': '(чел. в разработке)',
           'fields.urgency': 'Срочность',
           'urgency.normal': 'Обычные сроки',
-          'urgency.normalHint': 'надбавка 0 · базовый срок',
+          'urgency.normalHint': 'базовая цена · базовый срок',
           'urgency.fast': 'Ускорение',
-          'urgency.fastHint': 'надбавка +15% к стоимости · срок короче',
+          'urgency.fastHint': 'в 1.5 раза быстрее · в 1.5 раза дороже',
           'urgency.urgent': 'Срочно',
-          'urgency.urgentHint': 'надбавка +35% к стоимости · срок короче',
+          'urgency.urgentHint': 'в 2 раза быстрее · в 2 раза дороже',
           'fields.rate': 'Рейт команды',
           'fields.rateHint': '(₽/чел-день)',
           'defaults.rate': 'по умолчанию: 35 000 ₽/чел-день',
@@ -1001,11 +1001,11 @@
           'fields.teamHint': '(dev headcount)',
           'fields.urgency': 'Urgency',
           'urgency.normal': 'Normal',
-          'urgency.normalHint': 'no surcharge · baseline schedule',
+          'urgency.normalHint': 'baseline cost · baseline schedule',
           'urgency.fast': 'Fast',
-          'urgency.fastHint': '+15% cost · shorter timeline',
+          'urgency.fastHint': '1.5x faster · 1.5x cost',
           'urgency.urgent': 'Urgent',
-          'urgency.urgentHint': '+35% cost · shorter timeline',
+          'urgency.urgentHint': '2x faster · 2x cost',
           'fields.rate': 'Day rate',
           'fields.rateHint': '(RUB / person-day)',
           'defaults.rate': 'default: 35,000 RUB / person-day',
@@ -1389,7 +1389,7 @@
       }
 
       // Urgency: multiplies billable person-days (cost). Same factor divides calendar length (rush = shorter wall-clock).
-      var URGENCY = { normal: 1.0, fast: 1.15, urgent: 1.35 };
+      var URGENCY = { normal: 1.0, fast: 1.5, urgent: 2.0 };
 
       // scenario/integration extras (only beyond base)
       var SCENARIO_BASE = 3;
