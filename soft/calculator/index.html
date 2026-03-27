@@ -732,6 +732,10 @@
               <input type="radio" name="complexity" value="high">
               <strong data-i18n="complexity.high">Высокая</strong>
             </label>
+            <label class="calc-radio-option">
+              <input type="radio" name="complexity" value="ultra">
+              <strong data-i18n="complexity.ultra">Ultra High</strong>
+            </label>
           </div>
         </div>
 
@@ -1060,6 +1064,7 @@
           'complexity.low': 'Низкая',
           'complexity.mid': 'Средняя',
           'complexity.high': 'Высокая',
+          'complexity.ultra': 'Ultra High',
           'fields.team': 'Команда',
           'fields.teamHint': '(чел. в разработке)',
           'fields.currency': 'Валюта',
@@ -1154,6 +1159,7 @@
           'complexity.low': 'Low',
           'complexity.mid': 'Medium',
           'complexity.high': 'High',
+          'complexity.ultra': 'Ultra High',
           'fields.team': 'Team',
           'fields.teamHint': '(dev headcount)',
           'fields.currency': 'Currency',
@@ -1285,6 +1291,7 @@
             try { localStorage.setItem('lang', lang); } catch (e) {}
             applyI18n(lang);
             renderDynamicLabels(lang);
+            syncTierForComplexity();
             if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
             if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
             renderAddonsUI();
@@ -1294,6 +1301,7 @@
           });
         });
         renderDynamicLabels(initial);
+        syncTierForComplexity();
         renderAddonsUI();
       }
 
@@ -1585,8 +1593,8 @@
       };
 
       var COMPLEXITY_LABEL = {
-        ru: { low: 'Низкая', mid: 'Средняя', high: 'Высокая' },
-        en: { low: 'Low', mid: 'Medium', high: 'High' }
+        ru: { low: 'Низкая', mid: 'Средняя', high: 'Высокая', ultra: 'Ultra High' },
+        en: { low: 'Low', mid: 'Medium', high: 'High', ultra: 'Ultra High' }
       };
 
       function complexityLabel(key) {
@@ -1597,8 +1605,8 @@
       // Urgency: multiplies billable person-days (cost). Same factor divides calendar length (rush = shorter wall-clock).
       var URGENCY = { normal: 1.0, fast: 1.5, urgent: 2.0 };
       // Complexity scale relative to Low.
-      var COMPLEXITY_TIME_MULT = { low: 1.0, mid: 2.0, high: 4.0 };
-      var COMPLEXITY_COST_MULT = { low: 1.0, mid: 2.5, high: 8.0 };
+      var COMPLEXITY_TIME_MULT = { low: 1.0, mid: 2.0, high: 4.0, ultra: 8.0 };
+      var COMPLEXITY_COST_MULT = { low: 1.0, mid: 2.5, high: 8.0, ultra: 16.0 };
 
       // scenario/integration extras (only beyond base)
       var SCENARIO_BASE = 3;
@@ -1878,7 +1886,7 @@
       function syncTeamOptionsForComplexity() {
         if (!teamSizeEl) return;
         var cx = getComplexity();
-        var minTeam = (cx === 'high') ? 4 : 2;
+        var minTeam = (cx === 'high' || cx === 'ultra') ? 4 : 2;
         var maxTeam = 6;
         var cur = parseInt(teamSizeEl.value, 10);
         if (!isFinite(cur)) cur = 3;
@@ -1890,6 +1898,17 @@
         if (cur < minTeam) cur = minTeam;
         if (cur > maxTeam) cur = maxTeam;
         teamSizeEl.value = String(cur);
+      }
+
+      function syncTierForComplexity() {
+        if (!tierEl) return;
+        var cx = getComplexity();
+        var onlyMvp = cx === 'ultra';
+        Array.prototype.forEach.call(tierEl.options, function(opt) {
+          var isMvp = opt.value === 'mvp';
+          opt.disabled = onlyMvp && !isMvp;
+        });
+        if (onlyMvp) tierEl.value = 'mvp';
       }
 
       // --------- Timeline engine (weeks viewport) ----------
@@ -2323,6 +2342,7 @@
         Array.prototype.forEach.call(complexityRadios, function(r) {
           r.addEventListener('change', function() {
             syncTeamOptionsForComplexity();
+            syncTierForComplexity();
             recalc();
           });
         });
@@ -2380,6 +2400,7 @@
         integrationsBadgeEl.textContent = integrationsSliderEl.value;
         if (chatToolsBadgeEl) chatToolsBadgeEl.textContent = chatToolsSliderEl.value;
         syncTeamOptionsForComplexity();
+        syncTierForComplexity();
         recalc();
       }
 
@@ -2395,7 +2416,12 @@
 
         var teamSize = parseFloat(teamSizeEl.value);
         if (!isFinite(teamSize) || teamSize < 1) teamSize = 3;
-        if (complexityKey === 'high' && teamSize < 4) teamSize = 4;
+        if ((complexityKey === 'high' || complexityKey === 'ultra') && teamSize < 4) teamSize = 4;
+
+        if (complexityKey === 'ultra' && tierKey !== 'mvp') {
+          tierKey = 'mvp';
+          if (tierEl) tierEl.value = 'mvp';
+        }
 
         var rate = parseFloat(rateEl.value);
         if (!isFinite(rate) || rate <= 0) rate = 35000;
