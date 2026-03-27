@@ -457,6 +457,43 @@
       display: flex;
       flex-direction: column;
     }
+    .calc-result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .calc-result-head h2 { margin: 0; }
+    .calc-currency-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      user-select: none;
+    }
+    .calc-currency-options {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 999px;
+      padding: 0.1rem;
+      background: rgba(255,255,255,0.7);
+      gap: 0.1rem;
+    }
+    .calc-currency-option {
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+    .calc-currency-option:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+    .calc-currency-option.is-active { color: var(--text); background: rgba(0,0,0,0.08); }
     .calc-result-current { margin-bottom: 1rem; }
     .calc-result-table {
       display: table;
@@ -834,7 +871,18 @@
 
       <section class="calc-result" aria-live="polite" id="calcResult">
         <div class="calc-result-current">
-          <h2 data-i18n="sections.current">Текущий расчёт</h2>
+          <div class="calc-result-head">
+            <h2 data-i18n="sections.current">Текущий расчёт</h2>
+            <div class="calc-currency-toggle" id="calcCurrencyToggle" aria-label="Currency">
+              <span data-i18n="fields.currency">Валюта</span>
+              <span class="calc-currency-options" role="tablist" aria-label="Currency options">
+                <button type="button" class="calc-currency-option is-active" data-currency="rub" aria-label="Ruble">₽</button>
+                <button type="button" class="calc-currency-option" data-currency="usd" aria-label="US Dollar">$</button>
+                <button type="button" class="calc-currency-option" data-currency="btc" aria-label="Bitcoin">BTC</button>
+                <button type="button" class="calc-currency-option" data-currency="usdt" aria-label="USDT">USDT</button>
+              </span>
+            </div>
+          </div>
           <div id="calcResultCurrentBody" class="calc-result-empty" data-i18n="placeholders.currentEmpty">Выберите параметры — здесь появится оценка.</div>
         </div>
 
@@ -916,6 +964,7 @@
           'complexity.high': 'Высокая',
           'fields.team': 'Команда',
           'fields.teamHint': '(чел. в разработке)',
+          'fields.currency': 'Валюта',
           'fields.urgency': 'Срочность',
           'urgency.normal': 'Обычные сроки',
           'urgency.normalHint': 'базовая цена · базовый срок',
@@ -999,6 +1048,7 @@
           'complexity.high': 'High',
           'fields.team': 'Team',
           'fields.teamHint': '(dev headcount)',
+          'fields.currency': 'Currency',
           'fields.urgency': 'Urgency',
           'urgency.normal': 'Normal',
           'urgency.normalHint': 'baseline cost · baseline schedule',
@@ -1502,13 +1552,59 @@
       var aiVoiceCb = document.getElementById('aiVoiceCb');
       var aiMemoryCb = document.getElementById('aiMemoryCb');
       var aiGuardCb = document.getElementById('aiGuardCb');
+      var currencyToggleEl = document.getElementById('calcCurrencyToggle');
 
       var complexityRadios = document.querySelectorAll('input[name="complexity"]');
       var urgencyRadios = document.querySelectorAll('input[name="urgency"]');
+      var CURRENT_CURRENCY = 'rub';
+      // Approx conversion: RUB per unit.
+      var CURRENCY_RUB_RATE = { rub: 1, usd: 92, usdt: 92, btc: 7000000 };
 
       function formatMoney(value) {
-        var v = Math.round(value);
+        var rub = Number(value);
+        if (!isFinite(rub)) rub = 0;
+        var c = CURRENT_CURRENCY;
+        if (c === 'usd') {
+          var usd = rub / CURRENCY_RUB_RATE.usd;
+          return '$' + usd.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+        if (c === 'usdt') {
+          var usdt = rub / CURRENCY_RUB_RATE.usdt;
+          return usdt.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' USDT';
+        }
+        if (c === 'btc') {
+          var btc = rub / CURRENCY_RUB_RATE.btc;
+          var s = btc.toFixed(6);
+          return s + ' BTC';
+        }
+        var v = Math.round(rub);
         return v.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      function setCurrency(currencyKey) {
+        if (!CURRENCY_RUB_RATE[currencyKey]) currencyKey = 'rub';
+        CURRENT_CURRENCY = currencyKey;
+        if (currencyToggleEl) {
+          currencyToggleEl.querySelectorAll('.calc-currency-option').forEach(function(btn) {
+            btn.classList.toggle('is-active', btn.getAttribute('data-currency') === CURRENT_CURRENCY);
+          });
+        }
+      }
+
+      function initCurrencyToggle() {
+        var saved = null;
+        try { saved = localStorage.getItem('calc_currency'); } catch (e) {}
+        setCurrency(saved || 'rub');
+        if (!currencyToggleEl) return;
+        currencyToggleEl.querySelectorAll('.calc-currency-option').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var next = btn.getAttribute('data-currency') || 'rub';
+            setCurrency(next);
+            try { localStorage.setItem('calc_currency', next); } catch (e) {}
+            recalc();
+            renderOrderList();
+          });
+        });
       }
 
       function getComplexity() {
@@ -2033,6 +2129,7 @@
 
         // initial
         initLangToggle();
+        initCurrencyToggle();
         tlInitInteractions();
         setTypeVisibility(productEl.value);
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
