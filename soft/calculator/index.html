@@ -119,7 +119,11 @@
     }
 
     /* Timeline (scoped; CV-like but for weeks) */
-    .calc-timeline { margin-top: 0.35rem; }
+    .calc-timeline {
+      margin-top: 0.35rem;
+      width: 100%;
+      min-width: 0;
+    }
     .calc-timeline .calc-order-header { cursor: pointer; user-select: none; }
     .calc-timeline .calc-order-header h2 { display: inline-flex; align-items: center; gap: 0.4rem; }
     .calc-timeline-openhint { color: var(--text-muted); font-size: 0.78rem; font-weight: 500; }
@@ -164,7 +168,13 @@
     .calc-timeline-scrollbar-thumb.dragging { cursor: grabbing; }
     .calc-timeline-axis { display: flex; justify-content: space-between; padding: 0 0 0.4rem; margin: 0.65rem 0 0.5rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid #ddd; }
     .calc-timeline-axis span { flex: 0 0 auto; user-select: text; -webkit-user-select: text; cursor: text; }
-    .calc-timeline-rows { position: relative; min-height: 180px; cursor: grab; user-select: none; }
+    .calc-timeline-rows {
+      position: relative;
+      width: 100%;
+      min-height: 180px;
+      cursor: grab;
+      user-select: none;
+    }
     .calc-timeline-rows:active { cursor: grabbing; }
     .calc-timeline-rows.dragging { cursor: grabbing; }
     .calc-timeline.is-select-mode .calc-timeline-rows { cursor: text; user-select: text; -webkit-user-select: text; }
@@ -202,7 +212,7 @@
     .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 1.25rem; font-size: 0.78rem; font-weight: 450; }
     .calc-timeline-row .row-track {
       position: relative;
-      flex: 1;
+      flex: 1 1 0%;
       min-width: 0;
       min-height: 20px;
       height: 20px;
@@ -654,6 +664,7 @@
               <select id="softwarePlatformSelect" class="calc-select">
                 <option value="web" selected>Web (сайт/кабинет)</option>
                 <option value="web_mobile">Web + Mobile</option>
+                <option value="desktop_utility">Desktop Utility (трей / утилита)</option>
                 <option value="full">Web + Mobile + Desktop</option>
               </select>
             </div>
@@ -1128,6 +1139,7 @@
           tierEl.innerHTML = tOpts;
           if (tCur) tierEl.value = tCur;
         }
+        renderSoftwarePlatformOptions(lang);
       }
 
       // --------- Add-ons (from cv/тренажор_бизнес.md structure) ----------
@@ -1407,6 +1419,33 @@
 
       // type-specific elements
       var softwarePlatformEl = document.getElementById('softwarePlatformSelect');
+      function renderSoftwarePlatformOptions(lang) {
+        if (!softwarePlatformEl) return;
+        var cur = softwarePlatformEl.value;
+        var isEn = lang === 'en';
+        var opts = [
+          { v: 'web', ru: 'Web (сайт/кабинет)', en: 'Web (site / app)' },
+          { v: 'web_mobile', ru: 'Web + Mobile', en: 'Web + Mobile' },
+          { v: 'desktop_utility', ru: 'Desktop Utility (трей / утилита)', en: 'Desktop Utility (tray / helper)' },
+          { v: 'full', ru: 'Web + Mobile + Desktop', en: 'Web + Mobile + Desktop' }
+        ];
+        var html = '';
+        opts.forEach(function(o) {
+          var label = isEn ? o.en : o.ru;
+          html += '<option value="' + o.v + '">' + esc(label) + '</option>';
+        });
+        softwarePlatformEl.innerHTML = html;
+        if (cur) {
+          var has = false;
+          for (var i = 0; i < softwarePlatformEl.options.length; i++) {
+            if (softwarePlatformEl.options[i].value === cur) { has = true; break; }
+          }
+          if (has) softwarePlatformEl.value = cur;
+          else softwarePlatformEl.value = 'web';
+        } else {
+          softwarePlatformEl.value = 'web';
+        }
+      }
       var softwareBackendCb = document.getElementById('softwareBackendCb');
       var softwareAdminCb = document.getElementById('softwareAdminCb');
       var softwarePaymentsCb = document.getElementById('softwarePaymentsCb');
@@ -1496,22 +1535,41 @@
         el.style.top = y + 'px';
       }
 
+      function tlMaxZoomOutSpan() {
+        var minW = tlState.minWeek;
+        var maxW = tlState.maxWeek;
+        if (!isFinite(minW)) minW = 0;
+        if (!isFinite(maxW) || maxW < minW) maxW = minW;
+        var dataSpan = Math.max(0.5, maxW - minW);
+        return Math.max(8, dataSpan + 0.5);
+      }
+
+      function tlFitDefaultView() {
+        var minW = tlState.minWeek;
+        if (!isFinite(minW)) minW = 0;
+        var span = tlMaxZoomOutSpan();
+        tlState.viewStart = minW;
+        tlState.viewEnd = minW + span;
+      }
+
       function tlClampViewport() {
         var minW = tlState.minWeek;
         var maxW = tlState.maxWeek;
         if (!isFinite(minW)) minW = 0;
         if (!isFinite(maxW) || maxW < minW) maxW = minW;
-        var span = Math.max(1, tlState.viewEnd - tlState.viewStart);
-        if (span > (maxW - minW)) span = Math.max(1, maxW - minW);
+        var maxZoomOut = tlMaxZoomOutSpan();
+        var span = Math.max(0.5, tlState.viewEnd - tlState.viewStart);
+        if (span > maxZoomOut) span = maxZoomOut;
+        tlState.viewEnd = tlState.viewStart + span;
         if (tlState.viewStart < minW) {
           tlState.viewStart = minW;
-          tlState.viewEnd = minW + span;
+          tlState.viewEnd = tlState.viewStart + span;
         }
-        if (tlState.viewEnd > maxW) {
-          tlState.viewEnd = maxW;
-          tlState.viewStart = maxW - span;
+        var maxStart = Math.max(minW, maxW + 0.5 - span);
+        if (tlState.viewStart > maxStart) {
+          tlState.viewStart = maxStart;
+          tlState.viewEnd = tlState.viewStart + span;
         }
-        if (tlState.viewStart < minW) tlState.viewStart = minW;
         if (tlState.viewEnd < tlState.viewStart + 0.5) tlState.viewEnd = tlState.viewStart + 0.5;
       }
 
@@ -1545,13 +1603,22 @@
         tlAxisEl.innerHTML = labels.map(function(v) { return '<span>' + v + '</span>'; }).join('');
       }
 
+      function tlScrollbarFullRange() {
+        var minW = tlState.minWeek;
+        var maxW = tlState.maxWeek;
+        if (!isFinite(minW)) minW = 0;
+        if (!isFinite(maxW) || maxW < minW) maxW = minW;
+        return Math.max(1, Math.max(maxW + 0.5, tlState.viewEnd) - minW);
+      }
+
       function tlUpdateScrollbar() {
         if (!tlScrollbarThumbEl) return;
-        var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
-        var leftPct = ((tlState.viewStart - tlState.minWeek) / fullRange) * 100;
+        var minW = tlState.minWeek;
+        var fullRange = tlScrollbarFullRange();
+        var leftPct = ((tlState.viewStart - minW) / fullRange) * 100;
         var widthPct = ((tlState.viewEnd - tlState.viewStart) / fullRange) * 100;
-        tlScrollbarThumbEl.style.left = leftPct + '%';
-        tlScrollbarThumbEl.style.width = Math.max(6, widthPct) + '%';
+        tlScrollbarThumbEl.style.left = Math.max(0, Math.min(100, leftPct)) + '%';
+        tlScrollbarThumbEl.style.width = Math.max(6, Math.min(100, widthPct)) + '%';
       }
 
       function tlRenderRows() {
@@ -1614,14 +1681,14 @@
         tlState.rows = rows || [];
         tlState.minWeek = 0;
         tlState.maxWeek = Math.max(0, Number(maxWeek) || 0);
-        // Reset viewport whenever data changes — stale pan/zoom (e.g. weeks 40–52) makes bars for 0–N weeks invisible.
-        tlState.viewStart = 0;
-        tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
-        tlClampViewport();
+        tlFitDefaultView();
         tlUpdateRangeLabel();
         tlUpdateAxis();
         tlUpdateScrollbar();
         tlRenderRows();
+        requestAnimationFrame(function() {
+          tlRenderRows();
+        });
       }
 
       function tlPan(deltaWeeks) {
@@ -1637,7 +1704,7 @@
       function tlZoom(factor, aroundWeek) {
         var center = (aroundWeek != null) ? aroundWeek : (tlState.viewStart + tlState.viewEnd) / 2;
         var span = (tlState.viewEnd - tlState.viewStart) * factor;
-        span = Math.max(1, Math.min(span, Math.max(1, tlState.maxWeek - tlState.minWeek)));
+        span = Math.max(1, Math.min(span, tlMaxZoomOutSpan()));
         tlState.viewStart = center - span / 2;
         tlState.viewEnd = center + span / 2;
         tlClampViewport();
@@ -1713,7 +1780,7 @@
             var frac = (e.clientX - rect.left) / rect.width;
             frac = Math.max(0, Math.min(1, frac));
             var span = tlState.viewEnd - tlState.viewStart;
-            var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
+            var fullRange = tlScrollbarFullRange();
             tlState.viewStart = tlState.minWeek + frac * fullRange - span / 2;
             tlState.viewEnd = tlState.viewStart + span;
             tlClampViewport();
@@ -1739,7 +1806,7 @@
             var rect = tlScrollbarTrackEl.getBoundingClientRect();
             var dx = e.clientX - sbStartX;
             var fracDelta = dx / rect.width;
-            var fullRange = Math.max(1, tlState.maxWeek - tlState.minWeek);
+            var fullRange = tlScrollbarFullRange();
             var deltaWeeks = fracDelta * fullRange;
             var span = tlState.viewEnd - tlState.viewStart;
             tlState.viewStart = sbStartLeft + deltaWeeks;
@@ -1773,13 +1840,12 @@
 
         // re-render after layout change (also refit viewport — stale pan after resize can hide bars)
         setTimeout(function() {
-          tlState.viewStart = 0;
-          tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
-          tlClampViewport();
+          tlFitDefaultView();
           tlUpdateRangeLabel();
           tlUpdateAxis();
           tlUpdateScrollbar();
           tlRenderRows();
+          requestAnimationFrame(function() { tlRenderRows(); });
         }, 0);
       }
 
@@ -1800,13 +1866,12 @@
         }
 
         setTimeout(function() {
-          tlState.viewStart = 0;
-          tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
-          tlClampViewport();
+          tlFitDefaultView();
           tlUpdateRangeLabel();
           tlUpdateAxis();
           tlUpdateScrollbar();
           tlRenderRows();
+          requestAnimationFrame(function() { tlRenderRows(); });
         }, 0);
       }
 
@@ -1963,9 +2028,17 @@
         // per-type extras
         if (typeKey === 'software') {
           platform = softwarePlatformEl ? softwarePlatformEl.value : 'web';
-          platformDays = { web: 0, web_mobile: 10, full: 22 }[platform] || 0;
+          var platformDaysByKey = { web: 0, web_mobile: 10, desktop_utility: 14, full: 22 };
+          var platformNames = {
+            web: { ru: 'Web', en: 'Web' },
+            web_mobile: { ru: 'Web + Mobile', en: 'Web + Mobile' },
+            desktop_utility: { ru: 'Desktop Utility (утилита)', en: 'Desktop Utility (helper)' },
+            full: { ru: 'Web + Mobile + Desktop', en: 'Web + Mobile + Desktop' }
+          };
+          platformDays = platformDaysByKey[platform] != null ? platformDaysByKey[platform] : 0;
           typeExtras += platformDays;
-          details.push((isEn ? 'Platform: ' : 'Платформа: ') + platform);
+          var pn = platformNames[platform] || platformNames.web;
+          details.push((isEn ? 'Platform: ' : 'Платформа: ') + (isEn ? pn.en : pn.ru));
 
           backendDays = getCheckedNumber(softwareBackendCb) ? 8 : 0;
           adminDays = getCheckedNumber(softwareAdminCb) ? 5 : 0;
