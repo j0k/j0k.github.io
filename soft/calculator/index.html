@@ -1026,6 +1026,7 @@
             <button type="button" class="calc-timeline-btn" id="calcTimelineZoomOut" title="Отдалить" aria-label="Отдалить">−</button>
             <span id="calcTimelineRangeLabel" class="calc-timeline-range">0–0w</span>
             <button type="button" class="calc-timeline-btn" id="calcTimelineZoomIn" title="Приблизить" aria-label="Приблизить">+</button>
+            <button type="button" class="calc-timeline-btn" id="calcTimelineFitBtn" data-i18n="timeline.fit" title="Fit" aria-label="Fit">Fit</button>
           </div>
 
           <div class="calc-timeline-scrollbar" id="calcTimelineScrollbar" title="Ползунок — перемещение по неделям">
@@ -1153,6 +1154,8 @@
           'timeline.modalTitle': 'План · этапы (подробно)',
           'timeline.expandAria': 'Открыть план крупно',
           'timeline.selectAria': 'Режим выделения/копирования',
+          'timeline.fit': 'Фит',
+          'timeline.fitAria': 'Подогнать таймлайн под весь диапазон',
           'phase.discovery': 'аналитика',
           'phase.dev': 'разработка',
           'phase.test': 'тестирование',
@@ -1256,6 +1259,8 @@
           'timeline.modalTitle': 'Plan · phases (detailed)',
           'timeline.expandAria': 'Open plan in large view',
           'timeline.selectAria': 'Selection/copy mode',
+          'timeline.fit': 'Fit',
+          'timeline.fitAria': 'Fit timeline to full range',
           'phase.discovery': 'discovery',
           'phase.dev': 'development',
           'phase.test': 'testing',
@@ -1296,6 +1301,10 @@
         });
         if (tlExpandBtnEl) tlExpandBtnEl.setAttribute('aria-label', t('timeline.expandAria'));
         if (tlSelectBtnEl) tlSelectBtnEl.setAttribute('aria-label', t('timeline.selectAria'));
+        if (tlFitBtnEl) {
+          tlFitBtnEl.setAttribute('aria-label', t('timeline.fitAria'));
+          tlFitBtnEl.setAttribute('title', t('timeline.fitAria'));
+        }
         // special case: some labels have multiple spans with data-i18n and other text nodes handled above.
 
         // Toggle active lang options (same classes as main page)
@@ -1687,6 +1696,7 @@
       var tlPanRightBtn = document.getElementById('calcTimelinePanRight');
       var tlZoomOutBtn = document.getElementById('calcTimelineZoomOut');
       var tlZoomInBtn = document.getElementById('calcTimelineZoomIn');
+      var tlFitBtnEl = document.getElementById('calcTimelineFitBtn');
       var tlScrollbarEl = document.getElementById('calcTimelineScrollbar');
       var tlScrollbarTrackEl = document.getElementById('calcTimelineScrollbarTrack');
       var tlScrollbarThumbEl = document.getElementById('calcTimelineScrollbarThumb');
@@ -2228,6 +2238,13 @@
         if (tlPanRightBtn) tlPanRightBtn.addEventListener('click', function() { tlPan((tlState.viewEnd - tlState.viewStart) * 0.2); });
         if (tlZoomOutBtn) tlZoomOutBtn.addEventListener('click', function() { tlZoom(1.25); });
         if (tlZoomInBtn) tlZoomInBtn.addEventListener('click', function() { tlZoom(0.8); });
+        if (tlFitBtnEl) tlFitBtnEl.addEventListener('click', function() {
+          tlFitDefaultView();
+          tlUpdateRangeLabel();
+          tlUpdateAxis();
+          tlUpdateScrollbar();
+          tlRenderRows();
+        });
 
         // drag to pan
         var dragging = false;
