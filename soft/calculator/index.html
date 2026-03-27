@@ -1062,15 +1062,15 @@
           <div class="calc-rate-panel" id="calcRatePanel">
             <div class="calc-rate-grid">
               <label class="calc-rate-cell">
-                <span>USD (RUB)</span>
+                <span data-i18n="rates.usdLabel">USD (RUB)</span>
                 <input id="calcRateUsdInput" type="number" min="1" step="0.01" value="81.38">
               </label>
               <label class="calc-rate-cell">
-                <span>BTC (RUB)</span>
+                <span data-i18n="rates.btcLabel">BTC (RUB)</span>
                 <input id="calcRateBtcInput" type="number" min="100000" step="1000" value="7000000">
               </label>
               <label class="calc-rate-cell">
-                <span>USDT (RUB)</span>
+                <span data-i18n="rates.usdtLabel">USDT (RUB)</span>
                 <input id="calcRateUsdtInput" type="number" min="1" step="0.01" value="81.38">
               </label>
             </div>
@@ -1180,6 +1180,9 @@
           'equity.stakeLabel': 'Доля, %',
           'equity.floorHint': 'Авто floor для cash-платежа включен',
           'equity.disclaimer': 'Модель ориентировочная; юридические условия доли/вестинга согласуются отдельно.',
+          'rates.usdLabel': 'USD (RUB)',
+          'rates.usdtLabel': 'USDT (RUB)',
+          'rates.btcLabel': 'BTC (RUB)',
           'fields.scenarios': 'Объём сценариев',
           'fields.scenariosHint': '(use cases)',
           'fields.integrations': 'Интеграции',
@@ -1310,6 +1313,9 @@
           'equity.stakeLabel': 'Stake, %',
           'equity.floorHint': 'Auto cash floor is enabled',
           'equity.disclaimer': 'This is an estimate model; legal equity/vesting terms are agreed separately.',
+          'rates.usdLabel': 'USD (RUB)',
+          'rates.usdtLabel': 'USDT (RUB)',
+          'rates.btcLabel': 'BTC (USD)',
           'fields.scenarios': 'Use cases',
           'fields.scenariosHint': '(scenarios)',
           'fields.integrations': 'Integrations',
@@ -1467,6 +1473,7 @@
             applyI18n(lang);
             syncRateInputForLangChange(fromLang, lang);
             if (lang === 'en') setCurrency('usd');
+            ratesToInputs();
             renderDynamicLabels(lang);
             syncTierForComplexity();
             syncUrgencyForComplexity();
@@ -2084,7 +2091,17 @@
       function ratesToInputs() {
         if (rateUsdInputEl) rateUsdInputEl.value = String(CURRENCY_RUB_RATE.usd);
         if (rateUsdtInputEl) rateUsdtInputEl.value = String(CURRENCY_RUB_RATE.usdt);
-        if (rateBtcInputEl) rateBtcInputEl.value = String(CURRENCY_RUB_RATE.btc);
+        if (rateBtcInputEl) {
+          if (CURRENT_LANG === 'en') {
+            rateBtcInputEl.value = (CURRENCY_RUB_RATE.btc / Math.max(1, CURRENCY_RUB_RATE.usd)).toFixed(2);
+            rateBtcInputEl.min = '1000';
+            rateBtcInputEl.step = '1';
+          } else {
+            rateBtcInputEl.value = String(Math.round(CURRENCY_RUB_RATE.btc));
+            rateBtcInputEl.min = '100000';
+            rateBtcInputEl.step = '1000';
+          }
+        }
       }
 
       function loadRatesFromStorage() {
@@ -2138,10 +2155,14 @@
           rateSaveBtnEl.addEventListener('click', function() {
             var usd = Number(rateUsdInputEl ? rateUsdInputEl.value : CURRENCY_RUB_RATE.usd);
             var usdt = Number(rateUsdtInputEl ? rateUsdtInputEl.value : CURRENCY_RUB_RATE.usdt);
-            var btc = Number(rateBtcInputEl ? rateBtcInputEl.value : CURRENCY_RUB_RATE.btc);
+            var btcInput = Number(rateBtcInputEl ? rateBtcInputEl.value : CURRENCY_RUB_RATE.btc);
             if (isFinite(usd) && usd > 0) CURRENCY_RUB_RATE.usd = usd;
             if (isFinite(usdt) && usdt > 0) CURRENCY_RUB_RATE.usdt = usdt;
-            if (isFinite(btc) && btc > 0) CURRENCY_RUB_RATE.btc = btc;
+            if (isFinite(btcInput) && btcInput > 0) {
+              CURRENCY_RUB_RATE.btc = (CURRENT_LANG === 'en')
+                ? (btcInput * Math.max(1, CURRENCY_RUB_RATE.usd))
+                : btcInput;
+            }
             ratesToInputs();
             persistRates();
             recalc();
