@@ -1390,6 +1390,9 @@
 
       // Urgency: multiplies billable person-days (cost). Same factor divides calendar length (rush = shorter wall-clock).
       var URGENCY = { normal: 1.0, fast: 1.5, urgent: 2.0 };
+      // Complexity scale relative to Low.
+      var COMPLEXITY_TIME_MULT = { low: 1.0, mid: 2.0, high: 4.0 };
+      var COMPLEXITY_COST_MULT = { low: 1.0, mid: 4.0, high: 8.0 };
 
       // scenario/integration extras (only beyond base)
       var SCENARIO_BASE = 3;
@@ -1532,6 +1535,23 @@
         if (v === 'one') return 1;
         if (v === 'two') return 2;
         return 3;
+      }
+
+      function syncTeamOptionsForComplexity() {
+        if (!teamSizeEl) return;
+        var cx = getComplexity();
+        var minTeam = (cx === 'high') ? 4 : 2;
+        var maxTeam = 6;
+        var cur = parseInt(teamSizeEl.value, 10);
+        if (!isFinite(cur)) cur = 3;
+        var html = '';
+        for (var n = minTeam; n <= maxTeam; n++) {
+          html += '<option value="' + n + '">' + n + '</option>';
+        }
+        teamSizeEl.innerHTML = html;
+        if (cur < minTeam) cur = minTeam;
+        if (cur > maxTeam) cur = maxTeam;
+        teamSizeEl.value = String(cur);
       }
 
       // --------- Timeline engine (weeks viewport) ----------
@@ -1962,7 +1982,12 @@
         tierEl.addEventListener('change', recalc);
         teamSizeEl.addEventListener('change', recalc);
         rateEl.addEventListener('input', recalc);
-        Array.prototype.forEach.call(complexityRadios, function(r) { r.addEventListener('change', recalc); });
+        Array.prototype.forEach.call(complexityRadios, function(r) {
+          r.addEventListener('change', function() {
+            syncTeamOptionsForComplexity();
+            recalc();
+          });
+        });
         Array.prototype.forEach.call(urgencyRadios, function(r) { r.addEventListener('change', recalc); });
 
         // type-specific changes
@@ -2013,6 +2038,7 @@
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
         integrationsBadgeEl.textContent = integrationsSliderEl.value;
         if (chatToolsBadgeEl) chatToolsBadgeEl.textContent = chatToolsSliderEl.value;
+        syncTeamOptionsForComplexity();
         recalc();
       }
 
@@ -2028,6 +2054,7 @@
 
         var teamSize = parseFloat(teamSizeEl.value);
         if (!isFinite(teamSize) || teamSize < 1) teamSize = 3;
+        if (complexityKey === 'high' && teamSize < 4) teamSize = 4;
 
         var rate = parseFloat(rateEl.value);
         if (!isFinite(rate) || rate <= 0) rate = 35000;
@@ -2036,7 +2063,8 @@
         var integrationsCount = parseInt(integrationsSliderEl.value, 10) || 0;
 
         // personDays calculation
-        var baseDays = BASE_DAYS[typeKey][tierKey][complexityKey];
+        var baseDaysLow = BASE_DAYS[typeKey][tierKey].low;
+        var baseDays = baseDaysLow;
         var extraScenarios = Math.max(0, scenarioCount - SCENARIO_BASE) * SCENARIO_PER[typeKey];
         var extraIntegrations = Math.max(0, integrationsCount - INTEGRATIONS_BASE) * INTEGRATION_PER[typeKey];
 
@@ -2140,7 +2168,10 @@
           details.push((isEn ? 'GTM: ' : 'GTM: ') + addonsPicked.join('; '));
         }
 
-        var scopePersonDays = baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays;
+        var complexityTimeMult = COMPLEXITY_TIME_MULT[complexityKey] || 1.0;
+        var complexityCostMult = COMPLEXITY_COST_MULT[complexityKey] || complexityTimeMult;
+        var complexityCostExtraMult = complexityCostMult / complexityTimeMult;
+        var scopePersonDays = (baseDays + extraScenarios + extraIntegrations + typeExtras + addonsDays) * complexityTimeMult;
         var rawPersonDays = scopePersonDays * urgencyMult;
         var personDays = Math.max(5, Math.round(rawPersonDays));
 
@@ -2151,7 +2182,7 @@
 
         // Bigger teams deliver faster but are more expensive due to coordination/parallelization overhead.
         var teamCostMult = 1 + Math.max(0, teamSize - 1) * 0.12;
-        var cost = personDays * rate * teamCostMult;
+        var cost = personDays * rate * teamCostMult * complexityCostExtraMult;
         var costMin = cost * 0.85;
         var costMax = cost * 1.15;
 
@@ -2176,6 +2207,8 @@
           rate: rate,
           team: teamSize,
           teamCostMult: teamCostMult,
+          complexityTimeMult: complexityTimeMult,
+          complexityCostMult: complexityCostMult,
           scenarioCount: scenarioCount,
           integrationsCount: integrationsCount,
           baseDays: baseDays,
