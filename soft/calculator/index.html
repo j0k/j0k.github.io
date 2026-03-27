@@ -778,10 +778,10 @@
         </div>
 
         <div class="calc-form-row">
-          <label class="calc-label" for="rateInput"><span data-i18n="fields.rate">Рейт команды</span> <span data-i18n="fields.rateHint">(₽/чел-день)</span></label>
+          <label class="calc-label" for="rateInput"><span data-i18n="fields.rate">Рейт команды</span> <span data-i18n="fields.rateHint">(₽/чел-час)</span></label>
           <div class="calc-inline">
-            <input id="rateInput" class="calc-input" type="number" min="10000" step="1000" value="35000">
-            <span class="calc-badge" data-i18n="defaults.rate">по умолчанию: 35 000 ₽/чел-день</span>
+            <input id="rateInput" class="calc-input" type="number" min="100" step="10" value="4375">
+            <span class="calc-badge" data-i18n="defaults.rate">по умолчанию: 4 375 ₽/чел-час</span>
           </div>
         </div>
 
@@ -1082,8 +1082,8 @@
           'urgency.urgent': 'Срочно',
           'urgency.urgentHint': 'в 2 раза быстрее · в 2 раза дороже',
           'fields.rate': 'Рейт команды',
-          'fields.rateHint': '(₽/чел-день)',
-          'defaults.rate': 'по умолчанию: 35 000 ₽/чел-день',
+          'fields.rateHint': '(₽/чел-час)',
+          'defaults.rate': 'по умолчанию: 4 375 ₽/чел-час',
           'fields.scenarios': 'Объём сценариев',
           'fields.scenariosHint': '(use cases)',
           'fields.integrations': 'Интеграции',
@@ -1184,9 +1184,9 @@
           'urgency.fastHint': '1.5x faster · 1.5x cost',
           'urgency.urgent': 'Urgent',
           'urgency.urgentHint': '2x faster · 2x cost',
-          'fields.rate': 'Day rate',
-          'fields.rateHint': '(USD / person-day)',
-          'defaults.rate': 'default: 430 USD / person-day',
+          'fields.rate': 'Hourly rate',
+          'fields.rateHint': '(USD / person-hour)',
+          'defaults.rate': 'default: 53.75 USD / person-hour',
           'fields.scenarios': 'Use cases',
           'fields.scenariosHint': '(scenarios)',
           'fields.integrations': 'Integrations',
@@ -2491,7 +2491,7 @@
 
         var rateInput = parseFloat(rateEl.value);
         if (!isFinite(rateInput) || rateInput <= 0) {
-          rateInput = (CURRENT_LANG === 'en') ? (35000 / Math.max(1, CURRENCY_RUB_RATE.usd)) : 35000;
+          rateInput = (CURRENT_LANG === 'en') ? (53.75) : 4375;
         }
         var rate = (CURRENT_LANG === 'en')
           ? (rateInput * Math.max(1, CURRENCY_RUB_RATE.usd))
@@ -2620,7 +2620,8 @@
 
         // Bigger teams deliver faster but are more expensive due to coordination/parallelization overhead.
         var teamCostMult = 1 + Math.max(0, teamSize - 1) * 0.12;
-        var cost = personDays * rate * teamCostMult * complexityCostExtraMult;
+        var HOURS_PER_DAY = 8;
+        var cost = personDays * HOURS_PER_DAY * rate * teamCostMult * complexityCostExtraMult;
         var costMin = cost * 0.85;
         var costMax = cost * 1.15;
 
