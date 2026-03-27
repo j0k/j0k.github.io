@@ -1969,7 +1969,8 @@
       function formatBudgetRange(minRub, maxRub, complexityKey) {
         if (complexityKey === 'ultra') {
           var ultraCapRub = 500000 * Math.max(1, CURRENCY_RUB_RATE.usd); // $500k+
-          var topRub = Math.max(ultraCapRub, minRub * 1.05);
+          // Never show an upper bound below the computed max range.
+          var topRub = Math.max(ultraCapRub, maxRub, minRub * 1.05);
           return formatMoney(minRub) + '–' + formatMoneyPlus(topRub);
         }
         return formatMoney(minRub) + '–' + formatMoney(maxRub);
