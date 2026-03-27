@@ -223,7 +223,16 @@
     .calc-timeline-row.calc-timeline-row--group .row-track { background: rgba(168, 197, 232, 0.2); }
     .calc-timeline-bar-wrap { position: absolute; top: 2px; height: 16px; cursor: pointer; z-index: 1; }
     .calc-timeline-bar-wrap:hover .calc-timeline-bar { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
-    .calc-timeline-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; transition: transform 0.15s, box-shadow 0.15s; }
+    .calc-timeline-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+    }
     .calc-timeline-bar.bar--discovery { background: #0d9488; }
     .calc-timeline-bar.bar--dev { background: #2c5282; }
     .calc-timeline-bar.bar--test { background: #c2410c; }
