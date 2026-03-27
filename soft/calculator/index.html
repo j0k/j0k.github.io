@@ -494,6 +494,55 @@
     }
     .calc-currency-option:hover { color: var(--text); background: rgba(0,0,0,0.04); }
     .calc-currency-option.is-active { color: var(--text); background: rgba(0,0,0,0.08); }
+    .calc-rate-btn {
+      border: 1px solid rgba(0,0,0,0.14);
+      background: #fff;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+    .calc-rate-btn:hover { color: var(--text); border-color: rgba(0,0,0,0.24); }
+    .calc-rate-btn.is-active { color: var(--text); background: rgba(0,0,0,0.06); }
+    .calc-rate-panel {
+      margin-top: 0.45rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 0.55rem 0.6rem;
+      background: rgba(255,255,255,0.7);
+      display: none;
+    }
+    .calc-rate-panel.is-open { display: block; }
+    .calc-rate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .calc-rate-cell { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.74rem; color: var(--text-muted); }
+    .calc-rate-cell input {
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.16);
+      padding: 0.28rem 0.42rem;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .calc-rate-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
+    .calc-rate-action {
+      border: 1px solid rgba(0,0,0,0.14);
+      background: #fff;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.28rem 0.5rem;
+      font-size: 0.74rem;
+      cursor: pointer;
+      line-height: 1.2;
+    }
+    .calc-rate-action:hover { border-color: rgba(0,0,0,0.24); }
     .calc-result-current { margin-bottom: 1rem; }
     .calc-result-table {
       display: table;
@@ -881,6 +930,27 @@
                 <button type="button" class="calc-currency-option" data-currency="btc" aria-label="Bitcoin">BTC</button>
                 <button type="button" class="calc-currency-option" data-currency="usdt" aria-label="USDT">USDT</button>
               </span>
+              <button type="button" class="calc-rate-btn" id="calcRateBtn" data-i18n="actions.rate">Курс</button>
+            </div>
+          </div>
+          <div class="calc-rate-panel" id="calcRatePanel">
+            <div class="calc-rate-grid">
+              <label class="calc-rate-cell">
+                <span>USD (RUB)</span>
+                <input id="calcRateUsdInput" type="number" min="1" step="0.01" value="92">
+              </label>
+              <label class="calc-rate-cell">
+                <span>USDT (RUB)</span>
+                <input id="calcRateUsdtInput" type="number" min="1" step="0.01" value="92">
+              </label>
+              <label class="calc-rate-cell">
+                <span>BTC (RUB)</span>
+                <input id="calcRateBtcInput" type="number" min="100000" step="1000" value="7000000">
+              </label>
+            </div>
+            <div class="calc-rate-actions">
+              <button type="button" class="calc-rate-action" id="calcRateSaveBtn" data-i18n="actions.saveRates">Сохранить</button>
+              <button type="button" class="calc-rate-action" id="calcRateResetBtn" data-i18n="actions.resetRates">Сброс</button>
             </div>
           </div>
           <div id="calcResultCurrentBody" class="calc-result-empty" data-i18n="placeholders.currentEmpty">Выберите параметры — здесь появится оценка.</div>
@@ -995,6 +1065,9 @@
           'actions.add': 'Добавить в заказ',
           'actions.addHint': 'Сохраняет текущий расчет справа.',
           'actions.addAria': 'Добавить текущую позицию в заказ',
+          'actions.rate': 'Курс',
+          'actions.saveRates': 'Сохранить',
+          'actions.resetRates': 'Сброс',
           'sections.current': 'Текущий расчёт',
           'sections.order': 'Заказ',
           'placeholders.currentEmpty': 'Выберите параметры — здесь появится оценка.',
@@ -1079,6 +1152,9 @@
           'actions.add': 'Add to order',
           'actions.addHint': 'Saves the current estimate on the right.',
           'actions.addAria': 'Add current item to order',
+          'actions.rate': 'Rate',
+          'actions.saveRates': 'Save',
+          'actions.resetRates': 'Reset',
           'sections.current': 'Current estimate',
           'sections.order': 'Order',
           'placeholders.currentEmpty': 'Choose parameters — estimate will appear here.',
@@ -1553,12 +1629,25 @@
       var aiMemoryCb = document.getElementById('aiMemoryCb');
       var aiGuardCb = document.getElementById('aiGuardCb');
       var currencyToggleEl = document.getElementById('calcCurrencyToggle');
+      var rateBtnEl = document.getElementById('calcRateBtn');
+      var ratePanelEl = document.getElementById('calcRatePanel');
+      var rateUsdInputEl = document.getElementById('calcRateUsdInput');
+      var rateUsdtInputEl = document.getElementById('calcRateUsdtInput');
+      var rateBtcInputEl = document.getElementById('calcRateBtcInput');
+      var rateSaveBtnEl = document.getElementById('calcRateSaveBtn');
+      var rateResetBtnEl = document.getElementById('calcRateResetBtn');
 
       var complexityRadios = document.querySelectorAll('input[name="complexity"]');
       var urgencyRadios = document.querySelectorAll('input[name="urgency"]');
       var CURRENT_CURRENCY = 'rub';
       // Approx conversion: RUB per unit.
-      var CURRENCY_RUB_RATE = { rub: 1, usd: 92, usdt: 92, btc: 7000000 };
+      var CURRENCY_DEFAULT_RUB_RATE = { rub: 1, usd: 92, usdt: 92, btc: 7000000 };
+      var CURRENCY_RUB_RATE = {
+        rub: CURRENCY_DEFAULT_RUB_RATE.rub,
+        usd: CURRENCY_DEFAULT_RUB_RATE.usd,
+        usdt: CURRENCY_DEFAULT_RUB_RATE.usdt,
+        btc: CURRENCY_DEFAULT_RUB_RATE.btc
+      };
 
       function formatMoney(value) {
         var rub = Number(value);
@@ -1605,6 +1694,79 @@
             renderOrderList();
           });
         });
+      }
+
+      function ratesToInputs() {
+        if (rateUsdInputEl) rateUsdInputEl.value = String(CURRENCY_RUB_RATE.usd);
+        if (rateUsdtInputEl) rateUsdtInputEl.value = String(CURRENCY_RUB_RATE.usdt);
+        if (rateBtcInputEl) rateBtcInputEl.value = String(CURRENCY_RUB_RATE.btc);
+      }
+
+      function loadRatesFromStorage() {
+        var saved = null;
+        try { saved = localStorage.getItem('calc_currency_rates'); } catch (e) {}
+        if (!saved) return;
+        try {
+          var parsed = JSON.parse(saved);
+          var usd = Number(parsed.usd);
+          var usdt = Number(parsed.usdt);
+          var btc = Number(parsed.btc);
+          if (isFinite(usd) && usd > 0) CURRENCY_RUB_RATE.usd = usd;
+          if (isFinite(usdt) && usdt > 0) CURRENCY_RUB_RATE.usdt = usdt;
+          if (isFinite(btc) && btc > 0) CURRENCY_RUB_RATE.btc = btc;
+        } catch (e) {}
+      }
+
+      function persistRates() {
+        try {
+          localStorage.setItem('calc_currency_rates', JSON.stringify({
+            usd: CURRENCY_RUB_RATE.usd,
+            usdt: CURRENCY_RUB_RATE.usdt,
+            btc: CURRENCY_RUB_RATE.btc
+          }));
+        } catch (e) {}
+      }
+
+      function setRatePanelOpen(open) {
+        if (!ratePanelEl || !rateBtnEl) return;
+        var on = !!open;
+        ratePanelEl.classList.toggle('is-open', on);
+        rateBtnEl.classList.toggle('is-active', on);
+      }
+
+      function initRatePanel() {
+        loadRatesFromStorage();
+        ratesToInputs();
+        if (!rateBtnEl) return;
+        rateBtnEl.addEventListener('click', function() {
+          if (!ratePanelEl) return;
+          setRatePanelOpen(!ratePanelEl.classList.contains('is-open'));
+        });
+        if (rateSaveBtnEl) {
+          rateSaveBtnEl.addEventListener('click', function() {
+            var usd = Number(rateUsdInputEl ? rateUsdInputEl.value : CURRENCY_RUB_RATE.usd);
+            var usdt = Number(rateUsdtInputEl ? rateUsdtInputEl.value : CURRENCY_RUB_RATE.usdt);
+            var btc = Number(rateBtcInputEl ? rateBtcInputEl.value : CURRENCY_RUB_RATE.btc);
+            if (isFinite(usd) && usd > 0) CURRENCY_RUB_RATE.usd = usd;
+            if (isFinite(usdt) && usdt > 0) CURRENCY_RUB_RATE.usdt = usdt;
+            if (isFinite(btc) && btc > 0) CURRENCY_RUB_RATE.btc = btc;
+            ratesToInputs();
+            persistRates();
+            recalc();
+            renderOrderList();
+          });
+        }
+        if (rateResetBtnEl) {
+          rateResetBtnEl.addEventListener('click', function() {
+            CURRENCY_RUB_RATE.usd = CURRENCY_DEFAULT_RUB_RATE.usd;
+            CURRENCY_RUB_RATE.usdt = CURRENCY_DEFAULT_RUB_RATE.usdt;
+            CURRENCY_RUB_RATE.btc = CURRENCY_DEFAULT_RUB_RATE.btc;
+            ratesToInputs();
+            persistRates();
+            recalc();
+            renderOrderList();
+          });
+        }
       }
 
       function getComplexity() {
@@ -2130,6 +2292,7 @@
         // initial
         initLangToggle();
         initCurrencyToggle();
+        initRatePanel();
         tlInitInteractions();
         setTypeVisibility(productEl.value);
         scenarioBadgeEl.textContent = scenarioSliderEl.value;
