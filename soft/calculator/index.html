@@ -461,6 +461,16 @@
     }
     .calc-note strong { color: var(--text); }
 
+    .calc-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+    .calc-card-title-row h2 { margin: 0; }
+
     @media (max-width: 720px) {
       .calc-page { padding: 1.25rem max(1rem, env(safe-area-inset-left)) 2rem max(1rem, env(safe-area-inset-right)); }
       .calc-layout { grid-template-columns: minmax(0,1fr); }
@@ -498,7 +508,13 @@
 
     <section class="calc-layout" aria-label="Калькулятор оценки проекта">
       <section class="calc-card">
-        <h2 data-i18n="sections.inputs">Вводные</h2>
+        <div class="calc-card-title-row">
+          <h2 data-i18n="sections.inputs">Вводные</h2>
+          <button type="button" class="calc-add-btn" id="calcAddBtnTop" aria-label="Добавить текущую позицию в заказ">
+            <span aria-hidden="true">➕</span>
+            <span data-i18n="actions.add">Добавить в заказ</span>
+          </button>
+        </div>
 
         <div class="calc-form-row">
           <label class="calc-label" for="productSelect" data-i18n="fields.product">Тип разработки</label>
@@ -1010,6 +1026,7 @@
         var initial = (saved === 'en' || saved === 'ru') ? saved : 'ru';
         applyI18n(initial);
         if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
+        if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
         document.querySelectorAll('.lang-option').forEach(function(a) {
           a.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1018,6 +1035,7 @@
             applyI18n(lang);
             renderDynamicLabels(lang);
             if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
+            if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
             renderAddonsUI();
             recalc();
             renderOrderList();
@@ -1312,6 +1330,7 @@
       var resultCurrentBodyEl = document.getElementById('calcResultCurrentBody');
 
       var addBtn = document.getElementById('calcAddBtn');
+      var addBtnTop = document.getElementById('calcAddBtnTop');
       var orderListEl = document.getElementById('calcOrderList');
       var orderCountEl = document.getElementById('calcOrderCount');
       var orderTotalEl = document.getElementById('calcOrderTotal');
@@ -1812,12 +1831,14 @@
         if (aiMemoryCb) aiMemoryCb.addEventListener('change', recalc);
         if (aiGuardCb) aiGuardCb.addEventListener('change', recalc);
 
-        addBtn.addEventListener('click', function() {
+        function addCurrentToOrder() {
           var state = buildCurrentState();
           if (!state) return;
           orderItems.push(state);
           renderOrderList();
-        });
+        }
+        addBtn.addEventListener('click', addCurrentToOrder);
+        if (addBtnTop) addBtnTop.addEventListener('click', addCurrentToOrder);
 
         // open modal by clicking the timeline header
         if (tlWrapEl) {
