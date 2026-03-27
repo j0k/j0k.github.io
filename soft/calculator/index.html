@@ -106,16 +106,21 @@
     .calc-addon-row .calc-addon-main strong { user-select: text; -webkit-user-select: text; cursor: text; }
     .calc-addon-main {
       min-width: 0;
+      flex: 1 1 auto;
       display: flex;
       flex-direction: column;
       gap: 0.15rem;
     }
     .calc-addon-titleline {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
+      display: block;
       min-width: 0;
+    }
+    .calc-addon-titleline strong {
+      display: block;
+      line-height: 1.35;
+      text-align: left;
+      white-space: normal;
+      word-break: normal;
     }
     .calc-addon-badge {
       display: inline-flex;
@@ -139,6 +144,7 @@
       margin-top: 0.2rem;
       width: 1.05rem;
       height: 1.05rem;
+      flex: 0 0 1.05rem;
     }
 
     /* Timeline (scoped; CV-like but for weeks) */
