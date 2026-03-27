@@ -96,10 +96,10 @@
     .calc-addons-list { display: grid; gap: 0.35rem; }
     .calc-addon-row {
       display: grid;
-      grid-template-columns: 1.15rem 1fr auto;
+      grid-template-columns: 1.15rem minmax(0, 1fr);
       gap: 0.6rem;
       align-items: start;
-      padding: 0.35rem 0.2rem;
+      padding: 0.35rem 0;
       border-radius: 6px;
     }
     .calc-addon-row:hover { background: rgba(0,0,0,0.02); }
@@ -133,7 +133,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      padding-top: 0.05rem;
+      padding-top: 0.1rem;
+      grid-column: 2;
+      justify-self: start;
     }
     .calc-addon-checkbox {
       margin-top: 0.2rem;
