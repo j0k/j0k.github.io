@@ -2857,34 +2857,46 @@
           var coreDays = item.baseDays != null ? item.baseDays : bdFallback;
 
           // units in person-days (already includes urgency in rawPersonDays -> we scale to item.personDays)
+          // Ordered as requested:
+          // 1) Selected pre-core business addons
+          // 2) Core
+          // 3) Everything else
           var units = [];
-          function pushUnit(k, days, why) {
+          var preCoreUnits = [];
+          var postCoreUnits = [];
+          var PRE_CORE_ADDON_KEYS = {
+            exec_summary: true,
+            market_analysis: true,
+            product_overview: true,
+            target_users: true
+          };
+          function pushTo(arr, k, days, why, addonKey) {
             var d = Number(days);
             if (!isFinite(d) || d <= 0) return;
-            units.push({ key: k, days: d, why: why || '' });
+            arr.push({ key: k, days: d, why: why || '', addonKey: addonKey || null });
           }
+          function pushPost(k, days, why) { pushTo(postCoreUnits, k, days, why); }
 
-          pushUnit('core', Math.max(0, coreDays), lang === 'en' ? 'Core build work.' : 'Базовая разработка продукта.');
-          pushUnit('scenarios', Math.max(0, item.extraScenariosDays || 0), lang === 'en' ? 'More use cases require more logic + tests.' : 'Доп. сценарии = больше логики и тестов.');
-          pushUnit('integrations', Math.max(0, item.extraIntegrationsDays || 0), lang === 'en' ? 'External APIs/CRM/payments add integration work.' : 'Внешние интеграции добавляют работу по API/данным.');
+          pushPost('scenarios', Math.max(0, item.extraScenariosDays || 0), lang === 'en' ? 'More use cases require more logic + tests.' : 'Доп. сценарии = больше логики и тестов.');
+          pushPost('integrations', Math.max(0, item.extraIntegrationsDays || 0), lang === 'en' ? 'External APIs/CRM/payments add integration work.' : 'Внешние интеграции добавляют работу по API/данным.');
 
           if (item.typeKey === 'software') {
-            pushUnit('platform', Math.max(0, item.platformDays || 0), lang === 'en' ? 'More platforms = more UI + build + QA.' : 'Больше платформ = больше UI/сборок/QA.');
-            pushUnit('backend', Math.max(0, item.backendDays || 0), lang === 'en' ? 'Auth/roles/data layer require backend work.' : 'Аутентификация/права/данные требуют backend-работ.');
-            pushUnit('admin', Math.max(0, item.adminDays || 0), lang === 'en' ? 'Admin + analytics adds screens and metrics.' : 'Админка и аналитика добавляют экраны и метрики.');
-            pushUnit('payments', Math.max(0, item.payDays || 0), lang === 'en' ? 'Payments require integrations and testing.' : 'Оплаты требуют интеграций и тестирования.');
+            pushPost('platform', Math.max(0, item.platformDays || 0), lang === 'en' ? 'More platforms = more UI + build + QA.' : 'Больше платформ = больше UI/сборок/QA.');
+            pushPost('backend', Math.max(0, item.backendDays || 0), lang === 'en' ? 'Auth/roles/data layer require backend work.' : 'Аутентификация/права/данные требуют backend-работ.');
+            pushPost('admin', Math.max(0, item.adminDays || 0), lang === 'en' ? 'Admin + analytics adds screens and metrics.' : 'Админка и аналитика добавляют экраны и метрики.');
+            pushPost('payments', Math.max(0, item.payDays || 0), lang === 'en' ? 'Payments require integrations and testing.' : 'Оплаты требуют интеграций и тестирования.');
           }
           if (item.typeKey === 'chatbot') {
-            pushUnit('channels', Math.max(0, item.channelsDays || 0), lang === 'en' ? 'Multiple channels require adapters + QA.' : 'Несколько каналов = адаптеры и QA.');
-            pushUnit('rag', Math.max(0, item.ragDays || 0), lang === 'en' ? 'RAG needs ingestion, retrieval, eval.' : 'RAG = загрузка данных, поиск, качество.');
-            pushUnit('citations', Math.max(0, item.citationsDays || 0), lang === 'en' ? 'Citations need source mapping and UX.' : 'Цитаты требуют маппинга источников и UX.');
-            pushUnit('tools', Math.max(0, item.toolsDays || 0), lang === 'en' ? 'Tools/actions require safe API calls.' : 'Инструменты требуют безопасных действий через API.');
+            pushPost('channels', Math.max(0, item.channelsDays || 0), lang === 'en' ? 'Multiple channels require adapters + QA.' : 'Несколько каналов = адаптеры и QA.');
+            pushPost('rag', Math.max(0, item.ragDays || 0), lang === 'en' ? 'RAG needs ingestion, retrieval, eval.' : 'RAG = загрузка данных, поиск, качество.');
+            pushPost('citations', Math.max(0, item.citationsDays || 0), lang === 'en' ? 'Citations need source mapping and UX.' : 'Цитаты требуют маппинга источников и UX.');
+            pushPost('tools', Math.max(0, item.toolsDays || 0), lang === 'en' ? 'Tools/actions require safe API calls.' : 'Инструменты требуют безопасных действий через API.');
           }
           if (item.typeKey === 'ai') {
-            pushUnit('mode', Math.max(0, item.modeDays || 0), lang === 'en' ? 'RAG/Agent modes add architecture and QA.' : 'Режимы RAG/Agent добавляют архитектуру и QA.');
-            pushUnit('voice', Math.max(0, item.voiceDays || 0), lang === 'en' ? 'STT/TTS pipeline + latency/quality work.' : 'STT/TTS = пайплайн, задержки, качество.');
-            pushUnit('memory', Math.max(0, item.memoryDays || 0), lang === 'en' ? 'Long-term memory needs storage and policies.' : 'Память = хранилище и политики.');
-            pushUnit('guard', Math.max(0, item.guardDays || 0), lang === 'en' ? 'Guardrails require rules, tests, monitoring.' : 'Guardrails = правила, тесты, мониторинг.');
+            pushPost('mode', Math.max(0, item.modeDays || 0), lang === 'en' ? 'RAG/Agent modes add architecture and QA.' : 'Режимы RAG/Agent добавляют архитектуру и QA.');
+            pushPost('voice', Math.max(0, item.voiceDays || 0), lang === 'en' ? 'STT/TTS pipeline + latency/quality work.' : 'STT/TTS = пайплайн, задержки, качество.');
+            pushPost('memory', Math.max(0, item.memoryDays || 0), lang === 'en' ? 'Long-term memory needs storage and policies.' : 'Память = хранилище и политики.');
+            pushPost('guard', Math.max(0, item.guardDays || 0), lang === 'en' ? 'Guardrails require rules, tests, monitoring.' : 'Guardrails = правила, тесты, мониторинг.');
           }
 
           // add-ons as units
@@ -2893,8 +2905,14 @@
             for (var i = 0; i < ADDONS.length; i++) if (ADDONS[i].key === k) addon = ADDONS[i];
             var d = addon ? addonDaysForType(addon, item.typeKey) : 0;
             var why = addon && addon.help && addon.help[lang] ? addon.help[lang] : '';
-            if (d > 0) units.push({ key: 'addon:' + k, days: d, why: why, addonKey: k });
+            if (d > 0) {
+              if (PRE_CORE_ADDON_KEYS[k]) pushTo(preCoreUnits, 'addon:' + k, d, why, k);
+              else pushTo(postCoreUnits, 'addon:' + k, d, why, k);
+            }
           });
+
+          pushTo(units, 'core', Math.max(0, coreDays), lang === 'en' ? 'Core build work.' : 'Базовая разработка продукта.');
+          units = preCoreUnits.concat(units).concat(postCoreUnits);
 
           // scale unit days to match item.personDays (after rounding/min)
           var rawTotal = 0;
