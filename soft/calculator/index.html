@@ -573,7 +573,7 @@
     .calc-rate-panel.is-open { display: block; }
     .calc-rate-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.35fr);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
       gap: 0.45rem;
     }
     .calc-rate-cell { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.74rem; color: var(--text-muted); }
@@ -1066,12 +1066,12 @@
                 <input id="calcRateUsdInput" type="number" min="1" step="0.01" value="81.38">
               </label>
               <label class="calc-rate-cell">
-                <span>USDT (RUB)</span>
-                <input id="calcRateUsdtInput" type="number" min="1" step="0.01" value="81.38">
-              </label>
-              <label class="calc-rate-cell">
                 <span>BTC (RUB)</span>
                 <input id="calcRateBtcInput" type="number" min="100000" step="1000" value="7000000">
+              </label>
+              <label class="calc-rate-cell">
+                <span>USDT (RUB)</span>
+                <input id="calcRateUsdtInput" type="number" min="1" step="0.01" value="81.38">
               </label>
             </div>
             <div class="calc-rate-actions">
