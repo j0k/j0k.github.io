@@ -1179,8 +1179,8 @@
           'urgency.urgent': 'Urgent',
           'urgency.urgentHint': '2x faster · 2x cost',
           'fields.rate': 'Day rate',
-          'fields.rateHint': '(RUB / person-day)',
-          'defaults.rate': 'default: 35,000 RUB / person-day',
+          'fields.rateHint': '(USD / person-day)',
+          'defaults.rate': 'default: 430 USD / person-day',
           'fields.scenarios': 'Use cases',
           'fields.scenariosHint': '(scenarios)',
           'fields.integrations': 'Integrations',
@@ -1297,15 +1297,21 @@
         var saved = null;
         try { saved = localStorage.getItem('lang'); } catch (e) {}
         var initial = (saved === 'en' || saved === 'ru') ? saved : 'ru';
+        var prevLang = CURRENT_LANG;
         applyI18n(initial);
+        syncRateInputForLangChange(prevLang, initial);
+        if (initial === 'en') setCurrency('usd');
         if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
         if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
         document.querySelectorAll('.lang-option').forEach(function(a) {
           a.addEventListener('click', function(e) {
             e.preventDefault();
             var lang = a.getAttribute('data-lang');
+            var fromLang = CURRENT_LANG;
             try { localStorage.setItem('lang', lang); } catch (e) {}
             applyI18n(lang);
+            syncRateInputForLangChange(fromLang, lang);
+            if (lang === 'en') setCurrency('usd');
             renderDynamicLabels(lang);
             syncTierForComplexity();
             syncUrgencyForComplexity();
@@ -1776,6 +1782,20 @@
         return v.toLocaleString('ru-RU') + ' ₽';
       }
 
+      function syncRateInputForLangChange(fromLang, toLang) {
+        if (!rateEl) return;
+        if (fromLang === toLang) return;
+        var v = parseFloat(rateEl.value);
+        if (!isFinite(v) || v <= 0) return;
+        if (fromLang === 'ru' && toLang === 'en') {
+          rateEl.value = (v / Math.max(1, CURRENCY_RUB_RATE.usd)).toFixed(2);
+          return;
+        }
+        if (fromLang === 'en' && toLang === 'ru') {
+          rateEl.value = String(Math.round(v * Math.max(1, CURRENCY_RUB_RATE.usd)));
+        }
+      }
+
       function setCurrency(currencyKey) {
         if (!CURRENCY_RUB_RATE[currencyKey]) currencyKey = 'rub';
         CURRENT_CURRENCY = currencyKey;
@@ -1789,7 +1809,7 @@
       function initCurrencyToggle() {
         var saved = null;
         try { saved = localStorage.getItem('calc_currency'); } catch (e) {}
-        setCurrency(saved || 'rub');
+        setCurrency(saved || (CURRENT_LANG === 'en' ? 'usd' : 'rub'));
         if (!currencyToggleEl) return;
         currencyToggleEl.querySelectorAll('.calc-currency-option').forEach(function(btn) {
           btn.addEventListener('click', function() {
@@ -2463,8 +2483,13 @@
           if (tierEl) tierEl.value = 'mvp';
         }
 
-        var rate = parseFloat(rateEl.value);
-        if (!isFinite(rate) || rate <= 0) rate = 35000;
+        var rateInput = parseFloat(rateEl.value);
+        if (!isFinite(rateInput) || rateInput <= 0) {
+          rateInput = (CURRENT_LANG === 'en') ? (35000 / Math.max(1, CURRENCY_RUB_RATE.usd)) : 35000;
+        }
+        var rate = (CURRENT_LANG === 'en')
+          ? (rateInput * Math.max(1, CURRENCY_RUB_RATE.usd))
+          : rateInput;
 
         var scenarioCount = parseInt(scenarioSliderEl.value, 10) || SCENARIO_BASE;
         var integrationsCount = parseInt(integrationsSliderEl.value, 10) || 0;
