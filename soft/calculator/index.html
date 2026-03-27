@@ -2149,7 +2149,9 @@
         var calendarDays = Math.max(5, Math.ceil(baseCalendarDays / urgencyMult));
         var calendarWeeks = Math.max(1, Math.round((calendarDays / 5) * 10) / 10);
 
-        var cost = personDays * rate;
+        // Bigger teams deliver faster but are more expensive due to coordination/parallelization overhead.
+        var teamCostMult = 1 + Math.max(0, teamSize - 1) * 0.12;
+        var cost = personDays * rate * teamCostMult;
         var costMin = cost * 0.85;
         var costMax = cost * 1.15;
 
@@ -2173,6 +2175,7 @@
           costMax: costMax,
           rate: rate,
           team: teamSize,
+          teamCostMult: teamCostMult,
           scenarioCount: scenarioCount,
           integrationsCount: integrationsCount,
           baseDays: baseDays,
