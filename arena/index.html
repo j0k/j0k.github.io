@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSD Arena</title>
+  <link rel="stylesheet" href="./css/arena.css">
+</head>
+<body>
+  <div class="arena-wrap">
+    <div class="arena-head">
+      <div></div>
+      <h1 class="arena-title">DSD Arena</h1>
+      <div class="arena-hint">
+        <span class="hint-desktop">Наведи для выбора, кликни для запуска трюка</span>
+        <span class="hint-mobile">Тапни по персонажу</span>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="stage-media" id="stageMedia">
+        <video id="arenaVideo" src="./arena_full_faststart.mp4" preload="auto" playsinline></video>
+        <canvas id="overlay" class="overlay" width="1280" height="720"></canvas>
+        <div id="nameTag" class="name-tag"></div>
+      </div>
+      <div id="arenaTerm" class="arena-terminal" aria-hidden="true">
+        <div class="arena-terminal-head">
+          <span class="arena-terminal-title">Terminal</span>
+          <button id="termToggleBtn" class="term-toggle-btn" type="button" aria-label="Minimize terminal">—</button>
+        </div>
+        <div id="arenaTermBody" class="arena-terminal-body"></div>
+      </div>
+    </div>
+    <div class="status">
+      <div>Активный персонаж: <strong id="activeName">—</strong></div>
+      <div class="ctrls">
+        <button id="originalBtn" class="ctrl-btn" type="button" title="Play original full video">Original</button>
+        <button id="muteBtn" class="ctrl-btn" type="button" aria-label="Mute / Unmute">🔊</button>
+        <button id="pauseBtn" class="ctrl-btn" type="button" aria-label="Pause / Play">⏯</button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="./js/arena.js"></script>
+</body>
+</html>
