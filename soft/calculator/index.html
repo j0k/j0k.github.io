@@ -80,6 +80,8 @@
       border-radius: 6px;
     }
     .calc-addon-row:hover { background: rgba(0,0,0,0.02); }
+    .calc-addon-row .calc-addon-main,
+    .calc-addon-row .calc-addon-main strong { user-select: text; -webkit-user-select: text; cursor: text; }
     .calc-addon-main {
       min-width: 0;
       display: flex;
@@ -161,7 +163,7 @@
     .calc-timeline-scrollbar-thumb:active { cursor: grabbing; }
     .calc-timeline-scrollbar-thumb.dragging { cursor: grabbing; }
     .calc-timeline-axis { display: flex; justify-content: space-between; padding: 0 0 0.4rem; margin: 0.65rem 0 0.5rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid #ddd; }
-    .calc-timeline-axis span { flex: 0 0 auto; }
+    .calc-timeline-axis span { flex: 0 0 auto; user-select: text; -webkit-user-select: text; cursor: text; }
     .calc-timeline-rows { position: relative; min-height: 180px; cursor: grab; user-select: none; }
     .calc-timeline-rows:active { cursor: grabbing; }
     .calc-timeline-rows.dragging { cursor: grabbing; }
@@ -179,7 +181,16 @@
     .calc-timeline.is-select-mode .calc-timeline-scrollbar { user-select: none; -webkit-user-select: none; }
     .calc-timeline-row { position: relative; z-index: 1; min-height: 32px; margin-bottom: 6px; display: flex; align-items: center; }
     .calc-timeline-row.calc-timeline-row--group { background: rgba(168, 197, 232, 0.12); border-radius: 4px; margin-bottom: 4px; }
-    .calc-timeline-row .row-label { width: 140px; flex-shrink: 0; font-size: 0.82rem; font-weight: 550; color: var(--text); }
+    .calc-timeline-row .row-label {
+      width: 140px;
+      flex-shrink: 0;
+      font-size: 0.82rem;
+      font-weight: 550;
+      color: var(--text);
+      user-select: text;
+      -webkit-user-select: text;
+      cursor: text;
+    }
     .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 1.25rem; font-size: 0.78rem; font-weight: 450; }
     .calc-timeline-row .row-track { position: relative; flex: 1; min-height: 20px; height: 20px; background: rgba(168, 197, 232, 0.25); border-radius: 4px; overflow: visible; }
     .calc-timeline-row.calc-timeline-row--group .row-track { background: rgba(168, 197, 232, 0.2); }
@@ -447,6 +458,9 @@
     .calc-order-item-body { display: none; padding: 0.55rem 0.65rem; border-top: 1px solid rgba(0,0,0,0.04); }
     .calc-order-item:not(.collapsed) .calc-order-item-body { display: block; }
 
+    .calc-type-section .calc-radio-option,
+    .calc-type-section .calc-radio-option strong,
+    .calc-type-section .calc-radio-option span { user-select: text; -webkit-user-select: text; }
     .calc-type-sections { margin-top: 0.25rem; }
     .calc-type-section { display: none; }
     .calc-type-section.is-active { display: block; }
@@ -1637,6 +1651,7 @@
         }
         tlRowsEl.addEventListener('mousedown', function(e) {
           if (tlSelectMode) return;
+          if (e.target && e.target.closest && e.target.closest('.row-label')) return;
           dragging = true;
           startX = e.clientX;
           startViewStart = tlState.viewStart;
@@ -1665,6 +1680,7 @@
         // wheel to zoom
         tlRowsEl.addEventListener('wheel', function(e) {
           if (tlSelectMode) return;
+          if (e.target && e.target.closest && e.target.closest('.row-label')) return;
           e.preventDefault();
           var rect = tlRowsEl.getBoundingClientRect();
           var x = e.clientX - rect.left;
