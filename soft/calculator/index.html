@@ -957,6 +957,10 @@
             <span aria-hidden="true">➕</span>
             <span data-i18n="actions.add">Добавить в заказ</span>
           </button>
+          <button type="button" class="calc-add-btn" id="calcOrderBtn" aria-label="Заказать в Telegram" style="margin-left:0.35rem;">
+            <span aria-hidden="true">✈️</span>
+            <span data-i18n="actions.order">Заказать</span>
+          </button>
           <span class="calc-slider-hint" data-i18n="actions.addHint">Сохраняет текущий расчет справа.</span>
         </div>
       </section>
@@ -1123,8 +1127,10 @@
           'addons.hint': 'Это “пакет” из бизнес-части (исследования/монетизация/маркетинг и т.п.), который добавляет работу и влияет на стоимость.',
           'addons.helpAria': 'Почему это влияет на цену',
           'actions.add': 'Добавить в заказ',
+          'actions.order': 'Заказать',
           'actions.addHint': 'Сохраняет текущий расчет справа.',
           'actions.addAria': 'Добавить текущую позицию в заказ',
+          'actions.orderAria': 'Открыть Telegram для заказа',
           'actions.rate': 'Курс',
           'actions.saveRates': 'Сохранить',
           'actions.resetRates': 'Сброс',
@@ -1228,8 +1234,10 @@
           'addons.hint': 'These options cover the “business” part (research, monetization, marketing, etc.). They add real work and therefore affect cost.',
           'addons.helpAria': 'Why this affects price',
           'actions.add': 'Add to order',
+          'actions.order': 'Order',
           'actions.addHint': 'Saves the current estimate on the right.',
           'actions.addAria': 'Add current item to order',
+          'actions.orderAria': 'Open Telegram to place order',
           'actions.rate': 'Rate',
           'actions.saveRates': 'Save',
           'actions.resetRates': 'Reset',
@@ -1323,6 +1331,7 @@
         if (initial === 'en') setCurrency('usd');
         if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
         if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
+        if (orderBtn) orderBtn.setAttribute('aria-label', t('actions.orderAria'));
         document.querySelectorAll('.lang-option').forEach(function(a) {
           a.addEventListener('click', function(e) {
             e.preventDefault();
@@ -1337,6 +1346,7 @@
             syncUrgencyForComplexity();
             if (addBtn) addBtn.setAttribute('aria-label', t('actions.addAria'));
             if (addBtnTop) addBtnTop.setAttribute('aria-label', t('actions.addAria'));
+            if (orderBtn) orderBtn.setAttribute('aria-label', t('actions.orderAria'));
             renderAddonsUI();
             recalc();
             renderOrderList();
@@ -1676,6 +1686,7 @@
 
       var addBtn = document.getElementById('calcAddBtn');
       var addBtnTop = document.getElementById('calcAddBtnTop');
+      var orderBtn = document.getElementById('calcOrderBtn');
       var orderListEl = document.getElementById('calcOrderList');
       var orderCountEl = document.getElementById('calcOrderCount');
       var orderTotalEl = document.getElementById('calcOrderTotal');
@@ -2496,8 +2507,14 @@
           tlUpdateScrollbar();
           tlRenderRows();
         }
+        function openTelegramOrder() {
+          var msg = CURRENT_LANG === 'en' ? 'I have idea' : 'У меня есть идея';
+          var url = 'https://t.me/bimodaling?text=' + encodeURIComponent(msg);
+          window.open(url, '_blank', 'noopener');
+        }
         addBtn.addEventListener('click', addCurrentToOrder);
         if (addBtnTop) addBtnTop.addEventListener('click', addCurrentToOrder);
+        if (orderBtn) orderBtn.addEventListener('click', openTelegramOrder);
 
         // open modal by clicking the timeline header
         if (tlWrapEl) {
