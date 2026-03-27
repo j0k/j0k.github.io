@@ -740,7 +740,7 @@
             </label>
             <label class="calc-radio-option">
               <input type="radio" name="complexity" value="ultra">
-              <strong data-i18n="complexity.ultra">Ultra High</strong>
+              <strong data-i18n="complexity.ultra">Ultra</strong>
             </label>
           </div>
         </div>
@@ -1070,7 +1070,7 @@
           'complexity.low': 'Низкая',
           'complexity.mid': 'Средняя',
           'complexity.high': 'Высокая',
-          'complexity.ultra': 'Ultra High',
+          'complexity.ultra': 'Ultra',
           'fields.team': 'Команда',
           'fields.teamHint': '(чел. в разработке)',
           'fields.currency': 'Валюта',
@@ -1173,7 +1173,7 @@
           'complexity.low': 'Low',
           'complexity.mid': 'Medium',
           'complexity.high': 'High',
-          'complexity.ultra': 'Ultra High',
+          'complexity.ultra': 'Ultra',
           'fields.team': 'Team',
           'fields.teamHint': '(dev headcount)',
           'fields.currency': 'Currency',
@@ -1623,8 +1623,8 @@
       };
 
       var COMPLEXITY_LABEL = {
-        ru: { low: 'Низкая', mid: 'Средняя', high: 'Высокая', ultra: 'Ultra High' },
-        en: { low: 'Low', mid: 'Medium', high: 'High', ultra: 'Ultra High' }
+        ru: { low: 'Низкая', mid: 'Средняя', high: 'Высокая', ultra: 'Ultra' },
+        en: { low: 'Low', mid: 'Medium', high: 'High', ultra: 'Ultra' }
       };
 
       function complexityLabel(key) {
@@ -1786,6 +1786,22 @@
         }
         var v = Math.round(rub);
         return v.toLocaleString('ru-RU') + ' ₽';
+      }
+
+      function formatMoneyPlus(value) {
+        var s = formatMoney(value);
+        if (CURRENT_CURRENCY === 'usd') return s + '+';
+        if (CURRENT_CURRENCY === 'usdt') return s.replace(/ USDT$/, '+ USDT');
+        if (CURRENT_CURRENCY === 'btc') return s.replace(/ BTC$/, '+ BTC');
+        return s.replace(/ ₽$/, '+ ₽');
+      }
+
+      function formatBudgetRange(minRub, maxRub, complexityKey) {
+        if (complexityKey === 'ultra') {
+          var ultraCapRub = 500000 * Math.max(1, CURRENCY_RUB_RATE.usd); // $500k+
+          return formatMoney(minRub) + '–' + formatMoneyPlus(ultraCapRub);
+        }
+        return formatMoney(minRub) + '–' + formatMoney(maxRub);
       }
 
       function syncRateInputForLangChange(fromLang, toLang) {
@@ -2622,8 +2638,14 @@
         var teamCostMult = 1 + Math.max(0, teamSize - 1) * 0.12;
         var HOURS_PER_DAY = 8;
         var cost = personDays * HOURS_PER_DAY * rate * teamCostMult * complexityCostExtraMult;
-        var costMin = cost * 0.85;
-        var costMax = cost * 1.15;
+        var rangeMult = {
+          low:   { min: 0.85, max: 1.15 },
+          mid:   { min: 0.85, max: 1.35 },
+          high:  { min: 0.85, max: 2.00 },
+          ultra: { min: 0.85, max: 2.50 }
+        }[complexityKey] || { min: 0.85, max: 1.15 };
+        var costMin = cost * rangeMult.min;
+        var costMax = cost * rangeMult.max;
 
         var langKey = CURRENT_LANG === 'en' ? 'en' : 'ru';
 
@@ -2691,7 +2713,7 @@
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.integrationsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.integrationsCount + '</span></div>';
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
         html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + state.calendarWeeks + ' ' + t('result.weeksUnitApprox') + '</span></div>';
-        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(state.costMin) + '–' + formatMoney(state.costMax) + '</span></div>';
+        html += '<div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatBudgetRange(state.costMin, state.costMax, state.complexityKey) + '</span></div>';
         html += '</div>';
 
         resultCurrentBodyEl.innerHTML = html;
@@ -2992,7 +3014,7 @@
           var itemTierName = tierDisplayName(item.tierKey, CURRENT_LANG);
           var itemComplexity = item.complexityKey ? complexityLabel(item.complexityKey) : (item.complexity || '');
           var head = itemTypeName + ' · ' + itemTierName + ' · ' + itemComplexity;
-          var headRight = formatMoney(item.costMin) + '–' + formatMoney(item.costMax);
+          var headRight = formatBudgetRange(item.costMin, item.costMax, item.complexityKey);
           html += '<div class="calc-order-item collapsed" data-idx="' + idx + '">';
           html += '  <div class="calc-order-item-header" role="button" tabindex="0" aria-label="' + t('order.openAria') + '">';
           html += '    <div class="calc-order-item-main"><strong>' + head + '</strong></div>';
@@ -3005,7 +3027,7 @@
           html += '    <div class="calc-result-table">';
           html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.effortKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.personDays + ' ' + t('result.personDaysUnit') + '</span></div>';
           html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.termKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.calendarWeeks + ' ' + t('result.weeksUnit') + '</span></div>';
-          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatMoney(item.costMin) + '–' + formatMoney(item.costMax) + '</span></div>';
+          html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.budgetKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val calc-result-val--total">' + formatBudgetRange(item.costMin, item.costMax, item.complexityKey) + '</span></div>';
           if (item.details && item.details.length) {
             html += '      <div class="calc-result-row"><span class="calc-result-key">' + t('result.detailsKey') + '</span><span class="calc-result-sep">:</span><span class="calc-result-val">' + item.details.join(', ') + '</span></div>';
           }
