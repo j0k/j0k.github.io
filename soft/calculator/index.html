@@ -2450,12 +2450,22 @@
           }
           rows.push({ kind: 'group', label: groupLabel, segments: segGroup });
 
-          unitRows.forEach(function(ur) {
-            var segs = makeSegments(itemStart, ur.weeks, ur.label, ur.why, ur.split, groupLabel);
+          // Sub-rows: sequential Gantt within the item window (not all from week 0 — that looked like "everything at once").
+          var totalUnitW = 0;
+          unitRows.forEach(function(ur) { totalUnitW += ur.weeks; });
+          if (totalUnitW <= 0.001) totalUnitW = 1;
+          var seqCursor = itemStart;
+          unitRows.forEach(function(ur, urIdx) {
+            var isLast = urIdx === unitRows.length - 1;
+            var sliceW = isLast ? (itemEnd - seqCursor) : (ur.weeks / totalUnitW) * itemWeeks;
+            if (!isFinite(sliceW) || sliceW < 0.03) return;
+            sliceW = Math.min(sliceW, Math.max(0.05, itemEnd - seqCursor));
+            var segs = makeSegments(seqCursor, sliceW, ur.label, ur.why, ur.split, groupLabel);
             if (!segs.length) {
-              segs = makeSegments(itemStart, Math.max(0.1, ur.weeks), ur.label, ur.why, { discovery: 0, dev: 1, test: 0, release: 0 }, groupLabel);
+              segs = makeSegments(seqCursor, Math.max(0.05, sliceW), ur.label, ur.why, { discovery: 0, dev: 1, test: 0, release: 0 }, groupLabel);
             }
             rows.push({ kind: 'sub', label: ur.label, segments: segs });
+            seqCursor += sliceW;
           });
 
           offset = itemEnd;
