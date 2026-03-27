@@ -95,10 +95,9 @@
 
     .calc-addons-list { display: grid; gap: 0.35rem; }
     .calc-addon-row {
-      display: grid;
-      grid-template-columns: 1.15rem minmax(0, 1fr);
+      display: flex;
+      align-items: flex-start;
       gap: 0.6rem;
-      align-items: start;
       padding: 0.35rem 0;
       border-radius: 6px;
     }
@@ -134,8 +133,7 @@
       align-items: center;
       gap: 0.35rem;
       padding-top: 0.1rem;
-      grid-column: 2;
-      justify-self: start;
+      justify-content: flex-start;
     }
     .calc-addon-checkbox {
       margin-top: 0.2rem;
@@ -1520,10 +1518,10 @@
           html += '      <strong>' + icon + ' ' + label + '</strong>';
           html += '    </div>';
           html += '    <div class="calc-help" id="help_' + a.key + '">' + help + '</div>';
-          html += '  </div>';
-          html += '  <div class="calc-addon-actions">';
+          html += '    <div class="calc-addon-actions">';
           html += '    <span class="calc-addon-badge">(' + daysText + ')</span>';
           html += '    <button type="button" class="calc-help-btn" data-help-key="' + a.key + '" aria-label="' + t('addons.helpAria') + '">?</button>';
+          html += '    </div>';
           html += '  </div>';
           html += '</div>';
         });
