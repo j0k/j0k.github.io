@@ -37,6 +37,7 @@
   var fxEnabled = true;
   var hideHighlightTimer = 0;
   var suppressHoverUntil = 0;
+  var showHighlight = true;
 
   // Modes
   var originalMode = false;
@@ -229,7 +230,7 @@
 
   function drawOverlay() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    if (!active || !active.hl) return;
+    if (!showHighlight || !active || !active.hl) return;
     ctx.save();
     ctx.globalAlpha = 0.82;
     ctx.drawImage(active.hl, 0, 0, WIDTH, HEIGHT);
@@ -329,6 +330,7 @@
 
   function clearSelectionVisual() {
     active = null;
+    showHighlight = true;
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
     particles.length = 0;
     drawOverlay();
@@ -390,15 +392,18 @@
         dlog('clip finished:', playingClip.id, 'at', video.currentTime.toFixed(2), 'endAt', endAt.toFixed(2));
         video.pause();
         playingClip = null;
+        clearSelectionVisual();
       }
     });
     video.addEventListener('ended', function() {
       dlog('video ended event');
       playingClip = null;
+      clearSelectionVisual();
     });
   }
 
   function onMove(e) {
+    if (playingClip) return;
     if (Date.now() < suppressHoverUntil) return;
     var rect = overlay.getBoundingClientRect();
     var x = ((e.clientX - rect.left) / rect.width) * WIDTH;
@@ -430,22 +435,26 @@
     var hit = hitTest(x, y) || active;
     if (!hit) return;
     active = hit;
+    showHighlight = true;
     activeNameEl.textContent = hit.name;
     drawOverlay();
     placeNameTag(hit);
     playClip(hit);
 
-    // Keep the selection briefly, then hide overlay to better see the trick.
-    suppressHoverUntil = Date.now() + 3000;
+    // Keep the glow briefly, then hide it; particles continue until clip ends.
+    suppressHoverUntil = Date.now() + 2000;
     if (hideHighlightTimer) clearTimeout(hideHighlightTimer);
     hideHighlightTimer = setTimeout(function() {
-      dlog('auto-hide highlight after click');
-      clearSelectionVisual();
+      dlog('auto-hide glow after click (2s), keep particles to clip end');
+      showHighlight = false;
+      placeNameTag(null);
+      drawOverlay();
       hideHighlightTimer = 0;
-    }, 3000);
+    }, 2000);
   }
 
   function onLeave() {
+    if (playingClip) return;
     clearSelectionVisual();
   }
 
