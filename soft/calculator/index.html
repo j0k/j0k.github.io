@@ -915,6 +915,36 @@
               </label>
             </div>
           </div>
+
+          <!-- GAME DEVELOPMENT -->
+          <div class="calc-type-section" data-type="game">
+            <div class="calc-form-row">
+              <span class="calc-label" data-i18n="fields.gameFormat">Формат игры</span>
+              <select id="gameFormatSelect" class="calc-select">
+                <option value="casual2d" selected data-i18n="fields.gameFormat.casual2d">Казуальная 2D</option>
+                <option value="core2d" data-i18n="fields.gameFormat.core2d">Core 2D (мета / прогрессия)</option>
+                <option value="core3d" data-i18n="fields.gameFormat.core3d">Core 3D</option>
+              </select>
+            </div>
+            <div class="calc-form-row">
+              <span class="calc-label" data-i18n="fields.gameFeatures">Игровые фичи</span>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="gameMultiplayerCb">
+                <strong data-i18n="fields.gameMultiplayer">Мультиплеер</strong>
+                <span data-i18n="fields.gameMultiplayerHint">(синхронизация, матчинг)</span>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="gameMonetizationCb" checked>
+                <strong data-i18n="fields.gameMonetization">Монетизация</strong>
+                <span data-i18n="fields.gameMonetizationHint">(IAP / ads / economy)</span>
+              </label>
+              <label class="calc-radio-option">
+                <input type="checkbox" id="gameLiveopsCb" checked>
+                <strong data-i18n="fields.gameLiveops">LiveOps + аналитика</strong>
+                <span data-i18n="fields.gameLiveopsHint">(ивенты, баланс, ретеншн)</span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="calc-form-row" id="addonsRow">
@@ -1121,6 +1151,17 @@
           'fields.aiVoice': 'Голос (STT/TTS)',
           'fields.aiMemory': 'Память / долговременный контекст',
           'fields.aiGuard': 'Ограничения/guardrails',
+          'fields.gameFormat': 'Формат игры',
+          'fields.gameFormat.casual2d': 'Казуальная 2D',
+          'fields.gameFormat.core2d': 'Core 2D (мета / прогрессия)',
+          'fields.gameFormat.core3d': 'Core 3D',
+          'fields.gameFeatures': 'Игровые фичи',
+          'fields.gameMultiplayer': 'Мультиплеер',
+          'fields.gameMultiplayerHint': '(синхронизация, матчинг)',
+          'fields.gameMonetization': 'Монетизация',
+          'fields.gameMonetizationHint': '(IAP / ads / economy)',
+          'fields.gameLiveops': 'LiveOps + аналитика',
+          'fields.gameLiveopsHint': '(ивенты, баланс, ретеншн)',
           'tiers.table.tier': 'Пакет',
           'tiers.table.goal': 'Назначение',
           'tiers.table.included': 'Включено',
@@ -1230,6 +1271,17 @@
           'fields.aiVoice': 'Voice (STT/TTS)',
           'fields.aiMemory': 'Memory / long-term context',
           'fields.aiGuard': 'Guardrails/constraints',
+          'fields.gameFormat': 'Game format',
+          'fields.gameFormat.casual2d': 'Casual 2D',
+          'fields.gameFormat.core2d': 'Core 2D (meta / progression)',
+          'fields.gameFormat.core3d': 'Core 3D',
+          'fields.gameFeatures': 'Game features',
+          'fields.gameMultiplayer': 'Multiplayer',
+          'fields.gameMultiplayerHint': '(sync, matchmaking)',
+          'fields.gameMonetization': 'Monetization',
+          'fields.gameMonetizationHint': '(IAP / ads / economy)',
+          'fields.gameLiveops': 'LiveOps + analytics',
+          'fields.gameLiveopsHint': '(events, balancing, retention)',
           'tiers.table.tier': 'Package',
           'tiers.table.goal': 'Goal',
           'tiers.table.included': 'Included',
@@ -1374,11 +1426,13 @@
         var products = isEn ? {
           software: { name: 'Software development', icon: '💻' },
           chatbot: { name: 'Chatbot', icon: '🤖' },
-          ai: { name: 'AI assistant', icon: '🧠' }
+          ai: { name: 'AI assistant', icon: '🧠' },
+          game: { name: 'Game development', icon: '🎮' }
         } : {
           software: { name: 'Разработка софта', icon: '💻' },
           chatbot: { name: 'Чат-бот', icon: '🤖' },
-          ai: { name: 'AI ассистент', icon: '🧠' }
+          ai: { name: 'AI ассистент', icon: '🧠' },
+          game: { name: 'Разработка игры', icon: '🎮' }
         };
         var tiers = isEn ? {
           mvp: { name: 'MVP' },
@@ -1611,7 +1665,8 @@
       var PRODUCTS = {
         software: { icon: '💻', name: { ru: 'Разработка софта', en: 'Software development' } },
         chatbot: { icon: '🤖', name: { ru: 'Чат-бот', en: 'Chatbot' } },
-        ai: { icon: '🧠', name: { ru: 'AI ассистент', en: 'AI assistant' } }
+        ai: { icon: '🧠', name: { ru: 'AI ассистент', en: 'AI assistant' } },
+        game: { icon: '🎮', name: { ru: 'Разработка игры', en: 'Game development' } }
       };
 
       var TIERS = {
@@ -1652,6 +1707,11 @@
           mvp:        { low: 16, mid: 26, high: 40 },
           production: { low: 26, mid: 40, high: 62 },
           scale:      { low: 42, mid: 60, high: 92 }
+        },
+        game: {
+          mvp:        { low: 20, mid: 32, high: 50 },
+          production: { low: 34, mid: 52, high: 78 },
+          scale:      { low: 56, mid: 80, high: 118 }
         }
       };
 
@@ -1675,8 +1735,8 @@
       var SCENARIO_BASE = 3;
       var INTEGRATIONS_BASE = 1;
 
-      var SCENARIO_PER = { software: 1.2, chatbot: 0.8, ai: 1.0 };
-      var INTEGRATION_PER = { software: 2.0, chatbot: 1.0, ai: 1.6 };
+      var SCENARIO_PER = { software: 1.2, chatbot: 0.8, ai: 1.0, game: 1.6 };
+      var INTEGRATION_PER = { software: 2.0, chatbot: 1.0, ai: 1.6, game: 2.2 };
 
       // --------- DOM ----------
       var productEl = document.getElementById('productSelect');
@@ -1782,6 +1842,10 @@
       var aiVoiceCb = document.getElementById('aiVoiceCb');
       var aiMemoryCb = document.getElementById('aiMemoryCb');
       var aiGuardCb = document.getElementById('aiGuardCb');
+      var gameFormatEl = document.getElementById('gameFormatSelect');
+      var gameMultiplayerCb = document.getElementById('gameMultiplayerCb');
+      var gameMonetizationCb = document.getElementById('gameMonetizationCb');
+      var gameLiveopsCb = document.getElementById('gameLiveopsCb');
       var currencyToggleEl = document.getElementById('calcCurrencyToggle');
       var rateBtnEl = document.getElementById('calcRateBtn');
       var ratePanelEl = document.getElementById('calcRatePanel');
@@ -2505,6 +2569,10 @@
         if (aiVoiceCb) aiVoiceCb.addEventListener('change', recalc);
         if (aiMemoryCb) aiMemoryCb.addEventListener('change', recalc);
         if (aiGuardCb) aiGuardCb.addEventListener('change', recalc);
+        if (gameFormatEl) gameFormatEl.addEventListener('change', recalc);
+        if (gameMultiplayerCb) gameMultiplayerCb.addEventListener('change', recalc);
+        if (gameMonetizationCb) gameMonetizationCb.addEventListener('change', recalc);
+        if (gameLiveopsCb) gameLiveopsCb.addEventListener('change', recalc);
 
         function addCurrentToOrder() {
           var state = buildCurrentState();
@@ -2622,6 +2690,12 @@
         var memDays = 0;
         var guardDays = 0;
 
+        var gameFormat = null;
+        var gameFormatDays = 0;
+        var gameMultiplayerDays = 0;
+        var gameMonetizationDays = 0;
+        var gameLiveopsDays = 0;
+
         // per-type extras
         if (typeKey === 'software') {
           platform = softwarePlatformEl ? softwarePlatformEl.value : 'web';
@@ -2681,6 +2755,25 @@
           if (voiceDays) details.push(isEn ? 'Voice' : 'Голос');
           if (memDays) details.push(isEn ? 'Memory' : 'Память');
           if (guardDays) details.push('Guardrails');
+        }
+
+        if (typeKey === 'game') {
+          gameFormat = gameFormatEl ? gameFormatEl.value : 'casual2d';
+          gameFormatDays = { casual2d: 8, core2d: 18, core3d: 34 }[gameFormat] || 8;
+          gameMultiplayerDays = gameMultiplayerCb && gameMultiplayerCb.checked ? 18 : 0;
+          gameMonetizationDays = gameMonetizationCb && gameMonetizationCb.checked ? 8 : 0;
+          gameLiveopsDays = gameLiveopsCb && gameLiveopsCb.checked ? 10 : 0;
+          typeExtras += gameFormatDays + gameMultiplayerDays + gameMonetizationDays + gameLiveopsDays;
+          if (isEn) {
+            var gfMapEn = { casual2d: 'Casual 2D', core2d: 'Core 2D', core3d: 'Core 3D' };
+            details.push('Game format: ' + (gfMapEn[gameFormat] || gameFormat));
+          } else {
+            var gfMapRu = { casual2d: 'Казуальная 2D', core2d: 'Core 2D', core3d: 'Core 3D' };
+            details.push('Формат игры: ' + (gfMapRu[gameFormat] || gameFormat));
+          }
+          if (gameMultiplayerDays) details.push(isEn ? 'Multiplayer' : 'Мультиплеер');
+          if (gameMonetizationDays) details.push(isEn ? 'Monetization' : 'Монетизация');
+          if (gameLiveopsDays) details.push(isEn ? 'LiveOps + analytics' : 'LiveOps + аналитика');
         }
 
         var urgencyMult = URGENCY[urgencyKey] || 1.0;
@@ -2769,6 +2862,11 @@
           voiceDays: voiceDays,
           memoryDays: memDays,
           guardDays: guardDays,
+          gameFormat: gameFormat,
+          gameFormatDays: gameFormatDays,
+          gameMultiplayerDays: gameMultiplayerDays,
+          gameMonetizationDays: gameMonetizationDays,
+          gameLiveopsDays: gameLiveopsDays,
           addonsDays: addonsDays,
           details: details,
           addons: addonsPicked,
@@ -2815,7 +2913,11 @@
             mode: { ru: '🧠 Режим ассистента', en: '🧠 Assistant mode' },
             voice: { ru: '🎙 Голос (STT/TTS)', en: '🎙 Voice (STT/TTS)' },
             memory: { ru: '🧠 Память', en: '🧠 Memory' },
-            guard: { ru: '🛡 Guardrails', en: '🛡 Guardrails' }
+            guard: { ru: '🛡 Guardrails', en: '🛡 Guardrails' },
+            game_format: { ru: '🎮 Формат игры', en: '🎮 Game format' },
+            game_multi: { ru: '🌐 Мультиплеер', en: '🌐 Multiplayer' },
+            game_monet: { ru: '💎 Монетизация', en: '💎 Monetization' },
+            game_liveops: { ru: '📈 LiveOps + аналитика', en: '📈 LiveOps + analytics' }
           };
           return (m[key] && m[key][lang]) ? m[key][lang] : key;
         }
@@ -2838,7 +2940,11 @@
             mode: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
             voice: { discovery: 0.05, dev: 0.7, test: 0.2, release: 0.05 },
             memory: { discovery: 0.1, dev: 0.65, test: 0.2, release: 0.05 },
-            guard: { discovery: 0.1, dev: 0.55, test: 0.3, release: 0.05 }
+            guard: { discovery: 0.1, dev: 0.55, test: 0.3, release: 0.05 },
+            game_format: { discovery: 0.12, dev: 0.63, test: 0.2, release: 0.05 },
+            game_multi: { discovery: 0.12, dev: 0.58, test: 0.25, release: 0.05 },
+            game_monet: { discovery: 0.08, dev: 0.65, test: 0.22, release: 0.05 },
+            game_liveops: { discovery: 0.12, dev: 0.58, test: 0.24, release: 0.06 }
           };
           return splits[unitKey] || splits.core;
         }
@@ -2973,6 +3079,12 @@
             pushPost('voice', Math.max(0, item.voiceDays || 0), lang === 'en' ? 'STT/TTS pipeline + latency/quality work.' : 'STT/TTS = пайплайн, задержки, качество.');
             pushPost('memory', Math.max(0, item.memoryDays || 0), lang === 'en' ? 'Long-term memory needs storage and policies.' : 'Память = хранилище и политики.');
             pushPost('guard', Math.max(0, item.guardDays || 0), lang === 'en' ? 'Guardrails require rules, tests, monitoring.' : 'Guardrails = правила, тесты, мониторинг.');
+          }
+          if (item.typeKey === 'game') {
+            pushPost('game_format', Math.max(0, item.gameFormatDays || 0), lang === 'en' ? 'Genre/format drives content, mechanics, and core systems scope.' : 'Формат игры определяет объём контента, механик и ключевых систем.');
+            pushPost('game_multi', Math.max(0, item.gameMultiplayerDays || 0), lang === 'en' ? 'Multiplayer adds sync, state, and networking QA.' : 'Мультиплеер добавляет синхронизацию состояния, сеть и QA.');
+            pushPost('game_monet', Math.max(0, item.gameMonetizationDays || 0), lang === 'en' ? 'Monetization requires economy tuning, storefront, and anti-abuse checks.' : 'Монетизация требует баланса экономики, витрины и антиабуз-проверок.');
+            pushPost('game_liveops', Math.max(0, item.gameLiveopsDays || 0), lang === 'en' ? 'LiveOps needs events tooling, telemetry, and retention experiments.' : 'LiveOps требует инструментов событий, телеметрии и экспериментов удержания.');
           }
 
           // add-ons as units
