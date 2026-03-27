@@ -2489,6 +2489,12 @@
           if (!state) return;
           orderItems.push(state);
           renderOrderList();
+          // Auto-fit right after adding an item so the updated plan is immediately readable.
+          tlFitContentView();
+          tlUpdateRangeLabel();
+          tlUpdateAxis();
+          tlUpdateScrollbar();
+          tlRenderRows();
         }
         addBtn.addEventListener('click', addCurrentToOrder);
         if (addBtnTop) addBtnTop.addEventListener('click', addCurrentToOrder);
