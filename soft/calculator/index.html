@@ -179,7 +179,15 @@
     .calc-timeline.is-select-mode .calc-timeline-bar-wrap { pointer-events: none; }
     .calc-timeline.is-select-mode .calc-timeline-zoom,
     .calc-timeline.is-select-mode .calc-timeline-scrollbar { user-select: none; -webkit-user-select: none; }
-    .calc-timeline-row { position: relative; z-index: 1; min-height: 32px; margin-bottom: 6px; display: flex; align-items: center; }
+    .calc-timeline-row {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      min-height: 32px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+    }
     .calc-timeline-row.calc-timeline-row--group { background: rgba(168, 197, 232, 0.12); border-radius: 4px; margin-bottom: 4px; }
     .calc-timeline-row .row-label {
       width: 140px;
@@ -192,7 +200,16 @@
       cursor: text;
     }
     .calc-timeline-row.calc-timeline-row--sub .row-label { padding-left: 1.25rem; font-size: 0.78rem; font-weight: 450; }
-    .calc-timeline-row .row-track { position: relative; flex: 1; min-height: 20px; height: 20px; background: rgba(168, 197, 232, 0.25); border-radius: 4px; overflow: visible; }
+    .calc-timeline-row .row-track {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      min-height: 20px;
+      height: 20px;
+      background: rgba(168, 197, 232, 0.25);
+      border-radius: 4px;
+      overflow: visible;
+    }
     .calc-timeline-row.calc-timeline-row--group .row-track { background: rgba(168, 197, 232, 0.2); }
     .calc-timeline-bar-wrap { position: absolute; top: 2px; height: 16px; cursor: pointer; z-index: 1; }
     .calc-timeline-bar-wrap:hover .calc-timeline-bar { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
@@ -1596,12 +1613,10 @@
       function tlSetData(rows, maxWeek) {
         tlState.rows = rows || [];
         tlState.minWeek = 0;
-        tlState.maxWeek = Math.max(0, maxWeek || 0);
-        if (tlState.viewEnd <= tlState.viewStart) {
-          tlState.viewStart = 0;
-          tlState.viewEnd = Math.min(12, tlState.maxWeek || 12);
-        }
-        if (tlState.viewEnd === 0) tlState.viewEnd = 12;
+        tlState.maxWeek = Math.max(0, Number(maxWeek) || 0);
+        // Reset viewport whenever data changes — stale pan/zoom (e.g. weeks 40–52) makes bars for 0–N weeks invisible.
+        tlState.viewStart = 0;
+        tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
         tlClampViewport();
         tlUpdateRangeLabel();
         tlUpdateAxis();
@@ -1756,8 +1771,10 @@
         tlModalEl.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
 
-        // re-render after layout change
+        // re-render after layout change (also refit viewport — stale pan after resize can hide bars)
         setTimeout(function() {
+          tlState.viewStart = 0;
+          tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
           tlClampViewport();
           tlUpdateRangeLabel();
           tlUpdateAxis();
@@ -1783,6 +1800,8 @@
         }
 
         setTimeout(function() {
+          tlState.viewStart = 0;
+          tlState.viewEnd = Math.max(8, tlState.maxWeek + 0.5);
           tlClampViewport();
           tlUpdateRangeLabel();
           tlUpdateAxis();
@@ -2206,17 +2225,27 @@
           var itemLabel = (lang === 'en' ? ('Item ' + (idx + 1)) : ('Позиция ' + (idx + 1)));
           var groupLabel = itemLabel + ': ' + item.typeName + ' · ' + item.tierName + ' · ' + item.complexity;
           var itemStart = offset;
-          var itemWeeks = Math.max(1, parseFloat(item.calendarWeeks) || 0);
+          var itemWeeks = Math.max(0.1, parseFloat(item.calendarWeeks) || 0);
+          if (!isFinite(itemWeeks)) itemWeeks = 1;
           var itemEnd = itemStart + itemWeeks;
+
+          var cx = item.complexityKey || 'low';
+          if (!BASE_DAYS[item.typeKey] || !BASE_DAYS[item.typeKey][item.tierKey]) cx = 'low';
+          var bdFallback = 0;
+          try {
+            bdFallback = BASE_DAYS[item.typeKey][item.tierKey][cx] || BASE_DAYS[item.typeKey][item.tierKey].low || 0;
+          } catch (e) { bdFallback = 0; }
+          var coreDays = item.baseDays != null ? item.baseDays : bdFallback;
 
           // units in person-days (already includes urgency in rawPersonDays -> we scale to item.personDays)
           var units = [];
           function pushUnit(k, days, why) {
-            if (!days || days <= 0) return;
-            units.push({ key: k, days: days, why: why || '' });
+            var d = Number(days);
+            if (!isFinite(d) || d <= 0) return;
+            units.push({ key: k, days: d, why: why || '' });
           }
 
-          pushUnit('core', Math.max(0, item.baseDays || 0), lang === 'en' ? 'Core build work.' : 'Базовая разработка продукта.');
+          pushUnit('core', Math.max(0, coreDays), lang === 'en' ? 'Core build work.' : 'Базовая разработка продукта.');
           pushUnit('scenarios', Math.max(0, item.extraScenariosDays || 0), lang === 'en' ? 'More use cases require more logic + tests.' : 'Доп. сценарии = больше логики и тестов.');
           pushUnit('integrations', Math.max(0, item.extraIntegrationsDays || 0), lang === 'en' ? 'External APIs/CRM/payments add integration work.' : 'Внешние интеграции добавляют работу по API/данным.');
 
@@ -2262,7 +2291,7 @@
           units.forEach(function(u) {
             var scaledDays = (u.days || 0) * (item.urgencyMult || 1) * scale;
             var w = (scaledDays / Math.max(1, item.team || 1)) / 5 * weeksScale;
-            if (w <= 0.05) return;
+            if (!isFinite(w) || w <= 0.05) return;
             var label = u.key.indexOf('addon:') === 0
               ? (function() {
                   var kk = u.addonKey;
@@ -2295,25 +2324,25 @@
             release: phaseTotals.release / phaseSum
           };
 
-          rows.push({
-            kind: 'group',
-            label: groupLabel,
-            segments: makeSegments(
-              itemStart,
-              itemWeeks,
-              (lang === 'en' ? 'Overall' : 'Итого'),
-              (lang === 'en' ? 'Aggregated phases for this order item.' : 'Сводное разбиение по этапам для этой позиции.'),
-              groupSplit,
-              groupLabel
-            )
-          });
+          var segGroup = makeSegments(
+            itemStart,
+            itemWeeks,
+            (lang === 'en' ? 'Overall' : 'Итого'),
+            (lang === 'en' ? 'Aggregated phases for this order item.' : 'Сводное разбиение по этапам для этой позиции.'),
+            groupSplit,
+            groupLabel
+          );
+          if (!segGroup.length) {
+            segGroup = makeSegments(itemStart, itemWeeks, (lang === 'en' ? 'Overall' : 'Итого'), '', { discovery: 0, dev: 1, test: 0, release: 0 }, groupLabel);
+          }
+          rows.push({ kind: 'group', label: groupLabel, segments: segGroup });
 
           unitRows.forEach(function(ur) {
-            rows.push({
-              kind: 'sub',
-              label: ur.label,
-              segments: makeSegments(itemStart, ur.weeks, ur.label, ur.why, ur.split, groupLabel)
-            });
+            var segs = makeSegments(itemStart, ur.weeks, ur.label, ur.why, ur.split, groupLabel);
+            if (!segs.length) {
+              segs = makeSegments(itemStart, Math.max(0.1, ur.weeks), ur.label, ur.why, { discovery: 0, dev: 1, test: 0, release: 0 }, groupLabel);
+            }
+            rows.push({ kind: 'sub', label: ur.label, segments: segs });
           });
 
           offset = itemEnd;
