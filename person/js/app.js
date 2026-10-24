@@ -1,6 +1,7 @@
 (function () {
   var episodes = [];
   var products = [];
+  var projects = [];
   var map = null;
   var episodeMap = null;
 
@@ -44,6 +45,31 @@
       products = Array.isArray(list) ? list : [];
       return products;
     });
+  }
+
+  function loadProjects() {
+    return fetchJSON('person/data/projects.json').then(function (list) {
+      projects = Array.isArray(list) ? list : [];
+      return projects;
+    }, function () { return projects; });
+  }
+
+  function renderProjects() {
+    var track = document.getElementById('projectsTrack');
+    if (!track) return;
+    track.innerHTML = projects.map(function (p) {
+      var title = getText(p, 'title') || '';
+      var tg = 'https://t.me/bimodaling?text=' + encodeURIComponent((t('projects.tgText') || '').replace('{title}', title));
+      return '<li class="project-card">' +
+        '<span class="project-card-tag">' + escapeHtml(getText(p, 'tag') || '') + '</span>' +
+        '<span class="project-card-title">' + escapeHtml(title) + '</span>' +
+        '<span class="project-card-desc">' + escapeHtml(getText(p, 'desc') || '') + '</span>' +
+        '<span class="project-card-actions">' +
+          '<a href="' + escapeHtml(p.url || '#') + '" target="_blank" rel="noopener">' + escapeHtml(t('projects.open')) + '</a>' +
+          '<a href="' + tg + '" class="project-card-discuss" target="_blank" rel="noopener">' + escapeHtml(t('projects.discuss')) + '</a>' +
+        '</span>' +
+      '</li>';
+    }).join('');
   }
 
   function renderProducts() {
@@ -95,6 +121,7 @@
     var container = document.getElementById('map');
     if (!container || map) return;
     map = L.map('map').setView([55.7558, 37.6173], 2);
+    map.attributionControl.setPrefix(false);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
@@ -120,11 +147,13 @@
     var home = document.getElementById('homePage');
     var episodesSection = document.getElementById('episodesSection');
     var productsSection = document.getElementById('productsSection');
+    var projectsSection = document.getElementById('projectsSection');
     var mapSection = document.getElementById('mapSection');
     if (detail) detail.hidden = false;
     if (home) home.hidden = true;
     if (episodesSection) episodesSection.hidden = true;
     if (productsSection) productsSection.hidden = true;
+    if (projectsSection) projectsSection.hidden = true;
     if (mapSection) mapSection.hidden = true;
 
     var typeKey = ep.type || 'chapter';
@@ -171,6 +200,7 @@
       if (mapWrap) mapWrap.hidden = false;
       if (!episodeMap) {
         episodeMap = L.map('episodeMap').setView([ep.locations[0].lat, ep.locations[0].lon], 10);
+        episodeMap.attributionControl.setPrefix(false);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(episodeMap);
@@ -217,6 +247,8 @@
     document.getElementById('episodesSection').hidden = false;
     var ps = document.getElementById('productsSection');
     if (ps) ps.hidden = false;
+    var prj = document.getElementById('projectsSection');
+    if (prj) prj.hidden = false;
     document.getElementById('mapSection').hidden = false;
   }
 
@@ -236,21 +268,24 @@
 
   window.addEventListener('hashchange', route);
 
-  (function initProductsCarousel() {
-    var track = document.getElementById('productsTrack');
-    var prevBtn = document.querySelector('.products-nav-btn.prev');
-    var nextBtn = document.querySelector('.products-nav-btn.next');
+  function initCarousel(sectionId, trackId, cardWidth) {
+    var section = document.getElementById(sectionId);
+    var track = document.getElementById(trackId);
+    var prevBtn = section && section.querySelector('.products-nav-btn.prev');
+    var nextBtn = section && section.querySelector('.products-nav-btn.next');
     if (!track || !prevBtn || !nextBtn) return;
-    var cardWidth = 180 + 20;
-    var scrollAmount = cardWidth * 2;
+    var scrollAmount = (cardWidth + 20) * 2;
     prevBtn.addEventListener('click', function () { track.scrollBy({ left: -scrollAmount, behavior: 'smooth' }); });
     nextBtn.addEventListener('click', function () { track.scrollBy({ left: scrollAmount, behavior: 'smooth' }); });
-  })();
+  }
+  initCarousel('productsSection', 'productsTrack', 180);
+  initCarousel('projectsSection', 'projectsTrack', 240);
 
   var init = function () {
-    Promise.all([loadEpisodes(), loadProducts()]).then(function () {
+    Promise.all([loadEpisodes(), loadProducts(), loadProjects()]).then(function () {
       renderCarousel();
       renderProducts();
+      renderProjects();
       initMap();
       route();
     });

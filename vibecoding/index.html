@@ -68,6 +68,13 @@
     .lesson-detail-section ul { list-style: disc; }
     .lesson-detail-section p { padding-left: 0; }
     .lesson-detail-section .monetization { background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: var(--vc-radius-sm); padding: 0.6rem 0.75rem; font-size: 0.85rem; color: #166534; margin-top: 0.5rem; }
+    .cta-wrap { text-align: center; margin-bottom: 2rem; }
+    .cta-btn { display: inline-block; padding: 0.85rem 1.75rem; background: linear-gradient(135deg, var(--yc-orange) 0%, #e55a1a 100%); color: #fff; font-weight: 700; font-size: 1rem; text-decoration: none; border-radius: var(--vc-radius); border: none; cursor: pointer; transition: transform var(--vc-transition), box-shadow var(--vc-transition); box-shadow: 0 4px 14px rgba(242,101,34,0.35); }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(242,101,34,0.45); }
+    .cta-btn:focus-visible { outline: 2px solid var(--yc-orange); outline-offset: 3px; }
+    .join-section { background: var(--header-bg); border-radius: var(--vc-radius); padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; border: var(--vc-border); box-shadow: var(--vc-shadow); }
+    .join-lead { margin: 0 0 1.25rem; color: var(--text); line-height: 1.5; }
+    .join-section h2 { font-size: 1.05rem; margin: 0 0 1rem; color: var(--text-muted); font-weight: 600; }
     @media (max-width: 640px) {
       .vibecoding-page { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); padding-bottom: 2rem; box-sizing: border-box; }
       .timeline-vertical { padding-left: 1.35rem; }
@@ -96,6 +103,10 @@
     <div class="vibecoding-intro">
       <p data-i18n="intro.p1">Вайбкодинг — это кодить в потоке: когда окружение, инструменты и состояние совпадают, а код пишется легко и с удовольствием. В этом марафоне 10 уроков: от настройки среды и ритуалов до работы с ИИ и поддержания фокуса.</p>
       <p data-i18n="intro.p2">Ниже — таймлайн марафона. Клик по отрезку прокрутит к уроку; каждый урок можно скроллить и кликать.</p>
+    </div>
+
+    <div class="cta-wrap">
+      <a href="#join-form" class="cta-btn" id="ctaJoin" data-i18n="cta.join">Принять участие</a>
     </div>
 
     <section class="timeline-section" aria-label="Timeline">
@@ -285,6 +296,13 @@
         </article>
       </div>
     </section>
+
+    <!-- Заявки собирает Google Форма (та же, что на главной) -->
+    <section class="join-section" id="join-form" aria-label="Registration">
+      <h2 data-i18n="join.title">Оставить заявку</h2>
+      <p class="join-lead" data-i18n="join.lead">Заполните короткую форму — я свяжусь с вами и расскажу детали марафона.</p>
+      <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeCae_1YCzqVvienWMGYxkuOtt6fmqtywmZQmdk4DIt4wb7Xw/viewform" target="_blank" rel="noopener" data-i18n="join.submit">Записаться</a>
+    </section>
   </main>
 
   <script>
@@ -442,7 +460,11 @@
           'info.9.a': 'Ритм', 'info.9.b': 'Победы',
           'lesson.10.title': 'Свой вайбкодинг-чеклист',
           'lesson.10.desc': 'Собираем персональный чеклист: что лично тебе помогает кодить в потоке и как это повторять.',
-          'info.10.a': 'Чеклист', 'info.10.b': 'Повтор'
+          'info.10.a': 'Чеклист', 'info.10.b': 'Повтор',
+          'cta.join': 'Принять участие',
+          'join.title': 'Оставить заявку',
+          'join.lead': 'Заполните короткую форму — я свяжусь с вами и расскажу детали марафона.',
+          'join.submit': 'Записаться'
         },
         en: {
           'nav.home': 'Home',
@@ -483,7 +505,11 @@
           'info.9.a': 'Pace', 'info.9.b': 'Wins',
           'lesson.10.title': 'Your vibecoding checklist',
           'lesson.10.desc': 'Build a personal checklist: what helps you code in flow and how to repeat it.',
-          'info.10.a': 'Checklist', 'info.10.b': 'Repeat'
+          'info.10.a': 'Checklist', 'info.10.b': 'Repeat',
+          'cta.join': 'Join the marathon',
+          'join.title': 'Sign up',
+          'join.lead': 'Fill in a short form — I’ll get in touch and share the marathon details.',
+          'join.submit': 'Sign up'
         }
       };
 
@@ -552,6 +578,19 @@
         });
         card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); } });
       });
+
+      var ctaBtn = document.getElementById('ctaJoin');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('click', function(e) {
+          var target = document.getElementById('join-form');
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.setAttribute('tabindex', '-1');
+            target.focus();
+          }
+        });
+      }
     })();
   </script>
 </body>

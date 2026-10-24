@@ -1,0 +1,38 @@
+[
+  {
+    "title_en": "LifeBoost",
+    "title_ru": "LifeBoost",
+    "desc_en": "Gym builder for acrobatics, yoga and crossfit: plan with safety zones from ready-made modules.",
+    "desc_ru": "Конструктор зала для акробатики, йоги и кроссфита: план с зонами безопасности из готовых модулей.",
+    "tag_en": "Web app",
+    "tag_ru": "Веб-приложение",
+    "url": "/LifeBoost/"
+  },
+  {
+    "title_en": "21day_system",
+    "title_ru": "21day_system",
+    "desc_en": "Telegram bot with three 21-day micro-practices: skills, daily routine and sleep, with progress charts.",
+    "desc_ru": "Telegram-бот трёх 21-дневных микро-практик: навыки, режим дня и сон, с графиками прогресса.",
+    "tag_en": "Telegram bot",
+    "tag_ru": "Telegram-бот",
+    "url": "/21day_system/"
+  },
+  {
+    "title_en": "Home_Lighting",
+    "title_ru": "Home_Lighting",
+    "desc_en": "RGB kitchen lighting on Arduino: encoder, IR remote, Home Assistant — with an interactive simulator.",
+    "desc_ru": "RGB-подсветка кухни на Arduino: энкодер, ИК-пульт, Home Assistant — с интерактивным симулятором.",
+    "tag_en": "Hardware + smart home",
+    "tag_ru": "Железо + умный дом",
+    "url": "/Home_Lighting/"
+  },
+  {
+    "title_en": "Kostik · LCT 2026",
+    "title_ru": "Kostik · ЛЦТ 2026",
+    "desc_en": "Quality control of DXA densitometry scans (DICOM): region check, quality verdict, defect type.",
+    "desc_ru": "Контроль качества снимков денситометрии DXA (DICOM): область, вердикт о качестве, тип нарушения.",
+    "tag_en": "Medical AI",
+    "tag_ru": "Медицинский AI",
+    "url": "/ltz2026/"
+  }
+]

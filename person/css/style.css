@@ -350,6 +350,7 @@ h1 {
 /* Contact actions — SAVE/CANCEL style */
 .contact-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 1.25rem;
@@ -842,4 +843,88 @@ h1 {
   height: 160px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+/* How to start — 3 steps above contact buttons */
+.start-block {
+  margin: 2rem auto 0;
+  max-width: 30rem;
+  text-align: left;
+}
+
+.start-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  text-align: center;
+}
+
+.start-steps {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.start-steps li {
+  margin-bottom: 0.4rem;
+}
+
+.start-steps li::marker {
+  color: var(--yc-orange);
+  font-weight: 700;
+}
+
+/* Projects — reuses the Products carousel, wider cards with links */
+.project-card {
+  flex: 0 0 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #333 0%, #2a2a2a 100%);
+  box-sizing: border-box;
+}
+
+.project-card-tag {
+  font-size: 0.75rem;
+  color: var(--yc-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.project-card-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.project-card-desc {
+  font-size: 0.85rem;
+  color: #c8c8c8;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.project-card-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.project-card-actions a {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.project-card-actions a:hover {
+  text-decoration: underline;
+}
+
+.project-card-actions .project-card-discuss {
+  color: var(--yc-orange);
 }

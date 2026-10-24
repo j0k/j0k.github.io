@@ -18,12 +18,14 @@
   "actions": {
     "mail": "MAIL-TO",
     "telegram": "SEND TELEGRAM",
-    "colab": "CO-LAB"
+    "colab": "CO-LAB",
+    "form": "LEAVE YOUR CONTACT"
   },
   "sections": {
     "episodes": "Life Episodes",
     "products": "Products",
-    "map": "Map"
+    "map": "Map",
+    "projects": "Projects"
   },
   "episode": {
     "back": "← Back to home",
@@ -64,5 +66,16 @@
   },
   "episodeTypes": {
     "chapter": "Chapter"
+  },
+  "start": {
+    "title": "How to start",
+    "step1": "Message me on Telegram, by email, or leave your contact — describe your task in a couple of lines",
+    "step2": "A short 30-min call — we go over your situation or task, and I tell you how I can help",
+    "step3": "Proposal: format, timeline, cost"
+  },
+  "projects": {
+    "open": "Open →",
+    "discuss": "Message",
+    "tgText": "Hi Yuri! I'm on your site and would like to discuss {title}"
   }
 }
