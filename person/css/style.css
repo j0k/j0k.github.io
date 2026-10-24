@@ -928,3 +928,38 @@ h1 {
 .project-card-actions .project-card-discuss {
   color: var(--yc-orange);
 }
+
+/* Collect effect for floating resources (resources.js → playCollectEffect) */
+.collect-ring,
+.collect-spark,
+.collect-flyer {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.collect-ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--yc-orange);
+  box-shadow: 0 0 18px rgba(242, 101, 34, 0.55);
+}
+
+.collect-ring--red {
+  border-color: #e0245e;
+  box-shadow: 0 0 18px rgba(224, 36, 94, 0.55);
+}
+
+.collect-spark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #ffd27a 45%, var(--yc-orange) 100%);
+}
+
+.collect-flyer {
+  font-size: 1.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 200, 120, 0.8));
+}

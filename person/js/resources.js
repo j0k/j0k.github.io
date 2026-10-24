@@ -90,6 +90,7 @@
       if (collected) return;
       collected = true;
       if (el._trajectorySvg && el._trajectorySvg.parentNode) el._trajectorySvg.remove();
+      playCollectEffect(el, type);
       values[type]++;
       updateBar();
       save();
@@ -118,6 +119,81 @@
     el._floaterObj = obj;
     floaters.push(obj);
     if (document.body.getAttribute('data-resource-highlight') === type) showTrajectoryForFloater(el, true);
+  }
+
+  // Collect effect: a flash with sparks where the icon was, then the icon flies into its counter in the bar.
+  function visibleCounter(type) {
+    var list = document.querySelectorAll('.resource[data-type="' + type + '"]');
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i].getBoundingClientRect();
+      if (r.width && r.left >= 0 && r.right <= window.innerWidth && r.bottom > 0) return list[i];
+    }
+    // Narrow screens: the ticker has scrolled this counter away, so fly into the bar itself.
+    var bar = document.querySelector('.resources-ticker-wrap');
+    var b = bar && bar.getBoundingClientRect();
+    return b && b.width && b.bottom > 0 ? bar : null;
+  }
+
+  function playCollectEffect(el, type) {
+    if (!el.animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var r = el.getBoundingClientRect();
+    var cx = r.left + r.width / 2;
+    var cy = r.top + r.height / 2;
+
+    var ring = document.createElement('span');
+    ring.className = 'collect-ring' + (type === 'red_heart' ? ' collect-ring--red' : '');
+    ring.style.left = cx + 'px';
+    ring.style.top = cy + 'px';
+    document.body.appendChild(ring);
+    ring.animate([
+      { transform: 'translate(-50%, -50%) scale(0.3)', opacity: 0.9 },
+      { transform: 'translate(-50%, -50%) scale(2.4)', opacity: 0 }
+    ], { duration: 520, easing: 'cubic-bezier(.2,.7,.3,1)' }).onfinish = function () { ring.remove(); };
+
+    for (var i = 0; i < 8; i++) {
+      var p = document.createElement('span');
+      p.className = 'collect-spark';
+      p.style.left = cx + 'px';
+      p.style.top = cy + 'px';
+      document.body.appendChild(p);
+      var a = (Math.PI * 2 * i) / 8 + Math.random() * 0.4;
+      var d = 26 + Math.random() * 22;
+      p.animate([
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(calc(-50% + ' + Math.cos(a) * d + 'px), calc(-50% + ' + Math.sin(a) * d + 'px)) scale(0.2)', opacity: 0 }
+      ], { duration: 480 + Math.random() * 160, easing: 'cubic-bezier(.15,.8,.3,1)' }).onfinish = (function (s) { return function () { s.remove(); }; })(p);
+    }
+
+    var flyer = document.createElement('span');
+    flyer.className = 'collect-flyer' + (type === 'red_heart' ? ' floater--red' : '');
+    flyer.innerHTML = el.innerHTML;
+    flyer.style.left = cx + 'px';
+    flyer.style.top = cy + 'px';
+    document.body.appendChild(flyer);
+    var target = visibleCounter(type);
+    var frames;
+    if (target) {
+      var t = target.getBoundingClientRect();
+      var dx = t.left + t.width / 2 - cx;
+      var dy = t.top + t.height / 2 - cy;
+      frames = [
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -50%) scale(1.7)', opacity: 1, offset: 0.18 },
+        { transform: 'translate(calc(-50% + ' + dx * 0.45 + 'px), calc(-50% + ' + (dy * 0.45 - 40) + 'px)) scale(1.1)', opacity: 1, offset: 0.55 },
+        { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(0.45)', opacity: 0.2 }
+      ];
+    } else {
+      frames = [
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: 'translate(-50%, -80%) scale(1.8)', opacity: 0 }
+      ];
+    }
+    flyer.animate(frames, { duration: target ? 720 : 480, easing: 'cubic-bezier(.5,0,.3,1)' }).onfinish = function () {
+      flyer.remove();
+      if (target) target.animate([
+        { transform: 'scale(1)' }, { transform: 'scale(1.45)' }, { transform: 'scale(1)' }
+      ], { duration: 360, easing: 'ease-out' });
+    };
   }
 
   function showTrajectoryForFloater(el, fromBar) {
