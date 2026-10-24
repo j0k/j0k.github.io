@@ -34,5 +34,14 @@
     "tag_en": "Medical AI",
     "tag_ru": "Медицинский AI",
     "url": "/ltz2026/"
+  },
+  {
+    "title_en": "AmneziaVPN Reconnect+Proxy",
+    "title_ru": "AmneziaVPN Reconnect+Proxy",
+    "desc_en": "Fork of the AmneziaVPN client for Windows: ping-based auto-reconnect and two local proxies, bypassing and through the VPN.",
+    "desc_ru": "Форк клиента AmneziaVPN для Windows: автопереподключение по пингу и два локальных прокси — в обход VPN и через VPN.",
+    "tag_en": "Windows client · VPN",
+    "tag_ru": "Windows-клиент · VPN",
+    "url": "/amnezia-client-reconnect/"
   }
 ]
