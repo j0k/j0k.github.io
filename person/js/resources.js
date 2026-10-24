@@ -85,7 +85,10 @@
     var x = startX;
     var startTime = Date.now();
 
+    var collected = false;
     function doCollect() {
+      if (collected) return;
+      collected = true;
       if (el._trajectorySvg && el._trajectorySvg.parentNode) el._trajectorySvg.remove();
       values[type]++;
       updateBar();
@@ -96,6 +99,10 @@
     }
 
     el.addEventListener('click', doCollect);
+    // Hovering with a mouse collects too; touch and pen still need a tap.
+    el.addEventListener('pointerenter', function (e) {
+      if (e.pointerType === 'mouse') doCollect();
+    });
 
     var obj = {
       el: el,
