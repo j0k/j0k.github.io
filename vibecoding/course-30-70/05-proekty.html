@@ -51,6 +51,7 @@ body{
 
 /* --- контент --- */
 main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+@media (min-width:1025px){ main{margin:0 auto} }
 
 /* верхняя навигация: выход из курса, share, язык, переключение курсов */
 .topbar{
@@ -77,6 +78,8 @@ main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
 }
 .topbar .share:hover{color:var(--accent); border-color:var(--accent)}
 .topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+/* кнопки мобильного меню — на десктопе скрыты */
+.navtoggle,.navclose,.scrim{display:none}
 
 article h1{
   font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
@@ -100,6 +103,8 @@ article blockquote{
 article blockquote p{margin:8px 0}
 
 /* таблицы */
+.table-wrap{overflow-x:auto; margin:18px 0; -webkit-overflow-scrolling:touch}
+.table-wrap table{margin:0}
 article table{
   width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
   background:var(--panel); border:1px solid var(--line);
@@ -161,23 +166,68 @@ article .cb.done:after{
   display:block; transition:width .2s ease;
 }
 
-@media (max-width:860px){
-  .layout{flex-direction:column}
-  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
-        border-bottom:1px solid var(--line); padding:18px 16px}
-  .side nav{display:flex; flex-wrap:wrap; gap:6px}
-  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
-  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
-  .side .foot{display:none}
-  main{padding:28px 18px 60px}
-  .topbar{margin:-28px 0 20px; font-size:13px}
-  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+@media (max-width:1024px){
+  .layout{display:block}
+  main{padding:0 16px 64px; max-width:none}
+
+  /* сайдбар — выезжающее меню */
+  .side{
+    position:fixed; top:0; left:0; bottom:0; z-index:60;
+    width:min(88vw,320px); height:100dvh; flex:none;
+    border-right:1px solid var(--line); border-bottom:none;
+    padding:18px 14px 40px; overflow-y:auto; overscroll-behavior:contain;
+    transform:translateX(-100%); transition:transform .22s ease;
+  }
+  .side.open{transform:none; box-shadow:0 14px 44px rgba(0,0,0,.24)}
+  .side .brand{padding-right:44px}
+  .side .foot{display:block}
+  .scrim{
+    display:block; position:fixed; inset:0; z-index:55; background:rgba(20,18,16,.42);
+    opacity:0; pointer-events:none; transition:opacity .22s ease;
+  }
+  .scrim.show{opacity:1; pointer-events:auto}
+  body.nav-open{overflow:hidden}
+  .navtoggle{
+    display:inline-flex; align-items:center; gap:6px; flex:none;
+    font:inherit; font-size:12.5px; line-height:1; color:var(--accent);
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:6px 11px; cursor:pointer;
+  }
+  .navtoggle:hover{border-color:var(--accent)}
+  .navtoggle .bars{font-size:13px; line-height:1}
+  .navclose{
+    display:flex; position:absolute; top:14px; right:12px; align-items:center;
+    justify-content:center; width:30px; height:30px; font-size:20px; line-height:1;
+    color:var(--muted); background:var(--panel); border:1px solid var(--line);
+    border-radius:50%; cursor:pointer;
+  }
+  .navclose:hover{color:var(--accent); border-color:var(--accent)}
+
+  .topbar{
+    margin:0 -16px 18px; padding:9px 16px; flex-wrap:nowrap; gap:6px; font-size:13px;
+  }
+  .topbar .home{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+  .topbar .here,.topbar .sep{display:none}
+  .topbar .switch,.topbar .share{padding:5px 10px; font-size:12px; flex:none}
+  .topbar [data-narrow="hide"]{display:none}
+
   article h1{font-size:24px}
   article h2{font-size:19px}
   article td:first-child{white-space:normal}
+  /* таблицы не сжимаются в нечитаемое — лучше горизонтальный скролл */
+  article table{min-width:480px; font-size:13px}
+  article pre{padding:14px 15px; font-size:12px}
+  .pager{flex-direction:column; align-items:stretch; gap:10px}
+  .pager .next{text-align:left; margin-left:0}
+}
+@media (max-width:420px){
+  .topbar .home{font-size:12.5px}
+  .topbar .switch,.topbar .share{padding:5px 9px}
+  .navtoggle{padding:6px 9px}
+  .navtoggle .lbl{display:none}
 }
 @media print{
-  .side,.pager,.topbar{display:none}
+  .side,.pager,.topbar,.scrim{display:none}
   main{padding:0; max-width:none}
   body{background:#fff}
   article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
@@ -186,7 +236,8 @@ article .cb.done:after{
 </head>
 <body>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sidenav">
+    <button type="button" class="navclose" aria-label="Закрыть меню">×</button>
     <a class="brand" href="index.html"><b>Вайбкодинг</b><span>курс 30/70 · 23 часа</span></a>
     <div class="ratio">30% теории · 70% практики · 1380 мин</div>
     <nav>
@@ -203,8 +254,10 @@ article .cb.done:after{
       <a href="../index.html">← Марафон по вайбкодингу</a><br>
       <a href="../opencode/index.html">Курс по OpenCode</a></div>
   </aside>
+  <div class="scrim" id="scrim"></div>
   <main>
     <div class="topbar">
+      <button type="button" class="navtoggle" id="navtoggle" aria-label="Меню" aria-controls="sidenav" aria-expanded="false"><span class="bars" aria-hidden="true">☰</span><span class="lbl">Меню</span></button>
       <a class="home" href="../index.html">← Вайбкодинг</a>
       <span class="sep">·</span>
       <span class="here">Курс 30/70</span>
@@ -212,7 +265,7 @@ article .cb.done:after{
       <button type="button" class="share" data-share="course-30-70/05-proekty.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
       <a class="switch" href="en/05-proekty.html" title="English">EN</a>
       <a class="switch" href="fr/05-proekty.html" title="Français">FR</a>
-      <a class="switch" href="../opencode/index.html">Курс по OpenCode →</a>
+      <a class="switch" data-narrow="hide" href="../opencode/index.html">Курс по OpenCode →</a>
     </div>
     <article>
 <h1 id="_1">Проекты для капстоуна</h1>
@@ -370,6 +423,33 @@ CSV, показывает изменение.</p>
         ok ? done() : fail();
       }
     });
+  });
+
+  /* --- мобильное меню --- */
+  var side = document.getElementById("sidenav");
+  var toggle = document.getElementById("navtoggle");
+  var scrim = document.getElementById("scrim");
+  function setNav(open) {
+    if (!side || !toggle) return;
+    side.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", open);
+  }
+  if (toggle && side) {
+    toggle.addEventListener("click", function () { setNav(!side.classList.contains("open")); });
+  }
+  if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+  var closeBtn = side && side.querySelector(".navclose");
+  if (closeBtn) closeBtn.addEventListener("click", function () { setNav(false); });
+  document.querySelectorAll("#sidenav a").forEach(function (a) {
+    a.addEventListener("click", function () { setNav(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setNav(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024) setNav(false);
   });
 
   /* --- чек-листы с сохранением прогресса --- */

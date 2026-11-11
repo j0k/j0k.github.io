@@ -12,6 +12,25 @@ C'est le seul module qui évalue l'ensemble du processus plutôt qu'une compéte
 
 ---
 
+## Qu'est-ce qu'un capstone
+
+**Capstone** signifie littéralement « pierre de faîte » — la clé de voûte d'une
+arche ou d'un dôme. C'est elle qui verrouille l'ensemble : tant qu'elle n'est pas
+posée, l'arche ne tient que sur son cintre. L'enseignement a repris la métaphore.
+
+Dans la tradition universitaire — surtout américaine — un *capstone course* ou un
+*capstone project* est le cours ou le projet final d'un cursus, réalisé en dernière
+année. Son but n'est pas d'apprendre un thème nouveau, mais de rassembler tout ce
+qui a été étudié avant et de montrer que vous savez mener un travail jusqu'au
+résultat.
+
+Le capstone de ce cours fonctionne de la même manière : le seul sujet nouveau ici,
+c'est **l'ensemble du processus de bout en bout**. Vous avez déjà travaillé chaque
+pratique séparément dans les modules 00 à 09 ; ici vous les enchaînez sur une seule
+tâche réelle, sans indices et sans sauter d'étape.
+
+---
+
 ## Choix de la tâche
 
 Une tâche adaptée est une tâche qui :

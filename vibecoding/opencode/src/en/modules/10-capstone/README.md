@@ -12,6 +12,24 @@ This is the only module that evaluates the whole process rather than an individu
 
 ---
 
+## What a capstone is
+
+**Capstone** literally means the topmost stone of an arch or vault — the keystone.
+It locks the whole structure together: until it is set, the arch stands only on
+temporary centering. Education borrowed the metaphor.
+
+In the academic tradition — American universities in particular — a *capstone
+course* or *capstone project* is the final course or project of a degree, done in
+the graduating year. Its point is not a new topic but pulling together everything
+studied before and showing that you can carry work through to a result.
+
+This course's capstone works the same way: the only new topic here is **the whole
+process end to end**. You have already been through each practice separately in
+modules 00–09; here you run them in sequence on one real task, with no hints and no
+skipping a step.
+
+---
+
 ## Choosing a task
 
 A suitable task is one that:

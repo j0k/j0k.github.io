@@ -156,6 +156,8 @@ UI = {
                      "Те же файлы лежат в Markdown: <code>src/templates/</code>.",
         "lang_label": "EN",
         "lang_title": "Switch to English",
+        "menu": "Меню",
+        "nav_close": "Закрыть меню",
     },
     "en": {
         "title": "Course overview",
@@ -183,6 +185,8 @@ UI = {
                      "The same files live as Markdown in <code>src/templates/</code>.",
         "lang_label": "RU",
         "lang_title": "Switch to Russian",
+        "menu": "Menu",
+        "nav_close": "Close menu",
     },
     "fr": {
         "title": "Aperçu du cours",
@@ -210,6 +214,8 @@ UI = {
                      "Les mêmes fichiers existent en Markdown : <code>src/templates/</code>.",
         "lang_label": "FR",
         "lang_title": "Passer au français",
+        "menu": "Menu",
+        "nav_close": "Fermer le menu",
     },
 }
 
@@ -391,7 +397,8 @@ TEMPLATE = """<!DOCTYPE html>
 </head>
 <body>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sidenav">
+    <button type="button" class="navclose" aria-label="{nav_close}">×</button>
     <a class="brand" href="{prefix}index.html"><b>{brand_b}</b><span>{brand_span}</span></a>
     <div class="ratio">{ratio}</div>
     <div class="group-title">{group_course}</div>
@@ -405,15 +412,17 @@ TEMPLATE = """<!DOCTYPE html>
       <a href="{sibling}course-30-70/index.html">{foot_other}</a>
     </div>
   </aside>
+  <div class="scrim" id="scrim"></div>
   <main>
 <div class="topbar">
+  <button type="button" class="navtoggle" id="navtoggle" aria-label="{menu}" aria-controls="sidenav" aria-expanded="false"><span class="bars" aria-hidden="true">☰</span><span class="lbl">{menu}</span></button>
   <a class="home" href="{sibling}index.html">{topbar_home}</a>
   <span class="sep">·</span>
   <span class="here">{here}</span>
   <span class="spacer"></span>
   <button type="button" class="share" data-share="{share_path}" data-copied="{copied}" title="{share}">{share}</button>
   {lang_links}
-  <a class="switch" href="{sibling}course-30-70/index.html">{topbar_switch}</a>
+  <a class="switch" data-narrow="hide" href="{sibling}course-30-70/index.html">{topbar_switch}</a>
 </div>
     <article>
 {cross}{body}
@@ -468,6 +477,33 @@ SCRIPT = """<script>
         ok ? done() : fail();
       }
     });
+  });
+
+  /* --- мобильное меню --- */
+  var side = document.getElementById("sidenav");
+  var toggle = document.getElementById("navtoggle");
+  var scrim = document.getElementById("scrim");
+  function setNav(open) {
+    if (!side || !toggle) return;
+    side.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", open);
+  }
+  if (toggle && side) {
+    toggle.addEventListener("click", function () { setNav(!side.classList.contains("open")); });
+  }
+  if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+  var closeBtn = side && side.querySelector(".navclose");
+  if (closeBtn) closeBtn.addEventListener("click", function () { setNav(false); });
+  document.querySelectorAll("#sidenav a").forEach(function (a) {
+    a.addEventListener("click", function () { setNav(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setNav(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024) setNav(false);
   });
 
   /* --- чек-листы с сохранением прогресса --- */
@@ -611,6 +647,8 @@ def write_page(key, title, body, lang, cross="", pager="", active_key=None):
         here=t["site"],
         share=t["share"],
         copied=t["copied"],
+        menu=t["menu"],
+        nav_close=t["nav_close"],
         share_path="opencode/" + target,
         lang_links=lang_links_html(key, lang, target),
         topbar_home=t["topbar_home"],

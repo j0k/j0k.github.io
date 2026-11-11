@@ -10,7 +10,8 @@
 </head>
 <body>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sidenav">
+    <button type="button" class="navclose" aria-label="Fermer le menu">×</button>
     <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
     <div class="ratio">40 % de théorie · 60 % de pratique</div>
     <div class="group-title">Cours</div>
@@ -40,8 +41,10 @@
       <a href="../../../course-30-70/index.html">Cours 30/70</a>
     </div>
   </aside>
+  <div class="scrim" id="scrim"></div>
   <main>
 <div class="topbar">
+  <button type="button" class="navtoggle" id="navtoggle" aria-label="Menu" aria-controls="sidenav" aria-expanded="false"><span class="bars" aria-hidden="true">☰</span><span class="lbl">Menu</span></button>
   <a class="home" href="../../../index.html">← Vibecoding</a>
   <span class="sep">·</span>
   <span class="here">Vibecoding avec OpenCode</span>
@@ -49,7 +52,7 @@
   <button type="button" class="share" data-share="opencode/fr/modules/10-capstone.html" data-copied="Lien copié" title="Partager">Partager</button>
   <a class="switch" href="../../modules/10-capstone.html" title="Русский">RU</a>
   <a class="switch" href="../../en/modules/10-capstone.html" title="English">EN</a>
-  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+  <a class="switch" data-narrow="hide" href="../../../course-30-70/index.html">Cours 30/70 →</a>
 </div>
     <article>
 <div class="crosslink"><a class="primary" href="10-capstone-practice.html">Pratique →</a></div>
@@ -59,6 +62,20 @@
 <h2 id="objectif">Objectif</h2>
 <p>Parcourez le cycle complet sur une tâche réelle : <strong>spec → plan → étapes → tests → revue → merge → rétro</strong>.</p>
 <p>C'est le seul module qui évalue l'ensemble du processus plutôt qu'une compétence isolée.</p>
+<hr />
+<h2 id="quest-ce-quun-capstone">Qu'est-ce qu'un capstone</h2>
+<p><strong>Capstone</strong> signifie littéralement « pierre de faîte » — la clé de voûte d'une
+arche ou d'un dôme. C'est elle qui verrouille l'ensemble : tant qu'elle n'est pas
+posée, l'arche ne tient que sur son cintre. L'enseignement a repris la métaphore.</p>
+<p>Dans la tradition universitaire — surtout américaine — un <em>capstone course</em> ou un
+<em>capstone project</em> est le cours ou le projet final d'un cursus, réalisé en dernière
+année. Son but n'est pas d'apprendre un thème nouveau, mais de rassembler tout ce
+qui a été étudié avant et de montrer que vous savez mener un travail jusqu'au
+résultat.</p>
+<p>Le capstone de ce cours fonctionne de la même manière : le seul sujet nouveau ici,
+c'est <strong>l'ensemble du processus de bout en bout</strong>. Vous avez déjà travaillé chaque
+pratique séparément dans les modules 00 à 09 ; ici vous les enchaînez sur une seule
+tâche réelle, sans indices et sans sauter d'étape.</p>
 <hr />
 <h2 id="choix-de-la-tache">Choix de la tâche</h2>
 <p>Une tâche adaptée est une tâche qui :</p>
@@ -225,6 +242,33 @@ la suggestion de l'agent et pourquoi. <strong>Ce dernier point est une question 
         ok ? done() : fail();
       }
     });
+  });
+
+  /* --- мобильное меню --- */
+  var side = document.getElementById("sidenav");
+  var toggle = document.getElementById("navtoggle");
+  var scrim = document.getElementById("scrim");
+  function setNav(open) {
+    if (!side || !toggle) return;
+    side.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", open);
+  }
+  if (toggle && side) {
+    toggle.addEventListener("click", function () { setNav(!side.classList.contains("open")); });
+  }
+  if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+  var closeBtn = side && side.querySelector(".navclose");
+  if (closeBtn) closeBtn.addEventListener("click", function () { setNav(false); });
+  document.querySelectorAll("#sidenav a").forEach(function (a) {
+    a.addEventListener("click", function () { setNav(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setNav(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024) setNav(false);
   });
 
   /* --- чек-листы с сохранением прогресса --- */

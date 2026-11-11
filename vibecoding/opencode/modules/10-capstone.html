@@ -10,7 +10,8 @@
 </head>
 <body>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sidenav">
+    <button type="button" class="navclose" aria-label="Закрыть меню">×</button>
     <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
     <div class="ratio">40% теории · 60% практики</div>
     <div class="group-title">Курс</div>
@@ -40,8 +41,10 @@
       <a href="../../course-30-70/index.html">Курс 30/70</a>
     </div>
   </aside>
+  <div class="scrim" id="scrim"></div>
   <main>
 <div class="topbar">
+  <button type="button" class="navtoggle" id="navtoggle" aria-label="Меню" aria-controls="sidenav" aria-expanded="false"><span class="bars" aria-hidden="true">☰</span><span class="lbl">Меню</span></button>
   <a class="home" href="../../index.html">← Вайбкодинг</a>
   <span class="sep">·</span>
   <span class="here">Вайбкодинг с OpenCode</span>
@@ -49,7 +52,7 @@
   <button type="button" class="share" data-share="opencode/modules/10-capstone.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
   <a class="switch" href="../en/modules/10-capstone.html" title="English">EN</a>
   <a class="switch" href="../fr/modules/10-capstone.html" title="Français">FR</a>
-  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+  <a class="switch" data-narrow="hide" href="../../course-30-70/index.html">Курс 30/70 →</a>
 </div>
     <article>
 <div class="crosslink"><a class="primary" href="10-capstone-practice.html">Практика →</a></div>
@@ -60,7 +63,19 @@
 <p>Пройти полный цикл на реальной задаче: <strong>спека → план → шаги → тесты → ревью → мерж → ретро</strong>.</p>
 <p>Это единственный модуль, где оценивается не отдельный навык, а весь процесс целиком.</p>
 <hr />
-<h2 id="_2">Выбор задачи</h2>
+<h2 id="_2">Что такое «капстоун»</h2>
+<p><strong>Capstone</strong> (англ., буквально «замковый камень») — верхний клин в арке или своде.
+Он держит всю конструкцию: пока его не поставили, арка стоит только на временной
+опалубке. Образование забрало метафору себе.</p>
+<p>В академической традиции, прежде всего американской, <em>capstone course</em> или
+<em>capstone project</em> — финальный курс или проект программы, который делают на
+выпускном году. Смысл не в новой теме, а в том, чтобы собрать в одно целое всё
+изученное раньше и показать, что вы доводите работу до результата.</p>
+<p>Капстоун этого курса устроен так же: единственная новая тема здесь — <strong>весь процесс
+целиком</strong>. Каждую практику по отдельности вы уже прошли в модулях 00–09; здесь вы
+проходите их подряд на одной реальной задаче, без подсказок и без права перескочить шаг.</p>
+<hr />
+<h2 id="_3">Выбор задачи</h2>
 <p>Подходит задача, которая:</p>
 <ul>
 <li>меняет 3–10 файлов;</li>
@@ -78,7 +93,7 @@
 </ul>
 <p>Не подходит: «перепиши всё», «сделай красиво», «добавь ИИ».</p>
 <hr />
-<h2 id="_3">Этапы и критерии</h2>
+<h2 id="_4">Этапы и критерии</h2>
 <h3 id="1-1">1. Спека (1 ч)</h3>
 <p>По шаблону <code>templates/spec.md</code>. Обязательно:</p>
 <ul>
@@ -130,7 +145,7 @@
 ## Правило, которое забираю
 </code></pre>
 <hr />
-<h2 id="_4">Итоговая таблица оценки</h2>
+<h2 id="_5">Итоговая таблица оценки</h2>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -174,7 +189,7 @@
 </table></div>
 <p>Проходной балл — 70%.</p>
 <hr />
-<h2 id="_5">Защита</h2>
+<h2 id="_6">Защита</h2>
 <p>10 минут: показать спеку, план, <code>git log</code>, найти в диффе место, где вы отклонили
 предложение агента и почему. <strong>Последнее — обязательный вопрос.</strong></p>
     </article>
@@ -225,6 +240,33 @@
         ok ? done() : fail();
       }
     });
+  });
+
+  /* --- мобильное меню --- */
+  var side = document.getElementById("sidenav");
+  var toggle = document.getElementById("navtoggle");
+  var scrim = document.getElementById("scrim");
+  function setNav(open) {
+    if (!side || !toggle) return;
+    side.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", open);
+  }
+  if (toggle && side) {
+    toggle.addEventListener("click", function () { setNav(!side.classList.contains("open")); });
+  }
+  if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+  var closeBtn = side && side.querySelector(".navclose");
+  if (closeBtn) closeBtn.addEventListener("click", function () { setNav(false); });
+  document.querySelectorAll("#sidenav a").forEach(function (a) {
+    a.addEventListener("click", function () { setNav(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setNav(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024) setNav(false);
   });
 
   /* --- чек-листы с сохранением прогресса --- */

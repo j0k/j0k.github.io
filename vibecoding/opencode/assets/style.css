@@ -74,6 +74,7 @@ body{
 
 /* ---------- контент ---------- */
 main{flex:1 1 auto; min-width:0; padding:48px 56px 90px; max-width:920px}
+@media (min-width:1025px){ main{margin:0 auto} }
 
 /* верхняя навигация: выход из курса + переключение курсов */
 .topbar{
@@ -100,6 +101,8 @@ main{flex:1 1 auto; min-width:0; padding:48px 56px 90px; max-width:920px}
 }
 .topbar .share:hover{color:var(--accent); border-color:var(--accent)}
 .topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+/* кнопки мобильного меню — на десктопе скрыты */
+.navtoggle,.navclose,.scrim{display:none}
 article h1{
   font-size:29px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
   padding-bottom:16px; border-bottom:2px solid var(--accent);
@@ -191,20 +194,71 @@ article .cb.done:after{
 .crosslink a.primary{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600}
 .crosslink a.primary:hover{background:#274e43; border-color:#274e43}
 
-@media (max-width:860px){
-  .layout{flex-direction:column}
-  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
-        border-bottom:1px solid var(--line); padding:16px}
-  .side .foot{display:none}
-  main{padding:26px 18px 60px}
-  .topbar{margin:-26px 0 20px; font-size:13px}
-  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+@media (max-width:1024px){
+  .layout{display:block}
+  main{padding:0 16px 64px; max-width:none}
+
+  /* сайдбар превращается в выезжающее меню */
+  .side{
+    position:fixed; top:0; left:0; bottom:0; z-index:60;
+    width:min(88vw,320px); height:100dvh; flex:none;
+    border-right:1px solid var(--line); border-bottom:none;
+    padding:18px 14px 40px; overflow-y:auto; overscroll-behavior:contain;
+    transform:translateX(-100%); transition:transform .22s ease;
+    box-shadow:none;
+  }
+  .side.open{transform:none; box-shadow:0 14px 44px rgba(0,0,0,.24)}
+  .side .brand{padding-right:44px}
+  .side .foot{display:block}
+  .scrim{
+    display:block; position:fixed; inset:0; z-index:55; background:rgba(20,18,16,.42);
+    opacity:0; pointer-events:none; transition:opacity .22s ease;
+  }
+  .scrim.show{opacity:1; pointer-events:auto}
+  body.nav-open{overflow:hidden}
+  .navtoggle{
+    display:inline-flex; align-items:center; gap:6px; flex:none;
+    font:inherit; font-size:12.5px; line-height:1; color:var(--accent);
+    background:var(--panel); border:1px solid var(--line); border-radius:999px;
+    padding:6px 11px; cursor:pointer;
+  }
+  .navtoggle:hover{border-color:var(--accent)}
+  .navtoggle .bars{font-size:13px; line-height:1}
+  .navclose{
+    display:flex; position:absolute; top:14px; right:12px; align-items:center;
+    justify-content:center; width:30px; height:30px; font-size:20px; line-height:1;
+    color:var(--muted); background:var(--panel); border:1px solid var(--line);
+    border-radius:50%; cursor:pointer;
+  }
+  .navclose:hover{color:var(--accent); border-color:var(--accent)}
+
+  /* верхняя панель — одна компактная строка */
+  .topbar{
+    margin:0 -16px 18px; padding:9px 16px; flex-wrap:nowrap; gap:6px;
+    font-size:13px;
+  }
+  .topbar .home{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+  .topbar .here,.topbar .sep{display:none}
+  .topbar .switch,.topbar .share{padding:5px 10px; font-size:12px; flex:none}
+  .topbar [data-narrow="hide"]{display:none}
+
   article h1{font-size:23px}
   article h2{font-size:19px}
   article th{white-space:normal}
+  /* таблицы прокручиваются по горизонтали вместо сжатия в нечитаемое */
+  article table{min-width:440px}
+  article pre{padding:14px 15px; font-size:12px}
+  .pager{flex-direction:column; align-items:stretch; gap:10px}
+  .pager .next{text-align:left; margin-left:0}
+}
+@media (max-width:420px){
+  .topbar .home{font-size:12.5px}
+  .topbar .switch,.topbar .share{padding:5px 9px}
+  .navtoggle{padding:6px 9px}
+  .navtoggle .lbl{display:none}
 }
 @media print{
-  .side,.pager,.crosslink,.progress,.topbar{display:none}
+  .side,.pager,.crosslink,.progress,.topbar,.scrim{display:none}
   main{padding:0; max-width:none}
   body{background:#fff}
   article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}

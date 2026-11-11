@@ -10,7 +10,8 @@
 </head>
 <body>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sidenav">
+    <button type="button" class="navclose" aria-label="Закрыть меню">×</button>
     <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
     <div class="ratio">40% теории · 60% практики</div>
     <div class="group-title">Курс</div>
@@ -40,8 +41,10 @@
       <a href="../../course-30-70/index.html">Курс 30/70</a>
     </div>
   </aside>
+  <div class="scrim" id="scrim"></div>
   <main>
 <div class="topbar">
+  <button type="button" class="navtoggle" id="navtoggle" aria-label="Меню" aria-controls="sidenav" aria-expanded="false"><span class="bars" aria-hidden="true">☰</span><span class="lbl">Меню</span></button>
   <a class="home" href="../../index.html">← Вайбкодинг</a>
   <span class="sep">·</span>
   <span class="here">Вайбкодинг с OpenCode</span>
@@ -49,7 +52,7 @@
   <button type="button" class="share" data-share="opencode/modules/10-capstone-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
   <a class="switch" href="../en/modules/10-capstone-practice.html" title="English">EN</a>
   <a class="switch" href="../fr/modules/10-capstone-practice.html" title="Français">FR</a>
-  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+  <a class="switch" data-narrow="hide" href="../../course-30-70/index.html">Курс 30/70 →</a>
 </div>
     <article>
 <div class="crosslink"><a href="10-capstone.html">← Теория</a></div>
@@ -168,6 +171,33 @@
         ok ? done() : fail();
       }
     });
+  });
+
+  /* --- мобильное меню --- */
+  var side = document.getElementById("sidenav");
+  var toggle = document.getElementById("navtoggle");
+  var scrim = document.getElementById("scrim");
+  function setNav(open) {
+    if (!side || !toggle) return;
+    side.classList.toggle("open", open);
+    document.body.classList.toggle("nav-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", open);
+  }
+  if (toggle && side) {
+    toggle.addEventListener("click", function () { setNav(!side.classList.contains("open")); });
+  }
+  if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+  var closeBtn = side && side.querySelector(".navclose");
+  if (closeBtn) closeBtn.addEventListener("click", function () { setNav(false); });
+  document.querySelectorAll("#sidenav a").forEach(function (a) {
+    a.addEventListener("click", function () { setNav(false); });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") setNav(false);
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1024) setNav(false);
   });
 
   /* --- чек-листы с сохранением прогресса --- */

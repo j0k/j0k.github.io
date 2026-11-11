@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Course 30/70 — weekly Gantt</title>
 <style>
 :root{--bg:#f7f6f2;--fg:#1d1c1a;--muted:#6b6862;--line:#e2dfd7;--card:#fff;--accent:#2f5d50;
@@ -52,9 +53,9 @@ button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 .rowhd .est{margin-left:auto;color:var(--muted);font-size:10.5px;font-variant-numeric:tabular-nums;flex:none}
 .rowhd.task{padding-left:24px;color:var(--fg)}
 .rowhd.task .k{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--muted);flex:none}
-.rowhd.task .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rowhd.task .nm{white-space:normal;line-height:1.25;overflow-wrap:anywhere}
 .rowhd.th{padding-left:24px;font-size:11.5px;color:var(--muted)}
-.rowhd.th .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rowhd.th .nm{white-space:normal;line-height:1.25;overflow-wrap:anywhere}
 
 .track{position:relative;border-bottom:1px solid var(--line);min-height:27px}
 .track.band{background:var(--bg);min-height:32px}
@@ -109,12 +110,37 @@ table.mx td:first-child{white-space:nowrap;font-weight:600}
 table.mx .ph{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
 h2{font-size:14px;margin:26px 0 0}
 
-@media (max-width:900px){
-  .gantt{grid-template-columns:170px 1fr}
-  .wrap{padding:14px 12px 40px}
+@media (max-width:1024px){
+  .wrap{padding:14px 14px 40px}
+  .topbar{gap:6px; flex-wrap:nowrap; margin-bottom:12px}
+  .topbar .home{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+  .topbar .here,.topbar .sep{display:none}
+  .topbar .switch,.topbar .share{padding:4px 9px; flex:none}
+  .topbar [data-narrow="hide"]{display:none}
+  h1{font-size:17px}
+  /* гант скроллится по горизонтали, а не сжимается в нечитаемое */
+  .card{overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch}
+  .gantt{grid-template-columns:170px 1fr; min-width:700px}
+  .gantt.wide{grid-template-columns:230px 1fr; min-width:840px}
   .rowhd{font-size:11px}
   .rowhd.task{padding-left:14px}
+  .rowhd.task .nm,.rowhd.th .nm{padding:2px 0}
   .bar{font-size:9.5px}
+  .sum{grid-template-columns:1fr 1fr}
+  table.mx{font-size:11.5px}
+}
+@media (max-width:560px){
+  .wrap{padding:12px 10px 32px}
+  h1{font-size:16px}
+  .sub{font-size:12px}
+  .topbar{gap:5px}
+  .topbar .home{font-size:12px}
+  .topbar .switch,.topbar .share{padding:4px 7px; font-size:11px}
+  .sum{grid-template-columns:1fr}
+  /* таблица недель: тексту разрешаем переноситься, иначе она шире экрана */
+  table.mx{table-layout:fixed; word-break:break-word}
+  table.mx th,table.mx td{padding:7px 8px}
+  table.mx td:first-child{white-space:normal}
 }
 @media print{
   body{background:#fff}
@@ -135,7 +161,7 @@ h2{font-size:14px;margin:26px 0 0}
     <a class="switch" href="index.html">← Course 30/70</a>
     <a class="switch" href="../gantt.html" title="Русский">RU</a>
     <a class="switch" href="../fr/gantt.html" title="Français">FR</a>
-    <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+    <a class="switch" data-narrow="hide" href="../../opencode/index.html">OpenCode course →</a>
   </div>
   <h1>Course “Vibecoding 30/70” — weekly Gantt</h1>
   <p class="sub">1 session a week, 150 minutes each (180 for the capstone). 9 weeks, 1380 minutes, 30% theory / 70% practice.</p>
@@ -155,8 +181,7 @@ h2{font-size:14px;margin:26px 0 0}
     <div class="gantt">
       <div class="ghead"><div class="rowhd ms">Program</div></div>
       <div class="ghead"><div class="scale" id="scale"></div></div>
-      <div id="hdcol"></div>
-      <div id="trackcol"></div>
+      <div id="ganttrows" style="display:contents"></div>
     </div>
   </div>
 
@@ -426,7 +451,7 @@ function draw() {
   MODS.forEach((m) => {
     const w = m.w;
     hd.push(`<div class="rowhd ms"><span class="dot" style="background:var(--${phOf(w)})"></span>
-      <span class="nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</span>
+      <span class="nm">${esc(m.name)}</span>
       <span class="est">${m.min} min</span></div>`);
     tr.push(track(bar("ms", w, 1, m.id, m.name, m.art + " · skill: " + m.skill, m.min + " min"), true));
 
@@ -451,8 +476,9 @@ function draw() {
     }
   });
 
-  $("#hdcol").innerHTML = hd.join("");
-  $("#trackcol").innerHTML = tr.join("");
+  const rows = [];
+  for (let i = 0; i < hd.length; i++) { rows.push(hd[i], tr[i]); }
+  $("#ganttrows").innerHTML = rows.join("");
   bindTips();
 }
 
