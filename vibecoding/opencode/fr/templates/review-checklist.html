@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checklist de revue · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Checklist de revue · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="../modules/00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="../modules/00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="../modules/01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="../modules/02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="../modules/03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="../modules/04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="../modules/05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="../modules/06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="../modules/07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="../modules/08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="../modules/09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="../modules/10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="../modules/10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/templates/review-checklist.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../templates/review-checklist.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/templates/review-checklist.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<h1 id="checklist-de-revue-de-diff">Checklist de revue de diff</h1>
+<p>L'ordre compte : commencez par les suppressions.</p>
+<h2 id="1-suppressions">1. Suppressions (−)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Aucun contrôle (auth, validation, permissions) n'a été supprimé.</li>
+<li class="task"><span class="cb"></span>Aucun gestionnaire d'erreur n'a été supprimé.</li>
+<li class="task"><span class="cb"></span>Aucun test n'a été supprimé sans remplacement.</li>
+<li class="task"><span class="cb"></span>Aucun code encore utilisé n'a été supprimé (<code>grep</code> par nom est vide).</li>
+</ul>
+<h2 id="2-logique">2. Logique (+)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Les conditions (if/else, bornes) n'ont pas été modifiées à votre insu.</li>
+<li class="task"><span class="cb"></span>Pas de <code>except Exception: pass</code>, <code>catch {}</code>.</li>
+<li class="task"><span class="cb"></span>Pas de stubs : <code>return None  # TODO</code>, <code>return True</code>.</li>
+<li class="task"><span class="cb"></span>Pas de nombres magiques sans explication.</li>
+<li class="task"><span class="cb"></span>Pas de <code>print</code> / <code>console.log</code> de debug.</li>
+</ul>
+<h2 id="3-tests">3. Tests</h2>
+<ul>
+<li class="task"><span class="cb"></span>Les tests vérifient le comportement, pas <code>is not None</code>.</li>
+<li class="task"><span class="cb"></span>Il y a des cas limites (vide, None, maximum).</li>
+<li class="task"><span class="cb"></span>Pas de <code>skip</code> / <code>xfail</code> / <code>only</code>.</li>
+<li class="task"><span class="cb"></span>Le test échoue si le code est cassé (vérifié par mutation).</li>
+</ul>
+<h2 id="4-securite">4. Sécurité</h2>
+<ul>
+<li class="task"><span class="cb"></span>Pas de secrets (<code>grep -rn "sk-"</code>, tokens, mots de passe).</li>
+<li class="task"><span class="cb"></span>Les requêtes SQL/commandes sont paramétrées.</li>
+<li class="task"><span class="cb"></span>L'entrée est validée à la frontière.</li>
+<li class="task"><span class="cb"></span>Nouvelle dépendance : le nom a été vérifié pour le typosquatting.</li>
+</ul>
+<h2 id="5-perimetre-de-la-tache">5. Périmètre de la tâche</h2>
+<ul>
+<li class="task"><span class="cb"></span>Changements uniquement dans les fichiers convenus.</li>
+<li class="task"><span class="cb"></span>Pas d'« améliorations incidentes ».</li>
+<li class="task"><span class="cb"></span>La taille du diff correspond au plan.</li>
+</ul>
+<h2 id="6-resultat">6. Résultat</h2>
+<ul>
+<li class="task"><span class="cb"></span>Le diff a été lu en entier.</li>
+<li class="task"><span class="cb"></span><code>./scripts/check.sh</code> est vert.</li>
+<li class="task"><span class="cb"></span>Les commentaires sont formulés comme <code>file:line — problème — correction</code>.</li>
+</ul>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

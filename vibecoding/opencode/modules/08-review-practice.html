@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 08 — Практика: поймать плохой дифф · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 08 — Практика: поймать плохой дифф · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice active" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/08-review-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/08-review-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/08-review-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="08-review.html">← Теория</a></div>
+<h1 id="08">Модуль 08 — Практика: поймать плохой дифф</h1>
+<p><strong>Время:</strong> 160 минут · <strong>Артефакт:</strong> <code>labs/08-review/</code></p>
+<hr />
+<h2 id="1-40">Задание 1. Тренировочные диффы (40 мин)</h2>
+<p>Создайте три «плохих» диффа (можно вручную, можно агентом):</p>
+<p><strong>Дифф A — дыра в безопасности:</strong></p>
+<pre><code class="language-diff">- if not user.is_active: return 403
++ # проверка не нужна
+</code></pre>
+<p><strong>Дифф B — проглоченная ошибка:</strong></p>
+<pre><code class="language-diff">- raise PaymentError(...)
++ except Exception: pass
+</code></pre>
+<p><strong>Дифф C — подогнанный тест:</strong></p>
+<pre><code class="language-diff">- assert calculate(2, 3) == 5
++ assert calculate(2, 3) is not None
+</code></pre>
+<p>Проведите ревью каждого по чек-листу <code>templates/review-checklist.md</code>.</p>
+<p><strong>Приёмка:</strong> для каждого диффа — конкретное замечание с файлом/строкой и предложенным фиксом.</p>
+<hr />
+<h2 id="2-40">Задание 2. Ревью реального диффа агента (40 мин)</h2>
+<p>Возьмите дифф из модуля 07 (миграция) или сделайте новую правку агентом.</p>
+<p>Пройдите по чек-листу:</p>
+<ul>
+<li class="task"><span class="cb"></span>прочитаны все удаления</li>
+<li class="task"><span class="cb"></span>нет <code>except: pass</code></li>
+<li class="task"><span class="cb"></span>нет <code>skip</code>/<code>xfail</code> без причины</li>
+<li class="task"><span class="cb"></span>нет заглушек <code>return None  # TODO</code></li>
+<li class="task"><span class="cb"></span>нет новых зависимостей (или обоснованы)</li>
+<li class="task"><span class="cb"></span>тесты проверяют поведение, а не «не None»</li>
+<li class="task"><span class="cb"></span>нет секретов</li>
+<li class="task"><span class="cb"></span>изменения в рамках задачи</li>
+</ul>
+<p><strong>Приёмка:</strong> заполненный чек-лист + минимум одно найденное замечание.</p>
+<hr />
+<h2 id="3-30">Задание 3. Второе мнение (30 мин)</h2>
+<p>Попросите ревью диффа у <strong>другой</strong> модели или свежего субагента:</p>
+<pre><code>Ты — строгий ревьюер. Дифф ниже. Найди только проблемы:
+удалённые проверки, проглоченные ошибки, бесполезные тесты,
+изменения вне задачи, секреты. Формат: файл:строка — проблема — как исправить.
+</code></pre>
+<p><strong>Приёмка:</strong> сравните, что нашли вы и что нашёл агент. Запишите, что вы пропустили.</p>
+<hr />
+<h2 id="4-review-checklist-25">Задание 4. Написать review checklist (25 мин)</h2>
+<p>Создайте <code>labs/08-review/checklist.md</code> — свой чек-лист под свой стек (10–15 пунктов).
+Добавьте его в <code>AGENTS.md</code> как команду:</p>
+<pre><code class="language-markdown">## Ревью
+Перед коммитом пройди `.review-checklist.md` и перечисли найденные проблемы.
+</code></pre>
+<p><strong>Приёмка:</strong> чек-лист специфичен для вашего проекта, не общие слова.</p>
+<hr />
+<h2 id="5-quality-gate-ci-25">Задание 5. Quality gate в CI (25 мин)</h2>
+<p>Добавьте минимальный CI (GitHub Actions или локальный pre-commit):</p>
+<pre><code class="language-yaml">- run: ./scripts/check.sh
+- run: grep -rn &quot;sk-&quot; --include=*.py . &amp;&amp; exit 1 || exit 0
+</code></pre>
+<p><strong>Приёмка:</strong> гейт падает на специально сломанном коммите и проходит на нормальном.</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Три тренировочных диффа разобраны.</li>
+<li class="task"><span class="cb"></span>Реальный дифф прошёл по чек-листу, есть замечания.</li>
+<li class="task"><span class="cb"></span>Есть сравнение «я vs агент-ревьюер».</li>
+<li class="task"><span class="cb"></span>Свой чек-лист подключён к <code>AGENTS.md</code>.</li>
+<li class="task"><span class="cb"></span>CI-гейт работает (падает/проходит).</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="08-review.html">← Ревью и quality gates</a>
+      <a class="next" href="09-custom.html">Кастомизация →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

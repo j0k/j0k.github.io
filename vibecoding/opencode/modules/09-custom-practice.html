@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 09 — Практика: свой инструментарий · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 09 — Практика: свой инструментарий · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice active" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/09-custom-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/09-custom-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/09-custom-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="09-custom.html">← Теория</a></div>
+<h1 id="09">Модуль 09 — Практика: свой инструментарий</h1>
+<p><strong>Время:</strong> 160 минут · <strong>Артефакт:</strong> <code>labs/09-custom/</code></p>
+<hr />
+<h2 id="1-command-30">Задание 1. Command (30 мин)</h2>
+<p>Создайте в <code>opencode.jsonc</code> команду <code>/check-fix</code>:</p>
+<pre><code class="language-jsonc">{
+  &quot;commands&quot;: {
+    &quot;check-fix&quot;: {
+      &quot;description&quot;: &quot;Прогнать проверки и исправить причины падений&quot;,
+      &quot;template&quot;: &quot;Запусти ./scripts/check.sh. Если упало — исправь причину, не отключая проверки. Повторяй максимум 3 раза. В конце покажи дифф и объясни в 2 строках.&quot;
+    }
+  }
+}
+</code></pre>
+<p>Проверьте вызов <code>/check-fix</code> на сломанном тесте.</p>
+<p><strong>Приёмка:</strong> команда работает, тест снова зелёный, дифф просмотрен.</p>
+<hr />
+<h2 id="2-skill-40">Задание 2. Skill (40 мин)</h2>
+<p>Создайте навык <code>.opencode/skills/migrations/SKILL.md</code>:</p>
+<pre><code class="language-markdown">---
+name: migrations
+description: Правила создания и применения миграций БД в этом проекте
+---
+
+1. Файл миграции: `migrations/YYYYMMDD_описание.sql`
+2. Всегда обратная миграция
+3. Запрещено: DROP COLUMN без бэкапа
+4. После создания: `alembic upgrade head` в dev, `pytest -q`
+</code></pre>
+<p>Проверьте: в новой сессии попросите «добавь миграцию» — агент должен сослаться на правила.</p>
+<p><strong>Приёмка:</strong> навык подхватывается; в отчёте — цитата из ответа агента.</p>
+<hr />
+<h2 id="3-subagent-40">Задание 3. Subagent-ревьюер (40 мин)</h2>
+<pre><code class="language-jsonc">{
+  &quot;agents&quot;: {
+    &quot;reviewer&quot;: {
+      &quot;description&quot;: &quot;Строгое ревью диффа, без правок&quot;,
+      &quot;mode&quot;: &quot;subagent&quot;,
+      &quot;permissions&quot;: [
+        { &quot;action&quot;: &quot;edit&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; },
+        { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git diff *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+        { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; }
+      ]
+    }
+  }
+}
+</code></pre>
+<p>Дайте ему дифф из модуля 07.</p>
+<p><strong>Приёмка:</strong> субагент вернул список проблем, файлы не изменены (<code>git status</code> чистый).</p>
+<hr />
+<h2 id="4-25">Задание 4. Модель под задачу (25 мин)</h2>
+<p>Настройте две конфигурации:</p>
+<pre><code class="language-jsonc">{
+  &quot;agents&quot;: {
+    &quot;fast&quot;: { &quot;mode&quot;: &quot;primary&quot;, &quot;model&quot;: &quot;&lt;дешёвая&gt;&quot; },
+    &quot;think&quot;: { &quot;mode&quot;: &quot;primary&quot;, &quot;model&quot;: &quot;&lt;reasoning&gt;&quot; }
+  }
+}
+</code></pre>
+<p>Сравните на одной задаче.</p>
+<p><strong>Приёмка:</strong> таблица «задача / агент / стоимость / качество».</p>
+<hr />
+<h2 id="5-mcp-25">Задание 5. MCP или обоснованный отказ (25 мин)</h2>
+<p>Проверьте список доступных MCP-серверов:</p>
+<pre><code class="language-bash">opencode mcp list
+</code></pre>
+<p>Если нужен внешний инструмент — подключите read-only и опишите риск.
+Если не нужен — напишите в отчёт 3 причины, почему нет (лишняя поверхность атаки,
+не решает задачу, есть более простой путь).</p>
+<p><strong>Приёмка:</strong> либо работающий read-only MCP, либо аргументированный отказ.</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Команда <code>/check-fix</code> работает.</li>
+<li class="task"><span class="cb"></span>Skill подхватывается агентом.</li>
+<li class="task"><span class="cb"></span>Субагент-ревьюер не имеет прав на правки.</li>
+<li class="task"><span class="cb"></span>Есть сравнение моделей по агентам.</li>
+<li class="task"><span class="cb"></span>MCP подключён или обоснованно отклонён.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="09-custom.html">← Кастомизация</a>
+      <a class="next" href="10-capstone.html">Капстоун →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

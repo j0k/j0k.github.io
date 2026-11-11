@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 01 — Comment fonctionnent les LLM · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 01 — Comment fonctionnent les LLM · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/01-llm-basics.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/01-llm-basics.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/01-llm-basics.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="01-llm-basics-practice.html">Pratique →</a></div>
+<h1 id="module-01-comment-fonctionnent-les-llm">Module 01 — Comment fonctionnent les LLM</h1>
+<p><strong>Durée :</strong> 4 heures · <strong>Format :</strong> 90 min de théorie + 150 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-le-modele-predit-du-texte">1. Le modèle prédit du texte</h2>
+<p>Un LLM est une fonction <code>next_token(context) → distribution de probabilités</code>.
+La génération consiste à tirer dans cette distribution, token par token.</p>
+<p>Trois conséquences à garder en tête :</p>
+<ol>
+<li><strong>Le modèle ne « sait » pas, il « continue ».</strong> Plausible ≠ vrai.</li>
+<li><strong>Le modèle n'a aucune mémoire entre deux appels.</strong> Ce qui n'est pas entré dans le contexte n'existe pas.</li>
+<li><strong>Le modèle ne « comprend » pas votre projet.</strong> Il ne voit que ce que vous lui avez donné dans cette requête.</li>
+</ol>
+<h2 id="2-les-tokens">2. Les tokens</h2>
+<p>Le texte est découpé en tokens — des fragments de 3 à 4 caractères (pire pour le russe que pour l'anglais).</p>
+<pre><code>&quot;Привет, мир&quot;  →  [При, вет, &quot;,&quot;, мир]
+&quot;hello world&quot;  →  [hello, world]
+</code></pre>
+<p>Conséquences pratiques :</p>
+<ul>
+<li>Les limites se mesurent en tokens, pas en caractères : 1 000 000 de tokens ≈ 700–900 Ko de code.</li>
+<li>Le texte russe coûte 20 à 40 % plus cher que l'anglais.</li>
+<li>Le code JSON/YAML est « plus cher » que du code ordinaire à cause de la ponctuation.</li>
+</ul>
+<p><strong>Règle :</strong> si vous pouvez l'expliquer plus court — expliquez-le plus court. Chaque token superflu
+est multiplié par le nombre d'étapes de la boucle de l'agent.</p>
+<h2 id="3-la-fenetre-de-contexte">3. La fenêtre de contexte</h2>
+<pre><code>[prompt système][instructions][fichiers][historique][votre question]
+└────────────────────  tout ça = le contexte  ─────────────────────┘
+</code></pre>
+<p>La propriété clé est le <strong>« perdu au milieu »</strong> : l'information au milieu d'un long contexte
+est moins bien utilisée qu'au début et à la fin.</p>
+<p>En pratique :</p>
+<ul>
+<li>Les exigences les plus importantes vont au début ou dans la question elle-même.</li>
+<li>Un gros fichier en entier est pire que le fragment nécessaire + une référence de chemin.</li>
+<li>Quand le contexte se remplit, l'agent ne devient pas « plus intelligent », il commence à se perdre.</li>
+</ul>
+<h2 id="4-echantillonnage-et-non-determinisme">4. Échantillonnage et non-déterminisme</h2>
+<p>Le modèle a des paramètres de génération :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Signification</th>
+<th>Quand y toucher</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temperature</code></td>
+<td>hasard du choix</td>
+<td>code : bas ; brainstorming : plus haut</td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td>tronque la queue de la distribution</td>
+<td>laissez presque toujours la valeur par défaut</td>
+</tr>
+<tr>
+<td><code>max_tokens</code></td>
+<td>longueur de la réponse</td>
+<td>limitez-la pour ne pas brûler le budget</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Important :</strong> <code>temperature: 0</code> <strong>ne garantit pas</strong> un résultat identique. Le batching, le cache,
+les versions de routage et les mises à jour du modèle changent la sortie. « Ça marchait hier » est un état normal.</p>
+<h2 id="5-les-tokens-de-raisonnement">5. Les tokens de raisonnement</h2>
+<p>Les modèles « qui réfléchissent » ont une phase de raisonnement cachée : le modèle génère une chaîne de pensée
+avant de répondre. C'est :</p>
+<ul>
+<li>plus cher (les tokens de raisonnement sont facturés) ;</li>
+<li>plus lent ;</li>
+<li>meilleur sur les tâches « réfléchis-y » (architecture, débogage, maths) ;</li>
+<li>presque inutile pour « renommer une variable ».</li>
+</ul>
+<h2 id="6-les-hallucinations">6. Les hallucinations</h2>
+<p>Une hallucination n'est pas un bug mais une conséquence de la conception : le modèle génère ce qui est plausible.</p>
+<p>Zones particulièrement dangereuses :</p>
+<ul>
+<li><strong>Les API et les versions de bibliothèques</strong> — le modèle se souvient d'anciennes signatures et les écrit avec assurance.</li>
+<li><strong>Les options de CLI</strong> — il est facile d'inventer une option qui n'existe pas.</li>
+<li><strong>Les nombres et les dates</strong> — inventés avec la même assurance que des faits.</li>
+<li><strong>Les liens</strong> — les URL sont générées à partir d'un modèle et n'existent souvent pas.</li>
+</ul>
+<p>Il n'y a qu'un remède : <strong>vérifier contre une source externe</strong> (compilateur, test, documentation, exécution).</p>
+<h2 id="7-connaissances-et-date-de-coupure">7. Connaissances et date de coupure</h2>
+<p>Le modèle est entraîné sur des données jusqu'à une certaine date. Tout ce qui est apparu plus tard, il
+le connaît mal ou pas du tout — mais il répondra quand même.</p>
+<p>En pratique : mettez la documentation à jour dans le contexte au lieu de vous fier à la mémoire du modèle.</p>
+<h2 id="8-pourquoi-les-modeles-deviennent-betes-dans-une-longue-session">8. Pourquoi les modèles « deviennent bêtes » dans une longue session</h2>
+<p>Trois raisons :</p>
+<ol>
+<li>Le contexte s'encrasse avec les déchets des tentatives ratées.</li>
+<li>Les instructions du début se sont « diluées » parmi des milliers de tokens.</li>
+<li>Le modèle s'est ancré sur sa propre décision erronée.</li>
+</ol>
+<p>Le remède : <strong>une nouvelle session + une description précise de ce qui est déjà connu.</strong> Ce n'est pas une défaite,
+c'est de l'hygiène normale.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi <code>temperature: 0</code> ne donne-t-il pas de reproductibilité ?</li>
+<li>Qu'est-ce que le « perdu au milieu » et quel effet a-t-il sur la structure de votre requête ?</li>
+<li>Pourquoi les hallucinations ne peuvent-elles pas se « guérir avec un prompt » ?</li>
+<li>Sur quelles tâches les tokens de raisonnement sont-ils rentables, et sur lesquelles ne le sont-ils pas ?</li>
+<li>Citez trois signes qu'il est temps de repartir de zéro dans une nouvelle session.</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="01-llm-basics-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="00-orientation-practice.html">← Orientation — pratique</a>
+      <a class="next" href="01-llm-basics-practice.html">Comment fonctionnent les LLM — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

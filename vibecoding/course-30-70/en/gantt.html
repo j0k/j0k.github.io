@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Course 30/70 — weekly Gantt</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1d1c1a;--muted:#6b6862;--line:#e2dfd7;--card:#fff;--accent:#2f5d50;
+--p1:#2d5bd7;--p2:#1f7a4a;--p3:#9a6700;--p4:#7a1f1f}
+@media (prefers-color-scheme:dark){:root{--bg:#171716;--fg:#ecebe7;--muted:#a19e96;--line:#33322e;
+--card:#211f1d;--accent:#8fbfae;--p1:#7c9cff;--p2:#58c28a;--p3:#e0b252;--p4:#f08279}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 system-ui,"Segoe UI",sans-serif}
+.wrap{padding:18px 22px 48px;max-width:1560px;margin:0 auto}
+h1{font-size:19px;margin:0 0 3px}
+.sub{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+.backlink{display:inline-block;font-size:11.5px;color:var(--accent);text-decoration:none;margin-bottom:4px}
+.backlink:hover{text-decoration:underline}
+.topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px;
+  padding-bottom:10px;border-bottom:1px solid var(--line);font-size:13px}
+.topbar a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:var(--muted)}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{font-size:12px;color:var(--muted);background:var(--card);
+  border:1px solid var(--line);padding:3px 10px;border-radius:999px}
+.topbar .switch:hover{color:var(--accent);border-color:var(--accent)}
+.topbar .share{font:inherit;font-size:12px;color:var(--muted);background:var(--card);
+  border:1px solid var(--line);padding:3px 10px;border-radius:999px;cursor:pointer}
+.topbar .share:hover{color:var(--accent);border-color:var(--accent)}
+.topbar .share.copied{color:#fff;background:var(--accent);border-color:var(--accent)}
+@media print{.topbar{display:none}}
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:99px;padding:3px 10px;background:var(--card)}
+.chip b{font-weight:600}
+button{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);
+  border-radius:6px;padding:4px 11px;cursor:pointer;font-size:12px}
+button:hover{border-color:var(--muted)}
+button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+
+/* grid */
+.gantt{display:grid;grid-template-columns:270px 1fr;min-width:0}
+.gantt.wide{grid-template-columns:460px 1fr}
+.ghead{position:sticky;top:0;z-index:3;background:var(--card)}
+.rowhd{font-size:12px;padding:0 10px;display:flex;align-items:center;gap:7px;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:27px;background:var(--card)}
+.rowhd.ms{font-weight:600;background:var(--bg);min-height:32px;align-items:flex-start;padding-top:7px}
+.rowhd.ms .nm{white-space:normal;line-height:1.25}
+.rowhd .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.rowhd .est{margin-left:auto;color:var(--muted);font-size:10.5px;font-variant-numeric:tabular-nums;flex:none}
+.rowhd.task{padding-left:24px;color:var(--fg)}
+.rowhd.task .k{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--muted);flex:none}
+.rowhd.task .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rowhd.th{padding-left:24px;font-size:11.5px;color:var(--muted)}
+.rowhd.th .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.track{position:relative;border-bottom:1px solid var(--line);min-height:27px}
+.track.band{background:var(--bg);min-height:32px}
+.grid{position:absolute;inset:0;pointer-events:none}
+.grid i{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:.65}
+.grid i.ph{background:var(--muted);opacity:.5;width:2px}
+
+.bar{position:absolute;top:5px;bottom:5px;border-radius:5px;display:flex;align-items:center;
+  padding:0 7px;font-size:10.5px;color:#fff;overflow:hidden;white-space:nowrap;cursor:default;
+  background:var(--c);box-shadow:0 1px 2px rgba(0,0,0,.13)}
+.bar .lbl{overflow:hidden;text-overflow:ellipsis}
+.bar:hover{filter:brightness(1.12)}
+.bar.ms{top:4px;bottom:4px;font-weight:600;font-size:11.5px}
+.bar.z{opacity:.5;background:repeating-linear-gradient(45deg,transparent,transparent 3px,
+  rgba(255,255,255,.5) 3px,rgba(255,255,255,.5) 6px),var(--c)}
+.bar.th{top:6px;bottom:6px;font-size:10px;box-shadow:none;opacity:.92}
+
+/* scale */
+.scale{position:relative;height:48px;border-bottom:1px solid var(--line);background:var(--card)}
+.scale .tick{position:absolute;top:18px;bottom:0;font-size:10.5px;color:var(--muted);
+  border-left:1px solid var(--line);display:flex;align-items:center;padding-left:5px}
+.scale .tick b{font-weight:600;color:var(--fg);margin-right:4px}
+.scale .ph{position:absolute;top:0;height:18px;font-size:9.5px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;padding:3px 0 0 6px;
+  border-left:2px solid var(--line);overflow:hidden;white-space:nowrap}
+
+/* tooltip */
+#tip{position:fixed;z-index:50;background:#1d1c1a;color:#f7f6f2;border-radius:7px;padding:7px 10px;
+  font-size:11.5px;max-width:360px;pointer-events:none;opacity:0;transition:opacity .1s;line-height:1.45}
+#tip.show{opacity:1}
+#tip b{display:block;margin-bottom:3px;font-size:12px}
+#tip .m{color:#bbb6aa}
+#tip .w{margin-top:4px;color:#e6e2d8}
+
+/* summary */
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.box .t{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
+.box .v{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.box .d{font-size:11.5px;color:var(--muted);margin-top:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:14px;height:9px;border-radius:3px;display:block}
+
+/* week table */
+table.mx{width:100%;border-collapse:collapse;margin-top:22px;font-size:12px;background:var(--card);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table.mx th,table.mx td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+table.mx th{background:var(--bg);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+table.mx tbody tr:last-child td{border-bottom:none}
+table.mx td:first-child{white-space:nowrap;font-weight:600}
+table.mx .ph{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+h2{font-size:14px;margin:26px 0 0}
+
+@media (max-width:900px){
+  .gantt{grid-template-columns:170px 1fr}
+  .wrap{padding:14px 12px 40px}
+  .rowhd{font-size:11px}
+  .rowhd.task{padding-left:14px}
+  .bar{font-size:9.5px}
+}
+@media print{
+  body{background:#fff}
+  .top,#tip{display:none}
+  .wrap{max-width:none;padding:0}
+  .ghead{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Vibecoding</a>
+    <span class="sep">·</span>
+    <span class="here">Course 30/70 · Gantt</span>
+    <span class="spacer"></span>
+    <button type="button" class="share" data-share="course-30-70/en/gantt.html" data-copied="Link copied" title="Share">Share</button>
+    <a class="switch" href="index.html">← Course 30/70</a>
+    <a class="switch" href="../gantt.html" title="Русский">RU</a>
+    <a class="switch" href="../fr/gantt.html" title="Français">FR</a>
+    <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+  </div>
+  <h1>Course “Vibecoding 30/70” — weekly Gantt</h1>
+  <p class="sub">1 session a week, 150 minutes each (180 for the capstone). 9 weeks, 1380 minutes, 30% theory / 70% practice.</p>
+
+  <div class="top">
+    <span class="chip">weeks <b>9</b></span>
+    <span class="chip">skills <b id="c-sk">28</b></span>
+    <span class="chip">theory blocks <b id="c-th">45</b></span>
+    <span class="chip">total <b>1380 min</b></span>
+    <button id="v-ms" class="on">weeks</button>
+    <button id="v-sk">skills</button>
+    <button id="v-th">theory</button>
+    <button id="v-all">skills + theory</button>
+  </div>
+
+  <div class="card">
+    <div class="gantt">
+      <div class="ghead"><div class="rowhd ms">Program</div></div>
+      <div class="ghead"><div class="scale" id="scale"></div></div>
+      <div id="hdcol"></div>
+      <div id="trackcol"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--p1)"></i> phase 1 · work scaffolding (W1–W3)</span>
+    <span><i style="background:var(--p2)"></i> phase 2 · quality control (W4–W6)</span>
+    <span><i style="background:var(--p3)"></i> phase 3 · production and team (W7–W8)</span>
+    <span><i style="background:var(--p4)"></i> phase 4 · capstone (W9)</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#999,#999 3px,#ccc 3px,#ccc 6px)"></i> skill reinforced in the following weeks</span>
+  </div>
+
+  <div class="sum">
+    <div class="box"><div class="t">Duration</div><div class="v">9 weeks</div>
+      <div class="d">8 modules × 150 min + 180 min capstone</div></div>
+    <div class="box"><div class="t">Practice</div><div class="v">966 min</div>
+      <div class="d">70% · 105 min of hands-on work in every session</div></div>
+    <div class="box"><div class="t">First artifact</div><div class="v">week 1</div>
+      <div class="d">a repository with history and a working utility</div></div>
+    <div class="box"><div class="t">Delivery threshold</div><div class="v">week 9</div>
+      <div class="d">public link + README + tests</div></div>
+  </div>
+
+  <h2>What each week produces</h2>
+  <table class="mx">
+    <thead><tr><th>Week</th><th>Module</th><th>Skill of the week</th><th>Deliverable</th></tr></thead>
+    <tbody id="mx"></tbody>
+  </table>
+</div>
+
+<div id="tip"></div>
+
+<script>
+(function () {
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () { btn.textContent = old; btn.classList.remove("copied"); }, 1600);
+      };
+      var fail = function () { window.prompt(btn.getAttribute("data-copied") || "", url); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+})();
+
+const WEEKS = 9;
+const PH = [
+  { id:"p1", name:"work scaffolding", from:0, to:2 },
+  { id:"p2", name:"quality control", from:3, to:5 },
+  { id:"p3", name:"production and team", from:6, to:7 },
+  { id:"p4", name:"capstone", from:8, to:8 },
+];
+
+const MODS = [
+  { id:"W1", w:0, name:"M1 · How vibecoding actually works", min:150,
+    art:"repository, 3+ commits, a 40–60 line utility",
+    skill:"read a diff: accept / reject" },
+  { id:"W2", w:1, name:"M2 · Spec and task definition", min:150,
+    art:"a 10-line spec + 5 tasks with criteria",
+    skill:"write a spec that cannot be read two ways" },
+  { id:"W3", w:2, name:"M3 · Loop: prompt → diff → review → commit", min:150,
+    art:"a feature in 4 steps and 4 commits",
+    skill:"keep a step under 200 lines with rollback" },
+  { id:"W4", w:3, name:"M4 · Context: how the agent sees your project", min:150,
+    art:"an AGENTS.md the agent actually follows",
+    skill:"manage context and the session" },
+  { id:"W5", w:4, name:"M5 · Debugging when the agent goes in circles", min:150,
+    art:"3 bugs closed with commits",
+    skill:"a minimal reproducible case" },
+  { id:"W6", w:5, name:"M6 · Tests and protection from regressions", min:150,
+    art:"5 tests that fail on a regression",
+    skill:"test before code, TDD loop" },
+  { id:"W7", w:6, name:"M7 · Data, APIs, environment, security", min:150,
+    art:"a working API integration, keys out of git",
+    skill:"curl before code, validation at the boundary" },
+  { id:"W8", w:7, name:"M8 · Deploy, git hygiene, teamwork", min:150,
+    art:"a public link + rollback in 2 minutes",
+    skill:"branch, PR, deploy, rollback" },
+  { id:"W9", w:8, name:"M9 · Capstone: your own project all the way to a link", min:180,
+    art:"a deployed project + delivery checklist",
+    skill:"build an MVP in 126 minutes" },
+];
+
+const SKILLS = [
+  { k:"S1", w:0, n:"Environment: agent, git, Node, Python", z:[1,8],
+    why:"nothing else runs without it; checked in every session" },
+  { k:"S2", w:0, n:"Repository: first commit before the code, .gitignore", z:[1,8],
+    why:"the rollback point appears before the first generated file" },
+  { k:"S3", w:0, n:"A 40–60 line utility from a ready spec", z:[],
+    why:"the first full loop: spec → code → run → acceptance" },
+  { k:"S4", w:0, n:"Read a diff line by line: accept / reject", z:[1,8],
+    why:"the course's through-line skill, trained in every module" },
+
+  { k:"S5", w:1, n:"Spec in 6 blocks + acceptance criteria", z:[2,8],
+    why:"the main quality lever: the agent checks criteria instead of guessing" },
+  { k:"S6", w:1, n:"A/B: a bad phrasing versus a spec", z:[],
+    why:"the difference shows on two diffs side by side, not in words" },
+  { k:"S7", w:1, n:"Decomposition into 5 tasks with criteria", z:[2,4],
+    why:"a 15-minute agent task instead of a 3-hour one" },
+  { k:"S7b", w:1, n:"Acceptance criterion → /goal condition", z:[2,8],
+    why:"the goal as a stopping condition: a measurable signal, boundaries, a step limit" },
+
+  { k:"S8", w:2, n:"Request: context / task / constraints / format", z:[3,8],
+    why:"8 three-minute mini-exercises on phrasing" },
+  { k:"S9", w:2, n:"A feature in 4 steps, a commit after each", z:[3,8],
+    why:"a diff over 200 lines almost always turns into garbage" },
+  { k:"S10", w:2, n:"Red flags in a diff (6 of them)", z:[3,8],
+    why:"removed checks, silent try/except, rewritten foreign files" },
+
+  { k:"S11", w:3, n:"AGENTS.md: stack, run commands, prohibitions", z:[4,8],
+    why:"rules are written once instead of repeated in every chat" },
+  { k:"S12", w:3, n:"Context isolation: a new chat per task", z:[4,8],
+    why:"measured: 3 tasks in one chat versus 3 chats" },
+  { k:"S13", w:3, n:"Restarting the session when the agent starts making things up", z:[5,8],
+    why:"minimal context is cheaper than fighting garbage in the history" },
+
+  { k:"S14", w:4, n:"Minimal reproducible case", z:[5,7],
+    why:"fact first, fix second: otherwise the agent guesses the cause" },
+  { k:"S15", w:4, n:"Hypothesis → check → fix → commit", z:[5,8],
+    why:"a debugging algorithm that cuts the number of rounds" },
+  { k:"S16", w:4, n:"Provoke a challenge: “explain what you checked”", z:[5,6],
+    why:"a check of whether the agent argues with a deliberately wrong hypothesis" },
+
+  { k:"S17", w:5, n:"Test runner and the first test on an existing function", z:[],
+    why:"vitest or pytest — once per project" },
+  { k:"S18", w:5, n:"TDD loop: 5 tests failing before the implementation", z:[6,7],
+    why:"it is easier for the agent than “code first, tests later”" },
+  { k:"S19", w:5, n:"Break a feature and make sure the tests caught it", z:[6,8],
+    why:"proof that the tests are alive, not green decorations" },
+
+  { k:"S20", w:6, n:".env, .env.example, the key is not in git history", z:[7,8],
+    why:"a key in git history is a compromised key" },
+  { k:"S21", w:6, n:"API: curl first, then the client, then errors", z:[7,7],
+    why:"a real response before code rules out invented methods and fields" },
+  { k:"S22", w:6, n:"Input and response validation + tests for bad data", z:[7,8],
+    why:"the module boundary is the cheapest place to run checks" },
+
+  { k:"S23", w:7, n:"Branch, PR, protecting main from direct pushes", z:[8,8],
+    why:"an agent on a branch is safer than an agent in main" },
+  { k:"S24", w:7, n:"Deploying with environment variables", z:[8,8],
+    why:"“it works on my machine” is not “it is deployed”" },
+  { k:"S25", w:7, n:"Break production and roll back in 2 minutes", z:[],
+    why:"redeploy first, then revert — both by hand" },
+  { k:"S26", w:7, n:"Reviewing AI code against a 12-point checklist", z:[8,8],
+    why:"what a human checks first and what they forgive" },
+
+  { k:"S27", w:8, n:"Capstone: spec + 4-step plan + core in 60 min + delivery", z:[],
+    why:"core, wrapper, README, deploy, checking the link from a phone" },
+];
+
+/* theory notes: w — week, d — share of the week (for row width) */
+const THEORY = [
+  { w:0, n:"An LLM predicts tokens, it does not “understand” code", why:"everything else follows from this limitation" },
+  { w:0, n:"Long context degrades quality", why:"why you cannot drag the whole project into the chat" },
+  { w:0, n:"Three modes: chat, autocomplete, an agent with tools", why:"what only an agent can do" },
+  { w:0, n:"Boundaries: confident on boilerplate, lying about an unfamiliar API", why:"calibrating trust" },
+  { w:0, n:"Your role: define the task and accept the result", why:"not a “programmer” but a customer" },
+
+  { w:1, n:"Spec in 6 blocks: goal, user, inputs/outputs, constraints, criteria, what we are NOT doing", why:"the template every spec is written from" },
+  { w:1, n:"Acceptance criteria are the main quality lever", why:"a verifiable statement instead of a wish" },
+  { w:1, n:"Killer phrasings: “make it pretty”, “like Airbnb”", why:"spot them before generation, not after" },
+  { w:1, n:"Decomposition: 15 minutes of agent work versus 3 hours", why:"step size sets the probability of success" },
+  { w:1, n:"Spec template and anti-pattern on the same example", why:"the difference is visible, not abstract" },
+  { w:1, n:"/goal: the goal as a completion condition, an evaluator after every turn", why:"a measurable signal, evidence in the session, boundaries and a step limit" },
+
+  { w:2, n:"Anatomy of a request: context, task, constraints, format, what not to do", why:"5 parts checked in every prompt" },
+  { w:2, n:"6 red flags in a diff", why:"removed checks, magic constants, silent try/except, foreign files, new dependencies, edited tests" },
+  { w:2, n:"Why a diff over 200 lines turns into garbage", why:"human diff review is the bottleneck" },
+  { w:2, n:"When to ask for an explanation and when to just redo it", why:"saving time on review" },
+  { w:2, n:"A commit as a rollback point, a message as documentation", why:"history instead of memory" },
+
+  { w:3, n:"What ends up in the agent's context", why:"open files, instructions, history, automatic repo search" },
+  { w:3, n:"The instruction file: CLAUDE.md / AGENTS.md / .cursorrules", why:"what to write so you do not repeat yourself every time" },
+  { w:3, n:"The agent does not know the stack and “forgets” after 40 messages", why:"hence the short-session strategy" },
+  { w:3, n:"Strategies: a new chat per task, file links, a plan before edits", why:"three techniques that always work" },
+  { w:3, n:"Garbage in the context = garbage in the code", why:"large files and logs ruin the session" },
+
+  { w:4, n:"Three circles of hell: guessing the cause, patching the symptom, breaking a neighbour", why:"a diagnosis of the typical stall" },
+  { w:4, n:"The one-fact rule: a reproducible case first", why:"a fix without reproduction is a lottery" },
+  { w:4, n:"How to make the agent read logs and stack traces", why:"facts instead of fantasies" },
+  { w:4, n:"The “explain what you checked” and “3 hypotheses with checks” techniques", why:"two phrases that break a deadlock" },
+  { w:4, n:"When rewriting is cheaper than fixing", why:"rollback as a normal tool" },
+
+  { w:5, n:"A test as acceptance criteria in executable form", why:"a spec cannot be fooled with words" },
+  { w:5, n:"The vibecoding pyramid: many units, few e2e, almost no UI snapshots", why:"what actually catches regressions" },
+  { w:5, n:"Test first, code later", why:"easier for the agent than the other way round" },
+  { w:5, n:"Forbidding the agent to edit tests without consent", why:"how to phrase it in the project instructions" },
+  { w:5, n:"Coverage as a decoy metric", why:"100% of lines and zero checks of meaning" },
+
+  { w:6, n:"Secrets: .env, .gitignore, a key in git history", why:"deleting the file does not undo the leak" },
+  { w:6, n:"API hallucinations: methods, deprecated parameters, invented fields", why:"what to check first" },
+  { w:6, n:"Checking the API by hand: docs, curl, the real response", why:"before the code, not after the crash" },
+  { w:6, n:"Validation at the boundary, types as cheap protection", why:"minimum effort, maximum effect" },
+  { w:6, n:"What must not go to the agent: production databases, private data, other people's tokens", why:"the limits of what is allowed" },
+
+  { w:7, n:"Branches and small PRs", why:"an agent on a branch is safer than an agent in main" },
+  { w:7, n:"Build and production environment: “works on my machine” ≠ “deployed”", why:"the difference between environments" },
+  { w:7, n:"env on the host, logs, rollback to the previous deploy", why:"what to set up before the first release" },
+  { w:7, n:"Reviewing AI code: what a human checks first", why:"priorities, not the whole diff in a row" },
+  { w:7, n:"Commit messages and PR descriptions", why:"so you are not guessing a month later" },
+
+  { w:8, n:"Choosing a project: value / uncertainty", why:"not “what looks impressive”" },
+  { w:8, n:"Build plan: 4 steps, each ending in something runnable", why:"there is always something to show" },
+  { w:8, n:"What to cut from the MVP to fit 126 minutes of practice", why:"stay within the session budget" },
+  { w:8, n:"Delivery checklist: it runs, the link is live, README, tests, secrets", why:"an objective threshold, not “seems done”" },
+];
+
+const $ = (s) => document.querySelector(s);
+const esc = (x) => String(x ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const pct = (w) => (w / WEEKS) * 100;
+const phOf = (w) => (PH.find((p) => w >= p.from && w <= p.to) || PH[0]).id;
+const phName = (w) => (PH.find((p) => w >= p.from && w <= p.to) || PH[0]).name;
+const st = { view: "ms" };
+
+function drawScale() {
+  let h = "";
+  for (let w = 0; w < WEEKS; w++) {
+    h += `<div class="tick" style="left:${pct(w)}%;width:${pct(1)}%"><b>W${w + 1}</b>${MODS[w].min} min</div>`;
+  }
+  PH.forEach((p) => {
+    h += `<div class="ph" style="left:${pct(p.from)}%;width:${pct(p.to - p.from + 1)}%">${p.name}</div>`;
+  });
+  $("#scale").innerHTML = h;
+}
+
+function grid() {
+  let h = "";
+  for (let w = 0; w <= WEEKS; w++) {
+    const isPh = PH.some((p) => p.from === w);
+    h += `<i class="${isPh ? "ph" : ""}" style="left:${pct(w)}%"></i>`;
+  }
+  return `<div class="grid">${h}</div>`;
+}
+
+function bar(cls, w, d, k, n, why, txt, col) {
+  return `<div class="bar ${cls}" style="left:${pct(w)}%;width:calc(${pct(d)}% - 2px);--c:var(--${col || phOf(w)})"
+    data-k="${esc(k)}" data-n="${esc(n)}" data-w="${w}" data-d="${d}" data-why="${esc(why || "")}">
+    <span class="lbl">${txt === undefined ? esc(n) : esc(txt)}</span></div>`;
+}
+
+function track(inner, band) {
+  return `<div class="track${band ? " band" : ""}">${grid()}${inner}</div>`;
+}
+
+function draw() {
+  const hd = [], tr = [];
+  const showSkills = st.view === "sk" || st.view === "all";
+  const showTheory = st.view === "th" || st.view === "all";
+
+  MODS.forEach((m) => {
+    const w = m.w;
+    hd.push(`<div class="rowhd ms"><span class="dot" style="background:var(--${phOf(w)})"></span>
+      <span class="nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</span>
+      <span class="est">${m.min} min</span></div>`);
+    tr.push(track(bar("ms", w, 1, m.id, m.name, m.art + " · skill: " + m.skill, m.min + " min"), true));
+
+    if (showSkills) {
+      SKILLS.filter((s) => s.w === w).forEach((s) => {
+        hd.push(`<div class="rowhd task"><span class="k">${esc(s.k)}</span><span class="nm">${esc(s.n)}</span></div>`);
+        let inner = "";
+        if (s.z && s.z.length) {
+          inner += bar("z", s.z[0], s.z[1] - s.z[0] + 1, s.k + " reinforcement",
+            "reinforcement", "the skill is used and checked in the following weeks", "", phOf(s.w));
+        }
+        inner += bar("", s.w, 1, s.k, s.n, s.why, "");
+        tr.push(track(inner));
+      });
+    }
+
+    if (showTheory) {
+      THEORY.filter((t) => t.w === w).forEach((t, i) => {
+        hd.push(`<div class="rowhd th"><span class="k" style="font-family:ui-monospace,Consolas,monospace;color:var(--muted);font-size:10px;flex:none">T${w + 1}.${i + 1}</span><span class="nm">${esc(t.n)}</span></div>`);
+        tr.push(track(bar("th", t.w, 1, "T" + (w + 1) + "." + (i + 1), t.n, t.why, "")));
+      });
+    }
+  });
+
+  $("#hdcol").innerHTML = hd.join("");
+  $("#trackcol").innerHTML = tr.join("");
+  bindTips();
+}
+
+const tip = $("#tip");
+function bindTips() {
+  document.querySelectorAll(".bar").forEach((el) => {
+    el.onmousemove = (e) => {
+      const w = +el.dataset.w;
+      tip.innerHTML = `<b>${esc(el.dataset.k)} — ${esc(el.dataset.n)}</b>
+        <span class="m">W${w + 1} · ${esc(phName(w))} · ${esc(el.dataset.d)} wk</span>
+        ${el.dataset.why ? `<div class="w">${esc(el.dataset.why)}</div>` : ""}`;
+      tip.classList.add("show");
+      const pad = 14;
+      let x = e.clientX + pad, y = e.clientY + pad;
+      const r = tip.getBoundingClientRect();
+      if (x + r.width > innerWidth - 8) x = e.clientX - r.width - pad;
+      if (y + r.height > innerHeight - 8) y = e.clientY - r.height - pad;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    };
+    el.onmouseleave = () => tip.classList.remove("show");
+  });
+}
+
+function setView(v) {
+  st.view = v;
+  ["v-ms", "v-sk", "v-th", "v-all"].forEach((id) => {
+    $("#" + id).classList.toggle("on", id === "v-" + v);
+  });
+  document.querySelector(".gantt").classList.toggle("wide", v !== "ms");
+  draw();
+}
+$("#v-ms").onclick = () => setView("ms");
+$("#v-sk").onclick = () => setView("sk");
+$("#v-th").onclick = () => setView("th");
+$("#v-all").onclick = () => setView("all");
+
+/* view from the URL: gantt.html#all */
+const hashView = (location.hash || "").replace("#", "");
+drawScale();
+if ($("#c-sk")) $("#c-sk").textContent = SKILLS.length;
+if ($("#c-th")) $("#c-th").textContent = THEORY.length;
+if (["ms", "sk", "th", "all"].includes(hashView)) setView(hashView); else setView("ms");
+
+$("#mx").innerHTML = MODS.map((m) => `<tr>
+  <td><span class="ph" style="background:var(--${phOf(m.w)})"></span>W${m.w + 1}</td>
+  <td>${esc(m.name)}</td>
+  <td>${esc(m.skill)}</td>
+  <td>${esc(m.art)}</td></tr>`).join("");
+</script>
+</body>
+</html>

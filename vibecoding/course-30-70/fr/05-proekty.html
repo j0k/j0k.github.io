@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projets — Vibecoding 30/70</title>
+<meta property="og:title" content="Projets — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>cours 30/70 · 23 heures</span></a>
+    <div class="ratio">30 % de théorie · 70 % de pratique · 1380 min</div>
+    <nav>
+      <a href="index.html">Aperçu du cours<small>Début</small></a>
+      <a href="01-programma.html">Programme<small>Modules et minutage</small></a>
+      <a href="02-teoriya.html">Théorie<small>30 % du cours</small></a>
+      <a href="03-praktika.html">Pratique<small>70 % du cours</small></a>
+      <a href="04-promptoteka.html">Bibliothèque de prompts<small>32 prompts</small></a>
+      <a href="05-proekty.html" class="active">Projets<small>Projet final</small></a>
+      <a href="06-tracker.html">Suivi<small>Checklist</small></a>
+      <a href="gantt.html">Gantt par semaine<small>Compétences et théorie</small></a>
+    </nav>
+    <div class="foot">S'ouvre en local, sans connexion.<br>Ctrl+P — version imprimable.<br>
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../opencode/index.html">Cours OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Cours 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/fr/05-proekty.html" data-copied="Lien copié" title="Partager">Partager</button>
+      <a class="switch" href="../05-proekty.html" title="Русский">RU</a>
+      <a class="switch" href="../en/05-proekty.html" title="English">EN</a>
+      <a class="switch" href="../../opencode/index.html">Cours OpenCode →</a>
+    </div>
+    <article>
+<h1 id="projets-pour-le-projet-final">Projets pour le projet final</h1>
+<p>On choisit selon le critère « valeur pour vous / inconnu pour l'agent ».
+Notation de difficulté : ● faible, ●● moyenne, ●●● élevée.
+Toutes les options tiennent dans 126 minutes de pratique, c'est-à-dire dans un MVP.</p>
+<hr />
+<h2 id="1-suivi-des-depenses-depuis-un-csv-bancaire">1. Suivi des dépenses depuis un CSV bancaire — ●●●</h2>
+<p><strong>L'essentiel.</strong> Vous téléversez un relevé bancaire, l'application regroupe les dépenses par catégorie
+selon des règles (mots-clés dans le libellé) et affiche les totaux du mois.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Des données réelles, un bénéfice évident, vérifiable à la main.
+L'inconnu : le parsing d'un format CSV précis — résolu avec un seul
+<code>fixtures/sample.csv</code>.</p>
+<p><strong>Scénario principal.</strong> Téléverser un CSV → voir un tableau « catégorie : montant » pour le mois.</p>
+<p><strong>Ce qu'on coupe.</strong> L'authentification, les graphiques, l'édition des règles dans l'UI (les règles
+vivent dans un fichier JSON).</p>
+<p><strong>Stack.</strong> Node + Fastify + HTML vanilla, ou Python + FastAPI.</p>
+<hr />
+<h2 id="2-suivi-dhabitudes-sur-localstorage">2. Suivi d'habitudes sur localStorage — ●</h2>
+<p><strong>L'essentiel.</strong> Des marques « fait » par jour, la série en cours, une grille hebdomadaire.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Aucun backend ni base de données — la moitié des risques disparaît. Idéal si
+le temps est compté.</p>
+<p><strong>Scénario principal.</strong> Marquer aujourd'hui → la série grandit → après rechargement de
+la page, tout est toujours là.</p>
+<p><strong>Ce qu'on coupe.</strong> Les comptes, la synchronisation, les rappels.</p>
+<p><strong>Stack.</strong> Un seul fichier HTML + JS, ou React + Vite.</p>
+<hr />
+<h2 id="3-convertisseur-markdown-html-en-cli">3. Convertisseur Markdown → HTML en CLI — ●●</h2>
+<p><strong>L'essentiel.</strong> L'utilitaire lit un .md, produit un .html avec des styles de base ; prise en charge des
+titres, des listes, des liens, du code.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Parfait pour le TDD : chaque élément de syntaxe = un test.
+Beaucoup de cas limites (fichier vide, listes imbriquées, code non fermé).</p>
+<p><strong>Scénario principal.</strong> <code>convert input.md -o out.html</code> → du HTML valide avec les balises attendues.</p>
+<p><strong>Ce qu'on coupe.</strong> Les tableaux, les notes de bas de page, les extensions personnalisées, le mode watch.</p>
+<p><strong>Stack.</strong> Python (sans dépendances) ou Node (sans dépendances).</p>
+<hr />
+<h2 id="4-tableau-de-bord-meteo-par-ville">4. Tableau de bord météo par ville — ●●</h2>
+<p><strong>L'essentiel.</strong> Une liste de villes, la température actuelle et le vent depuis une API publique,
+rafraîchis par un bouton.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Fait travailler le module 7 de bout en bout : une vraie API, du cache, des erreurs réseau,
+la validation des réponses. open-meteo a une API sans clé.</p>
+<p><strong>Scénario principal.</strong> Saisir une ville → voir la température ; si l'API est indisponible — une
+erreur claire au lieu d'un écran vide.</p>
+<p><strong>Ce qu'on coupe.</strong> Les graphiques, les prévisions à 7 jours, la géolocalisation.</p>
+<p><strong>Stack.</strong> Node + Express + un frontend statique, déploiement sur Vercel.</p>
+<hr />
+<h2 id="5-parser-doffres-demploi-avec-filtres">5. Parser d'offres d'emploi avec filtres — ●●●</h2>
+<p><strong>L'essentiel.</strong> Un script récupère les offres pour une requête, filtre par mots-clés et par
+salaire, exporte en CSV.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Un vrai bénéfice quand on cherche un emploi ; ça apprend à valider les données des autres.
+Inconnu : la disponibilité de l'API — vérifiez avant de commencer, il n'y a peut-être pas
+d'API publique sans clé (utilisez alors des fixtures).</p>
+<p><strong>Scénario principal.</strong> Lancer la commande → un CSV avec 10 offres filtrées.</p>
+<p><strong>Ce qu'on coupe.</strong> L'interface web, la planification, la déduplication.</p>
+<p><strong>Stack.</strong> Python + requests.</p>
+<hr />
+<h2 id="6-mini-crm-sur-une-seule-table">6. Mini-CRM sur une seule table — ●●●</h2>
+<p><strong>L'essentiel.</strong> Une liste de clients : nom, statut (nouveau/actif/perdu), note, date du prochain
+contact. CRUD + filtre par statut.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Fait travailler le cycle complet : modèle de données, API, UI, tests, déploiement.
+Inconnu : la base de données — utilisez SQLite en local et Vercel Postgres/Supabase si
+vous voulez de la production.</p>
+<p><strong>Scénario principal.</strong> Ajouter un client → changer le statut → filtrer par statut
+après un rechargement.</p>
+<p><strong>Ce qu'on coupe.</strong> L'authentification, les rôles, l'historique des modifications, les pièces jointes.</p>
+<p><strong>Stack.</strong> Node + Fastify + SQLite, ou Next.js + Supabase.</p>
+<hr />
+<h2 id="7-generateur-de-readme-pour-un-depot">7. Générateur de README pour un dépôt — ●●</h2>
+<p><strong>L'essentiel.</strong> Une CLI lit <code>package.json</code>/<code>pyproject.toml</code> et l'arborescence des dossiers, génère
+un README avec les sections : installation, lancement, tests, structure.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Un utilitaire que vous utiliserez sur chaque projet du cours.
+Beaucoup de cas limites sur les chaînes — de bons tests unitaires.</p>
+<p><strong>Scénario principal.</strong> <code>readme-gen .</code> → un fichier README avec les bonnes commandes.</p>
+<p><strong>Ce qu'on coupe.</strong> Les modèles, la personnalisation, l'intégration de l'API GitHub.</p>
+<p><strong>Stack.</strong> Node ou Python, sans dépendances.</p>
+<hr />
+<h2 id="8-verificateur-de-liens-morts-pour-un-site">8. Vérificateur de liens morts pour un site — ●●</h2>
+<p><strong>L'essentiel.</strong> Un script parcourt une page, collecte les liens, vérifie les codes de statut,
+et produit un rapport.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Enseigne les timeouts, la concurrence, la gestion du réseau — l'ensemble
+d'erreurs le plus riche par ligne de code.</p>
+<p><strong>Scénario principal.</strong> <code>check-links https://example.com</code> → un rapport listant les 4xx/5xx.</p>
+<p><strong>Ce qu'on coupe.</strong> Le crawl récursif, le cache, les rapports HTML.</p>
+<p><strong>Stack.</strong> Python + httpx.</p>
+<hr />
+<h2 id="9-bot-de-rappels-telegram">9. Bot de rappels Telegram — ●●●</h2>
+<p><strong>L'essentiel.</strong> Le bot accepte « rappelle-moi demain à 10 h d'appeler », le stocke et vous envoie un message à l'heure dite.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> Un vrai bénéfice ; enseigne les API externes et les secrets en production.
+Inconnu : le token et l'hébergement d'un processus de longue durée (Railway/Fly), Vercel
+ne convient pas pour du polling.</p>
+<p><strong>Scénario principal.</strong> Envoyer un message → recevoir une confirmation → recevoir le
+rappel.</p>
+<p><strong>Ce qu'on coupe.</strong> Les rappels récurrents, les fuseaux horaires (autres que le vôtre), les commandes.</p>
+<p><strong>Stack.</strong> Python + aiogram, SQLite.</p>
+<hr />
+<h2 id="10-comparaison-de-prix-par-url-enregistrees">10. Comparaison de prix par URL enregistrées — ●●●</h2>
+<p><strong>L'essentiel.</strong> Une liste d'URL de produits, un script extrait le prix par sélecteur, écrit l'historique en
+CSV, affiche la variation.</p>
+<p><strong>Pourquoi c'est un bon choix.</strong> La plus forte densité d'apprentissage : parsing HTML, sélecteurs,
+historique, erreurs dues au balisage qui change.</p>
+<p><strong>L'inconnu.</strong> Les sites bloquent les bots ; choisissez un seul site, vérifiez-le avec curl avant de
+commencer. S'il vous bloque — travaillez sur des fixtures HTML enregistrées.</p>
+<p><strong>Scénario principal.</strong> Lancer → pour chaque URL le prix et l'écart depuis la dernière fois.</p>
+<p><strong>Ce qu'on coupe.</strong> Les notifications, un planificateur, le contournement anti-bot.</p>
+<p><strong>Stack.</strong> Python + httpx + selectolax (ou cheerio en Node).</p>
+<hr />
+<h2 id="comment-choisir-en-5-minutes">Comment choisir en 5 minutes</h2>
+<ol>
+<li>Avez-vous besoin du résultat après le cours ? Si oui — prenez 1, 5 ou 7.</li>
+<li>Vous voulez un risque minimal et un rendu garanti — prenez 2 ou 3.</li>
+<li>Vous voulez pratiquer les API et le déploiement — prenez 4 ou 6.</li>
+</ol>
+<p>Ce qu'il ne faut pas prendre pour un projet final : tout ce qui a plus d'un écran d'authentification, tout ce qui a besoin d'un
+prestataire de paiement, tout ce qui a besoin d'un build mobile natif. Ce n'est pas un travail de 126 minutes.</p>
+    </article>
+    <div class="pager"><a class="prev" href="04-promptoteka.html">← Bibliothèque de prompts</a>
+      <a class="next" href="06-tracker.html">Suivi →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur", crit: "critères" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

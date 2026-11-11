@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 01 — Практика: эксперименты, ломающие интуицию · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 01 — Практика: эксперименты, ломающие интуицию · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice active" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/01-llm-basics-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/01-llm-basics-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/01-llm-basics-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="01-llm-basics.html">← Теория</a></div>
+<h1 id="01">Модуль 01 — Практика: эксперименты, ломающие интуицию</h1>
+<p><strong>Время:</strong> 150 минут · <strong>Артефакт:</strong> <code>labs/01-experiments.md</code></p>
+<p>Все эксперименты выполняются в <code>~/edu/sandbox</code> (или любом учебном репозитории).
+Для каждого — фиксируйте результат: что ожидали, что получили, вывод.</p>
+<hr />
+<h2 id="1-20">Эксперимент 1. Недетерминизм (20 мин)</h2>
+<p>Задайте агенту один и тот же вопрос три раза <strong>в трёх новых сессиях</strong>:</p>
+<pre><code>Напиши функцию на Python, которая проверяет, является ли строка палиндромом.
+</code></pre>
+<p>Сравните три ответа.</p>
+<p><strong>Записать:</strong> чем отличаются (имена, обработка регистра, пробелы, тесты).
+<strong>Вывод:</strong> воспроизводимость достигается не температурой, а тестами.</p>
+<hr />
+<h2 id="2-vs-30">Эксперимент 2. Расплывчатость vs конкретика (30 мин)</h2>
+<p><strong>Плохой запрос:</strong></p>
+<pre><code>Сделай валидацию email.
+</code></pre>
+<p><strong>Хороший запрос:</strong></p>
+<pre><code>Добавь в app.py функцию validate_email(s: str) -&gt; bool.
+Требования:
+- строка содержит ровно один '@';
+- локальная часть непустая, домен содержит точку;
+- кириллица запрещена;
+- пустая строка → False;
+- не бросать исключений.
+Напиши тесты на: &quot;a@b.co&quot; → True, &quot;a@b&quot; → False, &quot;&quot; → False, &quot;тест@mail.ru&quot; → False.
+</code></pre>
+<p><strong>Записать</strong> таблицу: | критерий | плохой запрос | хороший запрос | — по колонкам
+«есть ли тесты», «учтена кириллица», «учтён <code>''</code>», «число итераций до рабочего результата».</p>
+<hr />
+<h2 id="3-30">Эксперимент 3. Иголка в стоге сена (30 мин)</h2>
+<p>Создайте файл с 300 строками нерелевантного кода (можно сгенерировать агентом),
+и в середине — одну строку:</p>
+<pre><code class="language-python">SECRET_CONSTANT = 42  # важное правило
+</code></pre>
+<p>В одной сессии попросите:</p>
+<pre><code>Прочитай big.py целиком и скажи значение SECRET_CONSTANT.
+</code></pre>
+<p>Затем в новой сессии:</p>
+<pre><code>Найди в big.py константу SECRET_CONSTANT и скажи её значение. Используй grep.
+</code></pre>
+<p><strong>Записать:</strong> оба ответа, время, примерную стоимость.
+<strong>Вывод:</strong> инструмент (grep) дешевле и надёжнее, чем «прочитай всё».</p>
+<hr />
+<h2 id="4-api-25">Эксперимент 4. Галлюцинация API (25 мин)</h2>
+<p>Попросите:</p>
+<pre><code>Напиши пример использования библиотеки &lt;выберите редкую библиотеку&gt; с методом &lt;выдумайте метод&gt;.
+</code></pre>
+<p>Затем проверьте в официальной документации, существует ли метод.</p>
+<p>Повторите с вашей основной библиотекой:</p>
+<pre><code>Как в &lt;ваша библиотека&gt; &lt;версия&gt; сделать &lt;задача&gt;?
+</code></pre>
+<p>Сверьте с документацией.</p>
+<p><strong>Записать:</strong> сколько выдумок на 3 запроса. Какая формулировка повышала риск.</p>
+<hr />
+<h2 id="5-30">Эксперимент 5. Деградация длинной сессии (30 мин)</h2>
+<p>В <strong>одной</strong> сессии:</p>
+<ol>
+<li>Попросите написать 3 функции.</li>
+<li>Две из них попросите переписать «по-другому» (создайте 2–3 итерации правок).</li>
+<li>Затем вернитесь к задаче из шага 1: «напомни, какие требования были к первой функции?»</li>
+<li>Попросите добавить новую функцию в том же стиле.</li>
+</ol>
+<p>Теперь повторите шаг 4 в <strong>новой</strong> сессии, дав только финальный код и требования.</p>
+<p><strong>Записать:</strong> в каком случае стиль консистентнее, где больше расхождений с исходными требованиями.
+<strong>Вывод:</strong> «модель отупела» = «контекст засорён».</p>
+<hr />
+<h2 id="6-15">Эксперимент 6. Цена контекста (15 мин)</h2>
+<p>Запустите одну задачу дважды:</p>
+<pre><code>A) &quot;Объясни, что делает app.py&quot; (файл на 20 строк)
+B) то же, но сначала попросите прочитать 5 больших файлов проекта
+</code></pre>
+<p>Сравните отображаемую стоимость/токены сессии (в OpenCode — счётчик стоимости,
+или <code>opencode stats</code>).</p>
+<p><strong>Записать:</strong> во сколько раз дороже вариант B и стало ли объяснение лучше.</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Все 6 экспериментов выполнены, каждый с разделом «ожидание / факт / вывод».</li>
+<li class="task"><span class="cb"></span>В отчёте есть хотя бы одна таблица сравнения.</li>
+<li class="task"><span class="cb"></span>Сформулированы 3 личных правила, которые вы забираете в работу.</li>
+<li class="task"><span class="cb"></span>Приложены логи/скриншоты стоимости для эксперимента 6.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="01-llm-basics.html">← Как работают LLM</a>
+      <a class="next" href="02-context.html">Контекст-инжиниринг →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

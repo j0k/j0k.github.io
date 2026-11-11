@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 07 — Pratique : migrer sans tests rouges · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 07 — Pratique : migrer sans tests rouges · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice active" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/07-refactor-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/07-refactor-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/07-refactor-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="07-refactor.html">← Théorie</a></div>
+<h1 id="module-07-pratique-migrer-sans-tests-rouges">Module 07 — Pratique : migrer sans tests rouges</h1>
+<p><strong>Temps :</strong> 210 minutes · <strong>Livrable :</strong> <code>labs/07-refactor/</code></p>
+<hr />
+<h2 id="tache-1-carte-des-dependances-25-min">Tâche 1. Carte des dépendances (25 min)</h2>
+<p>Choisissez une fonction/classe que vous voulez remplacer. Construisez une carte :</p>
+<pre><code class="language-bash">grep -rn &quot;old_name&quot; --include=*.py .
+</code></pre>
+<p>Remplissez un tableau :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Ligne</th>
+<th>Ce qu'elle fait</th>
+<th>Risque</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Critère d'acceptation :</strong> la carte est complète (recoupez une fois de plus avec <code>grep</code>), les risques sont classés.</p>
+<hr />
+<h2 id="tache-2-plan-de-migration-25-min">Tâche 2. Plan de migration (25 min)</h2>
+<p>Écrivez un plan en 5 à 7 étapes, où chaque étape :</p>
+<ul>
+<li>touche ≤ 2 fichiers ;</li>
+<li>se termine par <code>./scripts/check.sh</code> ;</li>
+<li>a son propre commit.</li>
+</ul>
+<p><strong>Critère d'acceptation :</strong> le plan a été validé par vous avant de commencer le travail (notez-le dans le rapport).</p>
+<hr />
+<h2 id="tache-3-migration-pas-a-pas-90-min">Tâche 3. Migration pas à pas (90 min)</h2>
+<p>Exécutez les étapes selon le plan. Après chacune :</p>
+<pre><code class="language-bash">./scripts/check.sh
+git add -A &amp;&amp; git commit -m &quot;step N: &lt;what was done&gt;&quot;
+</code></pre>
+<p>Règles pour l'agent :</p>
+<pre><code>We work one plan step at a time. After the step, stop and show the diff.
+Don't touch files outside &lt;path&gt;. Don't change public signatures.
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> au moins 3 étapes, chacune avec des tests verts et un commit.
+Dans le rapport — <code>git log --oneline</code> et <code>git diff --stat</code> pour toute la migration.</p>
+<hr />
+<h2 id="tache-4-test-de-rollback-25-min">Tâche 4. Test de rollback (25 min)</h2>
+<p>Cassez volontairement une étape (dites à l'agent : « essaie de faire l'étape 4 en même temps que l'étape 5, tout de suite »).
+Regardez combien de fichiers ont été touchés et combien de tests ont échoué. Revenez en arrière :</p>
+<pre><code class="language-bash">git reset --hard HEAD~1
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> dans le rapport — une comparaison « une par une » vs « tout d'un coup » : nombre de fichiers,
+nombre d'échecs, temps passé à démêler.</p>
+<hr />
+<h2 id="tache-5-suppression-du-code-mort-45-min">Tâche 5. Suppression du code mort (45 min)</h2>
+<p>Après la migration :</p>
+<pre><code>The old code is no longer used. Find all references to &lt;old_name&gt;,
+delete them and the code itself. If something still uses it — stop and show me the list.
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> tests verts, <code>grep</code> sur l'ancien nom vide, diff relu.</p>
+<hr />
+<h2 id="criteres-de-rendu">Critères de rendu</h2>
+<ul>
+<li class="task"><span class="cb"></span>La carte des dépendances est complète.</li>
+<li class="task"><span class="cb"></span>Un plan de 5+ étapes, validé avant le travail.</li>
+<li class="task"><span class="cb"></span>≥ 3 étapes avec tests verts et commits.</li>
+<li class="task"><span class="cb"></span>L'expérience « tout d'un coup » + rollback.</li>
+<li class="task"><span class="cb"></span>Code mort supprimé, dépôt vert.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="07-refactor.html">← Refactoring à grande échelle</a>
+      <a class="next" href="08-review.html">Revue et quality gates →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

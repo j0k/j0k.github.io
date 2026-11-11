@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как собрать сайт · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Как собрать сайт · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="modules/00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="modules/02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="modules/03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="modules/04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="modules/06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="modules/07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="modules/09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="modules/10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="rubric.html">Критерии оценки</a>
+    <a class="nav" href="glossary.html">Глоссарий</a>
+    <a class="nav" href="resources.html">Что читать дальше</a>
+    <a class="nav" href="progress.html">Трекер прогресса</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Шаблоны</a>
+    <a class="nav active" href="build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/build.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="en/build.html" title="English">EN</a>
+  <a class="switch" href="fr/build.html" title="Français">FR</a>
+  <a class="switch" href="../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<h1 id="opencode">Сборка сайта курса «Вайбкодинг с OpenCode»</h1>
+<p>HTML-версия курса собирается из Markdown-исходников этого каталога (<code>src/</code>).
+Внешних зависимостей у сайта нет: только общий <code>assets/style.css</code>.</p>
+<h2 id="_1">Структура сайта</h2>
+<pre><code>opencode/
+├── index.html                  обзор курса: программа, расписание, оценки
+├── modules/
+│   ├── NN-slug.html            теория модуля
+│   └── NN-slug-practice.html   практика модуля
+├── templates/*.html            шаблоны артефактов
+├── templates.html              оглавление шаблонов
+├── rubric.html                 критерии оценки
+├── glossary.html               глоссарий
+├── resources.html              что читать дальше
+├── progress.html               трекер прогресса
+├── labs.html                   куда сдавать артефакты
+├── build.html                  эта страница
+├── assets/style.css            общий стиль
+└── src/                        markdown-исходники и сборщик
+</code></pre>
+<h2 id="_2">Как пересобрать</h2>
+<p>Правьте Markdown в <code>src/</code>, затем:</p>
+<pre><code class="language-bash">cd src
+python build.py
+</code></pre>
+<p>Нужен пакет <code>markdown</code>:</p>
+<pre><code class="language-bash">pip install markdown
+</code></pre>
+<p>Сборщик сам переписывает ссылки <code>*.md</code> во внутренние <code>.html</code>, подставляет
+правильные относительные пути и собирает навигацию по модулям.
+Руками ссылки в HTML трогать не нужно — следующая сборка их перезапишет.</p>
+<h2 id="_3">Что добавляется при сборке</h2>
+<ul>
+<li>Единый сайдбар: все модули (теория + практика) и материалы курса.</li>
+<li>Переходы «теория ↔ практика» в шапке страницы модуля и пейджер внизу.</li>
+<li>Чек-листы <code>- [ ]</code> кликабельные; прогресс хранится в <code>localStorage</code>
+  отдельно для каждой страницы.</li>
+<li>Чекбоксы в таблицах (трекер прогресса) тоже кликабельные.</li>
+<li><code>Ctrl+P</code> даёт чистую версию: без сайдбара, пейджера и прогресс-бара.</li>
+</ul>
+<h2 id="_4">Файлы исходников</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Файл</th>
+<th>Страница</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td><code>index.html</code></td>
+</tr>
+<tr>
+<td><code>modules/NN-slug/README.md</code></td>
+<td><code>modules/NN-slug.html</code></td>
+</tr>
+<tr>
+<td><code>modules/NN-slug/practice.md</code></td>
+<td><code>modules/NN-slug-practice.html</code></td>
+</tr>
+<tr>
+<td><code>templates/*.md</code></td>
+<td><code>templates/*.html</code></td>
+</tr>
+<tr>
+<td><code>rubric.md</code></td>
+<td><code>rubric.html</code></td>
+</tr>
+<tr>
+<td><code>glossary.md</code></td>
+<td><code>glossary.html</code></td>
+</tr>
+<tr>
+<td><code>resources.md</code></td>
+<td><code>resources.html</code></td>
+</tr>
+<tr>
+<td><code>progress.md</code></td>
+<td><code>progress.html</code></td>
+</tr>
+<tr>
+<td><code>labs/README.md</code></td>
+<td><code>labs.html</code></td>
+</tr>
+<tr>
+<td><code>BUILD.md</code></td>
+<td><code>build.html</code></td>
+</tr>
+</tbody>
+</table></div>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

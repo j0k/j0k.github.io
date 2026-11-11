@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracker — Vibecoding 30/70</title>
+<meta property="og:title" content="Tracker — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>course 30/70 · 23 hours</span></a>
+    <div class="ratio">30% theory · 70% practice · 1380 min</div>
+    <nav>
+      <a href="index.html">Course overview<small>Start</small></a>
+      <a href="01-programma.html">Program<small>Modules and timing</small></a>
+      <a href="02-teoriya.html">Theory<small>30% of the course</small></a>
+      <a href="03-praktika.html">Practice<small>70% of the course</small></a>
+      <a href="04-promptoteka.html">Prompt library<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projects<small>Capstone</small></a>
+      <a href="06-tracker.html" class="active">Tracker<small>Checklist</small></a>
+      <a href="gantt.html">Weekly Gantt<small>Skills and theory</small></a>
+    </nav>
+    <div class="foot">Opens locally, no internet needed.<br>Ctrl+P — print version.<br>
+      <a href="../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../opencode/index.html">OpenCode course</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Course 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/en/06-tracker.html" data-copied="Link copied" title="Share">Share</button>
+      <a class="switch" href="../06-tracker.html" title="Русский">RU</a>
+      <a class="switch" href="../fr/06-tracker.html" title="Français">FR</a>
+      <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+    </div>
+    <article>
+<h1 id="progress-tracker">Progress tracker</h1>
+<p>Filled in by hand. A <code>[x]</code> mark = the criterion is met, not "almost".
+An empty checkbox is an honest answer.</p>
+<p>Start date: <strong><em>_</em></strong>_____</p>
+<p>Finish date: <strong><em>_</em></strong>_____</p>
+<hr />
+<h2 id="module-1-how-vibe-coding-works-150-min">Module 1 — How vibe coding works (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>The agent reads the project files (check from 1.1)</li>
+<li class="task"><span class="cb"></span>The repo is created, the first commit is made before AI writes code</li>
+<li class="task"><span class="cb"></span><code>.gitignore</code> is correct, <code>git status</code> is clean</li>
+<li class="task"><span class="cb"></span>The utility works, 4 acceptance criteria verified by hand</li>
+<li class="task"><span class="cb"></span><code>notes.md</code> has at least 3 observations about diffs</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-2-spec-150-min">Module 2 — Spec (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>The spec is ≤15 lines, 6 blocks, 4+ verifiable criteria</li>
+<li class="task"><span class="cb"></span>The <code>exp/bad</code> and <code>exp/good</code> branches are created, both checked</li>
+<li class="task"><span class="cb"></span>The A/B comparison table is filled in</li>
+<li class="task"><span class="cb"></span>2 specific reasons for the difference are named</li>
+<li class="task"><span class="cb"></span>The spec is split into 5 tasks, each with an acceptance criterion</li>
+<li class="task"><span class="cb"></span>The criterion is rewritten as a <code>/goal</code> condition and run (measurable signal, boundaries, turn limit)</li>
+<li class="task"><span class="cb"></span>The <code>/goal</code> run table is filled in: turns, completed, extra files</li>
+<li class="task"><span class="cb"></span>The retro is written down</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-3-the-work-loop-150-min">Module 3 — The work loop (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>8 phrasings are written, predictions recorded</li>
+<li class="task"><span class="cb"></span>The feature is done in 4 steps, 4 commits</li>
+<li class="task"><span class="cb"></span>Every diff is read in 5 minutes (verified in practice)</li>
+<li class="task"><span class="cb"></span>2+ red flags found, each danger explained</li>
+<li class="task"><span class="cb"></span>Retro: the number of rollbacks and the time lost are recorded</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-4-context-150-min">Module 4 — Context (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>AGENTS.md</code> is created, the agent answers from it in a new chat</li>
+<li class="task"><span class="cb"></span>Run A (one chat) and B (three chats) are completed</li>
+<li class="task"><span class="cb"></span>The A/B table is filled in with metrics</li>
+<li class="task"><span class="cb"></span>The reset message template is written down and tested</li>
+<li class="task"><span class="cb"></span>Useless rules have been removed from the instructions</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-5-debugging-150-min">Module 5 — Debugging (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Three bugs are injected artificially, each with a reproducible case</li>
+<li class="task"><span class="cb"></span>Three fixes, each with an "if..., then..." hypothesis before the change</li>
+<li class="task"><span class="cb"></span>After each fix the neighbouring scenarios were checked</li>
+<li class="task"><span class="cb"></span>A phrasing that makes the agent test the hypothesis has been found</li>
+<li class="task"><span class="cb"></span>Retro: the average number of cycles to a fix is recorded</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-6-tests-150-min">Module 6 — Tests (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>The test runner is installed, the first test is green</li>
+<li class="task"><span class="cb"></span>The test command is recorded in <code>AGENTS.md</code></li>
+<li class="task"><span class="cb"></span>5 TDD tests, for each one the reason it failed before implementation is recorded</li>
+<li class="task"><span class="cb"></span>Mutation check: at least one test caught the break</li>
+<li class="task"><span class="cb"></span>Useless tests identified and rewritten</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-7-data-and-apis-150-min">Module 7 — Data and APIs (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>.env</code> is out of git, <code>.env.example</code> is in the repo</li>
+<li class="task"><span class="cb"></span>Verified: the key is not in the git history</li>
+<li class="task"><span class="cb"></span>A real API response is captured with curl and lives in <code>fixtures/</code></li>
+<li class="task"><span class="cb"></span>4 error scenarios handled and checked</li>
+<li class="task"><span class="cb"></span>Not a single invented API field in the code</li>
+<li class="task"><span class="cb"></span>4 tests for bad data, they fail when validation is removed</li>
+<li class="task"><span class="cb"></span>Retro: what the agent lied about and how you caught it</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-8-deploy-150-min">Module 8 — Deploy (150 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>main</code> is protected, a direct push is rejected</li>
+<li class="task"><span class="cb"></span>A PR describing what/why/how to check</li>
+<li class="task"><span class="cb"></span>The project is deployed, the link opens from a phone</li>
+<li class="task"><span class="cb"></span>Environment variables are set in the hosting panel</li>
+<li class="task"><span class="cb"></span>Production is deliberately broken and rolled back two ways, the time measured</li>
+<li class="task"><span class="cb"></span>The 12-point review checklist is done, 1 problem fixed</li>
+<li>Theory min: 45 / actual: ____</li>
+<li>Practice min: 105 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="module-9-capstone-180-min">Module 9 — Capstone (180 min)</h2>
+<ul>
+<li class="task"><span class="cb"></span>The project is chosen, a 10-line spec and 4 steps are in the repo</li>
+<li class="task"><span class="cb"></span>The repo is on GitHub, <code>AGENTS.md</code> and <code>.env.example</code> are in place</li>
+<li class="task"><span class="cb"></span>The main scenario passes locally end to end</li>
+<li class="task"><span class="cb"></span>3+ error scenarios handled</li>
+<li class="task"><span class="cb"></span>The test for the main scenario is green</li>
+<li class="task"><span class="cb"></span>README: <code>git clone</code> → follow the instructions → it works (verified in a clean folder)</li>
+<li class="task"><span class="cb"></span>The public link is live, checked from a phone</li>
+<li class="task"><span class="cb"></span>There are no secrets in the repo</li>
+<li class="task"><span class="cb"></span>Known limitations are recorded in the README</li>
+<li class="task"><span class="cb"></span>The commit history reads clearly: what and why is obvious</li>
+<li>Theory min: 54 / actual: ____</li>
+<li>Practice min: 126 / actual: ____</li>
+<li>What was hard: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="final-ratio-calculation">Final ratio calculation</h2>
+<pre><code>Theory:     ____ min
+Practice:   ____ min
+Total:      ____ min
+Theory share:   ____ %   (target 30%)
+Practice share: ____ %   (target 70%)
+</code></pre>
+<p>If theory went above 35% — you are reading instead of doing. Go back to the
+rule: a 45-minute timer, then practice.</p>
+<p>If practice went above 75% — check whether acceptance criteria were skipped
+("done and not verified" is not practice, it is hope).</p>
+<hr />
+<h2 id="final-reflection">Final reflection</h2>
+<ol>
+<li>Which skill turned out to be the hardest? <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>Which prompt from <code>04-promptoteka.md</code> did you rewrite for yourself? ______</li>
+<li>What will you never do with an agent again? <strong><em>_</em></strong>_</li>
+<li>Link to your project: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>One sentence that explains what vibe coding is for you now:</li>
+</ol>
+<hr />
+    </article>
+    <div class="pager"><a class="prev" href="05-proekty.html">← Projects</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of", crit: "criteria" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

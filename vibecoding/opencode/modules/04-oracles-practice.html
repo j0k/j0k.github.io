@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 04 — Практика: TDD-цикл с агентом · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 04 — Практика: TDD-цикл с агентом · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice active" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/04-oracles-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/04-oracles-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/04-oracles-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="04-oracles.html">← Теория</a></div>
+<h1 id="04-tdd-">Модуль 04 — Практика: TDD-цикл с агентом</h1>
+<p><strong>Время:</strong> 210 минут · <strong>Артефакт:</strong> <code>labs/04-oracles/</code></p>
+<hr />
+<h2 id="1-30">Задание 1. Одна команда проверки (30 мин)</h2>
+<p>Соберите <code>scripts/check.sh</code> (или <code>make check</code>):</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+ruff check . --output-format=concise
+mypy . --no-error-summary
+pytest -q
+</code></pre>
+<p>Добавьте в <code>AGENTS.md</code>:</p>
+<pre><code class="language-markdown">## Проверка
+- всё: `./scripts/check.sh`
+- если упало: исправляйте причину, не отключайте проверку
+</code></pre>
+<p><strong>Приёмка:</strong> <code>./scripts/check.sh</code> проходит на чистом проекте за &lt; 60 сек.</p>
+<hr />
+<h2 id="2-50">Задание 2. Падающий тест → рабочий код (50 мин)</h2>
+<ol>
+<li>Выберите функцию, которой ещё нет: <code>normalize_phone(s: str) -&gt; str</code>.</li>
+<li><strong>Сами</strong> напишите тесты (5 кейсов, включая граничные):</li>
+</ol>
+<pre><code class="language-python">def test_normalize_phone():
+    assert normalize_phone(&quot;+7 (912) 345-67-89&quot;) == &quot;+79123456789&quot;
+    assert normalize_phone(&quot;89123456789&quot;) == &quot;+79123456789&quot;
+    assert normalize_phone(&quot;&quot;) == &quot;&quot;
+    assert normalize_phone(&quot;abc&quot;) == &quot;&quot;
+    assert normalize_phone(&quot;+1 222 333&quot;) == &quot;+1222333&quot;
+</code></pre>
+<ol start="3">
+<li>Убедитесь, что тесты падают (<code>ImportError</code> — тоже падение).</li>
+<li>Дайте агенту:</li>
+</ol>
+<pre><code>Тесты в tests/test_phone.py падают. Реализуй normalize_phone в src/utils/phone.py.
+Минимальный код, проходящий все тесты. Не меняй тесты.
+</code></pre>
+<p><strong>Приёмка:</strong> тесты зелёные, тесты не изменены (<code>git diff tests/</code> пустой).</p>
+<hr />
+<h2 id="3-40">Задание 3. Агент пишет тесты по вашему списку (40 мин)</h2>
+<p>Возьмите существующую функцию без покрытия. Составьте <strong>список кейсов</strong> сами:</p>
+<pre><code>- вход None
+- пустой список
+- отрицательные числа
+- дубликаты
+- очень большое число
+</code></pre>
+<p>Затем:</p>
+<pre><code>Напиши тесты для src/x.py::func по списку кейсов ниже. Тесты должны падать,
+если поведение изменится. Не используй моки без необходимости.
+</code></pre>
+<p><strong>Приёмка:</strong> тесты действительно ловят мутацию — измените одну строку кода,
+убедитесь, что тест падает, верните обратно.</p>
+<hr />
+<h2 id="4-40">Задание 4. Цикл «ошибка → фикс» (40 мин)</h2>
+<p>Сломайте код намеренно (например, поменяйте условие). Запустите проверку и передайте агенту
+<strong>полный вывод</strong>:</p>
+<pre><code>./scripts/check.sh падает. Вот вывод:
+
+&lt;вставить целиком&gt;
+
+Найди причину и исправь. Объясни в двух строках, что было не так.
+</code></pre>
+<p>Повторите 2 раза с разными поломками.</p>
+<p><strong>Приёмка:</strong> в отчёте — вывод ошибки, дифф фикса, объяснение. Отметьте: помогал ли полный вывод
+по сравнению с пересказом.</p>
+<hr />
+<h2 id="5-golden-50">Задание 5. Golden-тест (50 мин)</h2>
+<p>Для функции, генерирующей текст/JSON/отчёт:</p>
+<ol>
+<li>Создайте эталон <code>tests/golden/expected.json</code>.</li>
+<li>Тест:</li>
+</ol>
+<pre><code class="language-python">def test_report_golden():
+    assert generate_report(SAMPLE_INPUT) == json.loads(
+        open(&quot;tests/golden/expected.json&quot;).read()
+    )
+</code></pre>
+<ol start="3">
+<li>Попросите агента изменить формат отчёта — golden упадёт — пусть обновит эталон осознанно.</li>
+</ol>
+<p><strong>Приёмка:</strong> в отчёте есть дифф эталона и объяснение, почему изменение корректно.</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>check.sh</code> работает одной командой, время &lt; 60 сек.</li>
+<li class="task"><span class="cb"></span>Тесты из задания 2 не изменены, код — минимальный.</li>
+<li class="task"><span class="cb"></span>Есть доказательство, что тесты ловят мутацию.</li>
+<li class="task"><span class="cb"></span>Отчёт цикла «ошибка → фикс» с полным выводом.</li>
+<li class="task"><span class="cb"></span>Golden-тест + осознанное обновление эталона.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="04-oracles.html">← Оракулы и проверка</a>
+      <a class="next" href="05-agent-loop.html">Агентный цикл и права →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

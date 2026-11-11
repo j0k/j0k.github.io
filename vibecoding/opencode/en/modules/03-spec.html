@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 03 — Spec and Prompt · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 03 — Spec and Prompt · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory active" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/03-spec.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/03-spec.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/03-spec.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="03-spec-practice.html">Practice →</a></div>
+<h1 id="module-03-spec-and-prompt">Module 03 — Spec and Prompt</h1>
+<p><strong>Time:</strong> 5 hours · <strong>Format:</strong> theory 100 min + practice 200 min</p>
+<hr />
+<h2 class="section" id="theory">Theory</h2>
+<h2 id="1-a-prompt-is-not-a-request-its-a-specification">1. A prompt is not a request, it's a specification</h2>
+<p>The difference between "make it nice" and "make it like this" is the presence of <strong>verifiable criteria</strong>.</p>
+<pre><code>Task without a spec:  &quot;add authorization&quot;
+Task with a spec:     &quot;POST /login endpoint, accepts {email, password},
+                       returns 200 {token} or 401 {error},
+                       password is hashed with bcrypt, token lives 24h,
+                       tests: valid login, wrong password, missing email&quot;
+</code></pre>
+<p>The second one can be checked. The first one — only "by eye".</p>
+<h2 id="2-anatomy-of-a-spec">2. Anatomy of a spec</h2>
+<p>A minimal working spec is 6 blocks:</p>
+<pre><code class="language-markdown">## Context
+What already exists, where it lives, what must not break.
+
+## Goal
+One sentence: what should appear.
+
+## Requirements
+A numbered list of verifiable statements.
+
+## Constraints
+What is forbidden: dependencies, files, patterns, style.
+
+## Acceptance criteria
+Concrete checks: commands, tests, scenarios.
+
+## Out of scope
+An explicit &quot;we are not doing this&quot; — protection against scope creep.
+</code></pre>
+<p>The "out of scope" block saves the most: the agent loves to "improve things along the way".</p>
+<h2 id="3-phrasings-that-work">3. Phrasings that work</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Works</th>
+<th>Doesn't work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"function <code>parse_date(s: str) -&gt; date</code>"</td>
+<td>"a function for dates"</td>
+</tr>
+<tr>
+<td>"return <code>None</code> if parsing fails"</td>
+<td>"handle errors"</td>
+</tr>
+<tr>
+<td>"same as in <code>services/billing.py</code>"</td>
+<td>"in our style"</td>
+</tr>
+<tr>
+<td>"no more than 50 lines"</td>
+<td>"compactly"</td>
+</tr>
+<tr>
+<td>"plan first, don't write code"</td>
+<td>"do it well"</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rule: <strong>replace every adjective with a verifiable condition.</strong></p>
+<h2 id="4-plan-first-the-cheapest-trick">4. Plan-first: the cheapest trick</h2>
+<p>Ask for a plan before the code:</p>
+<pre><code>Don't write code. Make a plan: which files you'll touch, which functions you'll add,
+how we'll verify. List the risks and what might break.
+</code></pre>
+<p>What this gives you:</p>
+<ul>
+<li>misunderstandings are visible in 30 seconds, not after 300 lines;</li>
+<li>the plan can be fixed with words;</li>
+<li>the plan becomes an acceptance checklist;</li>
+<li>context is saved.</li>
+</ul>
+<p>A bad plan is a reason to restate the task, not to "explain to the model that it's wrong".</p>
+<h2 id="5-decomposition">5. Decomposition</h2>
+<p>A big task → a chain of verifiable steps:</p>
+<pre><code>1. Add the data model + migration
+2. Add the access layer
+3. Add the endpoint + tests
+4. Wire it into the UI
+5. Remove the old code
+</code></pre>
+<p>Each step: its own diff, its own commit, green tests. That way an error is localized to one step,
+not "somewhere in 800 lines".</p>
+<h2 id="6-examples-few-shot-and-format">6. Examples (few-shot) and format</h2>
+<p>Want a specific style — give one example of finished code. The model copies structure
+more reliably than it understands a description.</p>
+<p>Want a specific response format — say it explicitly: "diff only", "file X only",
+"a table", "no explanations".</p>
+<h2 id="7-what-to-avoid">7. What to avoid</h2>
+<ul>
+<li><strong>Double requirements</strong>: "make it fast and high-quality".</li>
+<li><strong>Hidden requirements</strong>: "you know what I mean" → the model understood it its own way.</li>
+<li><strong>Monster tasks</strong>: 5 goals in one request.</li>
+<li><strong>"Rewrite everything" requests</strong>: nothing to verify, everything breaks at once.</li>
+</ul>
+<h2 id="8-the-prompt-as-an-artifact">8. The prompt as an artifact</h2>
+<p>A good spec outlives the session: you can put it in <code>docs/specs/</code>, discuss it in review,
+reuse it. A prompt that "worked" is a project asset, not trash in the history.</p>
+<hr />
+<h2 id="comprehension-checklist">Comprehension checklist</h2>
+<ol>
+<li>How does a spec differ from a request? Name the distinguishing feature.</li>
+<li>Why is the "out of scope" block needed?</li>
+<li>Why is plan-first cheaper than going straight to code?</li>
+<li>What to do if the plan is bad — and what you must not do?</li>
+</ol>
+<hr />
+<h2 class="section" id="practice">Practice</h2>
+<p>See <a href="03-spec-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="02-context-practice.html">← Context engineering — practice</a>
+      <a class="next" href="03-spec-practice.html">Spec and prompt — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

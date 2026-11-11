@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 00 — Orientation · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 00 — Orientation · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory active" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/00-orientation.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/00-orientation.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/00-orientation.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="00-orientation-practice.html">Pratique →</a></div>
+<h1 id="module-00-orientation">Module 00 — Orientation</h1>
+<p><strong>Durée :</strong> 2 heures · <strong>Format :</strong> 40 min de théorie + 80 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-ce-quest-le-vibe-coding-et-ce-quil-nest-pas">1. Ce qu'est le vibe coding (et ce qu'il n'est pas)</h2>
+<p>Le <strong>vibe coding</strong> est un développement où l'agent écrit une part significative du code, tandis que
+l'humain joue le rôle de définisseur de tâche, de relecteur et de propriétaire du résultat.</p>
+<p>Ce n'est <strong>pas</strong> « appuyer sur un bouton — obtenir un produit ». C'est un déplacement de la division du travail :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Avant</th>
+<th>Maintenant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vous écrivez le code</td>
+<td>vous écrivez la spec et le contrôle</td>
+</tr>
+<tr>
+<td>vous vous souvenez de l'API</td>
+<td>vous vérifiez que l'API existe</td>
+</tr>
+<tr>
+<td>une erreur = une faute de frappe</td>
+<td>une erreur = une contre-vérité écrite avec assurance</td>
+</tr>
+<tr>
+<td>la vitesse = la vitesse de frappe</td>
+<td>la vitesse = la qualité du contexte</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le déplacement clé : <strong>le goulot d'étranglement est passé de la frappe du code à l'énoncé de la tâche et à sa vérification.</strong></p>
+<h2 id="2-trois-roles">2. Trois rôles</h2>
+<p>Ils ne fonctionnent qu'ensemble :</p>
+<pre><code>Définisseur de tâche  →  ce qu'on fait, pourquoi, comment on vérifie
+Agent                 →  exécutant rapide, ne connaît pas votre contexte
+Relecteur             →  lit le diff, attrape les mensonges, valide le commit
+</code></pre>
+<p>Si vous cumulez les trois rôles et rognez sur la relecture, vous gagnez en vitesse d'écriture
+et en vitesse d'accumulation de dette en même temps.</p>
+<h2 id="3-ou-lagent-est-fort-et-ou-il-echoue">3. Où l'agent est fort et où il échoue</h2>
+<p><strong>Fort sur :</strong>
+- le code répétitif, le code typique (CRUD, configs, tests par l'exemple) ;
+- le portage entre langages et bibliothèques ;
+- l'explication du code d'autrui ;
+- les modifications massives et répétitives.</p>
+<p><strong>Échoue sur :</strong>
+- le contexte interne inconnu (« comment on fait les choses ici ») ;
+- les longues chaînes d'exigences sans vérification ;
+- les versions exactes d'API absentes des données d'entraînement ;
+- les tâches où « correct » = « ce que le métier a décidé », et non « ce que fait internet ».</p>
+<p>Conclusion : donnez à l'agent ce qui se vérifie, gardez pour vous ce qui demande du jugement.</p>
+<h2 id="4-le-modele-nest-pas-le-facteur-principal">4. Le modèle n'est pas le facteur principal</h2>
+<p>Ordre d'influence sur le résultat :</p>
+<pre><code>contexte et énoncé de la tâche  &gt;  avoir une vérification  &gt;  itération  &gt;  modèle  &gt;  formulation du prompt
+</code></pre>
+<p>Les « mots magiques » du genre « réfléchis étape par étape » ont un effet d'un ordre de grandeur inférieur
+à un <code>AGENTS.md</code> correctement appliqué et à un test qui passe.</p>
+<h2 id="5-outils">5. Outils</h2>
+<p>OpenCode est un agent en ligne de commande : il lit des fichiers, les modifie, exécute des commandes et demande des permissions.</p>
+<p>Trois choses à connaître dès le premier jour :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Chose</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Session</strong></td>
+<td>un contexte de travail ; une nouvelle tâche = une nouvelle session</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>ce que l'agent peut faire sans demander, et ce qu'il ne doit jamais faire</td>
+</tr>
+<tr>
+<td><strong>Modèle</strong></td>
+<td>choisi pour la tâche, pas « un seul pour tout »</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<p>Répondez-vous à vous-même sans regarder en arrière :</p>
+<ol>
+<li>Pourquoi le goulot d'étranglement s'est-il déplacé de la frappe du code vers l'énoncé de la tâche ?</li>
+<li>Citez trois types de tâches où l'agent est systématiquement plus faible qu'un humain.</li>
+<li>Pourquoi économiser sur la relecture du diff est-il une mauvaise économie ?</li>
+<li>Qu'est-ce qui apporte le plus de gain : changer de modèle ou <code>AGENTS.md</code> ? Pourquoi ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="00-orientation-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="next" href="00-orientation-practice.html">Orientation — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

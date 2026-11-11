@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 00 — Практика · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 00 — Практика · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice active" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/00-orientation-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/00-orientation-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/00-orientation-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="00-orientation.html">← Теория</a></div>
+<h1 id="00">Модуль 00 — Практика</h1>
+<p><strong>Время:</strong> 80 минут · <strong>Артефакт:</strong> <code>labs/00-setup.md</code></p>
+<hr />
+<h2 id="1-10">Задание 1. Проверить окружение (10 мин)</h2>
+<pre><code class="language-bash">git --version
+opencode --version
+</code></pre>
+<p>Затем в терминале:</p>
+<pre><code class="language-bash">mkdir -p ~/edu/sandbox &amp;&amp; cd ~/edu/sandbox
+git init
+printf 'print(&quot;hello&quot;)\n' &gt; app.py
+git add . &amp;&amp; git commit -m &quot;init&quot;
+</code></pre>
+<p>Запустите <code>opencode</code> и спросите:</p>
+<pre><code>Что за проект в этой папке? Какие файлы и что они делают?
+</code></pre>
+<p><strong>Приёмка:</strong> агент назвал <code>app.py</code> и его содержимое, не выдумал лишние файлы.</p>
+<hr />
+<h2 id="2-15">Задание 2. Первое «нет» (15 мин)</h2>
+<p>Попросите агента сделать заведомо вредное действие:</p>
+<pre><code>Удали все файлы в этой папке и создай новый проект на Rust.
+</code></pre>
+<p><strong>Не подтверждайте</strong> запрос на изменение сразу — прочитайте, что он собирается делать.</p>
+<p>Ответьте в <code>labs/00-setup.md</code>:</p>
+<ul>
+<li>Показал ли агент список изменений до выполнения?</li>
+<li>Понятно ли из запроса, что именно будет удалено?</li>
+<li>Что произойдёт, если нажать «Always allow» на такое действие?</li>
+</ul>
+<p>Урок: <strong>права — это не бюрократия, это тормоз перед необратимым.</strong></p>
+<hr />
+<h2 id="3-20">Задание 3. Границы компетенции (20 мин)</h2>
+<p>Задайте три вопроса, на которые знаете точный ответ:</p>
+<pre><code>1. Какая версия Python установлена? (проверьте: python3 --version)
+2. Сколько строк в app.py?
+3. Какая последняя версия &lt;ваша библиотека&gt;?
+</code></pre>
+<p>Сверьте ответы с фактами.</p>
+<p><strong>Приёмка:</strong> в <code>labs/00-setup.md</code> — таблица «вопрос / ответ агента / факт / совпало?».</p>
+<p>Вывод, который нужно сформулировать самостоятельно: почему третий вопрос опаснее первых двух.</p>
+<hr />
+<h2 id="4-20">Задание 4. Ветка как страховка (20 мин)</h2>
+<pre><code class="language-bash">git checkout -b agent-experiment
+</code></pre>
+<p>Попросите агента добавить в <code>app.py</code> функцию <code>add(a, b)</code> и тест на неё.
+Затем:</p>
+<pre><code class="language-bash">git diff
+</code></pre>
+<p>Прочитайте дифф целиком. Если всё ок:</p>
+<pre><code class="language-bash">git add . &amp;&amp; git commit -m &quot;add add()&quot;
+git checkout main &amp;&amp; git branch -D agent-experiment   # или слейте, если хотите оставить
+</code></pre>
+<p><strong>Приёмка:</strong> в отчёте — вывод <code>git diff</code> (можно сокращённый) и одна фраза: что бы вы
+отклонили в этом диффе, если бы он был в 10 раз больше.</p>
+<hr />
+<h2 id="5-15">Задание 5. Ретро модуля (15 мин)</h2>
+<p>Допишите в <code>labs/00-setup.md</code>:</p>
+<pre><code class="language-markdown">## Ретро модуля 00
+- Что удивило:
+- Где агент ошибся:
+- Что заберу в рабочий процесс:
+- Оценка времени (план/факт):
+</code></pre>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Все команды из заданий 1–4 выполнены, вывод зафиксирован.</li>
+<li class="task"><span class="cb"></span>Есть таблица сверки ответов агента с фактами.</li>
+<li class="task"><span class="cb"></span>Прочитан хотя бы один дифф целиком (приложен).</li>
+<li class="task"><span class="cb"></span>Заполнено ретро.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="00-orientation.html">← Ориентация</a>
+      <a class="next" href="01-llm-basics.html">Как работают LLM →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

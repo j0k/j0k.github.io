@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice — Vibecoding 30/70</title>
+<meta property="og:title" content="Practice — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>course 30/70 · 23 hours</span></a>
+    <div class="ratio">30% theory · 70% practice · 1380 min</div>
+    <nav>
+      <a href="index.html">Course overview<small>Start</small></a>
+      <a href="01-programma.html">Program<small>Modules and timing</small></a>
+      <a href="02-teoriya.html">Theory<small>30% of the course</small></a>
+      <a href="03-praktika.html" class="active">Practice<small>70% of the course</small></a>
+      <a href="04-promptoteka.html">Prompt library<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projects<small>Capstone</small></a>
+      <a href="06-tracker.html">Tracker<small>Checklist</small></a>
+      <a href="gantt.html">Weekly Gantt<small>Skills and theory</small></a>
+    </nav>
+    <div class="foot">Opens locally, no internet needed.<br>Ctrl+P — print version.<br>
+      <a href="../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../opencode/index.html">OpenCode course</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Course 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/en/03-praktika.html" data-copied="Link copied" title="Share">Share</button>
+      <a class="switch" href="../03-praktika.html" title="Русский">RU</a>
+      <a class="switch" href="../fr/03-praktika.html" title="Français">FR</a>
+      <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+    </div>
+    <article>
+<h1 id="course-practice">Course practice</h1>
+<p>966 minutes — 70% of the course. Every exercise ends with a verifiable result.
+The <code>[commit]</code> marker means: before you move on, make a commit.</p>
+<hr />
+<h2 id="module-1-environment-and-first-result-105-min">Module 1. Environment and first result — 105 min</h2>
+<h3 id="11-environment-20-min">1.1 Environment (20 min)</h3>
+<ol>
+<li>Install an agent with file access (Claude Code / Cursor / Codex CLI).</li>
+<li>Verify: <code>git --version</code>, <code>node --version</code>, <code>python --version</code>.</li>
+<li>Create <code>~/projects/vibe-lab</code> and open it with the agent.</li>
+</ol>
+<p><strong>Criterion:</strong> the agent, on its own and without your hints, reads a file in that
+folder after the request "read README.md and summarize it in one line".</p>
+<h3 id="12-first-repository-20-min">1.2 First repository (20 min)</h3>
+<ol>
+<li><code>git init</code> in <code>vibe-lab</code>.</li>
+<li>Create <code>.gitignore</code> (node_modules, .env, .venv, <strong>pycache</strong>, dist).</li>
+<li>Create <code>README.md</code> with one line about the project.</li>
+<li><code>[commit]</code> — the first commit <strong>before</strong> any AI-generated code.</li>
+</ol>
+<p><strong>Criterion:</strong> <code>git log --oneline</code> shows one commit; <code>git status</code> is clean.</p>
+<h3 id="13-first-utility-45-min">1.3 First utility (45 min)</h3>
+<p>Task for the agent — strictly according to the spec below:</p>
+<pre><code>Goal: a CLI utility reads a text file line by line and prints statistics.
+
+Input: file path as an argument. Output to stdout:
+  lines: N
+  words: N
+  characters: N
+  longest line: &lt;number&gt;: &lt;first 40 characters&gt;
+
+Constraints: Python/Node standard library only, no new dependencies.
+One file. No colored output, no flags, no configs.
+
+Acceptance criteria:
+- a 3-line file yields the correct three numbers
+- empty file: all zeros, does not crash
+- missing file: message to stderr and exit code 1
+- file without read permission: no stack trace, clear message
+
+What we are not doing: no flags, no reading from stdin, no log files.
+</code></pre>
+<p><strong>Order:</strong> first ask for a plan (make no edits) → then the implementation →
+verify the 4 criteria by hand → <code>[commit]</code>.</p>
+<h3 id="14-diff-review-20-min">1.4 Diff review (20 min)</h3>
+<p>Open <code>git show</code> for the last commit and write down in <code>notes.md</code>:
+- which files changed and whether all of them were part of the task;
+- whether there are red flags from the theory (module 3, item 3.2) — for now just note them;
+- what you accepted and what you would have rejected.</p>
+<p><strong>Criterion:</strong> at least 3 observations about the diff in <code>notes.md</code>.</p>
+<hr />
+<h2 id="module-2-spec-105-min">Module 2. Spec — 105 min</h2>
+<h3 id="21-project-spec-30-min">2.1 Project spec (30 min)</h3>
+<p>Pick a small project (not the capstone), for example "Markdown → HTML converter"
+or "habit tracker in the console". Write a spec using the six blocks from the theory.</p>
+<p><strong>Criterion:</strong> spec ≤ 15 lines; the "acceptance criteria" block has at least 4 items,
+each verifiable by a command or by observation; there is a "what we are not doing" block.</p>
+<h3 id="22-bad-wording-vs-spec-30-min">2.2 Bad wording vs. spec (30 min)</h3>
+<ol>
+<li>Create the branch <code>exp/bad</code> and give the agent the request: "make a markdown
+   to html converter". Get the result, record: how many files, how many lines.</li>
+<li>Roll back: <code>git checkout main</code>.</li>
+<li>Branch <code>exp/good</code>, same project — according to your spec.</li>
+<li>Fill in the table in <code>notes.md</code>:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Without a spec</th>
+<th>With a spec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>files changed</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>diff lines</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>acceptance criteria passed</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>iterations to acceptable</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Criterion:</strong> the table is filled in; you can name 2 specific reasons for the difference.</p>
+<h3 id="23-decomposition-20-min">2.3 Decomposition (20 min)</h3>
+<p>Split the spec into 5 tasks, each 15–20 minutes of agent work.
+Format for each: title + acceptance criterion + "do not touch".</p>
+<p><strong>Criterion:</strong> for each task the expected diff is &lt; 80 lines; no task
+contains the conjunction "and" in its title (a sign of two tasks glued together).</p>
+<h3 id="24-acceptance-criterion-goal-condition-15-min">2.4 Acceptance criterion → <code>/goal</code> condition (15 min)</h3>
+<p>Take one task from the decomposition in 2.3 and rewrite its acceptance criterion as
+an agent stopping condition. Requirements for the condition:</p>
+<ul>
+<li>a measurable end signal (return code, empty output, green lint);</li>
+<li>the proof is visible in the session (the agent shows the command output itself);</li>
+<li>boundaries: which files may be changed;</li>
+<li>a turn limit.</li>
+</ul>
+<p>Example:</p>
+<pre><code>/goal pytest tests/ exits with code 0, ruff check src/ is clean,
+git diff --name-only shows only src/converter/, or stop after 12 turns
+</code></pre>
+<p>Run it without interfering and record in <code>notes.md</code>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Fact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>turns until stop</td>
+<td></td>
+</tr>
+<tr>
+<td>condition met on the first try: yes/no</td>
+<td></td>
+</tr>
+<tr>
+<td>what the agent changed outside the allowed folder</td>
+<td></td>
+</tr>
+<tr>
+<td>what the wording was missing</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Criterion:</strong> the condition is written in <code>notes.md</code>; 4 rows are filled in the table;
+if the condition turned out to be unachievable, you can name which signal was
+unverifiable.</p>
+<h3 id="25-retro-10-min">2.5 Retro (10 min)</h3>
+<p>In <code>notes.md</code>: what turned out to be redundant in the spec, what had to be added along
+the way, which criterion turned out to be unverifiable.</p>
+<p><code>[commit]</code> — the spec and notes in the repository.</p>
+<hr />
+<h2 id="module-3-work-cycle-105-min">Module 3. Work cycle — 105 min</h2>
+<h3 id="31-eight-formulations-25-min">3.1 Eight formulations (25 min)</h3>
+<p>One task for all eight: "in the utility from module 1, the output line length must be
+limited to 40 characters". Write 8 variants of the request:</p>
+<ol>
+<li>Too short: "limit the line length".</li>
+<li>Too broad: "improve the utility's output".</li>
+<li>No context: "add truncation".</li>
+<li>With context and file: "in <code>stat.py</code>, the output function…".</li>
+<li>With a criterion: "…a line longer than 40 characters is truncated and gets <code>...</code>".</li>
+<li>With a boundary: "exactly 40 characters is not truncated".</li>
+<li>With a prohibition: "…don't change the character count, don't refactor anything else".</li>
+<li>With a format: "show the plan first, make no edits".</li>
+</ol>
+<p><strong>Criterion:</strong> in <code>notes.md</code> eight variants and next to each one a prediction of
+what the agent will do (whether it comes true or not — mark it after running 2–3 variants).</p>
+<h3 id="32-feature-in-four-steps-40-min">3.2 Feature in four steps (40 min)</h3>
+<p>Take a task from 2.3 and complete it in exactly four steps, with a check and
+<code>[commit]</code> after each:</p>
+<ul>
+<li>step 1: a test or manual check that pins down the current behavior;</li>
+<li>step 2: the minimal edit to meet the criterion;</li>
+<li>step 3: an edge case (empty / maximum / wrong type);</li>
+<li>step 4: an error message or the README.</li>
+</ul>
+<p><strong>Criterion:</strong> 4 commits; each diff is readable in 5 minutes; <code>git log --oneline</code>
+shows 4 different messages.</p>
+<h3 id="33-find-the-red-flags-25-min">3.3 Find the red flags (25 min)</h3>
+<p>Ask the agent: "add error handling to the utility". Most likely you will get a
+diff with 2–4 flags. Go through the list in 3.2 and write down what you find in <code>notes.md</code>
+with line numbers.</p>
+<p><strong>Criterion:</strong> at least 2 flags found; for each one, a note on why it is dangerous.</p>
+<h3 id="34-retro-15-min">3.4 Retro (15 min)</h3>
+<p>How many rollbacks did you make, at which step did you lose the most time, which
+element of the request (context/criterion/prohibition) helped the most.</p>
+<hr />
+<h2 id="module-4-context-105-min">Module 4. Context — 105 min</h2>
+<h3 id="41-instructions-file-30-min">4.1 Instructions file (30 min)</h3>
+<p>Create <code>AGENTS.md</code> (or <code>CLAUDE.md</code>) using the template from theory 4.2, fill it in for
+your project: stack, commands, rules, prohibitions.</p>
+<p>Check: in a new chat ask "what are the test commands in this project?" —
+the agent should answer from the file without asking you.</p>
+<p><strong>Criterion:</strong> the file is in place, the agent answers correctly; <code>[commit]</code>.</p>
+<h3 id="42-one-chat-vs-three-45-min">4.2 One chat vs. three (45 min)</h3>
+<p>Take 3 small tasks (for example: add a word counter; fix the output format;
+add a file encoding check).</p>
+<ul>
+<li>Run A: all three tasks in one chat in a row, without clearing.</li>
+<li>Run B (<code>git reset</code> in between): each task in a new chat.</li>
+</ul>
+<p>Record: the number of iterations until the criteria passed, the number of extra edits,
+how many times the agent referred to outdated code.</p>
+<p><strong>Criterion:</strong> an A/B comparison table in <code>notes.md</code> + a one-line conclusion.</p>
+<h3 id="43-session-reset-20-min">4.3 Session reset (20 min)</h3>
+<p>Take any broken situation (or an artificial one: ask the agent to make a deliberately
+wrong change). Practice the technique: new chat + 3 facts (what is happening, what you
+expected, the stack trace) + "propose 3 verifiable hypotheses, make no edits".</p>
+<p><strong>Criterion:</strong> <code>notes.md</code> contains the reset message template that worked.</p>
+<h3 id="44-retro-10-min">4.4 Retro (10 min)</h3>
+<p>Which rule in the instructions saved the most time? Which one turned out to be
+useless? Delete the useless ones.</p>
+<hr />
+<h2 id="module-5-debugging-105-min">Module 5. Debugging — 105 min</h2>
+<h3 id="51-three-bugs-20-min">5.1 Three bugs (20 min)</h3>
+<p>Create a broken project yourself — ask the agent: "add three bugs to the utility:
+crash on an empty file, wrong word count with a hyphen, infinite loop on a
+file without a trailing newline. Don't say where exactly".</p>
+<p>For each bug: the command/file that reproduces it.</p>
+<p><strong>Criterion:</strong> three reproducible cases recorded in <code>bugs.md</code>.</p>
+<h3 id="52-three-fixes-50-min">5.2 Three fixes (50 min)</h3>
+<p>For each bug — strictly by the cycle: hypothesis → check → fix → <code>[commit]</code>.
+The hypothesis must be formulated before the fix and recorded in <code>bugs.md</code>
+in the form "if ..., then ...".</p>
+<p><strong>Criterion:</strong> 3 commits; for each bug it is noted whether the hypothesis was confirmed;
+after each fix the two neighboring scenarios are verified by hand.</p>
+<h3 id="53-provoke-an-argument-25-min">5.3 Provoke an argument (25 min)</h3>
+<p>Give the agent a deliberately wrong hypothesis: "the problem is the file encoding,
+fix the reading as latin-1". See whether it argues.</p>
+<p>If it argues — good. If not — learn to phrase it: "before fixing, check this hypothesis
+and say whether it is confirmed. If not, make no edits".</p>
+<p><strong>Criterion:</strong> <code>notes.md</code> contains the wording after which the agent started
+checking the hypothesis instead of executing it.</p>
+<h3 id="54-retro-10-min">5.4 Retro (10 min)</h3>
+<p>How many cycles to a fix on average? What would halve that?</p>
+<hr />
+<h2 id="module-6-tests-105-min">Module 6. Tests — 105 min</h2>
+<h3 id="61-test-runner-20-min">6.1 Test runner (20 min)</h3>
+<p>Install vitest (Node) or pytest (Python). One test for an existing function
+from module 1. Run it.</p>
+<p><strong>Criterion:</strong> <code>npm test</code> / <code>pytest</code> is green; the command is recorded in <code>AGENTS.md</code>.</p>
+<h3 id="62-tdd-cycle-5-tests-45-min">6.2 TDD cycle, 5 tests (45 min)</h3>
+<p>New feature: in the utility — a <code>--top N</code> flag showing the N longest lines.</p>
+<p>For each of the 5 tests: write the test → confirm it fails <strong>for the right
+reason</strong> → implementation → green → <code>[commit]</code>.</p>
+<p>Tests: (1) without the flag the behavior is unchanged; (2) <code>--top 3</code> yields 3 lines;
+(3) <code>--top 0</code> — empty output, code 0; (4) <code>--top abc</code> — error, code 1;
+(5) a file with 2 lines and <code>--top 5</code> — 2 lines.</p>
+<p><strong>Criterion:</strong> 5 commits; for each test, <code>notes.md</code> records the reason it failed
+before the implementation (not "module not found").</p>
+<h3 id="63-robustness-check-30-min">6.3 Robustness check (30 min)</h3>
+<p>Ask the agent: "break the <code>--top</code> implementation — return all lines. The tests must
+catch this. Don't touch the tests".</p>
+<ul>
+<li>If the tests caught it — restore the implementation, <code>[commit]</code>.</li>
+<li>If they did not catch it — the test is decorative, rewrite it and repeat.</li>
+</ul>
+<p><strong>Criterion:</strong> at least one test caught the breakage; in <code>notes.md</code> — which tests
+turned out to be useless and why.</p>
+<h3 id="64-retro-10-min">6.4 Retro (10 min)</h3>
+<p>How many tests per line of code did you end up with? How many boundaries are covered:
+empty / maximum / wrong type / no network?</p>
+<hr />
+<h2 id="module-7-data-api-security-105-min">Module 7. Data, API, security — 105 min</h2>
+<h3 id="71-secrets-20-min">7.1 Secrets (20 min)</h3>
+<p><code>.env</code> with a test key, <code>.env.example</code> without a value, <code>.gitignore</code> with <code>.env</code>.
+Check: <code>git status</code> does not see <code>.env</code>; <code>git log --all -p | grep &lt;key&gt;</code> is empty.</p>
+<p><strong>Criterion:</strong> the key is absent from the git history; <code>.env.example</code> is in the repository.</p>
+<h3 id="72-api-curl-client-errors-50-min">7.2 API: curl → client → errors (50 min)</h3>
+<p>Take a public API without a key (for example, open exchange rates or weather).</p>
+<ol>
+<li><code>curl</code> by hand, save the real response to <code>fixtures/sample.json</code>.</li>
+<li>Give the agent this file: "here is the real response shape, use only these fields".</li>
+<li>Client + response validation.</li>
+<li>Error handling: 4xx, 5xx, timeout, invalid JSON.</li>
+</ol>
+<p><strong>Criterion:</strong> 4 error scenarios handled and verified by hand; not a single field
+that is not in <code>sample.json</code>.</p>
+<h3 id="73-tests-for-bad-data-25-min">7.3 Tests for bad data (25 min)</h3>
+<p>Tests: empty response, missing required field, a string instead of a number,
+timeout. Behavior: a clear error, no crash, no silent <code>except</code>.</p>
+<p><strong>Criterion:</strong> 4 tests green; when the validation is removed they fail.</p>
+<h3 id="74-retro-10-min">7.4 Retro (10 min)</h3>
+<p>What did the agent lie about (method, parameter, field) and how did you catch it?</p>
+<p><code>[commit]</code> — everything together.</p>
+<hr />
+<h2 id="module-8-deploy-and-hygiene-105-min">Module 8. Deploy and hygiene — 105 min</h2>
+<h3 id="81-branches-and-prs-15-min">8.1 Branches and PRs (15 min)</h3>
+<p><code>main</code> is protected (in the GitHub settings). Work only through a branch and a PR.
+Make one PR for a task from module 6.</p>
+<p><strong>Criterion:</strong> a direct push to <code>main</code> is rejected; the PR contains a description: what/why/how
+to verify.</p>
+<h3 id="82-deploy-40-min">8.2 Deploy (40 min)</h3>
+<p>Deploy the project to Vercel or Netlify: connect the repository, set the
+environment variables in the panel, wait for the build, open the link.</p>
+<p><strong>Criterion:</strong> the link opens from a phone; the main scenario's functionality
+works in production, not just locally.</p>
+<h3 id="83-break-and-roll-back-35-min">8.3 Break and roll back (35 min)</h3>
+<ol>
+<li>Deploy a commit with an obvious breakage (for example, it throws on the main page).</li>
+<li>Confirm that production is broken.</li>
+<li>Rollback #1: redeploy the previous version from the panel. Time it.</li>
+<li>Rollback #2: <code>git revert</code> into a branch → PR → merge → autodeploy. Time it.</li>
+<li>Record both timings in <code>notes.md</code>.</li>
+</ol>
+<p><strong>Criterion:</strong> both methods worked; the time of each measurement is recorded.</p>
+<h3 id="84-review-by-checklist-15-min">8.4 Review by checklist (15 min)</h3>
+<p>Take your last PR and go through the 12 review items from theory 8.4.
+Problems — in a PR comment, the fix — in a separate commit.</p>
+<p><strong>Criterion:</strong> the checklist is complete, at least one problem found and fixed.</p>
+<hr />
+<h2 id="module-9-capstone-126-min-of-practice">Module 9. Capstone — 126 min of practice</h2>
+<h3 id="91-start-16-min">9.1 Start (16 min)</h3>
+<ul>
+<li>Choose a project from <code>05-proekty.md</code>.</li>
+<li>A 10-line spec + 4 build steps (from theory 9.2).</li>
+<li><code>git init</code>, <code>.gitignore</code>, <code>.env.example</code>, <code>AGENTS.md</code>, README draft.</li>
+<li><code>[commit]</code></li>
+</ul>
+<p><strong>Criterion:</strong> the spec and plan are in the repository; the repository is created on GitHub.</p>
+<h3 id="92-core-60-min">9.2 Core (60 min)</h3>
+<p>The main scenario end-to-end on minimal data. Branch → 4 commits → verify
+the main scenario by hand at every step.</p>
+<p><strong>Criterion:</strong> the main scenario passes entirely locally.</p>
+<h3 id="93-wrapping-30-min">9.3 Wrapping (30 min)</h3>
+<ul>
+<li>Error handling: at least 3 scenarios.</li>
+<li>One test for the main scenario (+ one for a boundary, if you have time).</li>
+<li>README: running from scratch, known limitations.</li>
+</ul>
+<p><strong>Criterion:</strong> <code>npm test</code> is green; the README lets you run the project from scratch
+(check in a clean folder: <code>git clone</code> → follow the instructions → it works).</p>
+<h3 id="94-deploy-and-submission-20-min">9.4 Deploy and submission (20 min)</h3>
+<ul>
+<li>Deploy, environment variables on the hosting.</li>
+<li>Open the link from a phone, go through the main scenario.</li>
+<li>Go through the submission checklist from theory 9.4, mark the items in <code>06-tracker.md</code>.</li>
+<li><code>[commit]</code> + <code>[merge PR]</code></li>
+</ul>
+<p><strong>Criterion:</strong> the public link is live, the submission checklist is fully marked.</p>
+<hr />
+<h2 id="how-to-tell-a-module-is-complete">How to tell a module is complete</h2>
+<p>A module is considered complete when <strong>all</strong> of its practice criteria are met and
+the marks are in <code>06-tracker.md</code>. Not "mostly", not "almost" — a criterion is either
+met or not. It is the same discipline you demand from the agent.</p>
+    </article>
+    <div class="pager"><a class="prev" href="02-teoriya.html">← Theory</a>
+      <a class="next" href="04-promptoteka.html">Prompt library →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of", crit: "criteria" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 05 — Агентный цикл и права · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 05 — Агентный цикл и права · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory active" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/05-agent-loop.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/05-agent-loop.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/05-agent-loop.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="05-agent-loop-practice.html">Практика →</a></div>
+<h1 id="05">Модуль 05 — Агентный цикл и права</h1>
+<p><strong>Время:</strong> 4 часа · <strong>Формат:</strong> теория 90 мин + практика 150 мин</p>
+<hr />
+<h2 class="section" id="_1">Теория</h2>
+<h2 id="1">1. Что такое агент</h2>
+<pre><code>LLM  →  решает, какой инструмент вызвать
+     →  инструмент возвращает результат
+     →  результат попадает в контекст
+     →  повтор, пока задача не решена
+</code></pre>
+<p>Это цикл <strong>tool calling</strong>. Модель не «делает» — она просит. Отсюда:</p>
+<ul>
+<li>качество агента = качество модели × качество инструментов × качество описаний;</li>
+<li>плохой инструмент ломает цикл сильнее, чем слабая модель;</li>
+<li>агент может «зациклиться» — нужен предел итераций.</li>
+</ul>
+<h2 id="2">2. Инструменты первого дня</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Инструмент</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read</code></td>
+<td>читает файл</td>
+</tr>
+<tr>
+<td><code>edit</code> / <code>write</code></td>
+<td>правит и создаёт файлы</td>
+</tr>
+<tr>
+<td><code>glob</code> / <code>grep</code></td>
+<td>ищет файлы и содержимое</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>запускает команды</td>
+</tr>
+<tr>
+<td><code>webfetch</code> / <code>websearch</code></td>
+<td>достаёт внешнюю информацию</td>
+</tr>
+</tbody>
+</table></div>
+<p>Практика: чем уже инструмент, тем предсказуемее агент. «Запусти мне всё» хуже,
+чем «запусти <code>pytest tests/test_auth.py</code>».</p>
+<h2 id="3">3. Права: модель угроз</h2>
+<p>Каждое действие агента потенциально необратимо. Категории риска:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Риск</th>
+<th>Пример</th>
+<th>Что делать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Необратимое удаление</td>
+<td><code>rm -rf</code>, <code>git reset --hard</code></td>
+<td><code>deny</code></td>
+</tr>
+<tr>
+<td>Публикация наружу</td>
+<td><code>git push</code>, <code>docker push</code>, деплой</td>
+<td><code>ask</code></td>
+</tr>
+<tr>
+<td>Секреты</td>
+<td>чтение <code>.env</code>, <code>~/.ssh</code></td>
+<td><code>deny</code></td>
+</tr>
+<tr>
+<td>Деньги</td>
+<td>вызов платных API пачками</td>
+<td>лимиты</td>
+</tr>
+<tr>
+<td>Миграции БД</td>
+<td><code>alembic upgrade</code> на проде</td>
+<td><code>ask</code>/<code>deny</code></td>
+</tr>
+<tr>
+<td>Изменение вне проекта</td>
+<td>чужие папки</td>
+<td><code>external_directory</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-opencode">4. Как устроены правила в OpenCode</h2>
+<p>Правило = <code>action</code> + <code>resource</code> + <code>effect</code>:</p>
+<pre><code class="language-jsonc">{ &quot;action&quot;: &quot;shell&quot;,  &quot;resource&quot;: &quot;git push *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+{ &quot;action&quot;: &quot;shell&quot;,  &quot;resource&quot;: &quot;git status *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+{ &quot;action&quot;: &quot;read&quot;,   &quot;resource&quot;: &quot;*.env&quot;, &quot;effect&quot;: &quot;ask&quot; },
+{ &quot;action&quot;: &quot;external_directory&quot;, &quot;resource&quot;: &quot;D:/other/*&quot;, &quot;effect&quot;: &quot;allow&quot; },
+</code></pre>
+<ul>
+<li>Действуют <strong>снизу вверх</strong>: последнее совпавшее правило побеждает.</li>
+<li>По умолчанию — <code>ask</code> (если нет совпадения).</li>
+<li>«Always allow» в интерфейсе сохраняет правило на уровне проекта.</li>
+<li><code>deny</code> нельзя обойти кнопкой.</li>
+</ul>
+<h2 id="5">5. Минимальный рабочий набор</h2>
+<pre><code class="language-jsonc">{
+  &quot;permissions&quot;: [
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;ask&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git status *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git diff *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;./scripts/check.sh&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;pytest *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git push *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;sudo *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+    { &quot;action&quot;: &quot;read&quot;,  &quot;resource&quot;: &quot;*.env*&quot;, &quot;effect&quot;: &quot;deny&quot; }
+  ]
+}
+</code></pre>
+<p>Логика: разрешить чтение и проверки, запретить публикацию и необратимое.</p>
+<h2 id="6">6. Изоляция</h2>
+<ul>
+<li><strong>Ветка</strong> — минимум: <code>git checkout -b agent/&lt;задача&gt;</code>.</li>
+<li><strong>Worktree</strong> — отдельная рабочая копия: агент работает, не мешая вашей.</li>
+<li><strong>Контейнер/VM</strong> — для рискованных экспериментов.</li>
+<li><strong><code>--auto</code></strong> — авто-одобрение всего, что не запрещено. Только в изолированной среде.</li>
+</ul>
+<p>Правило: чем шире права, тем уже должна быть песочница.</p>
+<h2 id="7">7. Субагенты</h2>
+<p>Отдельная сессия для подзадачи. Зачем:</p>
+<ul>
+<li>разведка по большому репо не засоряет основной контекст;</li>
+<li>параллельная работа над независимыми частями;</li>
+<li>«второе мнение» на ревью.</li>
+</ul>
+<p>Цена: субагент не видит вашу историю — ему нужен полный самостоятельный бриф.</p>
+<h2 id="8">8. Когда агент зациклился</h2>
+<p>Признаки: одни и те же правки, повторяющиеся ошибки, рост числа tool-calls.</p>
+<p>Действия:</p>
+<ol>
+<li>Остановить.</li>
+<li>Сформулировать, что известно точно (файлы, ошибки).</li>
+<li>Новая сессия с этим контекстом.</li>
+<li>Если повторяется — задача сформулирована неверно.</li>
+</ol>
+<hr />
+<h2 id="-">Чек-лист понимания</h2>
+<ol>
+<li>Почему «модель делает» — неверная формулировка?</li>
+<li>Что произойдёт, если поставить <code>allow</code> на <code>shell: *</code>?</li>
+<li>Зачем <code>deny</code> на <code>git push</code>, если есть ревью?</li>
+<li>Когда <code>--auto</code> допустим, а когда — нет?</li>
+<li>Чем субагент помогает и чем вредит?</li>
+</ol>
+<hr />
+<h2 class="section" id="_2">Практика</h2>
+<p>См. <a href="05-agent-loop-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="04-oracles-practice.html">← Оракулы и проверка — практика</a>
+      <a class="next" href="05-agent-loop-practice.html">Агентный цикл и права — практика →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

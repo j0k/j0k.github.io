@@ -75,6 +75,17 @@
     .join-section { background: var(--header-bg); border-radius: var(--vc-radius); padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; border: var(--vc-border); box-shadow: var(--vc-shadow); }
     .join-lead { margin: 0 0 1.25rem; color: var(--text); line-height: 1.5; }
     .join-section h2 { font-size: 1.05rem; margin: 0 0 1rem; color: var(--text-muted); font-weight: 600; }
+    .courses-section { background: var(--header-bg); border-radius: var(--vc-radius); padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; border: var(--vc-border); box-shadow: var(--vc-shadow); }
+    .courses-section h2 { font-size: 1.05rem; margin: 0 0 0.35rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.02em; }
+    .courses-note { font-size: 0.88rem; color: var(--text-muted); margin: 0 0 1.1rem; line-height: 1.5; }
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.85rem; }
+    .course-card { display: block; text-decoration: none; color: var(--text); background: rgba(255,255,255,0.72); border: 1px solid rgba(0,0,0,0.08); border-radius: var(--vc-radius-sm); padding: 1rem 1.1rem; transition: border-color var(--vc-transition), box-shadow var(--vc-transition), transform var(--vc-transition); }
+    .course-card:hover { border-color: var(--yc-orange); box-shadow: var(--vc-shadow); transform: translateY(-2px); }
+    .course-card:focus-visible { outline: 2px solid var(--yc-orange); outline-offset: 2px; }
+    .course-card-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--yc-orange); margin-bottom: 0.4rem; }
+    .course-card-title { display: block; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .course-card-desc { display: block; font-size: 0.86rem; color: var(--text-muted); line-height: 1.45; }
+    .course-card-meta { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 0.6rem; padding-top: 0.55rem; border-top: 1px solid rgba(0,0,0,0.07); }
     @media (max-width: 640px) {
       .vibecoding-page { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); padding-bottom: 2rem; box-sizing: border-box; }
       .timeline-vertical { padding-left: 1.35rem; }
@@ -91,6 +102,7 @@
     <div class="lang-toggle-vc" aria-label="Language">
       <a href="#" class="lang-option-vc active" data-lang="ru" aria-label="Русский">RU</a>
       <a href="#" class="lang-option-vc" data-lang="en" aria-label="English">EN</a>
+      <a href="#" class="lang-option-vc" data-lang="fr" aria-label="Français">FR</a>
     </div>
   </header>
 
@@ -108,6 +120,25 @@
     <div class="cta-wrap">
       <a href="#join-form" class="cta-btn" id="ctaJoin" data-i18n="cta.join">Принять участие</a>
     </div>
+
+    <section class="courses-section" aria-label="Courses">
+      <h2 data-i18n="courses.heading">Полные курсы</h2>
+      <p class="courses-note" data-i18n="courses.note">Два отдельных курса с материалами, практикой и шаблонами — открываются здесь же, без регистрации.</p>
+      <div class="courses-grid">
+        <a class="course-card" href="opencode/index.html">
+          <span class="course-card-tag" data-i18n="courses.opencode.tag">OpenCode</span>
+          <span class="course-card-title" data-i18n="courses.opencode.title">Вайбкодинг с OpenCode</span>
+          <span class="course-card-desc" data-i18n="courses.opencode.desc">11 модулей: как работают LLM, контекст, спеки, оракулы, права агента, экономика, ревью, кастомизация и капстоун.</span>
+          <span class="course-card-meta" data-i18n="courses.opencode.meta">40% теории · 60% практики · ≈50 часов</span>
+        </a>
+        <a class="course-card" href="course-30-70/index.html">
+          <span class="course-card-tag" data-i18n="courses.course.tag">30/70</span>
+          <span class="course-card-title" data-i18n="courses.course.title">Курс 30/70</span>
+          <span class="course-card-desc" data-i18n="courses.course.desc">Программа, теория, практика, промптотека из 32 промптов, проекты для капстоуна, трекер и гант по неделям.</span>
+          <span class="course-card-meta" data-i18n="courses.course.meta">30% теории · 70% практики · 9 недель</span>
+        </a>
+      </div>
+    </section>
 
     <section class="timeline-section" aria-label="Timeline">
       <h2 data-i18n="timeline.heading">Таймлайн · 10 уроков</h2>
@@ -308,107 +339,703 @@
   <script>
     (function() {
       var LESSONS_DETAIL = {
-        1: {
-          program: ['Обзор редакторов (VS Code, Cursor, др.): что выбрать под свой стек.', 'Тема и шрифт: контраст, моноширинность, размер. Настройка за 5 минут.', 'Горячие клавиши: 5–10 must-have под свою ОС. Без мыши — быстрее в потоке.', 'Уведомления и вкладки: как убрать лишнее и не дергаться.'],
-          exercises: ['Установить или проверить редактор; применить одну тему и один шрифт.', 'Выписать 5 горячих клавиш и один раз пройти типичную задачу только с клавиатуры.', 'Включить «не беспокоить» на 25 минут и сделать один маленький таск.'],
-          outcomes: ['Среда не отвлекает и поддерживает фокус.', 'Базовый мышечный набор «редактор + клавиши» закреплён.'],
-          duration: '25–40 мин',
-          pair: ['В паре: показать друг другу свою тему и 3 любимые клавиши; за 5 мин объяснить, зачем каждая.'],
-          monetization: 'Можно монетизировать: мини-гайд «Настрой редактор за 15 минут» (PDF/Notion), платный чеклист для онбординга в команду.'
+        ru: {
+          "1": {
+            "program": [
+              "Обзор редакторов (VS Code, Cursor, др.): что выбрать под свой стек.",
+              "Тема и шрифт: контраст, моноширинность, размер. Настройка за 5 минут.",
+              "Горячие клавиши: 5–10 must-have под свою ОС. Без мыши — быстрее в потоке.",
+              "Уведомления и вкладки: как убрать лишнее и не дергаться."
+            ],
+            "exercises": [
+              "Установить или проверить редактор; применить одну тему и один шрифт.",
+              "Выписать 5 горячих клавиш и один раз пройти типичную задачу только с клавиатуры.",
+              "Включить «не беспокоить» на 25 минут и сделать один маленький таск."
+            ],
+            "outcomes": [
+              "Среда не отвлекает и поддерживает фокус.",
+              "Базовый мышечный набор «редактор + клавиши» закреплён."
+            ],
+            "duration": "25–40 мин",
+            "pair": [
+              "В паре: показать друг другу свою тему и 3 любимые клавиши; за 5 мин объяснить, зачем каждая."
+            ],
+            "monetization": "Можно монетизировать: мини-гайд «Настрой редактор за 15 минут» (PDF/Notion), платный чеклист для онбординга в команду."
+          },
+          "2": {
+            "program": [
+              "Что такое ритуал входа: повторяемые действия, которые сигнализируют мозгу «сейчас код».",
+              "Дыхание: 2–3 минуты перед сессией (например, 4-4-4 или боксовое).",
+              "Музыка и звук: что помогает лично тебе (фокус-плейлисты, шум, тишина).",
+              "Порядок на столе и в табах: один проект — одна цель на сессию."
+            ],
+            "exercises": [
+              "Придумать свой 3-минутный ритуал (дыхание + звук + один клик) и записать.",
+              "Провести его перед одной кодовой сессией и засечь, через сколько минут «въехал».",
+              "Повторить 3 дня подряд и скорректировать ритуал."
+            ],
+            "outcomes": [
+              "Есть персональный ритуал входа в код.",
+              "Сокращается время «разгона» до потока."
+            ],
+            "duration": "30–45 мин (включая первую сессию с ритуалом)",
+            "pair": [
+              "В паре: по очереди провести ритуал друг для друга (один дышит, второй наблюдает за таймингом); обменяться плейлистами."
+            ],
+            "monetization": ""
+          },
+          "3": {
+            "program": [
+              "Почему один фокус: многозадачность и переключения убивают поток.",
+              "Как резать задачу: «сделать фичу» → «написать функцию X», «добавить тест», «закоммитить».",
+              "Правило «не переключаться»: закрыть лишние вкладки, один таск в трекере на экране.",
+              "Микро-паузы между тасками: 1–2 мин, не в соцсети."
+            ],
+            "exercises": [
+              "Взять одну реальную задачу и разбить на 3–5 шагов «не больше 25 мин каждый».",
+              "Взять один шаг и довести до конца без переключения (телефон в другую комнату).",
+              "Записать, что чаще всего отвлекает, и один раз заблокировать это на сессию."
+            ],
+            "outcomes": [
+              "Умеешь дробить задачу и держать один фокус до завершения шага.",
+              "Меньше «половинчатых» состояний в голове."
+            ],
+            "duration": "35–50 мин",
+            "pair": [
+              "В паре: один формулирует задачу, второй режет её на шаги; поменяться ролями. Таймер 25 мин — оба делают только свой один шаг."
+            ],
+            "monetization": "Можно монетизировать: воркшоп «Синглтаскинг в команде» для компаний, шаблон «разрезки» задач для трекера (Notion/Linear)."
+          },
+          "4": {
+            "program": [
+              "Принцип ясного промпта: контекст + что нужно + формат ответа.",
+              "Примеры плохих и хороших запросов к ИИ (код, рефакторинг, тесты, объяснение).",
+              "Как не терять контекст: один чат — одна тема; явно указывать файлы и участки кода.",
+              "Итерация: уточняющие вопросы и «сделай короче / на TypeScript / с комментариями»."
+            ],
+            "exercises": [
+              "Написать 3 промпта к ИИ по своей текущей задаче (код, баг, рефакторинг).",
+              "Получить ответ и один раз уточнить промпт, чтобы улучшить результат.",
+              "Сохранить лучший шаблон промпта в сниппет или заметку."
+            ],
+            "outcomes": [
+              "Получаешь от ИИ полезный код и не тратишь время на переспросы.",
+              "Есть свой шаблон промпта под типичные задачи."
+            ],
+            "duration": "40–55 мин",
+            "pair": [
+              "В паре: оба пишут промпт к одной и той же задаче; сравнить ответы ИИ и выбрать лучшую формулировку. Роль «ревьюера промптов» друг у друга."
+            ],
+            "monetization": "Можно монетизировать: курс или консалт «Промпты для разработчиков», продажа шаблонов промптов (Notion/Gumroad), платные воркшопы в компаниях."
+          },
+          "5": {
+            "program": [
+              "Рефакторинг без паники: маленькие шаги, один тип изменений за раз.",
+              "Роль тестов: зелёный до и после. Когда тестов нет — хотя бы ручная проверка чеклистом.",
+              "Коммиты как точки отката: «сделал один шаг — закоммитил».",
+              "Когда остановиться: критерий «читаемо и предсказуемо», не «идеально»."
+            ],
+            "exercises": [
+              "Выбрать один маленький рефакторинг (например, переименование, вынос функции).",
+              "Перед изменением: зафиксировать текущее поведение (тест или чеклист).",
+              "Сделать 3–5 маленьких коммитов за одну сессию рефакторинга."
+            ],
+            "outcomes": [
+              "Рефакторишь без стресса и с возможностью отката.",
+              "Привычка к «маленьким коммитам» в рефакторинге."
+            ],
+            "duration": "40–60 мин",
+            "pair": [
+              "В паре: один рефакторит, второй смотрит и напоминает «тест зелёный? коммит?»; потом поменяться. Обсудить, где было страшно и что помогло."
+            ],
+            "monetization": ""
+          },
+          "6": {
+            "program": [
+              "Отладка как исследование: гипотеза → проверка → следующая гипотеза.",
+              "Логи и print/debugger: где ставить, что смотреть. Один поток данных за раз.",
+              "Брейкпоинты и пошаговое выполнение: когда логи не хватает.",
+              "Когда остановиться и попросить помощь: правило 15–20 минут."
+            ],
+            "exercises": [
+              "Взять один реальный баг; записать 3 гипотезы до того как лезть в код.",
+              "Пройти баг с логированием или брейкпоинтами; зафиксировать, какая гипотеза сработала.",
+              "Один раз намеренно попросить коллегу или ИИ «посмотреть со стороны» после 15 мин тупика."
+            ],
+            "outcomes": [
+              "Дебажишь спокойно, по шагам, без паники.",
+              "Понимаешь, когда пора остановиться и попросить помощь."
+            ],
+            "duration": "35–50 мин",
+            "pair": [
+              "В паре: «резиновая утка» — один описывает баг и гипотезы вслух, второй только слушает и задаёт уточняющие вопросы. Потом поменяться."
+            ],
+            "monetization": ""
+          },
+          "7": {
+            "program": [
+              "Вайбкодинг вдвоём: общие правила (один экран, смена водитель/навигатор, таймер).",
+              "Как не убить вайб: критика идей, не человека; паузы на согласование.",
+              "Код-ревью с вайбом: чеклист, доброжелательный тон, «что улучшить» вместо «ты неправ».",
+              "Ретро по сессии: что помогло, что помешало — 5 минут в конце."
+            ],
+            "exercises": [
+              "Провести одну 25-минутную парную сессию (реальная задача или учебная).",
+              "Сделать код-ревью одного PR друг друга по чеклисту «что понравилось + 1 предложение».",
+              "Записать 3 правила для своих будущих парных сессий."
+            ],
+            "outcomes": [
+              "Умеешь проводить парную сессию и ревью без токсичности.",
+              "Есть чеклист и правила под свою команду или пару."
+            ],
+            "duration": "50–70 мин (включая сессию и ревью)",
+            "pair": [
+              "Все упражнения урока — парные по определению. Добавить: одна сессия в роли «фасилитатора», вторая — в роли «наблюдателя за вайбом»."
+            ],
+            "monetization": "Можно монетизировать: платные воркшопы «Парное программирование и мягкое ревью», фасилитация ретро в командах, продажа чеклиста и гайда по код-ревью."
+          },
+          "8": {
+            "program": [
+              "Когда останавливаться: таймеры (Помодоро, 90 мин), признаки усталости, «тупик» дольше 15 мин.",
+              "Перерыв: что делать (движение, глаза, вода), чего избегать (соцсети, новая сложная тема).",
+              "Выход из кода: ритуал «закрытия» — коммит, запись «где остановился», закрыть вкладки.",
+              "Граница работа/жизнь: не тащить код в кровать; «парковка» мыслей на бумагу."
+            ],
+            "exercises": [
+              "Поставить таймер на 25 или 45 мин; по сигналу — перерыв 5 мин без экрана.",
+              "В конце одной сессии провести ритуал выхода (записать 1–2 предложения «что дальше»).",
+              "Один вечер после кода записать мысли на бумагу и не открывать редактор до утра."
+            ],
+            "outcomes": [
+              "Есть привычка к перерывам и ритуалу выхода.",
+              "Меньше «кода в голове» после рабочего дня."
+            ],
+            "duration": "30–45 мин",
+            "pair": [
+              "В паре: напоминать друг другу о перерыве (если работаете в один период); в конце дня — короткий «выход» вдвоём (1 мин каждый: «остановился на X»)."
+            ],
+            "monetization": ""
+          },
+          "9": {
+            "program": [
+              "Долгий проект: почему вайб падает и как поддерживать ритм.",
+              "Цели и вехи: разбить на месяцы/недели; праздновать маленькие победы.",
+              "Ритм работы: регулярные сессии, сон, движение. Что режет вайб (недосып, хаос в задачах).",
+              "Антивыгорание: признаки, когда нужен перерыв не «5 минут», а день или неделя."
+            ],
+            "exercises": [
+              "Выписать 3 ближайшие вехи своего текущего проекта и один способ «отпраздновать» каждую.",
+              "Один раз отказаться от «ещё один коммит» и закончить сессию по плану.",
+              "Составить личный чеклист «что забирает вайб» и «что возвращает»."
+            ],
+            "outcomes": [
+              "Есть план по вехам и ритму на длинной дистанции.",
+              "Понимаешь ранние признаки выгорания и что делать."
+            ],
+            "duration": "40–55 мин",
+            "pair": [
+              "В паре: обсудить свои вехи и способы праздновать; договориться напоминать друг другу о перерывах раз в неделю."
+            ],
+            "monetization": "Можно монетизировать: гайд «Марафон без выгорания» для команд, платный аудит ритма и целей в проекте, мини-курс по антивыгоранию для разработчиков."
+          },
+          "10": {
+            "program": [
+              "Сводка марафона: среда, ритуалы, фокус, ИИ, рефакторинг, отладка, пары, перерывы, длинный проект.",
+              "Персональный чеклист: что из этого лично тебе подходит.",
+              "Как повторять: триггеры (время, место, «перед кодом»), привычка за 2–3 недели.",
+              "Обновление чеклиста: раз в месяц пересматривать и убирать/добавлять пункты."
+            ],
+            "exercises": [
+              "Написать свой вайбкодинг-чеклист (5–10 пунктов) на основе уроков 1–9.",
+              "Один день жить по чеклисту полностью; вечером отметить, что сработало, что нет.",
+              "Поставить напоминание «пересмотреть чеклист» через месяц."
+            ],
+            "outcomes": [
+              "Есть персональный чеклист «как кодить в потоке».",
+              "План по внедрению и обновлению чеклиста."
+            ],
+            "duration": "45–60 мин",
+            "pair": [
+              "В паре: обменяться чеклистами; дать друг другу по 1–2 предложения «что добавить или убрать». Договориться созвониться через месяц и сравнить обновлённые чеклисты."
+            ],
+            "monetization": "Можно монетизировать: продажа шаблона чеклиста (Notion/PDF), платный «разбор твоего чеклиста» 1-on-1, марафон как продукт с доступом к материалам и комьюнити."
+          }
         },
-        2: {
-          program: ['Что такое ритуал входа: повторяемые действия, которые сигнализируют мозгу «сейчас код».', 'Дыхание: 2–3 минуты перед сессией (например, 4-4-4 или боксовое).', 'Музыка и звук: что помогает лично тебе (фокус-плейлисты, шум, тишина).', 'Порядок на столе и в табах: один проект — одна цель на сессию.'],
-          exercises: ['Придумать свой 3-минутный ритуал (дыхание + звук + один клик) и записать.', 'Провести его перед одной кодовой сессией и засечь, через сколько минут «въехал».', 'Повторить 3 дня подряд и скорректировать ритуал.'],
-          outcomes: ['Есть персональный ритуал входа в код.', 'Сокращается время «разгона» до потока.'],
-          duration: '30–45 мин (включая первую сессию с ритуалом)',
-          pair: ['В паре: по очереди провести ритуал друг для друга (один дышит, второй наблюдает за таймингом); обменяться плейлистами.'],
-          monetization: ''
+        en: {
+          "1": {
+            "program": [
+              "Editors overview (VS Code, Cursor, others): what to pick for your stack.",
+              "Theme and font: contrast, monospace, size. Setup in 5 minutes.",
+              "Hotkeys: 5–10 must-haves for your OS. No mouse — faster in flow.",
+              "Notifications and tabs: how to cut the noise and stop twitching."
+            ],
+            "exercises": [
+              "Install or check your editor; apply one theme and one font.",
+              "Write down 5 hotkeys and once do a typical task keyboard-only.",
+              "Turn on do-not-disturb for 25 minutes and finish one small task."
+            ],
+            "outcomes": [
+              "Your environment doesn't distract you and supports focus.",
+              "The basic muscle set of \"editor + keys\" is locked in."
+            ],
+            "duration": "25–40 min",
+            "pair": [
+              "In a pair: show each other your theme and 3 favorite keys; in 5 min explain why each one matters."
+            ],
+            "monetization": "Monetizable: a mini-guide \"Set up your editor in 15 minutes\" (PDF/Notion), a paid checklist for team onboarding."
+          },
+          "2": {
+            "program": [
+              "What an entry ritual is: repeatable actions that signal to the brain \"we're coding now\".",
+              "Breathing: 2–3 minutes before a session (for example, 4-4-4 or box breathing).",
+              "Music and sound: what helps you personally (focus playlists, noise, silence).",
+              "Order on the desk and in tabs: one project — one goal per session."
+            ],
+            "exercises": [
+              "Invent your own 3-minute ritual (breathing + sound + one click) and write it down.",
+              "Run it before one coding session and time how many minutes it took to \"get in\".",
+              "Repeat for 3 days in a row and adjust the ritual."
+            ],
+            "outcomes": [
+              "You have a personal ritual for entering code.",
+              "Time to ramp up into flow shrinks."
+            ],
+            "duration": "30–45 min (including the first session with the ritual)",
+            "pair": [
+              "In a pair: take turns running the ritual for each other (one breathes, the other watches the timing); swap playlists."
+            ],
+            "monetization": ""
+          },
+          "3": {
+            "program": [
+              "Why one focus: multitasking and switching kill flow.",
+              "How to cut a task: \"build a feature\" → \"write function X\", \"add a test\", \"commit\".",
+              "The no-switching rule: close extra tabs, one tracker task on screen.",
+              "Micro-breaks between tasks: 1–2 min, not on social media."
+            ],
+            "exercises": [
+              "Take one real task and split it into 3–5 steps of \"no more than 25 min each\".",
+              "Take one step and finish it without switching (phone in another room).",
+              "Write down what distracts you most, and block it once for a session."
+            ],
+            "outcomes": [
+              "You can break down a task and hold one focus until the step is done.",
+              "Fewer half-finished states in your head."
+            ],
+            "duration": "35–50 min",
+            "pair": [
+              "In a pair: one states the task, the other cuts it into steps; then swap roles. A 25-min timer — both just do their one step."
+            ],
+            "monetization": "Monetizable: a \"Single-tasking in a team\" workshop for companies, a task-splitting template for a tracker (Notion/Linear)."
+          },
+          "4": {
+            "program": [
+              "The clear prompt principle: context + what you need + response format.",
+              "Examples of bad and good AI requests (code, refactoring, tests, explanation).",
+              "How not to lose context: one chat — one topic; name files and code regions explicitly.",
+              "Iteration: follow-up questions and \"make it shorter / in TypeScript / with comments\"."
+            ],
+            "exercises": [
+              "Write 3 AI prompts for your current task (code, bug, refactoring).",
+              "Get an answer and refine the prompt once to improve the result.",
+              "Save the best prompt template as a snippet or note."
+            ],
+            "outcomes": [
+              "You get useful code from AI without wasting time on back-and-forth.",
+              "You have your own prompt template for typical tasks."
+            ],
+            "duration": "40–55 min",
+            "pair": [
+              "In a pair: both write a prompt for the same task; compare the AI answers and pick the better wording. Be each other's \"prompt reviewer\"."
+            ],
+            "monetization": "Monetizable: a course or consulting on \"Prompts for developers\", selling prompt templates (Notion/Gumroad), paid workshops at companies."
+          },
+          "5": {
+            "program": [
+              "Refactoring without panic: small steps, one type of change at a time.",
+              "The role of tests: green before and after. When there are no tests — at least a manual check against a checklist.",
+              "Commits as rollback points: \"did one step — committed\".",
+              "When to stop: the bar is \"readable and predictable\", not \"perfect\"."
+            ],
+            "exercises": [
+              "Pick one small refactoring (for example, a rename, extracting a function).",
+              "Before the change: pin down current behavior (a test or a checklist).",
+              "Make 3–5 small commits in one refactoring session."
+            ],
+            "outcomes": [
+              "You refactor without stress and with a way back.",
+              "A habit of small commits in refactoring."
+            ],
+            "duration": "40–60 min",
+            "pair": [
+              "In a pair: one refactors, the other watches and reminds \"is the test green? commit?\"; then swap. Discuss where it got scary and what helped."
+            ],
+            "monetization": ""
+          },
+          "6": {
+            "program": [
+              "Debugging as investigation: hypothesis → check → next hypothesis.",
+              "Logs and print/debugger: where to put them, what to look at. One data flow at a time.",
+              "Breakpoints and step execution: when logs aren't enough.",
+              "When to stop and ask for help: the 15–20 minute rule."
+            ],
+            "exercises": [
+              "Take one real bug; write down 3 hypotheses before touching the code.",
+              "Walk the bug with logging or breakpoints; note which hypothesis worked.",
+              "Once, deliberately ask a colleague or AI to \"look from the outside\" after 15 min of being stuck."
+            ],
+            "outcomes": [
+              "You debug calmly, step by step, without panic.",
+              "You know when it's time to stop and ask for help."
+            ],
+            "duration": "35–50 min",
+            "pair": [
+              "In a pair: rubber duck — one describes the bug and hypotheses out loud, the other only listens and asks clarifying questions. Then swap."
+            ],
+            "monetization": ""
+          },
+          "7": {
+            "program": [
+              "Vibe coding as a pair: shared rules (one screen, driver/navigator rotation, timer).",
+              "How not to kill the vibe: critique ideas, not the person; pauses to align.",
+              "Code review with vibes: a checklist, a friendly tone, \"what to improve\" instead of \"you're wrong\".",
+              "Session retro: what helped, what got in the way — 5 minutes at the end."
+            ],
+            "exercises": [
+              "Run one 25-minute pair session (a real task or a learning one).",
+              "Review one of each other's PRs using the checklist \"what I liked + 1 suggestion\".",
+              "Write down 3 rules for your future pair sessions."
+            ],
+            "outcomes": [
+              "You can run a pair session and a review without toxicity.",
+              "You have a checklist and rules for your team or pair."
+            ],
+            "duration": "50–70 min (including the session and review)",
+            "pair": [
+              "All exercises in this lesson are paired by design. Add: one session as \"facilitator\", the second as \"vibe watcher\"."
+            ],
+            "monetization": "Monetizable: paid workshops \"Pair programming and gentle review\", facilitating retros in teams, selling the checklist and code review guide."
+          },
+          "8": {
+            "program": [
+              "When to stop: timers (Pomodoro, 90 min), signs of fatigue, a dead end longer than 15 min.",
+              "The break: what to do (movement, eyes, water), what to avoid (social media, a new hard topic).",
+              "Leaving the code: a closing ritual — commit, note \"where I stopped\", close tabs.",
+              "Work/life boundary: don't drag code into bed; \"park\" thoughts on paper."
+            ],
+            "exercises": [
+              "Set a timer for 25 or 45 min; when it rings — a 5-min screen-free break.",
+              "At the end of one session, run the exit ritual (write 1–2 sentences on \"what's next\").",
+              "One evening after coding, write your thoughts on paper and don't open the editor until morning."
+            ],
+            "outcomes": [
+              "You have a habit of breaks and an exit ritual.",
+              "Less \"code in your head\" after the workday."
+            ],
+            "duration": "30–45 min",
+            "pair": [
+              "In a pair: remind each other about breaks (if you work in the same window); at the end of the day — a short \"exit\" together (1 min each: \"I stopped at X\")."
+            ],
+            "monetization": ""
+          },
+          "9": {
+            "program": [
+              "The long project: why the vibe drops and how to keep the rhythm.",
+              "Goals and milestones: split into months/weeks; celebrate small wins.",
+              "Work rhythm: regular sessions, sleep, movement. What kills the vibe (sleep debt, task chaos).",
+              "Anti-burnout: the signs, and when you need not \"5 minutes\" but a day or a week off."
+            ],
+            "exercises": [
+              "Write down the next 3 milestones of your current project and one way to \"celebrate\" each.",
+              "Once, decline \"one more commit\" and end the session as planned.",
+              "Make a personal checklist of \"what takes the vibe away\" and \"what brings it back\"."
+            ],
+            "outcomes": [
+              "You have a plan for milestones and rhythm over the long haul.",
+              "You recognize early signs of burnout and know what to do."
+            ],
+            "duration": "40–55 min",
+            "pair": [
+              "In a pair: discuss your milestones and ways to celebrate; agree to remind each other about breaks once a week."
+            ],
+            "monetization": "Monetizable: a \"Marathon without burnout\" guide for teams, a paid audit of rhythm and goals in a project, a mini-course on anti-burnout for developers."
+          },
+          "10": {
+            "program": [
+              "Marathon recap: environment, rituals, focus, AI, refactoring, debugging, pairs, breaks, the long project.",
+              "Personal checklist: which of these actually fits you.",
+              "How to repeat: triggers (time, place, \"before code\"), the habit in 2–3 weeks.",
+              "Updating the checklist: review it once a month and remove/add items."
+            ],
+            "exercises": [
+              "Write your own vibe coding checklist (5–10 items) based on lessons 1–9.",
+              "Live one full day by the checklist; in the evening mark what worked and what didn't.",
+              "Set a reminder to \"review the checklist\" in a month."
+            ],
+            "outcomes": [
+              "You have a personal \"how to code in flow\" checklist.",
+              "A plan for adopting and updating the checklist."
+            ],
+            "duration": "45–60 min",
+            "pair": [
+              "In a pair: swap checklists; give each other 1–2 suggestions on \"what to add or remove\". Agree to call in a month and compare the updated checklists."
+            ],
+            "monetization": "Monetizable: selling the checklist template (Notion/PDF), a paid 1-on-1 \"review of your checklist\", the marathon as a product with access to materials and a community."
+          }
         },
-        3: {
-          program: ['Почему один фокус: многозадачность и переключения убивают поток.', 'Как резать задачу: «сделать фичу» → «написать функцию X», «добавить тест», «закоммитить».', 'Правило «не переключаться»: закрыть лишние вкладки, один таск в трекере на экране.', 'Микро-паузы между тасками: 1–2 мин, не в соцсети.'],
-          exercises: ['Взять одну реальную задачу и разбить на 3–5 шагов «не больше 25 мин каждый».', 'Взять один шаг и довести до конца без переключения (телефон в другую комнату).', 'Записать, что чаще всего отвлекает, и один раз заблокировать это на сессию.'],
-          outcomes: ['Умеешь дробить задачу и держать один фокус до завершения шага.', 'Меньше «половинчатых» состояний в голове.'],
-          duration: '35–50 мин',
-          pair: ['В паре: один формулирует задачу, второй режет её на шаги; поменяться ролями. Таймер 25 мин — оба делают только свой один шаг.'],
-          monetization: 'Можно монетизировать: воркшоп «Синглтаскинг в команде» для компаний, шаблон «разрезки» задач для трекера (Notion/Linear).'
-        },
-        4: {
-          program: ['Принцип ясного промпта: контекст + что нужно + формат ответа.', 'Примеры плохих и хороших запросов к ИИ (код, рефакторинг, тесты, объяснение).', 'Как не терять контекст: один чат — одна тема; явно указывать файлы и участки кода.', 'Итерация: уточняющие вопросы и «сделай короче / на TypeScript / с комментариями».'],
-          exercises: ['Написать 3 промпта к ИИ по своей текущей задаче (код, баг, рефакторинг).', 'Получить ответ и один раз уточнить промпт, чтобы улучшить результат.', 'Сохранить лучший шаблон промпта в сниппет или заметку.'],
-          outcomes: ['Получаешь от ИИ полезный код и не тратишь время на переспросы.', 'Есть свой шаблон промпта под типичные задачи.'],
-          duration: '40–55 мин',
-          pair: ['В паре: оба пишут промпт к одной и той же задаче; сравнить ответы ИИ и выбрать лучшую формулировку. Роль «ревьюера промптов» друг у друга.'],
-          monetization: 'Можно монетизировать: курс или консалт «Промпты для разработчиков», продажа шаблонов промптов (Notion/Gumroad), платные воркшопы в компаниях.'
-        },
-        5: {
-          program: ['Рефакторинг без паники: маленькие шаги, один тип изменений за раз.', 'Роль тестов: зелёный до и после. Когда тестов нет — хотя бы ручная проверка чеклистом.', 'Коммиты как точки отката: «сделал один шаг — закоммитил».', 'Когда остановиться: критерий «читаемо и предсказуемо», не «идеально».'],
-          exercises: ['Выбрать один маленький рефакторинг (например, переименование, вынос функции).', 'Перед изменением: зафиксировать текущее поведение (тест или чеклист).', 'Сделать 3–5 маленьких коммитов за одну сессию рефакторинга.'],
-          outcomes: ['Рефакторишь без стресса и с возможностью отката.', 'Привычка к «маленьким коммитам» в рефакторинге.'],
-          duration: '40–60 мин',
-          pair: ['В паре: один рефакторит, второй смотрит и напоминает «тест зелёный? коммит?»; потом поменяться. Обсудить, где было страшно и что помогло.'],
-          monetization: ''
-        },
-        6: {
-          program: ['Отладка как исследование: гипотеза → проверка → следующая гипотеза.', 'Логи и print/debugger: где ставить, что смотреть. Один поток данных за раз.', 'Брейкпоинты и пошаговое выполнение: когда логи не хватает.', 'Когда остановиться и попросить помощь: правило 15–20 минут.'],
-          exercises: ['Взять один реальный баг; записать 3 гипотезы до того как лезть в код.', 'Пройти баг с логированием или брейкпоинтами; зафиксировать, какая гипотеза сработала.', 'Один раз намеренно попросить коллегу или ИИ «посмотреть со стороны» после 15 мин тупика.'],
-          outcomes: ['Дебажишь спокойно, по шагам, без паники.', 'Понимаешь, когда пора остановиться и попросить помощь.'],
-          duration: '35–50 мин',
-          pair: ['В паре: «резиновая утка» — один описывает баг и гипотезы вслух, второй только слушает и задаёт уточняющие вопросы. Потом поменяться.'],
-          monetization: ''
-        },
-        7: {
-          program: ['Вайбкодинг вдвоём: общие правила (один экран, смена водитель/навигатор, таймер).', 'Как не убить вайб: критика идей, не человека; паузы на согласование.', 'Код-ревью с вайбом: чеклист, доброжелательный тон, «что улучшить» вместо «ты неправ».', 'Ретро по сессии: что помогло, что помешало — 5 минут в конце.'],
-          exercises: ['Провести одну 25-минутную парную сессию (реальная задача или учебная).', 'Сделать код-ревью одного PR друг друга по чеклисту «что понравилось + 1 предложение».', 'Записать 3 правила для своих будущих парных сессий.'],
-          outcomes: ['Умеешь проводить парную сессию и ревью без токсичности.', 'Есть чеклист и правила под свою команду или пару.'],
-          duration: '50–70 мин (включая сессию и ревью)',
-          pair: ['Все упражнения урока — парные по определению. Добавить: одна сессия в роли «фасилитатора», вторая — в роли «наблюдателя за вайбом».'],
-          monetization: 'Можно монетизировать: платные воркшопы «Парное программирование и мягкое ревью», фасилитация ретро в командах, продажа чеклиста и гайда по код-ревью.'
-        },
-        8: {
-          program: ['Когда останавливаться: таймеры (Помодоро, 90 мин), признаки усталости, «тупик» дольше 15 мин.', 'Перерыв: что делать (движение, глаза, вода), чего избегать (соцсети, новая сложная тема).', 'Выход из кода: ритуал «закрытия» — коммит, запись «где остановился», закрыть вкладки.', 'Граница работа/жизнь: не тащить код в кровать; «парковка» мыслей на бумагу.'],
-          exercises: ['Поставить таймер на 25 или 45 мин; по сигналу — перерыв 5 мин без экрана.', 'В конце одной сессии провести ритуал выхода (записать 1–2 предложения «что дальше»).', 'Один вечер после кода записать мысли на бумагу и не открывать редактор до утра.'],
-          outcomes: ['Есть привычка к перерывам и ритуалу выхода.', 'Меньше «кода в голове» после рабочего дня.'],
-          duration: '30–45 мин',
-          pair: ['В паре: напоминать друг другу о перерыве (если работаете в один период); в конце дня — короткий «выход» вдвоём (1 мин каждый: «остановился на X»).'],
-          monetization: ''
-        },
-        9: {
-          program: ['Долгий проект: почему вайб падает и как поддерживать ритм.', 'Цели и вехи: разбить на месяцы/недели; праздновать маленькие победы.', 'Ритм работы: регулярные сессии, сон, движение. Что режет вайб (недосып, хаос в задачах).', 'Антивыгорание: признаки, когда нужен перерыв не «5 минут», а день или неделя.'],
-          exercises: ['Выписать 3 ближайшие вехи своего текущего проекта и один способ «отпраздновать» каждую.', 'Один раз отказаться от «ещё один коммит» и закончить сессию по плану.', 'Составить личный чеклист «что забирает вайб» и «что возвращает».'],
-          outcomes: ['Есть план по вехам и ритму на длинной дистанции.', 'Понимаешь ранние признаки выгорания и что делать.'],
-          duration: '40–55 мин',
-          pair: ['В паре: обсудить свои вехи и способы праздновать; договориться напоминать друг другу о перерывах раз в неделю.'],
-          monetization: 'Можно монетизировать: гайд «Марафон без выгорания» для команд, платный аудит ритма и целей в проекте, мини-курс по антивыгоранию для разработчиков.'
-        },
-        10: {
-          program: ['Сводка марафона: среда, ритуалы, фокус, ИИ, рефакторинг, отладка, пары, перерывы, длинный проект.', 'Персональный чеклист: что из этого лично тебе подходит.', 'Как повторять: триггеры (время, место, «перед кодом»), привычка за 2–3 недели.', 'Обновление чеклиста: раз в месяц пересматривать и убирать/добавлять пункты.'],
-          exercises: ['Написать свой вайбкодинг-чеклист (5–10 пунктов) на основе уроков 1–9.', 'Один день жить по чеклисту полностью; вечером отметить, что сработало, что нет.', 'Поставить напоминание «пересмотреть чеклист» через месяц.'],
-          outcomes: ['Есть персональный чеклист «как кодить в потоке».', 'План по внедрению и обновлению чеклиста.'],
-          duration: '45–60 мин',
-          pair: ['В паре: обменяться чеклистами; дать друг другу по 1–2 предложения «что добавить или убрать». Договориться созвониться через месяц и сравнить обновлённые чеклисты.'],
-          monetization: 'Можно монетизировать: продажа шаблона чеклиста (Notion/PDF), платный «разбор твоего чеклиста» 1-on-1, марафон как продукт с доступом к материалам и комьюнити.'
+        fr: {
+          "1": {
+            "program": [
+              "Tour d'horizon des éditeurs (VS Code, Cursor, etc.) : lequel choisir pour sa stack.",
+              "Thème et police : contraste, monospace, taille. Réglage en 5 minutes.",
+              "Raccourcis clavier : 5–10 indispensables pour son OS. Sans souris — plus rapide dans le flow.",
+              "Notifications et onglets : comment enlever le superflu et arrêter de zapper."
+            ],
+            "exercises": [
+              "Installer ou vérifier son éditeur ; appliquer un thème et une police.",
+              "Noter 5 raccourcis clavier et faire une fois une tâche typique au clavier uniquement.",
+              "Activer « ne pas déranger » pendant 25 minutes et faire une petite tâche."
+            ],
+            "outcomes": [
+              "L'environnement ne distrait pas et soutient la concentration.",
+              "Le socle musculaire « éditeur + raccourcis » est ancré."
+            ],
+            "duration": "25–40 min",
+            "pair": [
+              "En binôme : se montrer mutuellement son thème et 3 raccourcis préférés ; expliquer en 5 min à quoi sert chacun."
+            ],
+            "monetization": "Monétisable : mini-guide « Configure ton éditeur en 15 minutes » (PDF/Notion), checklist payante pour l'onboarding en équipe."
+          },
+          "2": {
+            "program": [
+              "Ce qu'est un rituel d'entrée : des actions répétées qui signalent au cerveau « c'est le moment de coder ».",
+              "Respiration : 2–3 minutes avant la session (par exemple 4-4-4 ou box breathing).",
+              "Musique et son : ce qui t'aide personnellement (playlists de focus, bruit, silence).",
+              "Ordre sur le bureau et dans les onglets : un projet — un objectif par session."
+            ],
+            "exercises": [
+              "Inventer son propre rituel de 3 minutes (respiration + son + un clic) et l'écrire.",
+              "Le faire avant une session de code et chronométrer en combien de minutes tu es « rentré dedans ».",
+              "Répéter 3 jours de suite et ajuster le rituel."
+            ],
+            "outcomes": [
+              "Un rituel d'entrée personnel existe.",
+              "Le temps de « montée en régime » jusqu'au flow diminue."
+            ],
+            "duration": "30–45 min (y compris la première session avec le rituel)",
+            "pair": [
+              "En binôme : faire le rituel l'un pour l'autre à tour de rôle (l'un respire, l'autre surveille le timing) ; échanger ses playlists."
+            ],
+            "monetization": ""
+          },
+          "3": {
+            "program": [
+              "Pourquoi un seul focus : le multitâche et les bascules tuent le flow.",
+              "Comment découper une tâche : « faire la feature » → « écrire la fonction X », « ajouter un test », « commit ».",
+              "La règle « ne pas basculer » : fermer les onglets inutiles, une seule tâche du tracker à l'écran.",
+              "Micro-pauses entre les tâches : 1–2 min, pas sur les réseaux sociaux."
+            ],
+            "exercises": [
+              "Prendre une vraie tâche et la découper en 3–5 étapes « de 25 min maximum chacune ».",
+              "Prendre une étape et la mener à bout sans basculer (téléphone dans une autre pièce).",
+              "Noter ce qui te distrait le plus souvent et le bloquer une fois pour la session."
+            ],
+            "outcomes": [
+              "Tu sais découper une tâche et garder un seul focus jusqu'à la fin de l'étape.",
+              "Moins d'états « à moitié faits » dans la tête."
+            ],
+            "duration": "35–50 min",
+            "pair": [
+              "En binôme : l'un formule la tâche, l'autre la découpe en étapes ; puis on échange les rôles. Minuteur de 25 min — chacun ne fait que sa propre étape."
+            ],
+            "monetization": "Monétisable : atelier « Le single-tasking en équipe » pour les entreprises, modèle de découpage de tâches pour le tracker (Notion/Linear)."
+          },
+          "4": {
+            "program": [
+              "Le principe du prompt clair : contexte + ce qu'il faut + format de réponse.",
+              "Exemples de mauvaises et de bonnes requêtes à l'IA (code, refactoring, tests, explication).",
+              "Comment ne pas perdre le contexte : un chat — un sujet ; indiquer explicitement les fichiers et les portions de code.",
+              "Itération : questions de clarification et « fais plus court / en TypeScript / avec des commentaires »."
+            ],
+            "exercises": [
+              "Écrire 3 prompts à l'IA pour sa tâche en cours (code, bug, refactoring).",
+              "Obtenir une réponse et préciser le prompt une fois pour améliorer le résultat.",
+              "Enregistrer le meilleur modèle de prompt dans un snippet ou une note."
+            ],
+            "outcomes": [
+              "Tu obtiens de l'IA du code utile et tu ne perds pas de temps à redemander.",
+              "Tu as ton propre modèle de prompt pour les tâches typiques."
+            ],
+            "duration": "40–55 min",
+            "pair": [
+              "En binôme : les deux écrivent un prompt pour la même tâche ; comparer les réponses de l'IA et choisir la meilleure formulation. Chacun joue le « relecteur de prompts » de l'autre."
+            ],
+            "monetization": "Monétisable : cours ou conseil « Les prompts pour les développeurs », vente de modèles de prompts (Notion/Gumroad), ateliers payants en entreprise."
+          },
+          "5": {
+            "program": [
+              "Refactoring sans panique : petits pas, un seul type de changement à la fois.",
+              "Le rôle des tests : vert avant et après. Sans tests — au minimum une vérification manuelle par checklist.",
+              "Les commits comme points de retour : « un pas fait — un commit ».",
+              "Quand s'arrêter : le critère « lisible et prévisible », pas « parfait »."
+            ],
+            "exercises": [
+              "Choisir un petit refactoring (par exemple un renommage, l'extraction d'une fonction).",
+              "Avant de modifier : figer le comportement actuel (test ou checklist).",
+              "Faire 3–5 petits commits en une session de refactoring."
+            ],
+            "outcomes": [
+              "Tu refactorises sans stress et avec la possibilité de revenir en arrière.",
+              "L'habitude des « petits commits » en refactoring."
+            ],
+            "duration": "40–60 min",
+            "pair": [
+              "En binôme : l'un refactorise, l'autre regarde et rappelle « test vert ? commit ? » ; puis on échange. Discuter de ce qui faisait peur et de ce qui a aidé."
+            ],
+            "monetization": ""
+          },
+          "6": {
+            "program": [
+              "Le débogage comme une enquête : hypothèse → vérification → hypothèse suivante.",
+              "Logs et print/debugger : où les placer, quoi regarder. Un seul flux de données à la fois.",
+              "Points d'arrêt et exécution pas à pas : quand les logs ne suffisent plus.",
+              "Quand s'arrêter et demander de l'aide : la règle des 15–20 minutes."
+            ],
+            "exercises": [
+              "Prendre un vrai bug ; écrire 3 hypothèses avant de toucher au code.",
+              "Traiter le bug avec des logs ou des points d'arrêt ; noter quelle hypothèse était la bonne.",
+              "Une fois, demander volontairement à un collègue ou à l'IA « de regarder de l'extérieur » après 15 min d'impasse."
+            ],
+            "outcomes": [
+              "Tu débogues calmement, par étapes, sans panique.",
+              "Tu sais quand il est temps de t'arrêter et de demander de l'aide."
+            ],
+            "duration": "35–50 min",
+            "pair": [
+              "En binôme : « le canard en caoutchouc » — l'un décrit le bug et ses hypothèses à voix haute, l'autre écoute seulement et pose des questions de clarification. Puis on échange."
+            ],
+            "monetization": ""
+          },
+          "7": {
+            "program": [
+              "Vibe coding à deux : des règles communes (un seul écran, alternance driver/navigator, minuteur).",
+              "Comment ne pas tuer la vibe : critiquer les idées, pas la personne ; des pauses pour se mettre d'accord.",
+              "Code review avec la vibe : checklist, ton bienveillant, « ce qui peut être amélioré » plutôt que « tu as tort ».",
+              "Rétro de session : ce qui a aidé, ce qui a gêné — 5 minutes à la fin."
+            ],
+            "exercises": [
+              "Faire une session en binôme de 25 minutes (vraie tâche ou exercice).",
+              "Faire la code review d'une PR de l'autre selon la checklist « ce que j'ai aimé + 1 suggestion ».",
+              "Noter 3 règles pour ses futures sessions en binôme."
+            ],
+            "outcomes": [
+              "Tu sais animer une session en binôme et une review sans toxicité.",
+              "Tu as une checklist et des règles pour ton équipe ou ton binôme."
+            ],
+            "duration": "50–70 min (y compris la session et la review)",
+            "pair": [
+              "Tous les exercices de la leçon sont en binôme par définition. Ajouter : une session dans le rôle de « facilitateur », une autre dans celui d'« observateur de la vibe »."
+            ],
+            "monetization": "Monétisable : ateliers payants « Pair programming et review bienveillante », facilitation de rétros en équipe, vente d'une checklist et d'un guide de code review."
+          },
+          "8": {
+            "program": [
+              "Quand s'arrêter : minuteurs (Pomodoro, 90 min), signes de fatigue, « impasse » de plus de 15 min.",
+              "La pause : quoi faire (bouger, les yeux, de l'eau), quoi éviter (réseaux sociaux, nouveau sujet complexe).",
+              "Sortir du code : le rituel de « fermeture » — commit, note « où je me suis arrêté », fermer les onglets.",
+              "La frontière travail/vie : ne pas emporter le code au lit ; « garer » ses pensées sur papier."
+            ],
+            "exercises": [
+              "Mettre un minuteur de 25 ou 45 min ; au signal — 5 min de pause sans écran.",
+              "En fin de session, faire le rituel de sortie (écrire 1–2 phrases sur « la suite »).",
+              "Un soir après le code, écrire ses pensées sur papier et ne pas ouvrir l'éditeur avant le matin."
+            ],
+            "outcomes": [
+              "L'habitude des pauses et du rituel de sortie est là.",
+              "Moins de « code dans la tête » après la journée de travail."
+            ],
+            "duration": "30–45 min",
+            "pair": [
+              "En binôme : se rappeler mutuellement de faire une pause (si vous travaillez sur le même créneau) ; en fin de journée — une courte « sortie » à deux (1 min chacun : « je me suis arrêté à X »)."
+            ],
+            "monetization": ""
+          },
+          "9": {
+            "program": [
+              "Le projet long : pourquoi la vibe baisse et comment tenir le rythme.",
+              "Objectifs et jalons : découper en mois/semaines ; célébrer les petites victoires.",
+              "Le rythme de travail : sessions régulières, sommeil, mouvement. Ce qui tue la vibe (manque de sommeil, chaos dans les tâches).",
+              "Anti-burnout : les signes, quand il faut une pause non pas de « 5 minutes » mais d'un jour ou d'une semaine."
+            ],
+            "exercises": [
+              "Noter les 3 prochains jalons de son projet en cours et une façon de « célébrer » chacun.",
+              "Une fois, renoncer au « encore un commit » et terminer la session comme prévu.",
+              "Établir une checklist personnelle « ce qui me prend la vibe » et « ce qui me la rend »."
+            ],
+            "outcomes": [
+              "Un plan par jalons et un rythme sur la distance existent.",
+              "Tu identifies les premiers signes de burnout et ce qu'il faut faire."
+            ],
+            "duration": "40–55 min",
+            "pair": [
+              "En binôme : discuter de ses jalons et de ses façons de célébrer ; convenir de se rappeler mutuellement les pauses une fois par semaine."
+            ],
+            "monetization": "Monétisable : guide « Marathon sans burnout » pour les équipes, audit payant du rythme et des objectifs de projet, mini-cours anti-burnout pour les développeurs."
+          },
+          "10": {
+            "program": [
+              "Récap du marathon : environnement, rituels, focus, IA, refactoring, débogage, binômes, pauses, projet long.",
+              "Checklist personnelle : ce qui te convient personnellement parmi tout ça.",
+              "Comment répéter : déclencheurs (heure, lieu, « avant de coder »), une habitude en 2–3 semaines.",
+              "Mise à jour de la checklist : la revoir une fois par mois et retirer/ajouter des points."
+            ],
+            "exercises": [
+              "Écrire sa propre checklist de vibe coding (5–10 points) à partir des leçons 1–9.",
+              "Vivre un jour entièrement selon la checklist ; le soir, noter ce qui a marché et ce qui n'a pas marché.",
+              "Mettre un rappel « revoir la checklist » dans un mois."
+            ],
+            "outcomes": [
+              "Une checklist personnelle « comment coder dans le flow » existe.",
+              "Un plan pour adopter et mettre à jour la checklist."
+            ],
+            "duration": "45–60 min",
+            "pair": [
+              "En binôme : échanger ses checklists ; se donner 1–2 suggestions chacun « quoi ajouter ou retirer ». Convenir de s'appeler dans un mois et de comparer les checklists mises à jour."
+            ],
+            "monetization": "Monétisable : vente d'un modèle de checklist (Notion/PDF), « audit de ta checklist » payant en 1-on-1, le marathon comme produit avec accès aux supports et à la communauté."
+          }
         }
       };
 
+      var DETAIL_LABELS = {
+        ru: { program: 'Программа', exercises: 'Упражнения', outcomes: 'По итогу осваиваем',
+              duration: 'Время', pair: 'Парные упражнения', money: 'На этом можно заработать' },
+        en: { program: 'Program', exercises: 'Exercises', outcomes: 'What you gain',
+              duration: 'Time', pair: 'Pair exercises', money: 'Ways to monetize' },
+        fr: { program: 'Programme', exercises: 'Exercices', outcomes: 'Ce que vous maîtrisez',
+              duration: 'Durée', pair: 'Exercices en binôme', money: 'Comment monétiser' }
+      };
+
       function renderLessonBody(num) {
-        var data = LESSONS_DETAIL[num];
+        var data = (LESSONS_DETAIL[currentLang] || LESSONS_DETAIL.ru)[num];
         if (!data) return '';
+        var L = DETAIL_LABELS[currentLang] || DETAIL_LABELS.ru;
         var html = '';
-        html += '<div class="lesson-detail-section"><h4>Программа</h4><ul>';
+        html += '<div class="lesson-detail-section"><h4>' + L.program + '</h4><ul>';
         (data.program || []).forEach(function(p) { html += '<li>' + p + '</li>'; });
         html += '</ul></div>';
-        html += '<div class="lesson-detail-section"><h4>Упражнения</h4><ul>';
+        html += '<div class="lesson-detail-section"><h4>' + L.exercises + '</h4><ul>';
         (data.exercises || []).forEach(function(e) { html += '<li>' + e + '</li>'; });
         html += '</ul></div>';
-        html += '<div class="lesson-detail-section"><h4>По итогу осваиваем</h4><ul>';
+        html += '<div class="lesson-detail-section"><h4>' + L.outcomes + '</h4><ul>';
         (data.outcomes || []).forEach(function(o) { html += '<li>' + o + '</li>'; });
         html += '</ul></div>';
-        html += '<div class="lesson-detail-section"><h4>Время</h4><p>' + (data.duration || '—') + '</p></div>';
-        html += '<div class="lesson-detail-section"><h4>Парные упражнения</h4><ul>';
+        html += '<div class="lesson-detail-section"><h4>' + L.duration + '</h4><p>' + (data.duration || '—') + '</p></div>';
+        html += '<div class="lesson-detail-section"><h4>' + L.pair + '</h4><ul>';
         (data.pair || []).forEach(function(p) { html += '<li>' + p + '</li>'; });
         html += '</ul></div>';
         if (data.monetization) {
-          html += '<div class="lesson-detail-section"><h4>На этом можно заработать</h4><p class="monetization">' + data.monetization + '</p></div>';
+          html += '<div class="lesson-detail-section"><h4>' + L.money + '</h4><p class="monetization">' + data.monetization + '</p></div>';
         }
         return html;
       }
@@ -430,6 +1057,16 @@
           'timeline.heading': 'Таймлайн · 10 уроков',
           'timeline.hint': 'Клик по отрезку — переход к уроку',
           'lessons.heading': 'Уроки',
+          'courses.heading': 'Полные курсы',
+          'courses.note': 'Два отдельных курса с материалами, практикой и шаблонами — открываются здесь же, без регистрации.',
+          'courses.opencode.tag': 'OpenCode',
+          'courses.opencode.title': 'Вайбкодинг с OpenCode',
+          'courses.opencode.desc': '11 модулей: как работают LLM, контекст, спеки, оракулы, права агента, экономика, ревью, кастомизация и капстоун.',
+          'courses.opencode.meta': '40% теории · 60% практики · ≈50 часов',
+          'courses.course.tag': '30/70',
+          'courses.course.title': 'Курс 30/70',
+          'courses.course.desc': 'Программа, теория, практика, промптотека из 32 промптов, проекты для капстоуна, трекер и гант по неделям.',
+          'courses.course.meta': '30% теории · 70% практики · 9 недель',
           'lesson.num': 'Урок',
           'lesson.1.title': 'Среда и инструменты',
           'lesson.1.desc': 'Настройка редактора, тема, шрифт, горячие клавиши. Минимум отвлечений — максимум потока.',
@@ -475,6 +1112,16 @@
           'timeline.heading': 'Timeline · 10 lessons',
           'timeline.hint': 'Click a segment to jump to the lesson',
           'lessons.heading': 'Lessons',
+          'courses.heading': 'Full courses',
+          'courses.note': 'Two standalone courses with materials, practice, and templates — open right here, no sign-up.',
+          'courses.opencode.tag': 'OpenCode',
+          'courses.opencode.title': 'Vibecoding with OpenCode',
+          'courses.opencode.desc': '11 modules: how LLMs work, context, specs, oracles, agent permissions, economics, review, customization, and a capstone.',
+          'courses.opencode.meta': '40% theory · 60% practice · ≈50 hours',
+          'courses.course.tag': '30/70',
+          'courses.course.title': 'Course 30/70',
+          'courses.course.desc': 'Program, theory, practice, a library of 32 prompts, capstone projects, a progress tracker, and a weekly Gantt chart.',
+          'courses.course.meta': '30% theory · 70% practice · 9 weeks',
           'lesson.num': 'Lesson',
           'lesson.1.title': 'Environment & tools',
           'lesson.1.desc': 'Editor setup, theme, font, hotkeys. Fewer distractions—more flow.',
@@ -510,16 +1157,78 @@
           'join.title': 'Sign up',
           'join.lead': 'Fill in a short form — I’ll get in touch and share the marathon details.',
           'join.submit': 'Sign up'
+        },
+        fr: {
+          'nav.home': 'Accueil',
+          'nav.back': '← Retour',
+          'title': 'Marathon Vibecoding',
+          'intro.p1': 'Le vibecoding, c’est coder dans le flow : quand l’environnement, les outils et l’état d’esprit s’alignent, le code s’écrit facilement et avec plaisir. Ce marathon compte 10 leçons — de la configuration de l’environnement et des rituels au travail avec l’IA et au maintien de la concentration.',
+          'intro.p2': 'Ci-dessous la chronologie du marathon. Cliquez sur un segment pour aller à la leçon ; tout est défilable et cliquable.',
+          'timeline.heading': 'Chronologie · 10 leçons',
+          'timeline.hint': 'Cliquez sur un segment pour aller à la leçon',
+          'lessons.heading': 'Leçons',
+          'courses.heading': 'Cours complets',
+          'courses.note': 'Deux cours autonomes avec supports, pratique et modèles — ils s’ouvrent ici même, sans inscription.',
+          'courses.opencode.tag': 'OpenCode',
+          'courses.opencode.title': 'Vibecoding avec OpenCode',
+          'courses.opencode.desc': '11 modules : fonctionnement des LLM, contexte, specs, oracles, permissions de l’agent, économie, revue, personnalisation et projet final.',
+          'courses.opencode.meta': '40 % de théorie · 60 % de pratique · ≈50 heures',
+          'courses.course.tag': '30/70',
+          'courses.course.title': 'Cours 30/70',
+          'courses.course.desc': 'Programme, théorie, pratique, bibliothèque de 32 prompts, projets de fin de cours, suivi de progression et gantt par semaine.',
+          'courses.course.meta': '30 % de théorie · 70 % de pratique · 9 semaines',
+          'lesson.num': 'Leçon',
+          'lesson.1.title': 'Environnement et outils',
+          'lesson.1.desc': 'Configuration de l’éditeur, thème, police, raccourcis. Moins de distractions — plus de flow.',
+          'info.1.a': 'Éditeur', 'info.1.b': 'Thème', 'info.1.c': 'Raccourcis',
+          'lesson.2.title': 'Rituel d’entrée en code',
+          'lesson.2.desc': 'Comment démarrer une session pour entrer vite dans le flow : respiration, musique, bureau rangé.',
+          'info.2.a': 'Respiration', 'info.2.b': 'Musique', 'info.2.c': 'Bureau',
+          'lesson.3.title': 'Un seul focus, une seule tâche',
+          'lesson.3.desc': 'Le monotâche en code : découper la tâche et ne pas changer avant la fin.',
+          'info.3.a': 'Une tâche', 'info.3.b': 'Terminé',
+          'lesson.4.title': 'Prompts IA : clairs et précis',
+          'lesson.4.desc': 'Comment formuler ses demandes à un assistant IA pour obtenir du code utile sans perdre le contexte.',
+          'info.4.a': 'Prompt', 'info.4.b': 'Contexte',
+          'lesson.5.title': 'Refactoriser sans stress',
+          'lesson.5.desc': 'Petits pas, tests, commits. Refactoriser sans craindre de casser ni de s’épuiser.',
+          'info.5.a': 'Étapes', 'info.5.b': 'Tests',
+          'lesson.6.title': 'Déboguer dans le flow',
+          'lesson.6.desc': 'Déboguer calmement : logs, points d’arrêt, hypothèses. Pas de panique — enquêter.',
+          'info.6.a': 'Logs', 'info.6.b': 'Hypothèse',
+          'lesson.7.title': 'Binômes et revue de code',
+          'lesson.7.desc': 'Le vibecoding à deux : mener les sessions et les revues de façon utile et agréable.',
+          'info.7.a': 'Binôme', 'info.7.b': 'Revue',
+          'lesson.8.title': 'Pauses et sortie du code',
+          'lesson.8.desc': 'Quand s’arrêter, comment se reposer et « fermer » une session sans emporter le code au lit.',
+          'info.8.a': 'Pause', 'info.8.b': 'Sortie',
+          'lesson.9.title': 'Projets longs sans épuisement',
+          'lesson.9.desc': 'Rythme, objectifs, célébration des petites victoires. Garder le flow sur la distance.',
+          'info.9.a': 'Rythme', 'info.9.b': 'Victoires',
+          'lesson.10.title': 'Votre checklist vibecoding',
+          'lesson.10.desc': 'Construire une checklist personnelle : ce qui vous aide à coder dans le flow et comment le répéter.',
+          'info.10.a': 'Checklist', 'info.10.b': 'Répétition',
+          'cta.join': 'Participer',
+          'join.title': 'Laisser une demande',
+          'join.lead': 'Remplissez un court formulaire — je vous contacterai et vous donnerai les détails du marathon.',
+          'join.submit': 'S’inscrire'
         }
       };
 
+      var TITLES = {
+        ru: 'Марафон по вайбкодингу · 10 уроков',
+        en: 'Vibecoding Marathon · 10 Lessons',
+        fr: 'Marathon Vibecoding · 10 leçons'
+      };
+      var LESSON_WORD = { ru: 'Урок ', en: 'Lesson ', fr: 'Leçon ' };
+
       function docTitle(lang) {
-        document.title = lang === 'ru' ? 'Марафон по вайбкодингу · 10 уроков' : 'Vibecoding Marathon · 10 Lessons';
+        document.title = TITLES[lang] || TITLES.ru;
       }
       var currentLang = (function() {
         try {
           var s = localStorage.getItem('vibecoding-lang');
-          if (s === 'ru' || s === 'en') return s;
+          if (s === 'ru' || s === 'en' || s === 'fr') return s;
         } catch (e) {}
         return 'ru';
       })();
@@ -527,7 +1236,7 @@
       function applyLang(lang) {
         currentLang = lang;
         try { localStorage.setItem('vibecoding-lang', lang); } catch (e) {}
-        document.documentElement.lang = lang === 'ru' ? 'ru' : 'en';
+        document.documentElement.lang = lang;
         var t = LANG[lang] || LANG.ru;
         document.querySelectorAll('[data-i18n]').forEach(function(el) {
           var key = el.getAttribute('data-i18n');
@@ -536,7 +1245,7 @@
         document.querySelectorAll('.timeline-item').forEach(function(item) {
           var n = item.getAttribute('data-lesson');
           var numEl = item.querySelector('.timeline-item-num');
-          if (numEl && n) numEl.textContent = (lang === 'ru' ? 'Урок ' : 'Lesson ') + n;
+          if (numEl && n) numEl.textContent = (LESSON_WORD[lang] || LESSON_WORD.ru) + n;
         });
         document.querySelectorAll('.timeline-bar-wrap[data-target]').forEach(function(bar) {
           var id = bar.getAttribute('data-target');
@@ -546,6 +1255,8 @@
         document.querySelectorAll('.lang-option-vc').forEach(function(a) {
           a.classList.toggle('active', a.getAttribute('data-lang') === lang);
         });
+        document.querySelectorAll('.lesson-card-body').forEach(function(el) { el.innerHTML = ''; });
+        fillLessonBodies();
         docTitle(lang);
       }
 

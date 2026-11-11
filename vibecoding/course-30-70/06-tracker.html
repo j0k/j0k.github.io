@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Трекер — Вайбкодинг 30/70</title>
+<meta property="og:title" content="Трекер — Вайбкодинг 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Вайбкодинг</b><span>курс 30/70 · 23 часа</span></a>
+    <div class="ratio">30% теории · 70% практики · 1380 мин</div>
+    <nav>
+      <a href="index.html">Обзор курса<small>Старт</small></a>
+      <a href="01-programma.html">Программа<small>Модули и тайминг</small></a>
+      <a href="02-teoriya.html">Теория<small>30% курса</small></a>
+      <a href="03-praktika.html">Практика<small>70% курса</small></a>
+      <a href="04-promptoteka.html">Промптотека<small>32 промпта</small></a>
+      <a href="05-proekty.html">Проекты<small>Капстоун</small></a>
+      <a href="06-tracker.html" class="active">Трекер<small>Чек-лист</small></a>
+      <a href="gantt.html">Гант по неделям<small>Навыки и теория</small></a>
+    </nav>
+    <div class="foot">Открывается локально, без интернета.<br>Ctrl+P — версия для печати.<br>
+      <a href="../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../opencode/index.html">Курс по OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../index.html">← Вайбкодинг</a>
+      <span class="sep">·</span>
+      <span class="here">Курс 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/06-tracker.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+      <a class="switch" href="en/06-tracker.html" title="English">EN</a>
+      <a class="switch" href="fr/06-tracker.html" title="Français">FR</a>
+      <a class="switch" href="../opencode/index.html">Курс по OpenCode →</a>
+    </div>
+    <article>
+<h1 id="_1">Трекер прогресса</h1>
+<p>Заполняется руками. Отметка <code>[x]</code> = критерий выполнен, а не «почти».
+Пустой чекбокс — честный ответ.</p>
+<p>Дата старта: <strong><em>_</em></strong>_____</p>
+<p>Дата финиша: <strong><em>_</em></strong>_____</p>
+<hr />
+<h2 id="1-150">Модуль 1 — Как вайбкодинг работает (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Агент читает файлы проекта (проверка из 1.1)</li>
+<li class="task"><span class="cb"></span>Репозиторий создан, первый коммит до кода от ИИ</li>
+<li class="task"><span class="cb"></span><code>.gitignore</code> корректный, <code>git status</code> чистый</li>
+<li class="task"><span class="cb"></span>Утилита работает, 4 критерия приёмки проверены руками</li>
+<li class="task"><span class="cb"></span>В <code>notes.md</code> минимум 3 наблюдения по диффу</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="2-150">Модуль 2 — Спека (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Спека ≤15 строк, 6 блоков, 4+ проверяемых критерия</li>
+<li class="task"><span class="cb"></span>Ветка <code>exp/bad</code> и <code>exp/good</code> созданы, обе проверены</li>
+<li class="task"><span class="cb"></span>Таблица сравнения A/B заполнена</li>
+<li class="task"><span class="cb"></span>Названы 2 конкретные причины разницы</li>
+<li class="task"><span class="cb"></span>Спека разбита на 5 задач, у каждой критерий приёмки</li>
+<li class="task"><span class="cb"></span>Критерий переписан в условие <code>/goal</code> и запущен (измеримый признак, границы, лимит ходов)</li>
+<li class="task"><span class="cb"></span>Таблица прогона <code>/goal</code> заполнена: ходы, выполнено, лишние файлы</li>
+<li class="task"><span class="cb"></span>Ретро записано</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="3-150">Модуль 3 — Цикл работы (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>8 формулировок написаны, предсказания записаны</li>
+<li class="task"><span class="cb"></span>Фича выполнена 4 шагами, 4 коммита</li>
+<li class="task"><span class="cb"></span>Каждый дифф прочитан за 5 минут (проверено на практике)</li>
+<li class="task"><span class="cb"></span>Найдено 2+ красных флага, опасность каждого объяснена</li>
+<li class="task"><span class="cb"></span>Ретро: число откатов и потерянное время записаны</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="4-150">Модуль 4 — Контекст (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>AGENTS.md</code> создан, агент отвечает по нему из нового чата</li>
+<li class="task"><span class="cb"></span>Прогон A (один чат) и B (три чата) выполнены</li>
+<li class="task"><span class="cb"></span>Таблица A/B заполнена с метриками</li>
+<li class="task"><span class="cb"></span>Шаблон сообщения-сброса записан и проверен</li>
+<li class="task"><span class="cb"></span>Бесполезные правила из инструкции удалены</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="5-150">Модуль 5 — Отладка (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Три бага искусственно внедрены, у каждого воспроизводимый кейс</li>
+<li class="task"><span class="cb"></span>Три фикса, у каждого гипотеза «если..., то...» до правки</li>
+<li class="task"><span class="cb"></span>После каждого фикса соседние сценарии проверены</li>
+<li class="task"><span class="cb"></span>Формулировка, заставляющая агента проверять гипотезу, найдена</li>
+<li class="task"><span class="cb"></span>Ретро: среднее число циклов до фикса записано</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="6-150">Модуль 6 — Тесты (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Тест-раннер установлен, первый тест зелёный</li>
+<li class="task"><span class="cb"></span>Команда тестов записана в <code>AGENTS.md</code></li>
+<li class="task"><span class="cb"></span>5 TDD-тестов, у каждого записана причина падения до реализации</li>
+<li class="task"><span class="cb"></span>Мутационная проверка: минимум один тест поймал поломку</li>
+<li class="task"><span class="cb"></span>Бесполезные тесты выявлены и переписаны</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="7-api-150">Модуль 7 — Данные и API (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>.env</code> вне git, <code>.env.example</code> в репозитории</li>
+<li class="task"><span class="cb"></span>Проверено: ключа нет в истории git</li>
+<li class="task"><span class="cb"></span>Реальный ответ API снят через curl, лежит в <code>fixtures/</code></li>
+<li class="task"><span class="cb"></span>4 сценария ошибок обработаны и проверены</li>
+<li class="task"><span class="cb"></span>Ни одного выдуманного поля API в коде</li>
+<li class="task"><span class="cb"></span>4 теста на плохие данные, падают при удалении валидации</li>
+<li class="task"><span class="cb"></span>Ретро: чем агент соврал и как поймали</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="8-150">Модуль 8 — Деплой (150 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>main</code> защищён, прямой пуш отклоняется</li>
+<li class="task"><span class="cb"></span>PR с описанием что/зачем/как проверить</li>
+<li class="task"><span class="cb"></span>Проект задеплоен, ссылка открывается с телефона</li>
+<li class="task"><span class="cb"></span>Переменные окружения заданы в панели хостинга</li>
+<li class="task"><span class="cb"></span>Прод намеренно сломан и откачен двумя способами, время замерено</li>
+<li class="task"><span class="cb"></span>Чек-лист ревью 12 пунктов пройден, 1 проблема исправлена</li>
+<li>Мин теории: 45 / факт: ____</li>
+<li>Мин практики: 105 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="9-180">Модуль 9 — Капстоун (180 мин)</h2>
+<ul>
+<li class="task"><span class="cb"></span>Проект выбран, спека 10 строк и 4 шага в репозитории</li>
+<li class="task"><span class="cb"></span>Репозиторий на GitHub, <code>AGENTS.md</code> и <code>.env.example</code> на месте</li>
+<li class="task"><span class="cb"></span>Главный сценарий проходит локально целиком</li>
+<li class="task"><span class="cb"></span>3+ сценария ошибок обработаны</li>
+<li class="task"><span class="cb"></span>Тест на главный сценарий зелёный</li>
+<li class="task"><span class="cb"></span>README: <code>git clone</code> → по инструкции → работает (проверено в чистой папке)</li>
+<li class="task"><span class="cb"></span>Публичная ссылка живая, проверена с телефона</li>
+<li class="task"><span class="cb"></span>Секретов в репозитории нет</li>
+<li class="task"><span class="cb"></span>Известные ограничения записаны в README</li>
+<li class="task"><span class="cb"></span>История коммитов читается: понятно что и зачем</li>
+<li>Мин теории: 54 / факт: ____</li>
+<li>Мин практики: 126 / факт: ____</li>
+<li>Что было сложно: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>___</li>
+</ul>
+<hr />
+<h2 id="_2">Итоговый расчёт пропорции</h2>
+<pre><code>Теория:    ____ мин
+Практика:  ____ мин
+Всего:     ____ мин
+Доля теории:  ____ %   (цель 30%)
+Доля практики: ____ %  (цель 70%)
+</code></pre>
+<p>Если теория ушла выше 35% — вы читаете вместо того, чтобы делать. Вернитесь к
+правилу: таймер на 45 минут, потом практика.</p>
+<p>Если практика ушла выше 75% — проверьте, не пропущены ли критерии приёмки
+(«сделал и не проверил» — это не практика, это надежда).</p>
+<hr />
+<h2 id="_3">Финальная рефлексия</h2>
+<ol>
+<li>Какой навык оказался сложнее всего? <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>Какой промпт из <code>04-promptoteka.md</code> вы переписали под себя? ______</li>
+<li>Что вы больше никогда не будете делать с агентом? <strong><em>_</em></strong>_</li>
+<li>Ссылка на ваш проект: <strong><em>_</em></strong><strong><em>_</em></strong><strong><em>_</em></strong>_</li>
+<li>Одна фраза, объясняющая, что такое вайбкодинг, теперь для вас:</li>
+</ol>
+<hr />
+    </article>
+    <div class="pager"><a class="prev" href="05-proekty.html">← Проекты</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из", crit: "критериев" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

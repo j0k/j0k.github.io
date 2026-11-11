@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 01 — Practice: experiments that break your intuition · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 01 — Practice: experiments that break your intuition · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice active" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/01-llm-basics-practice.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/01-llm-basics-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/01-llm-basics-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="01-llm-basics.html">← Theory</a></div>
+<h1 id="module-01-practice-experiments-that-break-your-intuition">Module 01 — Practice: experiments that break your intuition</h1>
+<p><strong>Time:</strong> 150 minutes · <strong>Artifact:</strong> <code>labs/01-experiments.md</code></p>
+<p>All experiments are done in <code>~/edu/sandbox</code> (or any learning repository).
+For each one, record the result: what you expected, what you got, the conclusion.</p>
+<hr />
+<h2 id="experiment-1-non-determinism-20-min">Experiment 1. Non-determinism (20 min)</h2>
+<p>Ask the agent the same question three times <strong>in three new sessions</strong>:</p>
+<pre><code>Write a Python function that checks whether a string is a palindrome.
+</code></pre>
+<p>Compare the three answers.</p>
+<p><strong>Record:</strong> how they differ (names, case handling, whitespace, tests).
+<strong>Conclusion:</strong> reproducibility comes from tests, not from temperature.</p>
+<hr />
+<h2 id="experiment-2-vagueness-vs-specificity-30-min">Experiment 2. Vagueness vs specificity (30 min)</h2>
+<p><strong>Bad request:</strong></p>
+<pre><code>Make email validation.
+</code></pre>
+<p><strong>Good request:</strong></p>
+<pre><code>Add a validate_email(s: str) -&gt; bool function to app.py.
+Requirements:
+- the string contains exactly one '@';
+- the local part is non-empty, the domain contains a dot;
+- Cyrillic is forbidden;
+- an empty string → False;
+- do not raise exceptions.
+Write tests for: &quot;a@b.co&quot; → True, &quot;a@b&quot; → False, &quot;&quot; → False, &quot;тест@mail.ru&quot; → False.
+</code></pre>
+<p><strong>Record</strong> a table: | criterion | bad request | good request | — by columns
+"are there tests", "is Cyrillic handled", "is <code>''</code> handled", "number of iterations to a working result".</p>
+<hr />
+<h2 id="experiment-3-needle-in-a-haystack-30-min">Experiment 3. Needle in a haystack (30 min)</h2>
+<p>Create a file with 300 lines of irrelevant code (you can have the agent generate it),
+and in the middle — one line:</p>
+<pre><code class="language-python">SECRET_CONSTANT = 42  # important rule
+</code></pre>
+<p>In one session, ask:</p>
+<pre><code>Read big.py in full and tell me the value of SECRET_CONSTANT.
+</code></pre>
+<p>Then in a new session:</p>
+<pre><code>Find the SECRET_CONSTANT constant in big.py and tell me its value. Use grep.
+</code></pre>
+<p><strong>Record:</strong> both answers, the time, the approximate cost.
+<strong>Conclusion:</strong> a tool (grep) is cheaper and more reliable than "read everything".</p>
+<hr />
+<h2 id="experiment-4-api-hallucination-25-min">Experiment 4. API hallucination (25 min)</h2>
+<p>Ask:</p>
+<pre><code>Write an example of using the &lt;pick an obscure library&gt; library with the &lt;invent a method&gt; method.
+</code></pre>
+<p>Then check in the official documentation whether the method exists.</p>
+<p>Repeat with your main library:</p>
+<pre><code>How do I do &lt;task&gt; in &lt;your library&gt; &lt;version&gt;?
+</code></pre>
+<p>Compare with the documentation.</p>
+<p><strong>Record:</strong> how many fabrications per 3 requests. Which phrasing increased the risk.</p>
+<hr />
+<h2 id="experiment-5-degradation-of-a-long-session-30-min">Experiment 5. Degradation of a long session (30 min)</h2>
+<p>In <strong>one</strong> session:</p>
+<ol>
+<li>Ask it to write 3 functions.</li>
+<li>Ask it to rewrite two of them "differently" (create 2–3 rounds of edits).</li>
+<li>Then go back to the task from step 1: "remind me what the requirements for the first function were?"</li>
+<li>Ask it to add a new function in the same style.</li>
+</ol>
+<p>Now repeat step 4 in a <strong>new</strong> session, giving only the final code and the requirements.</p>
+<p><strong>Record:</strong> in which case the style is more consistent, and where there are more deviations from the original requirements.
+<strong>Conclusion:</strong> "the model got dumb" = "the context got polluted".</p>
+<hr />
+<h2 id="experiment-6-the-price-of-context-15-min">Experiment 6. The price of context (15 min)</h2>
+<p>Run one task twice:</p>
+<pre><code>A) &quot;Explain what app.py does&quot; (a 20-line file)
+B) the same, but first ask it to read 5 large project files
+</code></pre>
+<p>Compare the displayed cost/tokens of the session (in OpenCode, the cost counter,
+or <code>opencode stats</code>).</p>
+<p><strong>Record:</strong> how many times more expensive variant B is, and whether the explanation got better.</p>
+<hr />
+<h2 id="completion-criteria">Completion criteria</h2>
+<ul>
+<li class="task"><span class="cb"></span>All 6 experiments are done, each with an "expectation / actual / conclusion" section.</li>
+<li class="task"><span class="cb"></span>The report has at least one comparison table.</li>
+<li class="task"><span class="cb"></span>Three personal rules you are taking into your work are formulated.</li>
+<li class="task"><span class="cb"></span>Logs/screenshots of the cost for experiment 6 are attached.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="01-llm-basics.html">← How LLMs work</a>
+      <a class="next" href="02-context.html">Context engineering →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

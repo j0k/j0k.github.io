@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comment construire le site · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Comment construire le site · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="modules/00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="modules/02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="modules/03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="modules/04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="modules/06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="modules/07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="modules/09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="modules/10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="glossary.html">Glossaire</a>
+    <a class="nav" href="resources.html">À lire ensuite</a>
+    <a class="nav" href="progress.html">Suivi de progression</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Modèles</a>
+    <a class="nav active" href="build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/build.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../build.html" title="Русский">RU</a>
+  <a class="switch" href="../en/build.html" title="English">EN</a>
+  <a class="switch" href="../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<h1 id="construire-le-site-du-cours-vibe-coding-avec-opencode">Construire le site du cours « Vibe coding avec OpenCode »</h1>
+<p>La version HTML du cours est construite à partir des sources Markdown de ce répertoire (<code>src/</code>).
+Le site n'a aucune dépendance externe : seulement la feuille de style partagée <code>assets/style.css</code>.</p>
+<h2 id="structure-du-site">Structure du site</h2>
+<pre><code>opencode/
+├── index.html                  vue d'ensemble du cours : programme, calendrier, évaluation
+├── modules/
+│   ├── NN-slug.html            théorie du module
+│   └── NN-slug-practice.html   pratique du module
+├── templates/*.html            modèles d'artefacts
+├── templates.html              table des matières des modèles
+├── rubric.html                 critères d'évaluation
+├── glossary.html               glossaire
+├── resources.html              ce qu'il faut lire ensuite
+├── progress.html               suivi de progression
+├── labs.html                   où déposer les artefacts
+├── build.html                  cette page
+├── assets/style.css            style partagé
+└── src/                        sources markdown et le générateur
+</code></pre>
+<h2 id="comment-reconstruire">Comment reconstruire</h2>
+<p>Modifiez le Markdown dans <code>src/</code>, puis :</p>
+<pre><code class="language-bash">cd src
+python build.py
+</code></pre>
+<p>Le paquet <code>markdown</code> est nécessaire :</p>
+<pre><code class="language-bash">pip install markdown
+</code></pre>
+<p>Le générateur transforme les liens <code>*.md</code> en liens <code>.html</code> internes, substitue
+les chemins relatifs corrects et assemble la navigation entre les modules.
+Vous n'avez pas à modifier les liens dans le HTML à la main — la prochaine construction les écrasera.</p>
+<h2 id="ce-qui-est-ajoute-au-moment-de-la-construction">Ce qui est ajouté au moment de la construction</h2>
+<ul>
+<li>Une barre latérale unique : tous les modules (théorie + pratique) et les supports de cours.</li>
+<li>Des bascules « théorie ↔ pratique » dans l'en-tête des pages de module et une pagination en bas.</li>
+<li>Les checklists <code>- [ ]</code> sont cliquables ; la progression est stockée dans <code>localStorage</code>
+  séparément pour chaque page.</li>
+<li>Les cases à cocher dans les tableaux (suivi de progression) sont cliquables aussi.</li>
+<li><code>Ctrl+P</code> donne une version propre : sans barre latérale, pagination ni barre de progression.</li>
+</ul>
+<h2 id="fichiers-sources">Fichiers sources</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td><code>index.html</code></td>
+</tr>
+<tr>
+<td><code>modules/NN-slug/README.md</code></td>
+<td><code>modules/NN-slug.html</code></td>
+</tr>
+<tr>
+<td><code>modules/NN-slug/practice.md</code></td>
+<td><code>modules/NN-slug-practice.html</code></td>
+</tr>
+<tr>
+<td><code>templates/*.md</code></td>
+<td><code>templates/*.html</code></td>
+</tr>
+<tr>
+<td><code>rubric.md</code></td>
+<td><code>rubric.html</code></td>
+</tr>
+<tr>
+<td><code>glossary.md</code></td>
+<td><code>glossary.html</code></td>
+</tr>
+<tr>
+<td><code>resources.md</code></td>
+<td><code>resources.html</code></td>
+</tr>
+<tr>
+<td><code>progress.md</code></td>
+<td><code>progress.html</code></td>
+</tr>
+<tr>
+<td><code>labs/README.md</code></td>
+<td><code>labs.html</code></td>
+</tr>
+<tr>
+<td><code>BUILD.md</code></td>
+<td><code>build.html</code></td>
+</tr>
+</tbody>
+</table></div>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

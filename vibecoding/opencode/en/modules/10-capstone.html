@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10 — Capstone · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 10 — Capstone · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory active" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/10-capstone.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/10-capstone.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/10-capstone.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="10-capstone-practice.html">Practice →</a></div>
+<h1 id="module-10-capstone">Module 10 — Capstone</h1>
+<p><strong>Time:</strong> 10 hours · <strong>Artifact:</strong> <code>labs/10-capstone/</code></p>
+<hr />
+<h2 id="goal">Goal</h2>
+<p>Go through the full cycle on a real task: <strong>spec → plan → steps → tests → review → merge → retro</strong>.</p>
+<p>This is the only module that evaluates the whole process rather than an individual skill.</p>
+<hr />
+<h2 id="choosing-a-task">Choosing a task</h2>
+<p>A suitable task is one that:</p>
+<ul>
+<li>touches 3–10 files;</li>
+<li>has a verifiable result (tests/run);</li>
+<li>isn't critical for production (you work in a branch);</li>
+<li>requires at least one architectural decision.</li>
+</ul>
+<p>Examples:</p>
+<ul>
+<li>add report export to CSV/JSON with a CLI flag;</li>
+<li>replace a hand-rolled HTTP client with a library;</li>
+<li>add a cache for an expensive computation;</li>
+<li>move a module into a separate package with tests;</li>
+<li>add an end-to-end test for the signup flow.</li>
+</ul>
+<p>Not suitable: "rewrite everything", "make it pretty", "add AI".</p>
+<hr />
+<h2 id="stages-and-criteria">Stages and criteria</h2>
+<h3 id="1-spec-1-h">1. Spec (1 h)</h3>
+<p>Use the <code>templates/spec.md</code> template. Required:</p>
+<ul>
+<li>context and boundaries;</li>
+<li>5+ verifiable requirements;</li>
+<li>acceptance criteria in the form of commands;</li>
+<li>an "out of scope" block.</li>
+</ul>
+<p><strong>Criterion:</strong> a classmate can tell from the spec exactly what will be done.</p>
+<h3 id="2-plan-1-h">2. Plan (1 h)</h3>
+<ul>
+<li>breakdown into 4–8 steps;</li>
+<li>for each: files, verification criterion, risk;</li>
+<li>the plan is approved <strong>before</strong> the code.</li>
+</ul>
+<p><strong>Criterion:</strong> each step touches ≤ 2 files, each ends with a check.</p>
+<h3 id="3-implementation-4-h">3. Implementation (4 h)</h3>
+<ul>
+<li>step by step, a commit after each;</li>
+<li><code>./scripts/check.sh</code> is green at every step;</li>
+<li>no more than 2 iterations per step (otherwise revert and rethink).</li>
+</ul>
+<p><strong>Criterion:</strong> <code>git log</code> shows meaningful steps; the repository is green.</p>
+<h3 id="4-review-2-h">4. Review (2 h)</h3>
+<ul>
+<li>your own checklist from module 08;</li>
+<li>a second opinion from another model;</li>
+<li>every remark is either fixed or reasonably rejected.</li>
+</ul>
+<p><strong>Criterion:</strong> a completed checklist + a list of remarks and decisions.</p>
+<h3 id="5-merge-1-h">5. Merge (1 h)</h3>
+<ul>
+<li>a PR with a description: what, why, how it was verified;</li>
+<li>CI is green;</li>
+<li>the diff is read in full.</li>
+</ul>
+<p><strong>Criterion:</strong> the PR is merged (or ready to merge), with no <code>skip</code> or <code>TODO</code> in the new code.</p>
+<h3 id="6-retro-1-h">6. Retro (1 h)</h3>
+<p>Use the <code>templates/retro.md</code> template:</p>
+<pre><code class="language-markdown">## Metrics
+- Time: planned / actual
+- Token cost:
+- Number of iterations per step:
+- Problems found in review:
+- Bugs caught after merge:
+
+## What worked
+## What I'd do differently
+## The rule I'm taking with me
+</code></pre>
+<hr />
+<h2 id="final-grading-table">Final grading table</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Weight</th>
+<th>What is checked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spec</td>
+<td>15%</td>
+<td>verifiability, boundaries</td>
+</tr>
+<tr>
+<td>Plan</td>
+<td>10%</td>
+<td>decomposition</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>30%</td>
+<td>green steps, diff size</td>
+</tr>
+<tr>
+<td>Review</td>
+<td>20%</td>
+<td>real problems found</td>
+</tr>
+<tr>
+<td>Merge</td>
+<td>10%</td>
+<td>cleanliness, CI</td>
+</tr>
+<tr>
+<td>Retro</td>
+<td>15%</td>
+<td>honesty and conclusions</td>
+</tr>
+</tbody>
+</table></div>
+<p>Passing score — 70%.</p>
+<hr />
+<h2 id="defense">Defense</h2>
+<p>10 minutes: show the spec, the plan, <code>git log</code>, find the place in the diff where you rejected
+the agent's suggestion and why. <strong>The last one is a mandatory question.</strong></p>
+    </article>
+    <div class="pager"><a class="prev" href="09-custom-practice.html">← Customization — practice</a>
+      <a class="next" href="10-capstone-practice.html">Capstone — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

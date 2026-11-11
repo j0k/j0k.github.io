@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 01 — Pratique : des expériences qui brisent vos intuitions · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 01 — Pratique : des expériences qui brisent vos intuitions · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice active" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/01-llm-basics-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/01-llm-basics-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/01-llm-basics-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="01-llm-basics.html">← Théorie</a></div>
+<h1 id="module-01-pratique-des-experiences-qui-brisent-vos-intuitions">Module 01 — Pratique : des expériences qui brisent vos intuitions</h1>
+<p><strong>Durée :</strong> 150 minutes · <strong>Artefact :</strong> <code>labs/01-experiments.md</code></p>
+<p>Toutes les expériences se font dans <code>~/edu/sandbox</code> (ou n'importe quel dépôt d'apprentissage).
+Pour chacune, consignez le résultat : ce que vous attendiez, ce que vous avez obtenu, la conclusion.</p>
+<hr />
+<h2 id="experience-1-non-determinisme-20-min">Expérience 1. Non-déterminisme (20 min)</h2>
+<p>Posez la même question à l'agent trois fois <strong>dans trois nouvelles sessions</strong> :</p>
+<pre><code>Écris une fonction Python qui vérifie si une chaîne est un palindrome.
+</code></pre>
+<p>Comparez les trois réponses.</p>
+<p><strong>Consignez :</strong> en quoi elles diffèrent (noms, gestion de la casse, espaces, tests).
+<strong>Conclusion :</strong> la reproductibilité vient des tests, pas de la température.</p>
+<hr />
+<h2 id="experience-2-flou-contre-precision-30-min">Expérience 2. Flou contre précision (30 min)</h2>
+<p><strong>Mauvaise requête :</strong></p>
+<pre><code>Fais une validation d'email.
+</code></pre>
+<p><strong>Bonne requête :</strong></p>
+<pre><code>Ajoute une fonction validate_email(s: str) -&gt; bool à app.py.
+Exigences :
+- la chaîne contient exactement un '@' ;
+- la partie locale est non vide, le domaine contient un point ;
+- le cyrillique est interdit ;
+- une chaîne vide → False ;
+- ne pas lever d'exceptions.
+Écris des tests pour : &quot;a@b.co&quot; → True, &quot;a@b&quot; → False, &quot;&quot; → False, &quot;тест@mail.ru&quot; → False.
+</code></pre>
+<p><strong>Consignez</strong> un tableau : | critère | mauvaise requête | bonne requête | — en colonnes
+« y a-t-il des tests », « le cyrillique est-il géré », « <code>''</code> est-il géré », « nombre d'itérations jusqu'à un résultat qui marche ».</p>
+<hr />
+<h2 id="experience-3-laiguille-dans-la-botte-de-foin-30-min">Expérience 3. L'aiguille dans la botte de foin (30 min)</h2>
+<p>Créez un fichier de 300 lignes de code sans rapport (vous pouvez le faire générer par l'agent),
+et au milieu — une ligne :</p>
+<pre><code class="language-python">SECRET_CONSTANT = 42  # important rule
+</code></pre>
+<p>Dans une session, demandez :</p>
+<pre><code>Lis big.py en entier et dis-moi la valeur de SECRET_CONSTANT.
+</code></pre>
+<p>Puis dans une nouvelle session :</p>
+<pre><code>Trouve la constante SECRET_CONSTANT dans big.py et dis-moi sa valeur. Utilise grep.
+</code></pre>
+<p><strong>Consignez :</strong> les deux réponses, le temps, le coût approximatif.
+<strong>Conclusion :</strong> un outil (grep) est moins cher et plus fiable que « tout lire ».</p>
+<hr />
+<h2 id="experience-4-hallucination-dapi-25-min">Expérience 4. Hallucination d'API (25 min)</h2>
+<p>Demandez :</p>
+<pre><code>Écris un exemple d'utilisation de la bibliothèque &lt;choisis une bibliothèque obscure&gt; avec la méthode &lt;invente une méthode&gt;.
+</code></pre>
+<p>Vérifiez ensuite dans la documentation officielle si la méthode existe.</p>
+<p>Répétez avec votre bibliothèque principale :</p>
+<pre><code>Comment faire &lt;tâche&gt; avec &lt;votre bibliothèque&gt; &lt;version&gt; ?
+</code></pre>
+<p>Comparez avec la documentation.</p>
+<p><strong>Consignez :</strong> combien de fabrications sur 3 requêtes. Quelle formulation a augmenté le risque.</p>
+<hr />
+<h2 id="experience-5-degradation-dune-longue-session-30-min">Expérience 5. Dégradation d'une longue session (30 min)</h2>
+<p>Dans <strong>une seule</strong> session :</p>
+<ol>
+<li>Demandez-lui d'écrire 3 fonctions.</li>
+<li>Demandez-lui d'en réécrire deux « autrement » (créez 2 à 3 tours de modifications).</li>
+<li>Revenez ensuite à la tâche de l'étape 1 : « rappelle-moi quelles étaient les exigences de la première fonction ? »</li>
+<li>Demandez-lui d'ajouter une nouvelle fonction dans le même style.</li>
+</ol>
+<p>Répétez maintenant l'étape 4 dans une <strong>nouvelle</strong> session, en ne donnant que le code final et les exigences.</p>
+<p><strong>Consignez :</strong> dans quel cas le style est plus cohérent, et où il y a le plus d'écarts par rapport aux exigences d'origine.
+<strong>Conclusion :</strong> « le modèle est devenu bête » = « le contexte s'est pollué ».</p>
+<hr />
+<h2 id="experience-6-le-prix-du-contexte-15-min">Expérience 6. Le prix du contexte (15 min)</h2>
+<p>Exécutez une tâche deux fois :</p>
+<pre><code>A) « Explique ce que fait app.py » (un fichier de 20 lignes)
+B) la même chose, mais demandez d'abord de lire 5 gros fichiers du projet
+</code></pre>
+<p>Comparez le coût et les tokens affichés pour la session (dans OpenCode, le compteur de coût,
+ou <code>opencode stats</code>).</p>
+<p><strong>Consignez :</strong> combien de fois la variante B est plus chère, et si l'explication s'est améliorée.</p>
+<hr />
+<h2 id="criteres-de-fin">Critères de fin</h2>
+<ul>
+<li class="task"><span class="cb"></span>Les 6 expériences sont faites, chacune avec une section « attente / réel / conclusion ».</li>
+<li class="task"><span class="cb"></span>Le rapport contient au moins un tableau comparatif.</li>
+<li class="task"><span class="cb"></span>Trois règles personnelles que vous emportez dans votre travail sont formulées.</li>
+<li class="task"><span class="cb"></span>Les logs/captures du coût de l'expérience 6 sont joints.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="01-llm-basics.html">← Comment fonctionnent les LLM</a>
+      <a class="next" href="02-context.html">Ingénierie du contexte →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

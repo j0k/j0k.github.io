@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossary · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Glossary · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="modules/00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="modules/02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="modules/03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="modules/04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="modules/06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="modules/07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="modules/09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="modules/10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="rubric.html">Grading rubric</a>
+    <a class="nav active" href="glossary.html">Glossary</a>
+    <a class="nav" href="resources.html">Further reading</a>
+    <a class="nav" href="progress.html">Progress tracker</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Templates</a>
+    <a class="nav" href="build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/glossary.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../glossary.html" title="Русский">RU</a>
+  <a class="switch" href="../fr/glossary.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<h1 id="glossary">Glossary</h1>
+<p>Course concepts. Grows as you work through the modules.</p>
+<hr />
+<h2 id="az">A–Z</h2>
+<p><strong>AGENTS.md</strong> — a file with project instructions, read automatically in every session.</p>
+<p><strong>Agent</strong> — an LLM in the loop "decision → tool call → result → decision".</p>
+<p><strong>Auto (<code>--auto</code>)</strong> — a mode that auto-approves actions not forbidden by the rules. Sandbox only.</p>
+<hr />
+<h2 id="v">V</h2>
+<p><strong>Vibe coding</strong> — development where the code is largely written by an agent, while the human
+sets the task and verifies the result.</p>
+<p><strong>Verification</strong> — automatic checking of the result (tests, types, linter, run).</p>
+<hr />
+<h2 id="h">H</h2>
+<p><strong>Hallucination</strong> — a plausible but incorrect model output. A consequence of the design, not a "bug".</p>
+<hr />
+<h2 id="d">D</h2>
+<p><strong>Diff</strong> — a line-by-line representation of changes; the main object of review.</p>
+<p><strong>Decomposition</strong> — splitting a task into independently verifiable steps.</p>
+<hr />
+<h2 id="c">C</h2>
+<p><strong>Context</strong> — everything the model sees in one request: instructions, files, history, the question.</p>
+<p><strong>Context window</strong> — the maximum amount of context in tokens.</p>
+<p><strong>Compaction</strong> — automatic compression of the session history when the context fills up.</p>
+<p><strong>Cache</strong> — a saved stable prefix of the request; reading from cache is 5–10 times cheaper.</p>
+<hr />
+<h2 id="l">L</h2>
+<p><strong>Lost in the middle</strong> — the effect where information in the middle of a long context
+is used worse than at the beginning and at the end.</p>
+<hr />
+<h2 id="m">M</h2>
+<p><strong>MCP (Model Context Protocol)</strong> — a protocol for connecting external tools to the agent.</p>
+<p><strong>Model</strong> — a neural network that predicts the next token.</p>
+<hr />
+<h2 id="o">O</h2>
+<p><strong>Oracle</strong> — an automatic source of "yes/no": a test, a compiler, a linter, a run.</p>
+<hr />
+<h2 id="p">P</h2>
+<p><strong>Permission</strong> — an <code>action + resource + effect</code> rule that defines what the agent may do.</p>
+<p><strong>Plan-first</strong> — the approach "plan first, code second".</p>
+<p><strong>Prompt</strong> — a text instruction to the model. In this course it is treated as a specification.</p>
+<hr />
+<h2 id="r">R</h2>
+<p><strong>Reasoning tokens</strong> — hidden reasoning tokens in "thinking" models; more expensive, but better
+on complex tasks.</p>
+<p><strong>Review</strong> — reading and checking a diff by a human.</p>
+<hr />
+<h2 id="s">S</h2>
+<p><strong>Session</strong> — one working context of the agent; the unit of hygiene.</p>
+<p><strong>Spec</strong> — a formalized description of a task with verifiable criteria.</p>
+<p><strong>Subagent</strong> — a separate agent session for a subtask; it does not see the main context.</p>
+<p><strong>Skill</strong> — a folder with instructions and resources, loaded based on its description.</p>
+<hr />
+<h2 id="t">T</h2>
+<p><strong>Token</strong> — the unit of text for the model (3–4 characters on average).</p>
+<p><strong>Tool calling</strong> — the mechanism by which the model requests a tool call.</p>
+<hr />
+<h2 id="f">F</h2>
+<p><strong>Few-shot</strong> — a technique with examples in the prompt that set the format or style.</p>
+<p><strong>Fast / mini / flash</strong> — the class of cheap fast models.</p>
+<p><strong>Frontier</strong> — the class of the strongest (and most expensive) models.</p>
+<hr />
+<h2 id="ci">CI</h2>
+<p><strong>CI (Continuous Integration)</strong> — automatic checks on every commit.</p>
+<hr />
+<h2 id="e">E</h2>
+<p><strong>Embedding</strong> — a vector representation of text; used for search, not for generation.</p>
+<hr />
+<h2 id="a">A</h2>
+<p><strong>Anchoring</strong> — the effect where the model repeats its earlier (possibly wrong) decision.</p>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

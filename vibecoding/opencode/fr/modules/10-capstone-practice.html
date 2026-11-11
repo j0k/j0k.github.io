@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10 — Pratique et rendu du capstone · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 10 — Pratique et rendu du capstone · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice active" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/10-capstone-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/10-capstone-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/10-capstone-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="10-capstone.html">← Théorie</a></div>
+<h1 id="module-10-pratique-et-rendu-du-capstone">Module 10 — Pratique et rendu du capstone</h1>
+<p><strong>Durée :</strong> 10 heures · <strong>Livrable :</strong> <code>labs/10-capstone/</code></p>
+<hr />
+<h2 id="checklist-de-fin">Checklist de fin</h2>
+<h3 id="preparation">Préparation</h3>
+<ul>
+<li class="task"><span class="cb"></span>La tâche est choisie et validée (3 à 10 fichiers, résultat vérifiable).</li>
+<li class="task"><span class="cb"></span>La branche est créée : <code>git checkout -b capstone/&lt;nom&gt;</code>.</li>
+<li class="task"><span class="cb"></span><code>AGENTS.md</code> est à jour.</li>
+</ul>
+<h3 id="spec">Spec</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>labs/10-capstone/spec.md</code> est rempli à partir du modèle.</li>
+<li class="task"><span class="cb"></span>5 exigences ou plus, chacune vérifiable.</li>
+<li class="task"><span class="cb"></span>Les critères d'acceptation sont des commandes concrètes.</li>
+<li class="task"><span class="cb"></span>Il y a un bloc « hors périmètre ».</li>
+</ul>
+<h3 id="plan">Plan</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>labs/10-capstone/plan.md</code> — 4 à 8 étapes.</li>
+<li class="task"><span class="cb"></span>Pour chaque étape : fichiers, vérification, risque.</li>
+<li class="task"><span class="cb"></span>Le plan est validé avant le début du code.</li>
+</ul>
+<h3 id="implementation">Implémentation</h3>
+<ul>
+<li class="task"><span class="cb"></span>Chaque étape est un commit séparé.</li>
+<li class="task"><span class="cb"></span><code>git log --oneline</code> se lit comme un historique de changements.</li>
+<li class="task"><span class="cb"></span><code>./scripts/check.sh</code> est vert sur HEAD.</li>
+<li class="task"><span class="cb"></span>Aucune étape n'a demandé &gt; 2 itérations sans revenir en arrière.</li>
+</ul>
+<h3 id="revue">Revue</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>labs/10-capstone/review.md</code> — la checklist est remplie.</li>
+<li class="task"><span class="cb"></span>Il y a un second avis (un autre modèle/sous-agent).</li>
+<li class="task"><span class="cb"></span>Toutes les remarques : corrigées ou rejetées avec un argument.</li>
+</ul>
+<h3 id="merge">Merge</h3>
+<ul>
+<li class="task"><span class="cb"></span>La description de la PR : quoi/pourquoi/comment cela a été vérifié.</li>
+<li class="task"><span class="cb"></span>La CI est verte.</li>
+<li class="task"><span class="cb"></span>Le diff est lu en entier (confirmez : « lu, N lignes »).</li>
+<li class="task"><span class="cb"></span>Aucun <code>skip</code>, <code>xfail</code>, <code>TODO</code>, <code>print</code> dans le nouveau code.</li>
+</ul>
+<h3 id="retro">Rétro</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>labs/10-capstone/retro.md</code> à partir du modèle.</li>
+<li class="task"><span class="cb"></span>Les métriques sont remplies avec des chiffres réels.</li>
+<li class="task"><span class="cb"></span>Une règle pour la suite est formulée.</li>
+</ul>
+<hr />
+<h2 id="format-du-rendu">Format du rendu</h2>
+<pre><code>labs/10-capstone/
+├── spec.md
+├── plan.md
+├── review.md
+├── retro.md
+└── links.md      ← lien vers la PR/la branche + git log --oneline
+</code></pre>
+<hr />
+<h2 id="soutenance-10-minutes">Soutenance (10 minutes)</h2>
+<ol>
+<li>2 min — la tâche et la spec.</li>
+<li>3 min — le plan et pourquoi celui-là précisément.</li>
+<li>3 min — <strong>obligatoire</strong> : l'endroit du diff où vous avez rejeté la suggestion de l'agent,
+   et pourquoi.</li>
+<li>2 min — les métriques et la conclusion.</li>
+</ol>
+<p>Sans le point 3, le capstone ne compte pas : cela signifie que la revue était une formalité.</p>
+    </article>
+    <div class="pager"><a class="prev" href="10-capstone.html">← Projet final</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

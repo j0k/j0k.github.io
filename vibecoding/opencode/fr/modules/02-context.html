@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 02 — Ingénierie du contexte · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 02 — Ingénierie du contexte · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/02-context.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/02-context.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/02-context.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="02-context-practice.html">Pratique →</a></div>
+<h1 id="module-02-ingenierie-du-contexte">Module 02 — Ingénierie du contexte</h1>
+<p><strong>Durée :</strong> 4 heures · <strong>Format :</strong> 80 min de théorie + 160 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-le-contexte-est-une-memoire-de-travail-pas-un-entrepot">1. Le contexte est une mémoire de travail, pas un entrepôt</h2>
+<p>Chaque requête au modèle est assemblée à nouveau à partir de :</p>
+<pre><code>politique système → instructions du projet → fichiers ouverts → historique → votre question
+</code></pre>
+<p>Tout cela est un <strong>budget</strong>. Plus il y a de déchets, moins il reste de place pour l'essentiel.</p>
+<p>Modèle mental : l'agent n'a pas de « mémoire du projet », il a un <strong>bureau</strong> sur lequel vous étalez
+des papiers à chaque fois. Ce que vous n'y avez pas posé n'y est pas.</p>
+<h2 id="2-trois-niveaux-dinstructions">2. Trois niveaux d'instructions</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Niveau</th>
+<th>Fichier</th>
+<th>Portée</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global</td>
+<td><code>~/.config/opencode/opencode.jsonc</code></td>
+<td>vos habitudes, vos modèles, vos permissions</td>
+</tr>
+<tr>
+<td>Projet</td>
+<td><code>&lt;projet&gt;/AGENTS.md</code></td>
+<td>stack, commandes, conventions</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>votre requête</td>
+<td>la tâche précise</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>AGENTS.md</code> est le fichier le plus sous-estimé du vibe coding. Il est lu automatiquement
+à chaque session, donc 20 lignes y font gagner des heures d'explication.</p>
+<h2 id="3-que-mettre-dans-agentsmd">3. Que mettre dans AGENTS.md</h2>
+<p>Un bon <code>AGENTS.md</code> répond aux questions que l'agent chercherait sinon à deviner :</p>
+<pre><code class="language-markdown"># Projet : &lt;nom&gt;
+## Stack
+Python 3.12, FastAPI, pytest, Ruff
+## Commandes
+- tests : `pytest -q`
+- linter : `ruff check .`
+- lancer : `uvicorn app.main:app --reload`
+## Conventions
+- le typage est obligatoire, `mypy` en mode strict
+- aucune nouvelle dépendance sans discussion
+- les erreurs passent par `AppError`, pas par `raise ValueError`
+## Interdits
+- toucher `migrations/` à la main
+- modifier `.env`
+- faire un commit sur `main`
+</code></pre>
+<p>Règles : court, à l'impératif, uniquement ce qui ne peut pas être deviné.</p>
+<h2 id="4-hygiene-de-session">4. Hygiène de session</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L'agent a oublié une exigence du début</td>
+<td>reformulez-la dans la question, ne fouillez pas l'historique</td>
+</tr>
+<tr>
+<td>3 tentatives ratées d'affilée</td>
+<td>nouvelle session + une description précise</td>
+</tr>
+<tr>
+<td>Deux tâches se sont mélangées</td>
+<td>séparez-les en deux sessions</td>
+</tr>
+<tr>
+<td>Le contexte est presque plein</td>
+<td>compaction ou nouvelle session</td>
+</tr>
+</tbody>
+</table></div>
+<p>La <strong>compaction</strong> (compression de l'historique) aide, mais elle ne compresse pas tout de manière égale — des détails importants
+peuvent se perdre. L'option plus fiable : déplacer le résultat dans un fichier (un plan, <code>TODO.md</code>) et repartir de zéro.</p>
+<h2 id="5-des-liens-plutot-que-des-paraphrases">5. Des liens plutôt que des paraphrases</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mauvais</th>
+<th>Bon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« On a un module d'auth, c'est comme ça… »</td>
+<td><code>src/auth/session.py, the refresh_token function</code></td>
+</tr>
+<tr>
+<td>« Je colle le code ici » (500 lignes)</td>
+<td>« regarde le fichier, change seulement <code>parse_date</code> »</td>
+</tr>
+<tr>
+<td>« Comment c'est dans notre projet ? »</td>
+<td>« comme dans <code>services/billing.py</code> »</td>
+</tr>
+</tbody>
+</table></div>
+<p>Le modèle sait lire les fichiers avec un outil. Donnez-lui un chemin — vous économisez des tokens et obtenez
+la version actuelle au lieu de votre paraphrase.</p>
+<h2 id="6-une-structure-de-requete-qui-fonctionne">6. Une structure de requête qui fonctionne</h2>
+<pre><code>1. Contexte : où on en est, ce qui a déjà été fait (2–3 lignes)
+2. Tâche : une phrase
+3. Contraintes : ce qui est interdit, ce qui est obligatoire
+4. Définition de fini : comment on vérifiera
+5. Format de réponse : plan / diff / fichier X uniquement
+</code></pre>
+<p>Le point 5 est sous-estimé : « d'abord un plan, pas de code » fait gagner le plus de temps.</p>
+<h2 id="7-compaction-et-memoire">7. Compaction et mémoire</h2>
+<p>OpenCode a un réglage <code>compaction</code> — la compression automatique de l'historique.
+Utile, mais pas gratuit : la compression est un appel de modèle supplémentaire.</p>
+<p>Règle pratique : <strong>ne gardez que la tâche en cours dans le contexte</strong>, et rangez la connaissance
+de long terme dans des fichiers du dépôt (<code>AGENTS.md</code>, <code>docs/</code>, <code>TODO.md</code>).</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi « le modèle se souviendra de notre conversation » est-il une idée fausse dangereuse ?</li>
+<li>Qu'est-ce qui est plus efficace : raconter le module avec des mots ou donner un chemin vers le fichier ? Pourquoi ?</li>
+<li>Citez trois signes qu'il est temps de fermer la session.</li>
+<li>Pourquoi « d'abord un plan » économise-t-il du contexte ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="02-context-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="01-llm-basics-practice.html">← Comment fonctionnent les LLM — pratique</a>
+      <a class="next" href="02-context-practice.html">Ingénierie du contexte — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

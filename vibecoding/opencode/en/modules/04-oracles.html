@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 04 — Oracles and Verification · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 04 — Oracles and Verification · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory active" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/04-oracles.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/04-oracles.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/04-oracles.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="04-oracles-practice.html">Practice →</a></div>
+<h1 id="module-04-oracles-and-verification">Module 04 — Oracles and Verification</h1>
+<p><strong>Time:</strong> 5 hours · <strong>Format:</strong> theory 90 min + practice 210 min</p>
+<hr />
+<h2 class="section" id="theory">Theory</h2>
+<h2 id="1-the-oracle-is-the-main-tool">1. The oracle is the main tool</h2>
+<p>An <strong>oracle</strong> is an automatic source of "yes/no" about the result. A test, a compiler, a linter,
+a type checker, running the app, comparing against a reference.</p>
+<p>Without an oracle, vibe coding turns into reading beautifully written lies.</p>
+<pre><code>Without an oracle:  the agent says &quot;done&quot; → you believe it → a bug a week later
+With an oracle:     the agent says &quot;done&quot; → pytest → 2 failures → the agent fixes them
+</code></pre>
+<p>An oracle doesn't just catch errors — it <strong>gives the model feedback</strong>. That changes everything:
+instead of "explaining in words what's wrong", you paste the command's output.</p>
+<h2 id="2-the-pyramid-of-checks">2. The pyramid of checks</h2>
+<p>From cheap and fast to expensive:</p>
+<pre><code>1. Syntax / compilation           seconds
+2. Types (mypy, tsc)              seconds
+3. Linter (ruff, eslint)          seconds
+4. Unit tests                     seconds-minutes
+5. Integration tests              minutes
+6. Running the app / e2e          minutes
+7. Human review                   minutes
+</code></pre>
+<p>Rule: <strong>the agent must have access to all levels 1–5 with a single command.</strong></p>
+<h2 id="3-one-entry-point-not-ten">3. One entry point, not ten</h2>
+<p>Bad:</p>
+<pre><code>&quot;Run pytest, then ruff, then mypy, and also check...&quot;
+</code></pre>
+<p>Good — one command in <code>AGENTS.md</code>:</p>
+<pre><code class="language-bash">make check      # или: npm run check, ./scripts/check.sh
+</code></pre>
+<p>Inside:</p>
+<pre><code class="language-bash">ruff check . &amp;&amp; mypy . &amp;&amp; pytest -q
+</code></pre>
+<p>The agent calls <code>make check</code>, gets compact output, fixes it. This is cheaper
+and more reliable than making it remember five commands.</p>
+<h2 id="4-tdd-with-an-agent">4. TDD with an agent</h2>
+<p>The classic loop works better if <strong>a human writes the test</strong> (or a human approves it):</p>
+<pre><code>1. Human: spec + a failing test
+2. Agent: the minimal code to make the test pass
+3. Human: reads the diff
+4. Agent: refactoring, tests stay green
+</code></pre>
+<p>Why a test from a human: the test is your spec in executable form.
+If the agent invented the test, it will be checking its own understanding of the task.</p>
+<p>A compromise for speed: the agent writes tests <strong>from your list of cases</strong>, approved by you.</p>
+<h2 id="5-an-error-is-data">5. An error is data</h2>
+<p>The correct fix loop:</p>
+<pre><code>1. Run the check
+2. Paste the output in full (not a retelling!)
+3. &quot;Fix the cause, not the symptom. Explain in 2 lines.&quot;
+4. Repeat
+</code></pre>
+<p>Bad: "my test is failing, take a look". Good: the full pytest output with a traceback.</p>
+<h2 id="6-golden-files-and-comparison">6. Golden files and comparison</h2>
+<p>For tasks like "generate a config/report/text" — a reference file:</p>
+<pre><code>tests/golden/expected.json
+</code></pre>
+<p>The test compares the result with the reference. Any discrepancy is a visible diff.
+This is an oracle for "imprecise" tasks.</p>
+<h2 id="7-what-an-oracle-doesnt-catch">7. What an oracle doesn't catch</h2>
+<ul>
+<li>A test checks what's written in it. A missing case — not caught.</li>
+<li>A linter doesn't see logic errors.</li>
+<li>Green tests don't mean "correct behavior for the business".</li>
+</ul>
+<p>That's why an oracle <strong>complements</strong> review, it doesn't replace it.</p>
+<h2 id="8-verifying-external-facts">8. Verifying external facts</h2>
+<p>For things that can't be checked in code (API versions, library behavior):</p>
+<ul>
+<li>run a minimal example;</li>
+<li>open the official documentation;</li>
+<li>check the <code>--help</code> of the real CLI.</li>
+</ul>
+<p>The model can invent a flag. <code>--help</code> can't.</p>
+<hr />
+<h2 id="comprehension-checklist">Comprehension checklist</h2>
+<ol>
+<li>Why is an oracle important not only for finding errors, but also for the quality of the agent's answers?</li>
+<li>Why is it better for a human to write the test for a task?</li>
+<li>What's wrong with the request "my test is failing, take a look"?</li>
+<li>Which classes of errors are not caught by tests?</li>
+</ol>
+<hr />
+<h2 class="section" id="practice">Practice</h2>
+<p>See <a href="04-oracles-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="03-spec-practice.html">← Spec and prompt — practice</a>
+      <a class="next" href="04-oracles-practice.html">Oracles and checks — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 04 — Oracles et vérification · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 04 — Oracles et vérification · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/04-oracles.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/04-oracles.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/04-oracles.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="04-oracles-practice.html">Pratique →</a></div>
+<h1 id="module-04-oracles-et-verification">Module 04 — Oracles et vérification</h1>
+<p><strong>Temps :</strong> 5 heures · <strong>Format :</strong> théorie 90 min + pratique 210 min</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-loracle-est-loutil-principal">1. L'oracle est l'outil principal</h2>
+<p>Un <strong>oracle</strong> est une source automatique de « oui/non » sur le résultat. Un test, un compilateur, un linter,
+un vérificateur de types, le lancement de l'app, la comparaison avec une référence.</p>
+<p>Sans oracle, le vibe coding se transforme en lecture de mensonges bien écrits.</p>
+<pre><code>Sans oracle :  l'agent dit &quot;terminé&quot; → vous le croyez → un bug une semaine plus tard
+Avec oracle :  l'agent dit &quot;terminé&quot; → pytest → 2 échecs → l'agent les corrige
+</code></pre>
+<p>Un oracle ne fait pas que détecter des erreurs — il <strong>donne du feedback au modèle</strong>. Ça change tout :
+au lieu d'« expliquer avec des mots ce qui ne va pas », vous collez la sortie de la commande.</p>
+<h2 id="2-la-pyramide-des-verifications">2. La pyramide des vérifications</h2>
+<p>Du moins cher et rapide au plus cher :</p>
+<pre><code>1. Syntaxe / compilation           secondes
+2. Types (mypy, tsc)               secondes
+3. Linter (ruff, eslint)           secondes
+4. Tests unitaires                 secondes-minutes
+5. Tests d'intégration             minutes
+6. Lancement de l'app / e2e        minutes
+7. Relecture humaine               minutes
+</code></pre>
+<p>Règle : <strong>l'agent doit avoir accès à tous les niveaux 1–5 avec une seule commande.</strong></p>
+<h2 id="3-un-point-dentree-pas-dix">3. Un point d'entrée, pas dix</h2>
+<p>Mauvais :</p>
+<pre><code>&quot;Lance pytest, puis ruff, puis mypy, et vérifie aussi...&quot;
+</code></pre>
+<p>Bon — une commande dans <code>AGENTS.md</code> :</p>
+<pre><code class="language-bash">make check      # ou : npm run check, ./scripts/check.sh
+</code></pre>
+<p>À l'intérieur :</p>
+<pre><code class="language-bash">ruff check . &amp;&amp; mypy . &amp;&amp; pytest -q
+</code></pre>
+<p>L'agent appelle <code>make check</code>, reçoit une sortie compacte, corrige. C'est moins cher
+et plus fiable que de lui faire mémoriser cinq commandes.</p>
+<h2 id="4-tdd-avec-un-agent">4. TDD avec un agent</h2>
+<p>La boucle classique marche mieux si <strong>un humain écrit le test</strong> (ou si un humain le valide) :</p>
+<pre><code>1. Humain : spec + un test qui échoue
+2. Agent : le code minimal pour faire passer le test
+3. Humain : lit le diff
+4. Agent : refactoring, les tests restent verts
+</code></pre>
+<p>Pourquoi un test écrit par un humain : le test est votre spec sous forme exécutable.
+Si l'agent a inventé le test, il vérifie sa propre compréhension de la tâche.</p>
+<p>Un compromis pour la vitesse : l'agent écrit les tests <strong>à partir de votre liste de cas</strong>, validée par vous.</p>
+<h2 id="5-une-erreur-est-une-donnee">5. Une erreur est une donnée</h2>
+<p>La bonne boucle de correction :</p>
+<pre><code>1. Lancer la vérification
+2. Coller la sortie en entier (pas un résumé !)
+3. &quot;Corrige la cause, pas le symptôme. Explique en 2 lignes.&quot;
+4. Répéter
+</code></pre>
+<p>Mauvais : « mon test échoue, regarde ». Bon : la sortie pytest complète avec la traceback.</p>
+<h2 id="6-fichiers-de-reference-golden-et-comparaison">6. Fichiers de référence (golden) et comparaison</h2>
+<p>Pour des tâches du type « générer une config/un rapport/du texte » — un fichier de référence :</p>
+<pre><code>tests/golden/expected.json
+</code></pre>
+<p>Le test compare le résultat avec la référence. Toute divergence est un diff visible.
+C'est un oracle pour les tâches « imprécises ».</p>
+<h2 id="7-ce-quun-oracle-ne-detecte-pas">7. Ce qu'un oracle ne détecte pas</h2>
+<ul>
+<li>Un test vérifie ce qui est écrit dedans. Un cas manquant — pas détecté.</li>
+<li>Un linter ne voit pas les erreurs de logique.</li>
+<li>Des tests verts ne veulent pas dire « comportement correct pour le métier ».</li>
+</ul>
+<p>C'est pourquoi un oracle <strong>complète</strong> la review, il ne la remplace pas.</p>
+<h2 id="8-verifier-des-faits-externes">8. Vérifier des faits externes</h2>
+<p>Pour ce qui ne se vérifie pas dans le code (versions d'API, comportement d'une bibliothèque) :</p>
+<ul>
+<li>lancer un exemple minimal ;</li>
+<li>ouvrir la documentation officielle ;</li>
+<li>consulter le <code>--help</code> du vrai CLI.</li>
+</ul>
+<p>Le modèle peut inventer un flag. Le <code>--help</code>, non.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi un oracle est-il important non seulement pour trouver des erreurs, mais aussi pour la qualité des réponses de l'agent ?</li>
+<li>Pourquoi vaut-il mieux qu'un humain écrive le test pour une tâche ?</li>
+<li>Qu'est-ce qui ne va pas dans la demande « mon test échoue, regarde » ?</li>
+<li>Quelles classes d'erreurs ne sont pas détectées par les tests ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="04-oracles-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="03-spec-practice.html">← Spécification et prompt — pratique</a>
+      <a class="next" href="04-oracles-practice.html">Oracles et vérification — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programme — Vibecoding 30/70</title>
+<meta property="og:title" content="Programme — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>cours 30/70 · 23 heures</span></a>
+    <div class="ratio">30 % de théorie · 70 % de pratique · 1380 min</div>
+    <nav>
+      <a href="index.html">Aperçu du cours<small>Début</small></a>
+      <a href="01-programma.html" class="active">Programme<small>Modules et minutage</small></a>
+      <a href="02-teoriya.html">Théorie<small>30 % du cours</small></a>
+      <a href="03-praktika.html">Pratique<small>70 % du cours</small></a>
+      <a href="04-promptoteka.html">Bibliothèque de prompts<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projets<small>Projet final</small></a>
+      <a href="06-tracker.html">Suivi<small>Checklist</small></a>
+      <a href="gantt.html">Gantt par semaine<small>Compétences et théorie</small></a>
+    </nav>
+    <div class="foot">S'ouvre en local, sans connexion.<br>Ctrl+P — version imprimable.<br>
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../opencode/index.html">Cours OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Cours 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/fr/01-programma.html" data-copied="Lien copié" title="Partager">Partager</button>
+      <a class="switch" href="../01-programma.html" title="Русский">RU</a>
+      <a class="switch" href="../en/01-programma.html" title="English">EN</a>
+      <a class="switch" href="../../opencode/index.html">Cours OpenCode →</a>
+    </div>
+    <article>
+<h1 id="programme-du-cours">Programme du cours</h1>
+<p>Format : 8 modules + projet final. 1380 minutes au total.
+Théorie 414 min = <strong>30.0%</strong>. Pratique 966 min = <strong>70.0%</strong>.</p>
+<h2 id="tableau-recapitulatif">Tableau récapitulatif</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Module</th>
+<th>Théorie</th>
+<th>Pratique</th>
+<th>Total</th>
+<th>Cumul</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Comment fonctionne vraiment le vibe coding</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>150</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Spec et formulation de la tâche</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>300</td>
+</tr>
+<tr>
+<td>3</td>
+<td>La boucle : prompt → diff → vérification → commit</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>450</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Contexte : comment l'agent voit votre projet</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>600</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Débogage quand l'agent tourne en rond</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>750</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Tests et protection contre les régressions</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>900</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Données, API, environnement, sécurité</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>1050</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Déploiement, hygiène git, travail en équipe</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>1200</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Projet final : votre propre projet de zéro jusqu'à un lien</td>
+<td>54</td>
+<td>126</td>
+<td>180</td>
+<td>1380</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td><strong>414 (30.0%)</strong></td>
+<td><strong>966 (70.0%)</strong></td>
+<td><strong>1380</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-1-comment-fonctionne-vraiment-le-vibe-coding-150-min">Module 1. Comment fonctionne vraiment le vibe coding — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Ce que fait vraiment un LLM : il prédit des tokens, il ne « comprend » pas le code.
+- Pourquoi un contexte long dégrade la qualité, et ce que cela change dans votre quotidien.
+- Trois modes : chat, autocomplétion, agent avec outils. Ce que seul l'agent peut faire.
+- Les limites : l'agent écrit avec assurance du code passe-partout et ment tout aussi assurément sur une API qu'il n'a jamais vue.
+- Votre rôle : pas programmeur, mais la personne qui formule la tâche et accepte le résultat.</p>
+<p><strong>Pratique (105 min)</strong>
+- 20 min — environnement : agent, git, Node, Python, un dossier de projet vide.
+- 20 min — premier dépôt, premier commit avant la moindre ligne de code, <code>.gitignore</code>.
+- 45 min — premier exercice : un utilitaire console de 40–60 lignes à partir d'une spec fournie.
+- 20 min — parcours du diff ligne par ligne : ce que vous avez accepté, ce que vous avez rejeté, et pourquoi.</p>
+<p><strong>Résultat :</strong> un dépôt avec un historique de 3 commits ou plus, et la compréhension de pourquoi vous avez besoin d'une spec.</p>
+<hr />
+<h2 id="module-2-spec-et-formulation-de-la-tache-150-min">Module 2. Spec et formulation de la tâche — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Une spec en 6 blocs : objectif, utilisateur, entrées/sorties, contraintes, critères d'acceptation, ce que nous ne faisons PAS.
+- Pourquoi les critères d'acceptation sont le principal levier de qualité : l'agent les vérifie au lieu de deviner.
+- Les formulations qui cassent le résultat : « fais quelque chose de beau », « comme Airbnb », « optimise ».
+- Décomposition : une tâche que l'agent traite en 15 minutes contre une autre qui lui prend 3 heures.
+- Modèle de spec et anti-modèle côte à côte, sur le même exemple.
+- <code>/goal</code> — l'objectif comme condition d'achèvement : l'agent décide lui-même s'il a terminé, à partir d'un signal vérifiable.</p>
+<p><strong>Pratique (105 min)</strong>
+- 30 min — rédiger la spec de votre propre petit projet (pas le projet final), 10 lignes.
+- 30 min — deux tentatives d'implémentation : avec une mauvaise formulation et avec une spec ; comparez les diffs.
+- 20 min — découper la spec en 5 tâches, chacune avec ses propres critères.
+- 15 min — réécrire un critère d'acceptation sous forme de condition pour <code>/goal</code> et l'exécuter : tests au vert, diff uniquement dans votre dossier, limite d'étapes.
+- 10 min — rétro : ce qui était superflu dans la spec, ce qu'il a fallu préciser en cours de route.</p>
+<p><strong>Résultat :</strong> une spec qu'une autre personne (ou un agent) peut utiliser pour reproduire le résultat sans questions, et la capacité de transformer ses critères en condition pour <code>/goal</code>.</p>
+<hr />
+<h2 id="module-3-la-boucle-prompt-diff-verification-commit-150-min">Module 3. La boucle : prompt → diff → vérification → commit — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Anatomie d'une bonne requête : contexte, tâche, contraintes, format de réponse, ce qu'il ne faut pas faire.
+- Lire un diff : 6 signaux d'alerte (vérifications supprimées, constantes « magiques », <code>try/except</code> silencieux, fichiers appartenant à d'autres réécrits, nouvelles dépendances, tests modifiés).
+- Taille du pas : pourquoi un pas de plus de 200 lignes de diff part presque toujours à la poubelle.
+- Quand demander à l'agent d'expliquer, et quand simplement refaire.
+- Le commit comme point de retour arrière ; le message de commit comme documentation.</p>
+<p><strong>Pratique (105 min)</strong>
+- 25 min — 8 mini-exercices de 3 minutes chacun : formuler une requête pour une tâche donnée.
+- 40 min — une fonctionnalité dans un projet existant en exactement 4 étapes, avec un commit après chacune.
+- 25 min — un diff volontairement bancal de l'agent : trouver tous les signaux d'alerte à l'aide de la checklist.
+- 15 min — rétro : combien de fois vous avez fait marche arrière et à quelle étape vous avez perdu du temps.</p>
+<p><strong>Résultat :</strong> la capacité de mener une fonctionnalité par petits pas vérifiables, avec retour arrière.</p>
+<hr />
+<h2 id="module-4-contexte-comment-lagent-voit-votre-projet-150-min">Module 4. Contexte : comment l'agent voit votre projet — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Ce qui entre dans le contexte : fichiers ouverts, instructions du projet, historique du chat, recherche automatique dans le dépôt.
+- Le fichier d'instructions (<code>CLAUDE.md</code> / <code>AGENTS.md</code> / <code>.cursorrules</code>) : ce qu'il faut y écrire pour ne pas vous répéter à chaque fois.
+- Pourquoi l'agent ne connaît pas votre stack tant que vous ne la lui dites pas ; pourquoi il « oublie » après 40 messages.
+- Stratégies : un nouveau chat pour une nouvelle tâche, des références aux fichiers plutôt que des re-récits, « montre-moi le plan avant de modifier ».
+- Contexte pourri = code pourri : comment les gros fichiers et les logs ruinent une session.</p>
+<p><strong>Pratique (105 min)</strong>
+- 30 min — rédiger le fichier d'instructions du projet : stack, commandes de lancement, règles de style, interdictions.
+- 45 min — trois tâches d'affilée dans un seul chat, puis les trois mêmes dans des chats séparés ; mesurez la différence.
+- 20 min — quand l'agent commence à halluciner : techniques de redémarrage avec un contexte minimal.
+- 10 min — rétro : quelles règles du fichier d'instructions ont fait gagner le plus de temps.</p>
+<p><strong>Résultat :</strong> un projet avec un fichier d'instructions que l'agent suit sans rappels.</p>
+<hr />
+<h2 id="module-5-debogage-quand-lagent-tourne-en-rond-150-min">Module 5. Débogage quand l'agent tourne en rond — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Trois cercles de l'enfer : l'agent devine la cause, l'agent « corrige » le symptôme, l'agent casse quelque chose à côté.
+- La règle du fait unique : d'abord un cas minimal reproductible, ensuite la correction.
+- Comment obliger l'agent à regarder les logs et les stack traces au lieu de fantasmer.
+- La technique « explique ce que tu as vérifié » et celle du « propose 3 hypothèses avec une vérification ».
+- Quand revenir en arrière et réécrire de zéro coûte moins cher que corriger.</p>
+<p><strong>Pratique (105 min)</strong>
+- 20 min — un projet cassé avec 3 bugs connus ; reproduire chacun avec un cas minimal.
+- 50 min — corriger les trois, en notant pour chacun : hypothèse → vérification → correction → commit.
+- 25 min — donner à l'agent une hypothèse volontairement fausse : voyez s'il argumente, et apprenez à provoquer la discussion.
+- 10 min — rétro : combien de cycles avant la correction, et ce qui les aurait divisés par deux.</p>
+<p><strong>Résultat :</strong> trois bugs fermés avec des commits et un algorithme de débogage qui fonctionne.</p>
+<hr />
+<h2 id="module-6-tests-et-protection-contre-les-regressions-150-min">Module 6. Tests et protection contre les régressions — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Le test comme critère d'acceptation sous forme exécutable : une spec que les mots ne peuvent pas tromper.
+- La pyramide pour le vibe coding : beaucoup de tests unitaires sur la logique, peu d'e2e, presque pas de snapshots d'interface.
+- Le test d'abord, le code ensuite : pourquoi c'est plus facile pour l'agent que l'inverse.
+- L'interdiction pour l'agent de modifier les tests sans votre accord — comment la formuler.
+- La couverture comme métrique trompeuse : 100% des lignes et zéro vérification du sens.</p>
+<p><strong>Pratique (105 min)</strong>
+- 20 min — installer un runner de tests (vitest/pytest), premier test pour une fonction existante.
+- 45 min — un cycle TDD sur une nouvelle fonctionnalité : 5 tests, chacun échouant avant l'implémentation.
+- 30 min — demander à l'agent de casser la fonctionnalité et vérifier que les tests l'ont détecté.
+- 10 min — rétro : quels tests se sont révélés inutiles et pourquoi.</p>
+<p><strong>Résultat :</strong> un projet avec des tests qui échouent sur une régression, et l'habitude du « test avant le code ».</p>
+<hr />
+<h2 id="module-7-donnees-api-environnement-securite-150-min">Module 7. Données, API, environnement, sécurité — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Secrets : <code>.env</code>, <code>.gitignore</code>, pourquoi une clé dans l'historique git = une clé compromise.
+- L'agent et les API externes : méthodes hallucinées, paramètres obsolètes, champs de réponse inventés.
+- Vérifier une API à la main : documentation, curl, une vraie réponse avant la moindre ligne de code.
+- Valider les données d'entrée à la frontière ; les types comme protection à bas coût.
+- Ce qu'il ne faut jamais donner à l'agent : bases de données de production, données privées, tokens d'autres personnes.</p>
+<p><strong>Pratique (105 min)</strong>
+- 20 min — <code>.env</code>, <code>.env.example</code>, lecture de la config, vérification que la clé n'est pas arrivée dans git.
+- 50 min — intégration avec une API publique : d'abord curl, puis le client, puis la gestion des erreurs.
+- 25 min — validation des réponses et des données d'entrée, tests sur des données malformées.
+- 10 min — rétro : sur quoi l'agent a menti et comment vous l'avez démasqué.</p>
+<p><strong>Résultat :</strong> une intégration API qui fonctionne, des secrets hors du dépôt, des erreurs gérées.</p>
+<hr />
+<h2 id="module-8-deploiement-hygiene-git-travail-en-equipe-150-min">Module 8. Déploiement, hygiène git, travail en équipe — 150 min</h2>
+<p><strong>Théorie (45 min)</strong>
+- Branches et petites PR : pourquoi un agent sur une branche est plus sûr qu'un agent sur main.
+- Build et environnement de production : pourquoi « ça marche chez moi » ne veut pas dire « c'est déployé ».
+- Variables d'environnement sur l'hébergeur, logs, retour au déploiement précédent.
+- Relire du code IA : ce qu'un humain doit vérifier en premier.
+- Comment écrire les messages de commit et les descriptions de PR pour ne pas deviner un mois plus tard.</p>
+<p><strong>Pratique (105 min)</strong>
+- 15 min — branche, PR, protection de main contre les push directs.
+- 40 min — déployer le projet sur Vercel/Netlify avec des variables d'environnement.
+- 35 min — casser volontairement la production et revenir en arrière : d'abord par un redéploiement, puis par un revert.
+- 15 min — une checklist de relecture de code IA en 12 points, appliquée à votre propre PR.</p>
+<p><strong>Résultat :</strong> un lien public vers un projet qui fonctionne et la capacité de revenir en arrière en 2 minutes.</p>
+<hr />
+<h2 id="module-9-projet-final-180-min">Module 9. Projet final — 180 min</h2>
+<p><strong>Théorie, démonstration guidée (54 min)</strong>
+- Choisir un projet selon le critère « valeur / incertitude », pas selon « ce qui en jette ».
+- Le plan de construction : 4 étapes, chacune se terminant par quelque chose d'exécutable.
+- Ce qu'il faut retirer du MVP pour tenir dans 126 minutes de pratique.
+- La checklist de livraison : ça tourne, le lien est en ligne, README, tests, aucun secret divulgué.</p>
+<p><strong>Pratique (126 min)</strong>
+- 16 min — une spec de 10 lignes + une liste de 4 étapes + le dépôt.
+- 60 min — le cœur : le scénario principal fonctionne en local, 4 commits.
+- 30 min — les finitions : gestion des erreurs, un test pour le scénario principal, README.
+- 20 min — déployer, vérifier le lien depuis votre téléphone, commit final.</p>
+<p><strong>Résultat :</strong> un projet déployé et une checklist de livraison complétée.</p>
+<hr />
+<h2 id="comment-garder-le-ratio-3070-en-pratique">Comment garder le ratio 30/70 en pratique</h2>
+<ul>
+<li>Mettez un minuteur pour la théorie. 45 minutes écoulées — fermez-la et passez au travail.</li>
+<li>Si vous bloquez en pratique plus de 20 minutes, ce n'est pas une raison pour lire plus de théorie,
+  c'est une raison pour réduire le pas et revenir à une spec courte.</li>
+<li>Une pratique sautée ne se reporte pas sur le module suivant : sans elle, le module suivant
+  n'a aucun sens, car ils s'appuient tous sur la compétence précédente.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="index.html">← Aperçu du cours</a>
+      <a class="next" href="02-teoriya.html">Théorie →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur", crit: "critères" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

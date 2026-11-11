@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aperçu du cours · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Aperçu du cours · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav active" href="../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="modules/00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="modules/02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="modules/03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="modules/04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="modules/06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="modules/07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="modules/09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="modules/10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="glossary.html">Glossaire</a>
+    <a class="nav" href="resources.html">À lire ensuite</a>
+    <a class="nav" href="progress.html">Suivi de progression</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Modèles</a>
+    <a class="nav" href="build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/index.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../index.html" title="Русский">RU</a>
+  <a class="switch" href="../en/index.html" title="English">EN</a>
+  <a class="switch" href="../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<h1 id="le-vibe-coding-avec-opencode-un-cours-pratique">Le vibe coding avec OpenCode — un cours pratique</h1>
+<p>Un cours sur la manière d'obtenir des résultats <strong>prévisibles</strong> avec des agents IA
+dans le développement logiciel.
+Pas une histoire de « prompts secrets », mais de contexte, de vérification et de discipline
+d'ingénierie.</p>
+<p>Auteur : l'équipe du cours · Version 1.0 · OpenCode V2</p>
+<hr />
+<h2 id="ce-que-vous-allez-apprendre">Ce que vous allez apprendre</h2>
+<p>À la fin du cours, vous saurez :</p>
+<ol>
+<li>Expliquer comment fonctionne un LLM et pourquoi il se trompe — sans mystique.</li>
+<li>Formuler une tâche pour que l'agent produise du code fonctionnel dès la première ou la deuxième tentative.</li>
+<li>Préparer un projet pour l'agent : <code>AGENTS.md</code>, permissions, commandes de build et de test.</li>
+<li>Travailler dans la boucle « spec → plan → petit diff → vérification → commit ».</li>
+<li>Lire les diffs de l'agent et repérer les changements dangereux.</li>
+<li>Calculer le coût d'une session et choisir un modèle pour la tâche, pas « le plus intelligent ».</li>
+<li>Construire vos propres outils : skills, commandes, sous-agents.</li>
+</ol>
+<hr />
+<h2 id="a-qui-sadresse-ce-cours">À qui s'adresse ce cours</h2>
+<ul>
+<li>Étudiants, entrepreneurs, marketeurs, experts, fondateurs.</li>
+<li>Tous ceux qui ont essayé de « demander à ChatGPT d'écrire un projet » et ont obtenu un fouillis.</li>
+</ul>
+<p><strong>Prérequis :</strong> git (branches, diff, revert), un terminal, un langage de programmation
+avec des tests (Python/JS/Go/Java — peu importe), OpenCode installé.</p>
+<p>Vérification de l'état de préparation :</p>
+<pre><code class="language-bash">git --version
+opencode --version
+node --version   # ou python3 --version
+</code></pre>
+<hr />
+<h2 id="comment-le-cours-est-structure">Comment le cours est structuré</h2>
+<pre><code>théorie   ~40%  — concepts et modèles mentaux, sans blabla
+pratique  ~60%  — exercices avec critères d'acceptation
+</code></pre>
+<p>Chaque module est un dossier avec deux fichiers obligatoires :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>théorie : concepts, mini-cours, questions de compréhension</td>
+</tr>
+<tr>
+<td><code>practice.md</code></td>
+<td>exercices, critères d'acceptation, temps</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Règle du cours :</strong> un module n'est validé qu'une fois l'artefact déposé dans <code>labs/</code>.</p>
+<hr />
+<h2 id="programme">Programme</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Module</th>
+<th>Théorie</th>
+<th>Pratique</th>
+<th>Heures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td><a href="modules/00-orientation.html">Orientation</a></td>
+<td>ce qu'est le vibe coding, les rôles, les limites</td>
+<td>mettre en place l'environnement, première session</td>
+<td>2</td>
+</tr>
+<tr>
+<td>01</td>
+<td><a href="modules/01-llm-basics.html">Comment fonctionnent les LLM</a></td>
+<td>tokens, contexte, échantillonnage, hallucinations</td>
+<td>des expériences qui cassent votre intuition</td>
+<td>4</td>
+</tr>
+<tr>
+<td>02</td>
+<td><a href="modules/02-context.html">Ingénierie du contexte</a></td>
+<td>fenêtre, <code>AGENTS.md</code>, hygiène de session</td>
+<td>écrire <code>AGENTS.md</code>, mesurer la dégradation</td>
+<td>4</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="modules/03-spec.html">Spec et prompt</a></td>
+<td>spec-first, critères, plan</td>
+<td>transformer 3 tâches en specs</td>
+<td>5</td>
+</tr>
+<tr>
+<td>04</td>
+<td><a href="modules/04-oracles.html">Oracles et vérification</a></td>
+<td>tests, types, linters, CI</td>
+<td>boucle TDD avec un agent</td>
+<td>5</td>
+</tr>
+<tr>
+<td>05</td>
+<td><a href="modules/05-agent-loop.html">Boucle de l'agent et permissions</a></td>
+<td>appel d'outils, permissions, isolation</td>
+<td>liste de refus, worktree, <code>--auto</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td>06</td>
+<td><a href="modules/06-economics.html">Économie et choix du modèle</a></td>
+<td>prix, cache, fenêtre, latence</td>
+<td>calculer le coût, comparer les modèles</td>
+<td>3</td>
+</tr>
+<tr>
+<td>07</td>
+<td><a href="modules/07-refactor.html">Refactoring à grande échelle</a></td>
+<td>modifications multi-fichiers, dépôt vert</td>
+<td>migrer un module avec un agent</td>
+<td>5</td>
+</tr>
+<tr>
+<td>08</td>
+<td><a href="modules/08-review.html">Revue et portes de qualité</a></td>
+<td>lire les diffs, signaux d'alerte, sécurité</td>
+<td>attraper 3 mauvais diffs</td>
+<td>4</td>
+</tr>
+<tr>
+<td>09</td>
+<td><a href="modules/09-custom.html">Personnalisation</a></td>
+<td>skills, commandes, sous-agents, MCP</td>
+<td>construire vos propres outils</td>
+<td>4</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="modules/10-capstone.html">Projet final</a></td>
+<td>—</td>
+<td>une fonctionnalité de la spec à la CI + rétrospective</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<p>Total ≈ 50 heures. L'ordre est obligatoire : 01–04 constituent la base ; sans eux, 05–09 se transforment en un jeu de boutons.</p>
+<hr />
+<h2 id="calendrier">Calendrier</h2>
+<p><strong>Semestre (16 semaines, 3 h/semaine) :</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Semaines</th>
+<th>Modules</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>00, 01</td>
+</tr>
+<tr>
+<td>3–4</td>
+<td>02, 03</td>
+</tr>
+<tr>
+<td>5–6</td>
+<td>04</td>
+</tr>
+<tr>
+<td>7–8</td>
+<td>05</td>
+</tr>
+<tr>
+<td>9</td>
+<td>06</td>
+</tr>
+<tr>
+<td>10–11</td>
+<td>07</td>
+</tr>
+<tr>
+<td>12–13</td>
+<td>08</td>
+</tr>
+<tr>
+<td>14</td>
+<td>09</td>
+</tr>
+<tr>
+<td>15–16</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Intensif (2 semaines, 25 h/semaine) :</strong> un module par jour, le projet final sur les 2 derniers jours.</p>
+<hr />
+<h2 id="evaluation">Évaluation</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Partie</th>
+<th>Poids</th>
+<th>Ce qui est évalué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compréhension</td>
+<td>25 %</td>
+<td>réponses aux questions des modules, soutenance orale</td>
+</tr>
+<tr>
+<td>Pratique</td>
+<td>45 %</td>
+<td>artefacts dans <code>labs/</code>, conformes aux critères d'acceptation</td>
+</tr>
+<tr>
+<td>Projet final</td>
+<td>30 %</td>
+<td>une fonctionnalité jusqu'à une CI verte + rétrospective fondée sur des métriques</td>
+</tr>
+</tbody>
+</table></div>
+<p>Score de passage — <strong>70 %</strong>, le projet final est obligatoire. Détails : <a href="rubric.html">rubric.md</a>.</p>
+<hr />
+<h2 id="structure-du-depot">Structure du dépôt</h2>
+<pre><code>Vibecode/opencode/
+├── README.md            ← vous êtes ici
+├── rubric.md            ← critères d'évaluation
+├── glossary.md          ← concepts (s'enrichit au fil du cours)
+├── resources.md         ← à lire au-delà du cours
+├── progress.md          ← suivi de progression
+├── templates/           ← modèles d'artefacts
+│   ├── AGENTS.md
+│   ├── spec.md
+│   ├── review-checklist.md
+│   └── retro.md
+├── modules/             ← 00..10, chacun avec README.md + practice.md
+└── labs/                ← les artefacts vont ici
+    └── README.md
+</code></pre>
+<hr />
+<h2 id="trois-regles-qui-comptent-plus-que-tout-le-reste">Trois règles qui comptent plus que tout le reste</h2>
+<ol>
+<li><strong>N'acceptez jamais un diff que vous n'avez pas lu.</strong> Le vibe coding sans lire le diff, c'est un emprunt à 300 %.</li>
+<li><strong>Pas d'oracle — pas de tâche.</strong> Si le résultat ne peut pas être vérifié par une commande, la tâche n'est pas prête pour l'agent.</li>
+<li><strong>Une tâche — une session.</strong> Mélanger les objectifs dans un seul contexte est la première raison pour laquelle « le modèle est devenu bête ».</li>
+</ol>
+<hr />
+<h2 id="par-ou-commencer-des-maintenant">Par où commencer dès maintenant</h2>
+<ol>
+<li>Lisez <a href="modules/00-orientation.html">modules/00-orientation/README.md</a>.</li>
+<li>Remplissez <a href="progress.html">progress.md</a> — indiquez la date de début.</li>
+<li>Ouvrez un terminal dans votre projet d'apprentissage et lancez <code>opencode</code>.</li>
+</ol>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

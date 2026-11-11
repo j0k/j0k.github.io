@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 09 — Practice: your own toolset · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 09 — Practice: your own toolset · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice active" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/09-custom-practice.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/09-custom-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/09-custom-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="09-custom.html">← Theory</a></div>
+<h1 id="module-09-practice-your-own-toolset">Module 09 — Practice: your own toolset</h1>
+<p><strong>Time:</strong> 160 minutes · <strong>Artifact:</strong> <code>labs/09-custom/</code></p>
+<hr />
+<h2 id="task-1-command-30-min">Task 1. Command (30 min)</h2>
+<p>Create a <code>/check-fix</code> command in <code>opencode.jsonc</code>:</p>
+<pre><code class="language-jsonc">{
+  &quot;commands&quot;: {
+    &quot;check-fix&quot;: {
+      &quot;description&quot;: &quot;Run the checks and fix the causes of failures&quot;,
+      &quot;template&quot;: &quot;Run ./scripts/check.sh. If it fails — fix the cause, don't disable the checks. Repeat at most 3 times. At the end, show the diff and explain it in 2 lines.&quot;
+    }
+  }
+}
+</code></pre>
+<p>Test the <code>/check-fix</code> invocation on a broken test.</p>
+<p><strong>Acceptance:</strong> the command works, the test is green again, the diff has been reviewed.</p>
+<hr />
+<h2 id="task-2-skill-40-min">Task 2. Skill (40 min)</h2>
+<p>Create the skill <code>.opencode/skills/migrations/SKILL.md</code>:</p>
+<pre><code class="language-markdown">---
+name: migrations
+description: Rules for creating and applying DB migrations in this project
+---
+
+1. Migration file: `migrations/YYYYMMDD_description.sql`
+2. Always a down migration
+3. Forbidden: DROP COLUMN without a backup
+4. After creating: `alembic upgrade head` in dev, `pytest -q`
+</code></pre>
+<p>Verify: in a new session, ask "add a migration" — the agent should reference the rules.</p>
+<p><strong>Acceptance:</strong> the skill is picked up; the report includes a quote from the agent's response.</p>
+<hr />
+<h2 id="task-3-reviewer-subagent-40-min">Task 3. Reviewer subagent (40 min)</h2>
+<pre><code class="language-jsonc">{
+  &quot;agents&quot;: {
+    &quot;reviewer&quot;: {
+      &quot;description&quot;: &quot;Strict diff review, no edits&quot;,
+      &quot;mode&quot;: &quot;subagent&quot;,
+      &quot;permissions&quot;: [
+        { &quot;action&quot;: &quot;edit&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; },
+        { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git diff *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+        { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; }
+      ]
+    }
+  }
+}
+</code></pre>
+<p>Give it the diff from module 07.</p>
+<p><strong>Acceptance:</strong> the subagent returned a list of problems, the files are unchanged (<code>git status</code> is clean).</p>
+<hr />
+<h2 id="task-4-a-model-for-the-job-25-min">Task 4. A model for the job (25 min)</h2>
+<p>Configure two setups:</p>
+<pre><code class="language-jsonc">{
+  &quot;agents&quot;: {
+    &quot;fast&quot;: { &quot;mode&quot;: &quot;primary&quot;, &quot;model&quot;: &quot;&lt;cheap&gt;&quot; },
+    &quot;think&quot;: { &quot;mode&quot;: &quot;primary&quot;, &quot;model&quot;: &quot;&lt;reasoning&gt;&quot; }
+  }
+}
+</code></pre>
+<p>Compare them on the same task.</p>
+<p><strong>Acceptance:</strong> a "task / agent / cost / quality" table.</p>
+<hr />
+<h2 id="task-5-mcp-or-a-reasoned-refusal-25-min">Task 5. MCP or a reasoned refusal (25 min)</h2>
+<p>Check the list of available MCP servers:</p>
+<pre><code class="language-bash">opencode mcp list
+</code></pre>
+<p>If you need an external tool — connect it read-only and describe the risk.
+If you don't need one — write 3 reasons why not in the report (extra attack surface,
+doesn't solve the task, there's a simpler path).</p>
+<p><strong>Acceptance:</strong> either a working read-only MCP or an argued refusal.</p>
+<hr />
+<h2 id="submission-criteria">Submission criteria</h2>
+<ul>
+<li class="task"><span class="cb"></span>The <code>/check-fix</code> command works.</li>
+<li class="task"><span class="cb"></span>The skill is picked up by the agent.</li>
+<li class="task"><span class="cb"></span>The reviewer subagent has no edit permissions.</li>
+<li class="task"><span class="cb"></span>There's a model comparison by agent.</li>
+<li class="task"><span class="cb"></span>MCP is connected or reasonably rejected.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="09-custom.html">← Customization</a>
+      <a class="next" href="10-capstone.html">Capstone →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

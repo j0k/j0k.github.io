@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 07 — Refactoring à grande échelle · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 07 — Refactoring à grande échelle · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/07-refactor.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/07-refactor.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/07-refactor.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="07-refactor-practice.html">Pratique →</a></div>
+<h1 id="module-07-refactoring-a-grande-echelle">Module 07 — Refactoring à grande échelle</h1>
+<p><strong>Temps :</strong> 5 heures · <strong>Format :</strong> 90 min de théorie + 210 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-pourquoi-les-grosses-modifications-dagent-sont-dangereuses">1. Pourquoi les grosses modifications d'agent sont dangereuses</h2>
+<pre><code>1 file, 30 lines  → you read the diff in 2 minutes
+12 files, 900 lines → you read it &quot;diagonally&quot; and miss a deleted check
+</code></pre>
+<p>Le risque croît de façon non linéaire : plus le diff est gros, plus la probabilité que vous le lisiez vraiment baisse.</p>
+<p>Règle : <strong>la taille du diff est un paramètre contrôlable</strong>. Pas « laisse-le tout faire », mais « fais l'étape 1 ».</p>
+<h2 id="2-la-strategie-du-depot-vert">2. La stratégie du « dépôt vert »</h2>
+<p>Chaque étape se termine par des tests verts et un commit :</p>
+<pre><code>[green] → step → [green] → commit → step → [green] → commit
+</code></pre>
+<p>Si une étape a cassé les tests et n'est pas réparée en 2 itérations — revenez en arrière et essayez une autre approche.
+C'est moins cher que de réparer une cascade de 5 étapes cassées.</p>
+<h2 id="3-lordre-de-migration">3. L'ordre de migration</h2>
+<p>Une séquence sûre pour « remplacer X par Y » :</p>
+<pre><code>1. Introduce Y alongside X (without deleting X)
+2. Move one call site to Y
+3. Tests green → commit
+4. Move the remaining call sites (one at a time)
+5. Delete X
+6. Delete dead code
+</code></pre>
+<p>L'essentiel : <strong>ne jamais supprimer l'ancien avant que le nouveau soit vérifié.</strong></p>
+<h2 id="4-comment-contraindre-lagent">4. Comment contraindre l'agent</h2>
+<pre><code>Don't touch files outside src/billing/.
+Don't change public function signatures.
+Don't add dependencies.
+One step — one commit.
+After each step run ./scripts/check.sh and stop if it's red.
+</code></pre>
+<p>Les contraintes par chemin fonctionnent mieux que supplier « fais attention ».</p>
+<h2 id="5-trouver-les-dependances">5. Trouver les dépendances</h2>
+<p>Avant de migrer — construisez une carte :</p>
+<pre><code>grep -rn &quot;old_function&quot; src/
+</code></pre>
+<p>Donnez le résultat à l'agent et demandez-lui un plan fichier par fichier. C'est moins cher que « trouve-le toi-même
+dans 500 fichiers », et plus exact.</p>
+<h2 id="6-modifications-mecaniques-vs-semantiques">6. Modifications mécaniques vs sémantiques</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Exemple</th>
+<th>Comment faire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mécanique</td>
+<td>renommage, formatage</td>
+<td>peut être groupé, la vérification ce sont les tests</td>
+</tr>
+<tr>
+<td>Sémantique</td>
+<td>changement de logique</td>
+<td>un fichier à la fois, avec relecture</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ne les mélangez pas : « renomme-le et améliore-le tant que tu y es » = un diff invérifiable.</p>
+<h2 id="7-feature-flags-et-reversibilite">7. Feature flags et réversibilité</h2>
+<p>Si la fonctionnalité est grosse — mettez-la derrière un flag :</p>
+<pre><code class="language-python">if settings.use_new_billing:
+    new_path()
+else:
+    old_path()
+</code></pre>
+<p>Cela permet de merger plus tôt, de revenir en arrière instantanément et de tester de façon incrémentale.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi un gros diff est-il plus dangereux que la somme de petits ?</li>
+<li>Pourquoi introduire le nouveau avant de supprimer l'ancien ?</li>
+<li>En quoi les modifications mécaniques diffèrent-elles des sémantiques en termes de processus ?</li>
+<li>Que faites-vous si une étape ne passe pas au vert en 2 itérations ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="07-refactor-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="06-economics-practice.html">← Économie et choix du modèle — pratique</a>
+      <a class="next" href="07-refactor-practice.html">Refactoring à grande échelle — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt library — Vibecoding 30/70</title>
+<meta property="og:title" content="Prompt library — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>course 30/70 · 23 hours</span></a>
+    <div class="ratio">30% theory · 70% practice · 1380 min</div>
+    <nav>
+      <a href="index.html">Course overview<small>Start</small></a>
+      <a href="01-programma.html">Program<small>Modules and timing</small></a>
+      <a href="02-teoriya.html">Theory<small>30% of the course</small></a>
+      <a href="03-praktika.html">Practice<small>70% of the course</small></a>
+      <a href="04-promptoteka.html" class="active">Prompt library<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projects<small>Capstone</small></a>
+      <a href="06-tracker.html">Tracker<small>Checklist</small></a>
+      <a href="gantt.html">Weekly Gantt<small>Skills and theory</small></a>
+    </nav>
+    <div class="foot">Opens locally, no internet needed.<br>Ctrl+P — print version.<br>
+      <a href="../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../opencode/index.html">OpenCode course</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Course 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/en/04-promptoteka.html" data-copied="Link copied" title="Share">Share</button>
+      <a class="switch" href="../04-promptoteka.html" title="Русский">RU</a>
+      <a class="switch" href="../fr/04-promptoteka.html" title="Français">FR</a>
+      <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+    </div>
+    <article>
+<h1 id="prompt-library">Prompt library</h1>
+<p>Ready-made formulations. Copy them, put your own values in <code>&lt;...&gt;</code>.
+Every prompt follows the scheme: context → task → constraints → format → prohibition.</p>
+<hr />
+<h2 id="1-starting-out">1. Starting out</h2>
+<p><strong>1.1 Plan without edits</strong></p>
+<pre><code>Read &lt;path/files&gt;. Task: &lt;one sentence&gt;.
+Show a plan of 4–6 steps, each with a verifiable result.
+Don't change files, don't write code. I'll wait to approve the plan.
+</code></pre>
+<p><strong>1.2 Onboarding into someone else's project</strong></p>
+<pre><code>This is the project &lt;name&gt;. Read the README, package.json/pyproject.toml and the folder structure.
+Answer: stack, how to run, how to test, the 3 most important files, 3 unclear spots.
+Don't change files.
+</code></pre>
+<p><strong>1.3 Project instructions</strong></p>
+<pre><code>Create AGENTS.md with the stack, run/test/lint commands, style rules and
+prohibitions (don't edit tests, don't touch legacy, don't add dependencies without
+approval). Based on the project's actual contents, no guesswork.
+</code></pre>
+<hr />
+<h2 id="2-framing-the-task">2. Framing the task</h2>
+<p><strong>2.1 Spec from a raw idea</strong></p>
+<pre><code>Idea: &lt;as is, messy&gt;.
+Turn it into a spec: goal, user and scenario, inputs/outputs with examples,
+edge cases (empty, very large, wrong type), constraints, 4 acceptance criteria
+(verifiable yes/no), what we are NOT doing.
+Don't write code. Maximum 15 lines.
+</code></pre>
+<p><strong>2.2 Checking a spec for holes</strong></p>
+<pre><code>Here is the spec. Find 5 places where the implementer will have to guess: ambiguous
+wording, missing edge cases, unverifiable criteria.
+Just a list of problems, don't rewrite it.
+</code></pre>
+<p><strong>2.3 Decomposition</strong></p>
+<pre><code>Split the task into steps of 15–20 minutes of agent work. For each: name,
+files, acceptance criterion, what not to touch. No more than 6 steps.
+Don't write code.
+</code></pre>
+<p><strong>2.4 Acceptance criterion → <code>/goal</code></strong></p>
+<pre><code>/goal &lt;test command&gt; exits with code 0, &lt;lint&gt; is clean,
+git diff --name-only shows only &lt;folder&gt;/, or stop after &lt;N&gt; turns
+</code></pre>
+<p>Requirements: a measurable signal, proof in the session output, file
+boundaries, a turn limit. Clear the goal: <code>/goal clear</code>. Status: <code>/goal</code> with no arguments.</p>
+<p><strong>2.5 Checking a criterion for <code>/goal</code> fitness</strong></p>
+<pre><code>Here is an acceptance criterion: &lt;text&gt;. Check it for three things: (1) can it be verified
+by a command or return code, (2) will the agent see the proof in its own output,
+(3) which files must be explicitly forbidden to change. If the criterion is unverifiable —
+reformulate it into a verifiable one and show the difference.
+</code></pre>
+<hr />
+<h2 id="3-implementation">3. Implementation</h2>
+<p><strong>3.1 Minimal edit</strong></p>
+<pre><code>In &lt;file&gt;, function &lt;name&gt;: &lt;what to change&gt;.
+Requirements: &lt;exact behavior, including boundaries&gt;.
+Only this file. Don't refactor, don't change formatting, don't add
+dependencies. After the edit show the diff and the verification output.
+</code></pre>
+<p><strong>3.2 New module</strong></p>
+<pre><code>Create &lt;file&gt; with &lt;function/class&gt; that &lt;behavior&gt;.
+Input: &lt;type, example&gt;. Output: &lt;type, example&gt;. Errors: &lt;which and how&gt;.
+Style as in &lt;neighboring file&gt;. No new dependencies. Add 2 tests:
+the main scenario and &lt;boundary&gt;.
+</code></pre>
+<p><strong>3.3 Working from a test</strong></p>
+<pre><code>Test: &lt;test code&gt;. It fails. Implement the minimal code to make it pass.
+Don't change the test. Don't add functionality beyond the test.
+Show the test output after the edit.
+</code></pre>
+<p><strong>3.4 Resuming after a pause</strong></p>
+<pre><code>State: &lt;A, B&gt; done, commit &lt;hash&gt;. Left: &lt;C&gt;.
+Task now: only &lt;C&gt;. Context: &lt;files&gt;.
+Don't revisit the decisions on A and B.
+</code></pre>
+<hr />
+<h2 id="4-verification-and-review">4. Verification and review</h2>
+<p><strong>4.1 Self-check before handing over</strong></p>
+<pre><code>Check your edit against the list and answer item by item:
+1) were any checks/validation removed; 2) is there any silent catch/except; 3) is there any
+hardcoding or magic constants; 4) were files outside the task touched; 5) were any
+dependencies added; 6) were the tests changed.
+Don't change code, report only.
+</code></pre>
+<p><strong>4.2 Explain the decision</strong></p>
+<pre><code>Explain in 5 lines: why this solution was chosen, which alternatives
+were considered, which trade-offs were accepted. Don't change code.
+</code></pre>
+<p><strong>4.3 Checking acceptance criteria</strong></p>
+<pre><code>Here are the acceptance criteria: &lt;list&gt;. For each one: met / not met / not checked,
+and exactly how to verify it with a command. Don't change code.
+</code></pre>
+<hr />
+<h2 id="5-debugging">5. Debugging</h2>
+<p><strong>5.1 Fact first, then hypothesis</strong></p>
+<pre><code>Error: &lt;symptom&gt;. Stack trace:
+&lt;paste&gt;
+First quote 3 lines of the stack trace that point to our code.
+Then propose 3 hypotheses. For each one — a verification command.
+Make no edits until I choose.
+</code></pre>
+<p><strong>5.2 Against guessing</strong></p>
+<pre><code>You are proposing a cause without checking it. Answer: what data confirms this?
+Which command will confirm or refute it? If verification is impossible — say so directly.
+</code></pre>
+<p><strong>5.3 Minimal case</strong></p>
+<pre><code>Reduce the problem to a minimal reproducible example: 10–15 lines,
+without our project, standard library only. Show it and the expected/actual result.
+</code></pre>
+<p><strong>5.4 Dead end</strong></p>
+<pre><code>Two attempts haven't moved the problem. We stop.
+State: what is known for certain, what has been checked, what remains unchecked,
+which 2 options exist. Make no edits — I'll decide whether to roll back or continue.
+</code></pre>
+<p><strong>5.5 Library version</strong></p>
+<pre><code>Stack: &lt;library&gt; version &lt;X&gt; (from package.json). Use only the API of this version.
+If you are not sure the API exists in this version — say so instead of guessing.
+</code></pre>
+<hr />
+<h2 id="6-tests">6. Tests</h2>
+<p><strong>6.1 Test before code</strong></p>
+<pre><code>Write a test for the behavior: &lt;description&gt;. The test must fail now.
+Don't implement the functionality. Show that it fails, and for what reason.
+</code></pre>
+<p><strong>6.2 Checking a test for robustness</strong></p>
+<pre><code>Break the implementation so that &lt;behavior&gt; stops working. Don't touch the tests.
+Say which tests failed. If none failed — the tests are useless, say so directly.
+</code></pre>
+<p><strong>6.3 No editing tests</strong></p>
+<pre><code>Tests are the specification. If a test fails, fix the implementation. Changing the test is not allowed.
+If you think the expectation in the test is wrong — explain why and wait for my decision.
+</code></pre>
+<p><strong>6.4 Boundaries</strong></p>
+<pre><code>Add boundary tests for &lt;function&gt;: empty input, one element, maximum,
+wrong type, missing field. One test per case, descriptive names.
+</code></pre>
+<hr />
+<h2 id="7-data-and-api">7. Data and API</h2>
+<p><strong>7.1 From a real response</strong></p>
+<pre><code>Here is a real API response (abbreviated):
+&lt;paste&gt;
+Use only these fields and this structure. Don't invent fields that don't exist.
+Build a client with validation and handling of 4xx/5xx/timeout/invalid JSON.
+</code></pre>
+<p><strong>7.2 Secrets</strong></p>
+<pre><code>Keys only via environment variables. Add .env.example with the names and no
+values. Make sure .env is in .gitignore and didn't get into the git history.
+If the key is already in the history — say that the key needs to be revoked.
+</code></pre>
+<p><strong>7.3 Validation at the boundary</strong></p>
+<pre><code>Add input validation at the boundary via &lt;zod/pydantic&gt;:
+required fields, types, constraints. On invalid data — 400 with a clear
+message, no crash. Plus 3 tests for bad data.
+</code></pre>
+<hr />
+<h2 id="8-deploy-and-hygiene">8. Deploy and hygiene</h2>
+<p><strong>8.1 First deploy</strong></p>
+<pre><code>Prepare the project for deployment to &lt;Vercel/Netlify&gt;: check the build command and output
+folder, list the environment variables for the panel, state the runtime version.
+Don't make anything up about the settings — if you're not sure, say what to check by hand.
+</code></pre>
+<p><strong>8.2 Checklist before merge</strong></p>
+<pre><code>Go through PR &lt;number&gt; and answer for each item: checks not weakened, tests
+not changed, no silent catches, no secrets, no hardcoded paths, no new
+dependencies without justification, no SQL concatenation, no edits outside the task.
+Format: item — ok / problem (file:line).
+</code></pre>
+<p><strong>8.3 Commit message / PR description</strong></p>
+<pre><code>Write a commit message in the format type(scope): what was done, up to 70 characters.
+And a PR description: what changes, why, how to verify (steps), what is out of scope,
+which trade-offs were accepted. From the diff, no guesswork.
+</code></pre>
+<hr />
+<h2 id="9-session-restart">9. Session restart</h2>
+<p><strong>9.1 Clean start</strong></p>
+<pre><code>New session. Context: &lt;project, stack, 3 important files&gt;.
+Problem: &lt;symptom&gt;. Checked: &lt;facts&gt;. Not checked: &lt;...&gt;.
+Stack trace: &lt;...&gt;.
+Propose 3 hypotheses with a verification command. Make no edits.
+</code></pre>
+<p><strong>9.2 Handing over state</strong></p>
+<pre><code>Session summary: &lt;...&gt; done, commits &lt;hash...&gt;, left &lt;...&gt;.
+Open questions: &lt;...&gt;. Known limitations: &lt;...&gt;.
+Save this to notes/session-&lt;date&gt;.md so we can continue tomorrow.
+</code></pre>
+<hr />
+<h2 id="10-antipatterns-how-not-to-do-it">10. Antipatterns: how not to do it</h2>
+<table>
+<thead>
+<tr>
+<th>Don't write</th>
+<th>Why it doesn't work</th>
+<th>Replace with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"fix the bug"</td>
+<td>gives carte blanche to guess</td>
+<td>"quote the stack trace, propose 3 hypotheses"</td>
+</tr>
+<tr>
+<td>"make it pretty"</td>
+<td>no criterion</td>
+<td>"white background, one accent, system-ui, maximum 2 colors"</td>
+</tr>
+<tr>
+<td>"optimize it"</td>
+<td>no metric</td>
+<td>"cut to &lt;200 ms, measured via &lt;command&gt;"</td>
+</tr>
+<tr>
+<td>"add error handling"</td>
+<td>silent <code>except</code></td>
+<td>"server text on 4xx, "try again later" on 5xx, a test for each"</td>
+</tr>
+<tr>
+<td>"refactor it"</td>
+<td>the whole project got rewritten</td>
+<td>"extract X from Y into Z, behavior unchanged, tests green"</td>
+</tr>
+<tr>
+<td>"make it like &lt;service&gt;"</td>
+<td>a copy without your requirements</td>
+<td>list 3 specific elements</td>
+</tr>
+<tr>
+<td>"improve the code"</td>
+<td>unbounded scope</td>
+<td>one specific problem + a criterion</td>
+</tr>
+</tbody>
+</table>
+    </article>
+    <div class="pager"><a class="prev" href="03-praktika.html">← Practice</a>
+      <a class="next" href="05-proekty.html">Projects →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of", crit: "criteria" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

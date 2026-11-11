@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Курс 30/70 — гант по неделям</title>
+<style>
+:root{--bg:#f7f6f2;--fg:#1d1c1a;--muted:#6b6862;--line:#e2dfd7;--card:#fff;--accent:#2f5d50;
+--p1:#2d5bd7;--p2:#1f7a4a;--p3:#9a6700;--p4:#7a1f1f}
+@media (prefers-color-scheme:dark){:root{--bg:#171716;--fg:#ecebe7;--muted:#a19e96;--line:#33322e;
+--card:#211f1d;--accent:#8fbfae;--p1:#7c9cff;--p2:#58c28a;--p3:#e0b252;--p4:#f08279}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13px/1.45 system-ui,"Segoe UI",sans-serif}
+.wrap{padding:18px 22px 48px;max-width:1560px;margin:0 auto}
+h1{font-size:19px;margin:0 0 3px}
+.sub{color:var(--muted);font-size:12.5px;margin:0 0 14px}
+.backlink{display:inline-block;font-size:11.5px;color:var(--accent);text-decoration:none;margin-bottom:4px}
+.backlink:hover{text-decoration:underline}
+.topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 14px;
+  padding-bottom:10px;border-bottom:1px solid var(--line);font-size:13px}
+.topbar a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:var(--muted)}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{font-size:12px;color:var(--muted);background:var(--card);
+  border:1px solid var(--line);padding:3px 10px;border-radius:999px}
+.topbar .switch:hover{color:var(--accent);border-color:var(--accent)}
+.topbar .share{font:inherit;font-size:12px;color:var(--muted);background:var(--card);
+  border:1px solid var(--line);padding:3px 10px;border-radius:999px;cursor:pointer}
+.topbar .share:hover{color:var(--accent);border-color:var(--accent)}
+.topbar .share.copied{color:#fff;background:var(--accent);border-color:var(--accent)}
+@media print{.topbar{display:none}}
+.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:11.5px;border:1px solid var(--line);border-radius:99px;padding:3px 10px;background:var(--card)}
+.chip b{font-weight:600}
+button{font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);
+  border-radius:6px;padding:4px 11px;cursor:pointer;font-size:12px}
+button:hover{border-color:var(--muted)}
+button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+
+/* сетка */
+.gantt{display:grid;grid-template-columns:270px 1fr;min-width:0}
+.gantt.wide{grid-template-columns:460px 1fr}
+.ghead{position:sticky;top:0;z-index:3;background:var(--card)}
+.rowhd{font-size:12px;padding:0 10px;display:flex;align-items:center;gap:7px;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:27px;background:var(--card)}
+.rowhd.ms{font-weight:600;background:var(--bg);min-height:32px;align-items:flex-start;padding-top:7px}
+.rowhd.ms .nm{white-space:normal;line-height:1.25}
+.rowhd .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.rowhd .est{margin-left:auto;color:var(--muted);font-size:10.5px;font-variant-numeric:tabular-nums;flex:none}
+.rowhd.task{padding-left:24px;color:var(--fg)}
+.rowhd.task .k{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--muted);flex:none}
+.rowhd.task .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rowhd.th{padding-left:24px;font-size:11.5px;color:var(--muted)}
+.rowhd.th .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.track{position:relative;border-bottom:1px solid var(--line);min-height:27px}
+.track.band{background:var(--bg);min-height:32px}
+.grid{position:absolute;inset:0;pointer-events:none}
+.grid i{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:.65}
+.grid i.ph{background:var(--muted);opacity:.5;width:2px}
+
+.bar{position:absolute;top:5px;bottom:5px;border-radius:5px;display:flex;align-items:center;
+  padding:0 7px;font-size:10.5px;color:#fff;overflow:hidden;white-space:nowrap;cursor:default;
+  background:var(--c);box-shadow:0 1px 2px rgba(0,0,0,.13)}
+.bar .lbl{overflow:hidden;text-overflow:ellipsis}
+.bar:hover{filter:brightness(1.12)}
+.bar.ms{top:4px;bottom:4px;font-weight:600;font-size:11.5px}
+.bar.z{opacity:.5;background:repeating-linear-gradient(45deg,transparent,transparent 3px,
+  rgba(255,255,255,.5) 3px,rgba(255,255,255,.5) 6px),var(--c)}
+.bar.th{top:6px;bottom:6px;font-size:10px;box-shadow:none;opacity:.92}
+
+/* шкала */
+.scale{position:relative;height:48px;border-bottom:1px solid var(--line);background:var(--card)}
+.scale .tick{position:absolute;top:18px;bottom:0;font-size:10.5px;color:var(--muted);
+  border-left:1px solid var(--line);display:flex;align-items:center;padding-left:5px}
+.scale .tick b{font-weight:600;color:var(--fg);margin-right:4px}
+.scale .ph{position:absolute;top:0;height:18px;font-size:9.5px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;padding:3px 0 0 6px;
+  border-left:2px solid var(--line);overflow:hidden;white-space:nowrap}
+
+/* подсказка */
+#tip{position:fixed;z-index:50;background:#1d1c1a;color:#f7f6f2;border-radius:7px;padding:7px 10px;
+  font-size:11.5px;max-width:360px;pointer-events:none;opacity:0;transition:opacity .1s;line-height:1.45}
+#tip.show{opacity:1}
+#tip b{display:block;margin-bottom:3px;font-size:12px}
+#tip .m{color:#bbb6aa}
+#tip .w{margin-top:4px;color:#e6e2d8}
+
+/* итоги */
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.box .t{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
+.box .v{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.box .d{font-size:11.5px;color:var(--muted);margin-top:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:14px;height:9px;border-radius:3px;display:block}
+
+/* таблица недель */
+table.mx{width:100%;border-collapse:collapse;margin-top:22px;font-size:12px;background:var(--card);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden}
+table.mx th,table.mx td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+table.mx th{background:var(--bg);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+table.mx tbody tr:last-child td{border-bottom:none}
+table.mx td:first-child{white-space:nowrap;font-weight:600}
+table.mx .ph{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+h2{font-size:14px;margin:26px 0 0}
+
+@media (max-width:900px){
+  .gantt{grid-template-columns:170px 1fr}
+  .wrap{padding:14px 12px 40px}
+  .rowhd{font-size:11px}
+  .rowhd.task{padding-left:14px}
+  .bar{font-size:9.5px}
+}
+@media print{
+  body{background:#fff}
+  .top,#tip{display:none}
+  .wrap{max-width:none;padding:0}
+  .ghead{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="home" href="../index.html">← Вайбкодинг</a>
+    <span class="sep">·</span>
+    <span class="here">Курс 30/70 · гант</span>
+    <span class="spacer"></span>
+    <button type="button" class="share" data-share="course-30-70/gantt.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+    <a class="switch" href="index.html">← Курс 30/70</a>
+    <a class="switch" href="en/gantt.html" title="English">EN</a>
+    <a class="switch" href="fr/gantt.html" title="Français">FR</a>
+    <a class="switch" href="../opencode/index.html">Курс по OpenCode →</a>
+  </div>
+  <h1>Курс «Вайбкодинг 30/70» — гант по неделям</h1>
+  <p class="sub">1 занятие в неделю по 150 минут (капстоун 180). 9 недель, 1380 минут, 30 % теории / 70 % практики.</p>
+
+  <div class="top">
+    <span class="chip">недель <b>9</b></span>
+    <span class="chip">навыков <b id="c-sk">28</b></span>
+    <span class="chip">теор. блоков <b id="c-th">45</b></span>
+    <span class="chip">итого <b>1380 мин</b></span>
+    <button id="v-ms" class="on">недели</button>
+    <button id="v-sk">навыки</button>
+    <button id="v-th">теория</button>
+    <button id="v-all">навыки + теория</button>
+  </div>
+
+  <div class="card">
+    <div class="gantt">
+      <div class="ghead"><div class="rowhd ms">Программа</div></div>
+      <div class="ghead"><div class="scale" id="scale"></div></div>
+      <div id="hdcol"></div>
+      <div id="trackcol"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--p1)"></i> фаза 1 · каркас работы (W1–W3)</span>
+    <span><i style="background:var(--p2)"></i> фаза 2 · контроль качества (W4–W6)</span>
+    <span><i style="background:var(--p3)"></i> фаза 3 · прод и команда (W7–W8)</span>
+    <span><i style="background:var(--p4)"></i> фаза 4 · капстоун (W9)</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#999,#999 3px,#ccc 3px,#ccc 6px)"></i> закрепление навыка на следующих неделях</span>
+  </div>
+
+  <div class="sum">
+    <div class="box"><div class="t">Длительность</div><div class="v">9 недель</div>
+      <div class="d">8 модулей × 150 мин + капстоун 180</div></div>
+    <div class="box"><div class="t">Практика</div><div class="v">966 мин</div>
+      <div class="d">70 % · на каждом занятии 105 мин руками</div></div>
+    <div class="box"><div class="t">Первый артефакт</div><div class="v">нед. 1</div>
+      <div class="d">репозиторий с историей и рабочая утилита</div></div>
+    <div class="box"><div class="t">Порог сдачи</div><div class="v">нед. 9</div>
+      <div class="d">публичная ссылка + README + тесты</div></div>
+  </div>
+
+  <h2>Что на выходе каждой недели</h2>
+  <table class="mx">
+    <thead><tr><th>Неделя</th><th>Модуль</th><th>Навык недели</th><th>Артефакт на выходе</th></tr></thead>
+    <tbody id="mx"></tbody>
+  </table>
+</div>
+
+<div id="tip"></div>
+
+<script>
+(function () {
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () { btn.textContent = old; btn.classList.remove("copied"); }, 1600);
+      };
+      var fail = function () { window.prompt(btn.getAttribute("data-copied") || "", url); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+})();
+
+const WEEKS = 9;
+const PH = [
+  { id:"p1", name:"каркас работы", from:0, to:2 },
+  { id:"p2", name:"контроль качества", from:3, to:5 },
+  { id:"p3", name:"прод и команда", from:6, to:7 },
+  { id:"p4", name:"капстоун", from:8, to:8 },
+];
+
+const MODS = [
+  { id:"W1", w:0, name:"М1 · Как вайбкодинг работает на самом деле", min:150,
+    art:"репозиторий, 3+ коммита, утилита 40–60 строк",
+    skill:"читать дифф: принять / завернуть" },
+  { id:"W2", w:1, name:"М2 · Спека и постановка задачи", min:150,
+    art:"спека на 10 строк + 5 задач с критериями",
+    skill:"писать спеку, которую нельзя понять двояко" },
+  { id:"W3", w:2, name:"М3 · Цикл: промпт → диф → проверка → коммит", min:150,
+    art:"фича за 4 шага и 4 коммита",
+    skill:"вести шаг ≤200 строк с откатом" },
+  { id:"W4", w:3, name:"М4 · Контекст: как агент видит ваш проект", min:150,
+    art:"AGENTS.md, который агент соблюдает",
+    skill:"управлять контекстом и сессией" },
+  { id:"W5", w:4, name:"М5 · Отладка, когда агент ходит по кругу", min:150,
+    art:"3 бага закрыты с коммитами",
+    skill:"минимальный воспроизводимый кейс" },
+  { id:"W6", w:5, name:"М6 · Тесты и защита от регрессий", min:150,
+    art:"5 тестов, падающих при регрессии",
+    skill:"тест до кода, TDD-цикл" },
+  { id:"W7", w:6, name:"М7 · Данные, API, окружение, безопасность", min:150,
+    art:"рабочая интеграция с API, ключи вне git",
+    skill:"curl до кода, валидация на границе" },
+  { id:"W8", w:7, name:"М8 · Деплой, git-гигиена, командная работа", min:150,
+    art:"публичная ссылка + откат за 2 минуты",
+    skill:"ветка, PR, деплой, откат" },
+  { id:"W9", w:8, name:"М9 · Капстоун: свой проект до ссылки", min:180,
+    art:"задеплоенный проект + чек-лист сдачи",
+    skill:"собрать MVP за 126 минут" },
+];
+
+const SKILLS = [
+  { k:"S1", w:0, n:"Окружение: агент, git, Node, Python", z:[1,8],
+    why:"без него не запускается ничего дальше; проверяется на каждом занятии" },
+  { k:"S2", w:0, n:"Репозиторий: первый коммит до кода, .gitignore", z:[1,8],
+    why:"точка отката появляется раньше первого сгенерированного файла" },
+  { k:"S3", w:0, n:"Утилита 40–60 строк по готовой спеке", z:[],
+    why:"первый полный цикл: спека → код → запуск → приёмка" },
+  { k:"S4", w:0, n:"Читать дифф построчно: принять / завернуть", z:[1,8],
+    why:"сквозной навык курса, тренируется на каждом модуле" },
+
+  { k:"S5", w:1, n:"Спека из 6 блоков + критерии приёмки", z:[2,8],
+    why:"главный рычаг качества: агент проверяет критерии, а не угадывает" },
+  { k:"S6", w:1, n:"A/B: плохая формулировка против спеки", z:[],
+    why:"разница видна на двух диффах рядом, а не на словах" },
+  { k:"S7", w:1, n:"Декомпозиция на 5 задач с критериями", z:[2,4],
+    why:"задача на 15 минут работы агента вместо задачи на 3 часа" },
+  { k:"S7b", w:1, n:"Критерий приёмки → условие /goal", z:[2,8],
+    why:"цель как условие остановки: измеримый признак, границы, лимит ходов" },
+
+  { k:"S8", w:2, n:"Запрос: контекст / задача / ограничения / формат", z:[3,8],
+    why:"8 мини-упражнений по 3 минуты на формулировку" },
+  { k:"S9", w:2, n:"Фича за 4 шага, коммит после каждого", z:[3,8],
+    why:"шаг больше 200 строк диффа почти всегда идёт в мусор" },
+  { k:"S10", w:2, n:"Красные флаги в диффе (6 штук)", z:[3,8],
+    why:"удалённые проверки, тихий try/except, переписанные чужие файлы" },
+
+  { k:"S11", w:3, n:"AGENTS.md: стек, команды запуска, запреты", z:[4,8],
+    why:"правила пишутся один раз, а не повторяются в каждом чате" },
+  { k:"S12", w:3, n:"Изоляция контекста: новый чат на задачу", z:[4,8],
+    why:"проверяется замером: 3 задачи в одном чате против 3 чатов" },
+  { k:"S13", w:3, n:"Перезапуск сессии, когда агент начал бредить", z:[5,8],
+    why:"минимальный контекст дешевле, чем борьба с мусором в истории" },
+
+  { k:"S14", w:4, n:"Минимальный воспроизводимый кейс", z:[5,7],
+    why:"сначала факт, потом правка: иначе агент угадывает причину" },
+  { k:"S15", w:4, n:"Гипотеза → проверка → правка → коммит", z:[5,8],
+    why:"алгоритм отладки, который сокращает число кругов" },
+  { k:"S16", w:4, n:"Спровоцировать спор: «объясни, что проверил»", z:[5,6],
+    why:"проверка, спорит ли агент с заведомо неверной гипотезой" },
+
+  { k:"S17", w:5, n:"Тест-раннер и первый тест на существующую функцию", z:[],
+    why:"vitest или pytest — один раз на проект" },
+  { k:"S18", w:5, n:"TDD-цикл: 5 тестов падают до реализации", z:[6,7],
+    why:"агенту так проще, чем «код сначала, тесты потом»" },
+  { k:"S19", w:5, n:"Сломать фичу и убедиться, что тесты поймали", z:[6,8],
+    why:"проверка, что тесты живые, а не зелёные декорации" },
+
+  { k:"S20", w:6, n:".env, .env.example, ключ не в истории git", z:[7,8],
+    why:"ключ в истории git = скомпрометированный ключ" },
+  { k:"S21", w:6, n:"API: сначала curl, потом клиент, потом ошибки", z:[7,7],
+    why:"реальный ответ до кода отсекает выдуманные методы и поля" },
+  { k:"S22", w:6, n:"Валидация входа и ответа + тесты на кривые данные", z:[7,8],
+    why:"граница модуля — самое дешёвое место для проверок" },
+
+  { k:"S23", w:7, n:"Ветка, PR, защита main от прямых пушей", z:[8,8],
+    why:"агент на ветке безопаснее агента в main" },
+  { k:"S24", w:7, n:"Деплой с переменными окружения", z:[8,8],
+    why:"«у меня работает» не равно «задеплоилось»" },
+  { k:"S25", w:7, n:"Сломать прод и откатить за 2 минуты", z:[],
+    why:"сначала редеплой, потом revert — оба руками" },
+  { k:"S26", w:7, n:"Ревью ИИ-кода по чек-листу 12 пунктов", z:[8,8],
+    why:"что человек проверяет в первую очередь, а что прощает" },
+
+  { k:"S27", w:8, n:"Капстоун: спека + план 4 шага + ядро за 60 мин + сдача", z:[],
+    why:"ядро, обвязка, README, деплой, проверка ссылки с телефона" },
+];
+
+/* теор. моменты: w — неделя, d — доля недели (для ширины строки) */
+const THEORY = [
+  { w:0, n:"LLM предсказывает токены, а не «понимает» код", why:"отсюда все дальнейшие ограничения" },
+  { w:0, n:"Длинный контекст деградирует качество", why:"почему нельзя тащить весь проект в чат" },
+  { w:0, n:"Три режима: чат, автодополнение, агент с инструментами", why:"что умеет только агент" },
+  { w:0, n:"Границы: шаблонный код уверенно, незнакомый API — врёт", why:"калибровка доверия" },
+  { w:0, n:"Ваша роль: постановщик задачи и приёмщик результата", why:"не «программист», а заказчик" },
+
+  { w:1, n:"Спека из 6 блоков: цель, пользователь, входы/выходы, ограничения, критерии, что НЕ делаем", why:"шаблон, по которому пишется каждая спека" },
+  { w:1, n:"Критерии приёмки — главный рычаг качества", why:"проверяемое утверждение вместо пожелания" },
+  { w:1, n:"Формулировки-убийцы: «сделай красиво», «как в Airbnb»", why:"распознавать до генерации, а не после" },
+  { w:1, n:"Декомпозиция: 15 минут работы агента против 3 часов", why:"размер шага задаёт вероятность успеха" },
+  { w:1, n:"Шаблон и антишаблон спеки на одном примере", why:"видно разницу, а не абстракцию" },
+  { w:1, n:"/goal: цель как условие завершения, оценщик после каждого хода", why:"измеримый признак, доказательство в сессии, границы и лимит ходов" },
+
+  { w:2, n:"Анатомия запроса: контекст, задача, ограничения, формат, чего не делать", why:"5 частей, которые проверяются в каждом промпте" },
+  { w:2, n:"6 красных флагов диффа", why:"удалённые проверки, магические константы, тихий try/except, чужие файлы, новые зависимости, правка тестов" },
+  { w:2, n:"Почему шаг > 200 строк диффа идёт в мусор", why:"обзор диффа человеком — узкое место" },
+  { w:2, n:"Когда просить объяснить, а когда сразу переделывать", why:"экономия времени на ревью" },
+  { w:2, n:"Коммит как точка отката, сообщение как документация", why:"история вместо памяти" },
+
+  { w:3, n:"Что попадает в контекст агента", why:"открытые файлы, инструкции, история, авто-поиск по репозиторию" },
+  { w:3, n:"Файл инструкций: CLAUDE.md / AGENTS.md / .cursorrules", why:"что писать, чтобы не повторяться каждый раз" },
+  { w:3, n:"Агент не знает стек и «забывает» через 40 сообщений", why:"отсюда стратегия коротких сессий" },
+  { w:3, n:"Стратегии: новый чат на задачу, ссылки на файлы, план до правок", why:"три приёма, которые работают всегда" },
+  { w:3, n:"Мусор в контексте = мусор в коде", why:"большие файлы и логи губят сессию" },
+
+  { w:4, n:"Три круга ада: угадывает причину, чинит симптом, ломает соседнее", why:"диагноз типового застревания" },
+  { w:4, n:"Правило одного факта: сначала воспроизводимый кейс", why:"правка без воспроизведения — лотерея" },
+  { w:4, n:"Как заставить агента читать логи и стектрейсы", why:"факты вместо фантазий" },
+  { w:4, n:"Приёмы «объясни, что проверил» и «3 гипотезы с проверкой»", why:"две фразы для разворота тупика" },
+  { w:4, n:"Когда дешевле переписать, чем чинить", why:"откат как нормальный инструмент" },
+
+  { w:5, n:"Тест как критерий приёмки в исполняемом виде", why:"спеку нельзя обмануть словами" },
+  { w:5, n:"Пирамида для вайбкодинга: много юнитов, мало e2e, почти без снимков UI", why:"что реально ловит регрессии" },
+  { w:5, n:"Тест сначала, код потом", why:"агенту так проще, чем наоборот" },
+  { w:5, n:"Запрет агенту править тесты без согласия", why:"как формулировать в инструкции проекта" },
+  { w:5, n:"Покрытие как метрика-обманка", why:"100 % строк и ноль проверок смысла" },
+
+  { w:6, n:"Секреты: .env, .gitignore, ключ в истории git", why:"утечка не отменяется удалением файла" },
+  { w:6, n:"Галлюцинации API: методы, устаревшие параметры, выдуманные поля", why:"что проверять в первую очередь" },
+  { w:6, n:"Проверка API руками: документация, curl, реальный ответ", why:"до кода, а не после падения" },
+  { w:6, n:"Валидация на границе, типы как дешёвая защита", why:"минимум усилий, максимум эффекта" },
+  { w:6, n:"Что нельзя отдавать агенту: прод-базы, приватные данные, чужие токены", why:"границы допустимого" },
+
+  { w:7, n:"Ветки и маленькие PR", why:"агент на ветке безопаснее агента в main" },
+  { w:7, n:"Сборка и прод-окружение: «у меня работает» ≠ «задеплоилось»", why:"разница сред" },
+  { w:7, n:"env на хостинге, логи, откат на предыдущий деплой", why:"что настроить до первого релиза" },
+  { w:7, n:"Ревью ИИ-кода: что человек проверяет первым", why:"приоритеты, а не весь дифф подряд" },
+  { w:7, n:"Сообщения коммитов и описания PR", why:"чтобы через месяц не гадать" },
+
+  { w:8, n:"Выбор проекта: ценность / неизвестность", why:"а не «что впечатляет»" },
+  { w:8, n:"План сборки: 4 шага, каждый заканчивается запускаемым", why:"всегда есть что показать" },
+  { w:8, n:"Что вырезать из MVP под 126 минут практики", why:"уложиться в бюджет занятия" },
+  { w:8, n:"Чек-лист сдачи: запускается, ссылка живая, README, тесты, секреты", why:"объективный порог, а не «вроде готово»" },
+];
+
+const $ = (s) => document.querySelector(s);
+const esc = (x) => String(x ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const pct = (w) => (w / WEEKS) * 100;
+const phOf = (w) => (PH.find((p) => w >= p.from && w <= p.to) || PH[0]).id;
+const phName = (w) => (PH.find((p) => w >= p.from && w <= p.to) || PH[0]).name;
+const st = { view: "ms" };
+
+function drawScale() {
+  let h = "";
+  for (let w = 0; w < WEEKS; w++) {
+    h += `<div class="tick" style="left:${pct(w)}%;width:${pct(1)}%"><b>W${w + 1}</b>${MODS[w].min} мин</div>`;
+  }
+  PH.forEach((p) => {
+    h += `<div class="ph" style="left:${pct(p.from)}%;width:${pct(p.to - p.from + 1)}%">${p.name}</div>`;
+  });
+  $("#scale").innerHTML = h;
+}
+
+function grid() {
+  let h = "";
+  for (let w = 0; w <= WEEKS; w++) {
+    const isPh = PH.some((p) => p.from === w);
+    h += `<i class="${isPh ? "ph" : ""}" style="left:${pct(w)}%"></i>`;
+  }
+  return `<div class="grid">${h}</div>`;
+}
+
+function bar(cls, w, d, k, n, why, txt, col) {
+  return `<div class="bar ${cls}" style="left:${pct(w)}%;width:calc(${pct(d)}% - 2px);--c:var(--${col || phOf(w)})"
+    data-k="${esc(k)}" data-n="${esc(n)}" data-w="${w}" data-d="${d}" data-why="${esc(why || "")}">
+    <span class="lbl">${txt === undefined ? esc(n) : esc(txt)}</span></div>`;
+}
+
+function track(inner, band) {
+  return `<div class="track${band ? " band" : ""}">${grid()}${inner}</div>`;
+}
+
+function draw() {
+  const hd = [], tr = [];
+  const showSkills = st.view === "sk" || st.view === "all";
+  const showTheory = st.view === "th" || st.view === "all";
+
+  MODS.forEach((m) => {
+    const w = m.w;
+    hd.push(`<div class="rowhd ms"><span class="dot" style="background:var(--${phOf(w)})"></span>
+      <span class="nm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</span>
+      <span class="est">${m.min} мин</span></div>`);
+    tr.push(track(bar("ms", w, 1, m.id, m.name, m.art + " · навык: " + m.skill, m.min + " мин"), true));
+
+    if (showSkills) {
+      SKILLS.filter((s) => s.w === w).forEach((s) => {
+        hd.push(`<div class="rowhd task"><span class="k">${esc(s.k)}</span><span class="nm">${esc(s.n)}</span></div>`);
+        let inner = "";
+        if (s.z && s.z.length) {
+          inner += bar("z", s.z[0], s.z[1] - s.z[0] + 1, s.k + " закрепление",
+            "закрепление", "навык используется и проверяется на следующих неделях", "", phOf(s.w));
+        }
+        inner += bar("", s.w, 1, s.k, s.n, s.why, "");
+        tr.push(track(inner));
+      });
+    }
+
+    if (showTheory) {
+      THEORY.filter((t) => t.w === w).forEach((t, i) => {
+        hd.push(`<div class="rowhd th"><span class="k" style="font-family:ui-monospace,Consolas,monospace;color:var(--muted);font-size:10px;flex:none">Т${w + 1}.${i + 1}</span><span class="nm">${esc(t.n)}</span></div>`);
+        tr.push(track(bar("th", t.w, 1, "Т" + (w + 1) + "." + (i + 1), t.n, t.why, "")));
+      });
+    }
+  });
+
+  $("#hdcol").innerHTML = hd.join("");
+  $("#trackcol").innerHTML = tr.join("");
+  bindTips();
+}
+
+const tip = $("#tip");
+function bindTips() {
+  document.querySelectorAll(".bar").forEach((el) => {
+    el.onmousemove = (e) => {
+      const w = +el.dataset.w;
+      tip.innerHTML = `<b>${esc(el.dataset.k)} — ${esc(el.dataset.n)}</b>
+        <span class="m">W${w + 1} · ${esc(phName(w))} · ${esc(el.dataset.d)} нед.</span>
+        ${el.dataset.why ? `<div class="w">${esc(el.dataset.why)}</div>` : ""}`;
+      tip.classList.add("show");
+      const pad = 14;
+      let x = e.clientX + pad, y = e.clientY + pad;
+      const r = tip.getBoundingClientRect();
+      if (x + r.width > innerWidth - 8) x = e.clientX - r.width - pad;
+      if (y + r.height > innerHeight - 8) y = e.clientY - r.height - pad;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    };
+    el.onmouseleave = () => tip.classList.remove("show");
+  });
+}
+
+function setView(v) {
+  st.view = v;
+  ["v-ms", "v-sk", "v-th", "v-all"].forEach((id) => {
+    $("#" + id).classList.toggle("on", id === "v-" + v);
+  });
+  document.querySelector(".gantt").classList.toggle("wide", v !== "ms");
+  draw();
+}
+$("#v-ms").onclick = () => setView("ms");
+$("#v-sk").onclick = () => setView("sk");
+$("#v-th").onclick = () => setView("th");
+$("#v-all").onclick = () => setView("all");
+
+/* режим из адреса: gantt.html#all */
+const hashView = (location.hash || "").replace("#", "");
+drawScale();
+if ($("#c-sk")) $("#c-sk").textContent = SKILLS.length;
+if ($("#c-th")) $("#c-th").textContent = THEORY.length;
+if (["ms", "sk", "th", "all"].includes(hashView)) setView(hashView); else setView("ms");
+
+$("#mx").innerHTML = MODS.map((m) => `<tr>
+  <td><span class="ph" style="background:var(--${phOf(m.w)})"></span>W${m.w + 1}</td>
+  <td>${esc(m.name)}</td>
+  <td>${esc(m.skill)}</td>
+  <td>${esc(m.art)}</td></tr>`).join("");
+</script>
+</body>
+</html>

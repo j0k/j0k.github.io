@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 06 — Économie et choix du modèle · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 06 — Économie et choix du modèle · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/06-economics.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/06-economics.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/06-economics.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="06-economics-practice.html">Pratique →</a></div>
+<h1 id="module-06-economie-et-choix-du-modele">Module 06 — Économie et choix du modèle</h1>
+<p><strong>Temps :</strong> 3 heures · <strong>Format :</strong> 60 min de théorie + 120 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-ce-qui-entre-dans-le-cout">1. Ce qui entre dans le coût</h2>
+<p>Le prix est donné pour <strong>1 million de tokens</strong> et se décompose ainsi :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Ce que c'est</th>
+<th>En général</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>input</td>
+<td>votre contexte</td>
+<td>cher</td>
+</tr>
+<tr>
+<td>output</td>
+<td>la réponse du modèle</td>
+<td>3–5× plus cher que l'input</td>
+</tr>
+<tr>
+<td>cache write</td>
+<td>écriture dans le cache</td>
+<td>≈ input</td>
+</tr>
+<tr>
+<td>cache read</td>
+<td>lecture depuis le cache</td>
+<td>5–10× moins cher que l'input</td>
+</tr>
+</tbody>
+</table></div>
+<p>Formule d'une session :</p>
+<pre><code>cost ≈ (input_tokens × price_in + output_tokens × price_out) / 1_000_000
+</code></pre>
+<p>Mais dans une boucle d'agent, <strong>l'input est multiplié par le nombre d'étapes</strong> : chaque étape renvoie
+tout le contexte. 10 étapes avec un contexte de 50k = 500k de tokens d'input.</p>
+<h2 id="2-le-cache-le-principal-levier-deconomie">2. Le cache — le principal levier d'économie</h2>
+<p>Les fournisseurs mettent en cache le <strong>préfixe stable</strong> d'une requête. Si la structure est toujours :</p>
+<pre><code>[instructions] [project files] [question]
+</code></pre>
+<p>alors, sur les étapes répétées, le préfixe est lu depuis le cache et vous payez des clopinettes.</p>
+<p>Ce qui tue le cache :</p>
+<ul>
+<li>modifier les instructions en cours de session ;</li>
+<li>réorganiser les fichiers ;</li>
+<li>insérer l'heure courante ou des données aléatoires au début ;</li>
+<li>repartir « de zéro » à chaque étape.</li>
+</ul>
+<h2 id="3-la-latence">3. La latence</h2>
+<p>Elle compte pour l'UX, mais pas seulement :</p>
+<ul>
+<li>un modèle de raisonnement réfléchit 30 à 120 secondes avant le premier token ;</li>
+<li>sur des modifications courtes, c'est pénible ;</li>
+<li>sur des tâches d'architecture, ça vaut le coup.</li>
+</ul>
+<h2 id="4-les-classes-de-modeles">4. Les classes de modèles</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Classe</th>
+<th>Trait</th>
+<th>Pour quoi faire</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fast / mini / flash</td>
+<td>bon marché, rapide</td>
+<td>renommages, tests par l'exemple, recherche</td>
+</tr>
+<tr>
+<td>balanced</td>
+<td>milieu de gamme</td>
+<td>développement quotidien, refactoring</td>
+</tr>
+<tr>
+<td>frontier + reasoning</td>
+<td>cher, réfléchit</td>
+<td>architecture, debugging difficile, migrations</td>
+</tr>
+<tr>
+<td>long-context</td>
+<td>fenêtre de 500k–2M</td>
+<td>analyse de gros dépôts/journaux</td>
+</tr>
+</tbody>
+</table></div>
+<p>Règle : <strong>80 % des tâches sont résolues par un modèle bon marché</strong> si vous avez des tests et une bonne spec.</p>
+<h2 id="5-comment-choisir-en-pratique">5. Comment choisir en pratique</h2>
+<pre><code>1. Is there a check?     no  → oracle first, then the model
+2. Routine task?         yes → fast
+3. Needs thinking?       yes → reasoning
+4. Context &gt; 200k?       yes → long-context is mandatory
+5. Many tool-calls?      yes → tool-calling reliability matters, not &quot;smarts&quot;
+</code></pre>
+<p>Autre nuance : <strong>le tempérament du modèle</strong>. L'un aime écrire des tests, l'autre plonge directement dans le code,
+un troisième est trop bavard. Il vous faut 2 à 3 modèles favoris par type de tâche, pas un seul « meilleur ».</p>
+<h2 id="6-budget-et-limites">6. Budget et limites</h2>
+<ul>
+<li>Fixez des limites chez le fournisseur (un budget mensuel).</li>
+<li>Plafonnez <code>max_tokens</code> pour les tâches routinières.</li>
+<li>Gardez un œil sur <code>opencode stats</code>.</li>
+<li>Une seule « session vibe » à 2M de tokens peut coûter autant qu'une journée de travail — c'est normal
+  si le résultat en vaut la peine, et c'est une catastrophe si c'était une modification de titre.</li>
+</ul>
+<h2 id="7-quand-un-modele-cher-revient-moins-cher">7. Quand un modèle cher revient moins cher</h2>
+<p>Un paradoxe : un modèle frontier sur 3 itérations peut coûter moins qu'un modèle mini sur 15 itérations
+plus votre temps de relecture. Il faut compter le <strong>coût total</strong> : tokens + votre temps + bugs.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi l'input est-il multiplié par le nombre d'étapes dans une boucle d'agent ?</li>
+<li>Qu'est-ce qui tue le cache et comment y remédier ?</li>
+<li>Citez trois tâches où un modèle bon marché est objectivement meilleur qu'un modèle cher.</li>
+<li>Comment calculez-vous le « coût total » d'une tâche ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="06-economics-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="05-agent-loop-practice.html">← Boucle d'agent et permissions — pratique</a>
+      <a class="next" href="06-economics-practice.html">Économie et choix du modèle — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

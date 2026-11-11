@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 03 — Спека и промпт · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 03 — Спека и промпт · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory active" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/03-spec.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/03-spec.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/03-spec.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="03-spec-practice.html">Практика →</a></div>
+<h1 id="03">Модуль 03 — Спека и промпт</h1>
+<p><strong>Время:</strong> 5 часов · <strong>Формат:</strong> теория 100 мин + практика 200 мин</p>
+<hr />
+<h2 class="section" id="_1">Теория</h2>
+<h2 id="1">1. Промпт — это не просьба, а спецификация</h2>
+<p>Разница между «сделай красиво» и «сделай так» — в наличии <strong>проверяемых критериев</strong>.</p>
+<pre><code>Задача без спеки:   &quot;добавь авторизацию&quot;
+Задача со спекой:   &quot;эндпоинт POST /login, принимает {email, password},
+                     возвращает 200 {token} или 401 {error},
+                     пароль хэшируется bcrypt, токен живёт 24ч,
+                     тесты: валидный вход, неверный пароль, отсутствующий email&quot;
+</code></pre>
+<p>Второе можно проверить. Первое — только «на глаз».</p>
+<h2 id="2">2. Анатомия спеки</h2>
+<p>Минимальная рабочая спека — 6 блоков:</p>
+<pre><code class="language-markdown">## Контекст
+Что уже есть, где это лежит, что нельзя ломать.
+
+## Цель
+Одно предложение: что должно появиться.
+
+## Требования
+Пронумерованный список проверяемых утверждений.
+
+## Ограничения
+Что запрещено: зависимости, файлы, паттерны, стиль.
+
+## Критерии приёмки
+Конкретные проверки: команды, тесты, сценарии.
+
+## Не входит в задачу
+Явное «мы этого не делаем» — защита от расползания.
+</code></pre>
+<p>Блок «не входит» экономит больше всего: агент любит «улучшить заодно».</p>
+<h2 id="3">3. Формулировки, которые работают</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Работает</th>
+<th>Не работает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>«функция <code>parse_date(s: str) -&gt; date</code>»</td>
+<td>«функция для дат»</td>
+</tr>
+<tr>
+<td>«вернуть <code>None</code>, если не распарсилось»</td>
+<td>«обработать ошибки»</td>
+</tr>
+<tr>
+<td>«как в <code>services/billing.py</code>»</td>
+<td>«в нашем стиле»</td>
+</tr>
+<tr>
+<td>«не более 50 строк»</td>
+<td>«компактно»</td>
+</tr>
+<tr>
+<td>«сначала план, код не писать»</td>
+<td>«сделай хорошо»</td>
+</tr>
+</tbody>
+</table></div>
+<p>Правило: <strong>каждое прилагательное замените на проверяемое условие.</strong></p>
+<h2 id="4-plan-first">4. Plan-first: самый дешёвый приём</h2>
+<p>Попросите план до кода:</p>
+<pre><code>Не пиши код. Составь план: какие файлы затронешь, какие функции добавишь,
+как проверим. Укажи риски и то, что может сломаться.
+</code></pre>
+<p>Что это даёт:</p>
+<ul>
+<li>ошибки в понимании видны за 30 секунд, а не за 300 строк;</li>
+<li>план можно поправить словами;</li>
+<li>план становится чек-листом приёмки;</li>
+<li>экономится контекст.</li>
+</ul>
+<p>Плохой план — повод переформулировать задачу, а не «объяснять модели, что она неправа».</p>
+<h2 id="5">5. Декомпозиция</h2>
+<p>Большая задача → цепочка проверяемых шагов:</p>
+<pre><code>1. Добавить модель данных + миграцию
+2. Добавить слой доступа
+3. Добавить эндпоинт + тесты
+4. Подключить к UI
+5. Убрать старый код
+</code></pre>
+<p>Каждый шаг: свой дифф, свой коммит, зелёные тесты. Так ошибка локализуется в одном шаге,
+а не «где-то в 800 строках».</p>
+<h2 id="6-few-shot">6. Примеры (few-shot) и формат</h2>
+<p>Хотите конкретный стиль — дайте один пример готового кода. Модель копирует структуру
+надёжнее, чем понимает описание.</p>
+<p>Хотите конкретный формат ответа — скажите явно: «только дифф», «только файл X»,
+«таблица», «без объяснений».</p>
+<h2 id="7">7. Чего избегать</h2>
+<ul>
+<li><strong>Двойные требования</strong>: «сделай быстро и качественно».</li>
+<li><strong>Скрытые требования</strong>: «ну ты понял» → модель поняла по-своему.</li>
+<li><strong>Задачи-монстры</strong>: 5 целей в одном запросе.</li>
+<li><strong>Просьбы «перепиши всё»</strong>: нечего проверять, всё ломается сразу.</li>
+</ul>
+<h2 id="8">8. Промпт как артефакт</h2>
+<p>Хорошая спека живёт дольше сессии: её можно положить в <code>docs/specs/</code>, обсудить в ревью,
+переиспользовать. Промпт, который «сработал», — это актив проекта, а не мусор в истории.</p>
+<hr />
+<h2 id="-">Чек-лист понимания</h2>
+<ol>
+<li>Чем спека отличается от просьбы? Назовите признак.</li>
+<li>Зачем блок «не входит в задачу»?</li>
+<li>Почему plan-first дешевле, чем сразу код?</li>
+<li>Что делать, если план плохой — и чего делать нельзя?</li>
+</ol>
+<hr />
+<h2 class="section" id="_2">Практика</h2>
+<p>См. <a href="03-spec-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="02-context-practice.html">← Контекст-инжиниринг — практика</a>
+      <a class="next" href="03-spec-practice.html">Спека и промпт — практика →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

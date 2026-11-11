@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 04 — Practice: the TDD loop with an agent · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 04 — Practice: the TDD loop with an agent · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice active" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/04-oracles-practice.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/04-oracles-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/04-oracles-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="04-oracles.html">← Theory</a></div>
+<h1 id="module-04-practice-the-tdd-loop-with-an-agent">Module 04 — Practice: the TDD loop with an agent</h1>
+<p><strong>Time:</strong> 210 minutes · <strong>Artifact:</strong> <code>labs/04-oracles/</code></p>
+<hr />
+<h2 id="task-1-one-verification-command-30-min">Task 1. One verification command (30 min)</h2>
+<p>Assemble <code>scripts/check.sh</code> (or <code>make check</code>):</p>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -e
+ruff check . --output-format=concise
+mypy . --no-error-summary
+pytest -q
+</code></pre>
+<p>Add to <code>AGENTS.md</code>:</p>
+<pre><code class="language-markdown">## Checks
+- everything: `./scripts/check.sh`
+- if it fails: fix the cause, don't disable the check
+</code></pre>
+<p><strong>Acceptance:</strong> <code>./scripts/check.sh</code> passes on a clean project in &lt; 60 sec.</p>
+<hr />
+<h2 id="task-2-failing-test-working-code-50-min">Task 2. Failing test → working code (50 min)</h2>
+<ol>
+<li>Pick a function that doesn't exist yet: <code>normalize_phone(s: str) -&gt; str</code>.</li>
+<li>Write the tests <strong>yourself</strong> (5 cases, including edge cases):</li>
+</ol>
+<pre><code class="language-python">def test_normalize_phone():
+    assert normalize_phone(&quot;+7 (912) 345-67-89&quot;) == &quot;+79123456789&quot;
+    assert normalize_phone(&quot;89123456789&quot;) == &quot;+79123456789&quot;
+    assert normalize_phone(&quot;&quot;) == &quot;&quot;
+    assert normalize_phone(&quot;abc&quot;) == &quot;&quot;
+    assert normalize_phone(&quot;+1 222 333&quot;) == &quot;+1222333&quot;
+</code></pre>
+<ol start="3">
+<li>Make sure the tests fail (<code>ImportError</code> is a failure too).</li>
+<li>Give the agent:</li>
+</ol>
+<pre><code>The tests in tests/test_phone.py are failing. Implement normalize_phone in src/utils/phone.py.
+Minimal code that passes all the tests. Don't change the tests.
+</code></pre>
+<p><strong>Acceptance:</strong> the tests are green, the tests are unchanged (<code>git diff tests/</code> is empty).</p>
+<hr />
+<h2 id="task-3-the-agent-writes-tests-from-your-list-40-min">Task 3. The agent writes tests from your list (40 min)</h2>
+<p>Take an existing function without coverage. Write the <strong>list of cases</strong> yourself:</p>
+<pre><code>- None input
+- empty list
+- negative numbers
+- duplicates
+- a very large number
+</code></pre>
+<p>Then:</p>
+<pre><code>Write tests for src/x.py::func from the list of cases below. The tests must fail
+if the behavior changes. Don't use mocks unless necessary.
+</code></pre>
+<p><strong>Acceptance:</strong> the tests actually catch a mutation — change one line of code,
+make sure the test fails, revert it.</p>
+<hr />
+<h2 id="task-4-the-error-fix-loop-40-min">Task 4. The "error → fix" loop (40 min)</h2>
+<p>Break the code on purpose (for example, change a condition). Run the check and hand the agent
+the <strong>full output</strong>:</p>
+<pre><code>./scripts/check.sh is failing. Here's the output:
+
+&lt;paste it in full&gt;
+
+Find the cause and fix it. Explain in two lines what was wrong.
+</code></pre>
+<p>Repeat 2 times with different breakages.</p>
+<p><strong>Acceptance:</strong> the report contains the error output, the fix diff, the explanation. Note whether the full output
+helped compared to a retelling.</p>
+<hr />
+<h2 id="task-5-golden-test-50-min">Task 5. Golden test (50 min)</h2>
+<p>For a function that generates text/JSON/a report:</p>
+<ol>
+<li>Create the reference <code>tests/golden/expected.json</code>.</li>
+<li>The test:</li>
+</ol>
+<pre><code class="language-python">def test_report_golden():
+    assert generate_report(SAMPLE_INPUT) == json.loads(
+        open(&quot;tests/golden/expected.json&quot;).read()
+    )
+</code></pre>
+<ol start="3">
+<li>Ask the agent to change the report format — golden will fail — have it update the reference deliberately.</li>
+</ol>
+<p><strong>Acceptance:</strong> the report contains the reference diff and an explanation of why the change is correct.</p>
+<hr />
+<h2 id="submission-criteria">Submission criteria</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>check.sh</code> works as a single command, time &lt; 60 sec.</li>
+<li class="task"><span class="cb"></span>The tests from task 2 are unchanged, the code is minimal.</li>
+<li class="task"><span class="cb"></span>There is proof that the tests catch a mutation.</li>
+<li class="task"><span class="cb"></span>A report of the "error → fix" loop with the full output.</li>
+<li class="task"><span class="cb"></span>A golden test + a deliberate update of the reference.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="04-oracles.html">← Oracles and checks</a>
+      <a class="next" href="05-agent-loop.html">Agent loop and permissions →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

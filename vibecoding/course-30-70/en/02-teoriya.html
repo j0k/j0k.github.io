@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theory — Vibecoding 30/70</title>
+<meta property="og:title" content="Theory — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>course 30/70 · 23 hours</span></a>
+    <div class="ratio">30% theory · 70% practice · 1380 min</div>
+    <nav>
+      <a href="index.html">Course overview<small>Start</small></a>
+      <a href="01-programma.html">Program<small>Modules and timing</small></a>
+      <a href="02-teoriya.html" class="active">Theory<small>30% of the course</small></a>
+      <a href="03-praktika.html">Practice<small>70% of the course</small></a>
+      <a href="04-promptoteka.html">Prompt library<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projects<small>Capstone</small></a>
+      <a href="06-tracker.html">Tracker<small>Checklist</small></a>
+      <a href="gantt.html">Weekly Gantt<small>Skills and theory</small></a>
+    </nav>
+    <div class="foot">Opens locally, no internet needed.<br>Ctrl+P — print version.<br>
+      <a href="../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../opencode/index.html">OpenCode course</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Course 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/en/02-teoriya.html" data-copied="Link copied" title="Share">Share</button>
+      <a class="switch" href="../02-teoriya.html" title="Русский">RU</a>
+      <a class="switch" href="../fr/02-teoriya.html" title="Français">FR</a>
+      <a class="switch" href="../../opencode/index.html">OpenCode course →</a>
+    </div>
+    <article>
+<h1 id="course-theory">Course Theory</h1>
+<p>This is 414 minutes of reading — 30% of the course. Each block is designed for 45 minutes.
+Read one block before the practice of the corresponding module. Don't skip ahead.</p>
+<hr />
+<h2 id="module-1-how-vibe-coding-actually-works">Module 1. How vibe coding actually works</h2>
+<h3 id="11-the-model-doesnt-understand-your-code">1.1 The model doesn't understand your code</h3>
+<p>An LLM predicts the next token. When it writes a function, it continues the
+most probable text that looks like code. Three practical facts follow from this:</p>
+<ul>
+<li><strong>It writes boilerplate better than you do.</strong> CRUD, parsing, HTTP client plumbing,
+  regexes, configs — here the probability of a "correct continuation" is high,
+  because the training data contains millions of such examples.</li>
+<li><strong>It writes rare and new code badly.</strong> Non-standard architecture, your
+  internal framework, an API from three years ago, a niche library — it will
+  confidently make things up, because a confident tone is statistically more probable than a cautious one.</li>
+<li><strong>It doesn't "remember" your project.</strong> It only sees what made it into the context:
+  open files, your messages, the instruction file, repository search results.</li>
+</ul>
+<p>Hence the main conclusion of the course: <strong>you don't manage code, you manage context and criteria.</strong>
+The more precisely you describe what should come out, the less the model has to guess.</p>
+<h3 id="12-why-a-long-context-ruins-the-result">1.2 Why a long context ruins the result</h3>
+<p>The model has a context window, and it isn't elastic. When 40 messages, three failed
+fix attempts, and a 2000-line log pile up in it, the quality of
+answers drops: the model starts clinging to old wrong hypotheses and
+repeating failed solutions.</p>
+<p>Practical consequences:
+- A new task — a new chat. Always, unless the task is a continuation of the current one.
+- Don't paste whole files if you can point to a path and ask it to read them.
+- Don't keep long logs in the chat: first find the 5 key lines in them yourself.
+- If two attempts failed, restarting the session with a clean problem description
+  works better than a fifth attempt to "fix" it.</p>
+<h3 id="13-three-modes-of-working-with-ai">1.3 Three modes of working with AI</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>What it does</th>
+<th>Where it's useful</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chat</td>
+<td>Answers with text</td>
+<td>Explanations, plans, reviews, learning</td>
+<td>Doesn't see the project, code is copied by hand</td>
+</tr>
+<tr>
+<td>Autocomplete</td>
+<td>Completes a line/block</td>
+<td>Typing familiar code by hand</td>
+<td>You're still writing it yourself</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>Reads files, edits, runs commands</td>
+<td>The whole course</td>
+<td>Can break many files in one step</td>
+</tr>
+</tbody>
+</table>
+<p>The course is built on the <strong>agent</strong> (Claude Code, Cursor, Codex CLI, Windsurf). The difference is
+fundamental: the agent opens files itself, applies patches itself, runs
+tests itself. So your work shifts — you don't type, you set the task,
+review the diff, and decide whether to accept or roll back.</p>
+<h3 id="14-where-the-agent-lies-especially-confidently">1.4 Where the agent lies especially confidently</h3>
+<p>Memorize this list — it saves days:</p>
+<ol>
+<li><strong>Names of API methods and parameters.</strong> It invents <code>client.fetchData()</code> where
+   it's actually <code>client.get_data()</code>. Cure: docs or curl before code.</li>
+<li><strong>Library versions.</strong> It suggests syntax from an old or nonexistent version.
+   Cure: <code>package.json</code> / <code>pyproject.toml</code> in context + "use only the
+   APIs available in this version".</li>
+<li><strong>Causes of errors.</strong> It confidently names a cause without looking at the log. Cure:
+   "read the stack trace first, hypothesis after".</li>
+<li><strong>"Done, everything works."</strong> It didn't run anything. Cure: always ask for
+   command output, not a claim about the result.</li>
+<li><strong>Silent modification of other people's files.</strong> Along the way it "improved" three files
+   you didn't ask for. Cure: read the diff, not just the message.</li>
+</ol>
+<h3 id="15-your-role-in-the-process">1.5 Your role in the process</h3>
+<p>Vibe coding doesn't cancel engineering, it moves it to another level:</p>
+<ul>
+<li><strong>Before:</strong> design the architecture → write the code → debug → test.</li>
+<li><strong>Now:</strong> describe what should come out → break it into steps → accept or
+  reject diffs → verify the result.</li>
+</ul>
+<p>The skills that actually determine quality: framing the task, reading a diff,
+testing hypotheses, rollback discipline. Programming in the sense of "remembering syntax"
+is nearly unnecessary. Understanding <strong>what</strong> must happen is absolutely required.</p>
+<h3 id="16-module-summary">1.6 Module summary</h3>
+<ul>
+<li>The model predicts text; accuracy depends on your description.</li>
+<li>Context is a scarce resource; it has to be cleaned.</li>
+<li>The agent is the main tool; it does a lot and can break a lot.</li>
+<li>Your job: spec, diff, verification, commit. Everything else is detail.</li>
+</ul>
+<hr />
+<h2 id="module-2-the-spec-and-framing-the-task">Module 2. The spec and framing the task</h2>
+<h3 id="21-why-the-spec-decides-more-than-the-model">2.1 Why the spec decides more than the model</h3>
+<p>The same model on the same task produces results that differ severalfold, depending
+on the wording. The reason is simple: without acceptance criteria the model
+optimizes for "looks like a correct answer", and with criteria — for a specific
+verifiable behavior.</p>
+<p>Bad: "write a script to process CSV".
+Good: "the script reads <code>data.csv</code> with columns id,date,amount; drops rows
+with amount ≤ 0; writes to <code>out.csv</code> the total per month, sorted descending;
+if the amount column is missing, it exits with code 2 and a message to stderr".</p>
+<p>The agent can verify the second option itself. The first — only you, with your eyes.</p>
+<h3 id="22-six-blocks-of-a-spec">2.2 Six blocks of a spec</h3>
+<pre><code>1. GOAL: what becomes possible after the task is done (1-2 lines)
+2. USER: who uses it and in what situation
+3. INPUTS/OUTPUTS: formats, data examples, edge cases
+4. CONSTRAINTS: stack, versions, no new dependencies, don't touch files X
+5. ACCEPTANCE CRITERIA: a list of verifiable statements, each one yes/no
+6. WHAT WE'RE NOT DOING: explicit boundaries so the agent doesn't expand the scope
+</code></pre>
+<p>Block 6 is underestimated, and it saves the most: without it the agent will "for company"
+add auth, caching, and Docker, because "that's how it's done".</p>
+<h3 id="23-acceptance-criteria-the-main-lever">2.3 Acceptance criteria: the main lever</h3>
+<p>An acceptance criterion is a statement that can be verified with a command or by observation.</p>
+<ul>
+<li>Not a criterion: "the code should be clean", "the UI should be convenient".</li>
+<li>A criterion: "with an empty list, the text "Nothing here yet" is shown",
+  "<code>npm test</code> passes", "a request with an invalid email returns 400".</li>
+</ul>
+<p>Rule: if a criterion can't be verified in 30 seconds, it's badly formulated.
+Good criteria automatically turn into tests — that's the bridge to module 6.</p>
+<h3 id="24-phrasings-that-break-the-result">2.4 Phrasings that break the result</h3>
+<table>
+<thead>
+<tr>
+<th>Phrasing</th>
+<th>What happens</th>
+<th>How to rephrase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"make it pretty"</td>
+<td>random design, then 10 iterations</td>
+<td>"minimalist, white background, one accent color, system-ui font"</td>
+</tr>
+<tr>
+<td>"like in Notion"</td>
+<td>a copy of someone else's product without your requirements</td>
+<td>list the 3 specific elements you need</td>
+</tr>
+<tr>
+<td>"optimize it"</td>
+<td>micro-edits without measurements</td>
+<td>"cut the /api/search response time from 800 ms to &lt;200 ms, measured via X"</td>
+</tr>
+<tr>
+<td>"add error handling"</td>
+<td>a silent <code>except: pass</code></td>
+<td>"on 4xx show the server's error text, on 5xx — "try again later", cover both cases with a test"</td>
+</tr>
+<tr>
+<td>"refactor it"</td>
+<td>the whole project rewritten</td>
+<td>"move validation out of the route into a separate module, behavior doesn't change, tests pass"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-decomposition-step-size">2.5 Decomposition: step size</h3>
+<p>Guideline for task size for the agent:</p>
+<ul>
+<li><strong>15 minutes</strong> — one function, one component, one endpoint. A diff of 30–80 lines.
+  Such a step almost always passes on the first try.</li>
+<li><strong>1 hour</strong> — a feature as a whole: data model + endpoint + minimal UI.
+  It requires splitting into 3–4 steps, otherwise the diff is 400+ lines and you won't review it.</li>
+<li><strong>3+ hours</strong> — "build an app". Almost guaranteed garbage: the agent guesses
+  the architecture, you can't review the diff, rollback is impossible.</li>
+</ul>
+<p>Rule: <strong>a step should be such that the diff reads in 5 minutes.</strong> If it doesn't
+read — cut it.</p>
+<h3 id="26-spec-template-copy-this">2.6 Spec template (copy this)</h3>
+<pre><code class="language-markdown">## Goal
+After the task the user can &lt;action&gt; in order to &lt;value&gt;.
+
+## User and scenario
+Who: &lt;role&gt;. When: &lt;situation&gt;. Does: &lt;steps&gt;.
+
+## Inputs/outputs
+Input: &lt;format, example&gt;. Output: &lt;format, example&gt;.
+Edge cases: &lt;empty&gt;, &lt;very many&gt;, &lt;wrong type&gt;, &lt;network unavailable&gt;.
+
+## Constraints
+Stack: &lt;...&gt;. Don't add dependencies: &lt;...&gt;. Don't change files: &lt;...&gt;.
+
+## Acceptance criteria
+- [ ] &lt;verifiable statement 1&gt;
+- [ ] &lt;verifiable statement 2&gt;
+- [ ] &lt;verifiable statement 3&gt;
+
+## What we're not doing
+- &lt;explicit exclusion 1&gt;
+- &lt;explicit exclusion 2&gt;
+</code></pre>
+<h3 id="27-goal-the-goal-as-a-completion-condition">2.7 <code>/goal</code>: the goal as a completion condition</h3>
+<p>A normal request ends when the model decides it's done. <code>/goal</code> changes
+that: you declare a verifiable condition, and the agent keeps working turn by turn until
+the condition is met. The judge isn't the one who did the work, but a separate fast model —
+it looks at what the agent has already shown in the session: test output, build logs,
+the list of changed files.</p>
+<pre><code>/goal pytest tests/auth exits with code 0, ruff check src/auth is clean,
+git diff --name-only shows only src/auth/, or stop after 15 turns
+</code></pre>
+<p>Three parts without which the condition doesn't work:</p>
+<ol>
+<li><strong>A measurable end signal.</strong> Exit code, empty queue, green lint.
+   Not "make it cleaner" and not "so it's convenient" — there's nothing to check those with.</li>
+<li><strong>Proof in the session.</strong> The condition must be verifiable from what the agent
+   can show right in the chat. If verification requires your access to prod —
+   <code>/goal</code> isn't suitable.</li>
+<li><strong>Boundaries.</strong> What can't be changed (<code>only src/auth/</code>) and a turn limit
+   (<code>or stop after 15 turns</code>). Without a limit, an autonomous run burns tokens.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Normal request</th>
+<th><code>/goal</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who decides "done"</td>
+<td>the same model, one turn</td>
+<td>a separate evaluator after each turn</td>
+</tr>
+<tr>
+<td>Turns</td>
+<td>one, until you rewrite it</td>
+<td>as many as needed until the condition is met</td>
+</tr>
+<tr>
+<td>Where it's useful</td>
+<td>edits, recon, questions</td>
+<td>migrations, "until the tests are green", backlog burn-down</td>
+</tr>
+<tr>
+<td>Where it hurts</td>
+<td>—</td>
+<td>subjective quality, recon, tasks without boundaries</td>
+</tr>
+</tbody>
+</table>
+<p>Practical consequences:</p>
+<ul>
+<li><strong><code>/goal</code> doesn't replace the spec, it builds on it.</strong> The acceptance criterion from block 5
+  is almost a ready-made condition. If a criterion can't be verified with a command, <code>/goal</code>
+  won't save it — it will turn it into an infinite loop.</li>
+<li><strong>One active goal per session.</strong> A new one replaces the old one and immediately starts a turn.
+  Clicking on the status shows the condition, time, turn count, tokens, and the reason
+  for the last evaluation.</li>
+<li><strong>Stop and clear:</strong> <code>clear</code> (synonyms <code>stop</code>, <code>off</code>, <code>reset</code>, <code>cancel</code>).
+  <code>/clear</code> also clears the active goal.</li>
+<li><strong>Requires a trusted workspace.</strong> If hooks are disabled
+  (<code>disableAllHooks</code>), the command doesn't work.</li>
+<li><strong>Expensive not in tokens but in turns.</strong> The evaluation runs on a cheap model,
+  but the turns themselves run on the full one. A limit in the condition is mandatory.</li>
+<li><strong>Autonomy isn't always needed.</strong> The value of <code>/goal</code> is in the absence of
+  "continue?" after every step, not in skipping review. You still review the diff
+  yourself, and there's a rollback for a failed autonomous attempt.</li>
+</ul>
+<p><code>/goal</code> exists in Claude Code and OpenAI Codex CLI. It's not in Cursor and Windsurf:
+there the role of the goal is played by the plan plus explicit criteria in the request.</p>
+<h3 id="28-module-summary">2.8 Module summary</h3>
+<ul>
+<li>A spec is 10 lines, six blocks, acceptance criteria are mandatory.</li>
+<li>An acceptance criterion = a verifiable yes/no, otherwise it's a wish.</li>
+<li>The "what we're not doing" block limits arbitrary scope creep.</li>
+<li>A step whose diff doesn't read in 5 minutes is too big.</li>
+<li><code>/goal</code> is the same acceptance criterion, but as a stop condition for the agent.</li>
+</ul>
+<hr />
+<h2 id="module-3-the-cycle-prompt-diff-verification-commit">Module 3. The cycle: prompt → diff → verification → commit</h2>
+<h3 id="31-anatomy-of-a-working-request">3.1 Anatomy of a working request</h3>
+<p>Five elements, in this order:</p>
+<ol>
+<li><strong>Context</strong>: where we are, what already exists, which files matter. Links to paths, not a retelling.</li>
+<li><strong>Task</strong>: one action in the imperative. Not two, not three.</li>
+<li><strong>Constraints</strong>: what can't be changed, which APIs to use, what style.</li>
+<li><strong>Result format</strong>: "edit the files directly", "show me the plan first",
+   "show only the diff", "add a test".</li>
+<li><strong>A ban on improvisation</strong>: "don't refactor anything outside this function".</li>
+</ol>
+<p>Example:
+&gt; In <code>src/api/orders.ts</code> the <code>GET /orders</code> endpoint returns all orders without a
+&gt; filter. Add a <code>status</code> query parameter (values <code>new</code>, <code>paid</code>, <code>cancelled</code>),
+&gt; return everything by default. Invalid value → 400 with the text
+&gt; <code>unknown status</code>. Only this file. Add a test for the 400. Don't refactor anything.</p>
+<h3 id="32-reading-the-diff-six-red-flags">3.2 Reading the diff: six red flags</h3>
+<p>Check every diff against this list — 80% of problems are caught here:</p>
+<ol>
+<li><strong>Removed or weakened checks.</strong> Removed <code>if (!user) return 401</code>,
+   replaced validation with "let's try and see". The most dangerous category.</li>
+<li><strong><code>try/except</code> around everything.</strong> Silent handling that hides the error and
+   turns a bug into "strange behavior".</li>
+<li><strong>Magic constants and hardcoding.</strong> <code>if (id === 42)</code>, local paths
+   <code>C:\Users\...</code>, a hardcoded key.</li>
+<li><strong>Edits to files outside the task.</strong> The agent "improved along the way" the config,
+   dependencies, styles. Every such edit is an unplanned risk.</li>
+<li><strong>New dependencies.</strong> A new library for one function is almost always a
+   bad trade: weight, vulnerabilities, maintenance.</li>
+<li><strong>Modified tests.</strong> The test was fitted to the code, not the other way around. That's the same
+   as deleting the check.</li>
+</ol>
+<p>Additionally: a file rewritten entirely where one line was needed.
+A 500-line diff instead of 5 is a signal that the step was too big.</p>
+<h3 id="33-how-to-verify-three-levels">3.3 How to verify: three levels</h3>
+<ul>
+<li><strong>Level 1 — it runs.</strong> The code starts, the command runs without errors.
+  The minimum, mandatory.</li>
+<li><strong>Level 2 — behavior.</strong> You manually check exactly the acceptance criteria
+  you wrote in the spec. Not "seems to work", but item by item.</li>
+<li><strong>Level 3 — test.</strong> The criterion has been turned into an automated test. That's the goal of module 6.</li>
+</ul>
+<p>If the agent says "done" and you haven't passed level 1, the answer is not accepted.
+Ask for command output, not a claim.</p>
+<h3 id="34-when-to-ask-for-an-explanation-and-when-to-redo">3.4 When to ask for an explanation and when to redo</h3>
+<ul>
+<li><strong>Ask for an explanation</strong>: the diff looks reasonable, but it's unclear why this
+  solution was chosen. Useful, cheap, often reveals a wrong hypothesis.</li>
+<li><strong>Ask for a plan</strong>: the task is bigger than one step. "Show me a 4-step plan, don't make
+  any edits" — saves you a rollback.</li>
+<li><strong>Redo immediately</strong>: a red flag from list 3.2, a diff outside the task, "done"
+  without a run, a second attempt to fix the same place. Explanations won't help here.</li>
+</ul>
+<p>Rule of two attempts: if the second attempt to fix the same place also failed —
+roll back and rephrase the task. By the third attempt the agent cements a wrong
+model of the problem.</p>
+<h3 id="35-commit-as-a-tool-not-a-formality">3.5 Commit as a tool, not a formality</h3>
+<ul>
+<li>Commit after every accepted step. A rollback point costs 5 seconds, debugging
+  a broken mix costs an hour.</li>
+<li>The commit message is written by <strong>you</strong>, not the agent: <code>feat(orders): filter by status,
+  test for 400</code> — in a month you'll understand what happened and why.</li>
+<li>Don't commit: secrets, <code>node_modules</code>, <code>.env</code>, local configs — these go into
+  <code>.gitignore</code> before the first <code>git add</code>.</li>
+<li>One commit = one reason for change. "Feature + reformatting the whole project"
+  in one commit is a guaranteed conflict and an unreadable diff.</li>
+</ul>
+<h3 id="36-module-summary">3.6 Module summary</h3>
+<ul>
+<li>A working request: context, task, constraints, format, a ban on extras.</li>
+<li>The diff is read against six red flags; tests and checks are untouchable.</li>
+<li>Verification: run → behavior against criteria → automated test.</li>
+<li>Two failures in a row = rollback, not a third attempt.</li>
+<li>Commit after every accepted step, you write the message.</li>
+</ul>
+<hr />
+<h2 id="module-4-context-how-the-agent-sees-your-project">Module 4. Context: how the agent sees your project</h2>
+<h3 id="41-what-gets-into-the-context">4.1 What gets into the context</h3>
+<p>The agent works with what's available to it in the session:</p>
+<ul>
+<li>your messages and its previous answers;</li>
+<li>files it has read or that are open;</li>
+<li>the project instruction file (read automatically);</li>
+<li>the results of its own commands: test output, logs, errors;</li>
+<li>automatic search across the repository, if you gave a path instead of text.</li>
+</ul>
+<p>What's <strong>not</strong> in the context: your head. The stack, conventions, "we don't do it that way",
+the reason why <code>legacy/</code> can't be touched — all of that has to be written down explicitly.</p>
+<h3 id="42-the-project-instruction-file">4.2 The project instruction file</h3>
+<p>One file at the repository root. The names depend on the tool: <code>CLAUDE.md</code>,
+<code>AGENTS.md</code>, <code>.cursorrules</code>, <code>.github/copilot-instructions.md</code>. Contents:</p>
+<pre><code class="language-markdown"># Project: &lt;name&gt;
+Purpose: &lt;one line&gt;
+
+## Stack
+Node 20, TypeScript strict, Fastify, PostgreSQL 16, vitest.
+Python 3.12 for scripts in /tools.
+
+## Commands
+- run: npm run dev
+- tests: npm test
+- lint: npm run lint (mandatory before commit)
+
+## Rules
+- TypeScript strict: no any without a comment justifying it
+- API errors: 4xx with text, 5xx without internal details
+- New dependencies only with approval: propose first, install after
+
+## Prohibitions
+- don't change /legacy/** without explicit instruction
+- don't edit tests to make them pass
+- don't touch .env, migrations, and CI configs
+</code></pre>
+<p>This file is the highest return on a minute invested in the whole course. Write it
+once — every subsequent request is a third shorter.</p>
+<h3 id="43-why-the-agent-forgets-and-gets-dumber">4.3 Why the agent "forgets" and "gets dumber"</h3>
+<p>Quality drops not because of "model fatigue" but because of context:</p>
+<ul>
+<li><strong>40+ messages</strong>: old wrong hypotheses compete with new facts.</li>
+<li><strong>Big files and whole logs</strong>: the useful stuff drowns, the model clings to something random.</li>
+<li><strong>Mixing tasks</strong>: edits for feature A and feature B in one chat produce diffs
+  that can't be separated and rolled back.</li>
+<li><strong>Retelling instead of a link</strong>: you describe the code in words — the model fills in the gaps.</li>
+</ul>
+<p>Cure: a new chat for a new task; a path to the file instead of its contents; 5 key
+log lines instead of 2000; an explicit "we're done with A, starting B" from a clean slate.</p>
+<h3 id="44-context-management-techniques">4.4 Context management techniques</h3>
+<ol>
+<li><strong>Plan before edits.</strong> "Show me a 5-step plan, don't change anything" — catch
+   the wrong understanding before a diff exists.</li>
+<li><strong>One file per step.</strong> "Only <code>parser.py</code> for now, the rest later".</li>
+<li><strong>Explicit state handoff.</strong> "Summary: X and Y done, Z left" — when
+   you continue in a new chat.</li>
+<li><strong>A targeted quote.</strong> Paste 5–10 lines of code instead of the whole file.</li>
+<li><strong>Reset.</strong> Two failures — a new chat + a minimal problem description + the stack trace.</li>
+</ol>
+<h3 id="45-module-summary">4.5 Module summary</h3>
+<ul>
+<li>Only what's explicitly said gets into the context; the rest the model fills in.</li>
+<li>The instruction file is a mandatory part of a project, not a luxury.</li>
+<li>Quality degradation = a cluttered context, not a "bad model".</li>
+<li>A new chat for a new task; plan before edits; one file per step.</li>
+</ul>
+<hr />
+<h2 id="module-5-debugging-when-the-agent-goes-in-circles">Module 5. Debugging when the agent goes in circles</h2>
+<h3 id="51-three-circles-of-hell">5.1 Three circles of hell</h3>
+<ol>
+<li><strong>Guessing the cause.</strong> The agent sees the symptom and immediately names a cause without
+   looking at the log. The fix misses, the symptom remains.</li>
+<li><strong>Treating the symptom.</strong> "The error doesn't appear" — because a <code>catch</code> was added
+   that swallows it. The cause is alive.</li>
+<li><strong>Breaking the neighbor.</strong> The fix works but breaks another scenario; the next
+   fix breaks the first one. Classic ping-pong.</li>
+</ol>
+<p>All three are cured by one rule.</p>
+<h3 id="52-the-one-fact-rule">5.2 The one-fact rule</h3>
+<p><strong>First a reproducible minimal case, then the fix.</strong></p>
+<p>The order is mandatory:
+1. A command that reliably reproduces the problem (or exact steps in the UI).
+2. The full error text / stack trace — into the context.
+3. A hypothesis formulated as a verifiable statement: "if the problem is an
+   empty array, then <code>[]</code> in the request will give the same stack trace".
+4. Verifying the hypothesis before the fix: log, breakpoint, <code>console.log</code>, curl.
+5. Only after confirmation — the fix.</p>
+<p>Without step 3 the agent edits everything that looks like the cause. Usually that's 3–4 files,
+2 of which were fine.</p>
+<h3 id="53-how-to-make-the-agent-look-instead-of-fantasize">5.3 How to make the agent look instead of fantasize</h3>
+<p>Phrasings that work:</p>
+<ul>
+<li>"First read the <code>npm test</code> output in full and quote the 3 lines where it fails.
+  Don't propose a hypothesis until you quote them."</li>
+<li>"Propose 3 hypotheses. For each — a command that confirms or
+  refutes it. Don't make any edits."</li>
+<li>"Explain what exactly you checked and what remains unchecked."</li>
+<li>"Here's the stack trace. Which line of our code participates in it?"</li>
+</ul>
+<p>Phrasings that don't work: "fix it", "fix the error", "it doesn't work,
+figure it out" — they give carte blanche for guessing.</p>
+<h3 id="54-when-to-roll-back">5.4 When to roll back</h3>
+<p>A rollback is cheaper than a fix if:</p>
+<ul>
+<li>two attempts in a row haven't moved the symptom;</li>
+<li>the diff has spread to files that weren't in the task;</li>
+<li>the agent started "refactoring along the way" the place where the bug is;</li>
+<li>you don't understand what's happening in the diff.</li>
+</ul>
+<p>Procedure: <code>git stash</code> or <code>git reset --hard HEAD</code>, then a <strong>rephrased</strong>
+task with a new fact (stack trace, minimal case, library version). Not the same
+wording — otherwise the result will repeat.</p>
+<h3 id="55-the-specifics-of-ai-debugging">5.5 The specifics of AI debugging</h3>
+<ul>
+<li><strong>False "fixes"</strong>: the code changes, the error leaves this scenario and
+  surfaces in a neighboring one. Check not only the case, but the neighboring scenario.</li>
+<li><strong>Version mismatch</strong>: the agent often suggests syntax from the wrong library
+  version. Check <code>package.json</code>/<code>pyproject.toml</code>.</li>
+<li><strong>Silent errors</strong>: <code>except Exception: pass</code> turns a crash into wrong data.
+  That's worse than a crash — always look for such places in the diff.</li>
+<li><strong>A fix without a test</strong>: without a test the bug will come back. Every fix means plus one
+  test (the bridge to module 6).</li>
+</ul>
+<h3 id="56-module-summary">5.6 Module summary</h3>
+<ul>
+<li>First reproduction and fact, then hypothesis, then fix. Not the other way around.</li>
+<li>"Fix it" is a bad prompt; "quote the stack trace and propose 3 verifiable
+  hypotheses" is a good one.</li>
+<li>Two failures in a row = rollback and a new formulation.</li>
+<li>A fix without a test isn't considered closed.</li>
+</ul>
+<hr />
+<h2 id="module-6-tests-and-protection-against-regressions">Module 6. Tests and protection against regressions</h2>
+<h3 id="61-a-test-an-acceptance-criterion-in-executable-form">6.1 A test = an acceptance criterion in executable form</h3>
+<p>The criterion "with an empty list, "Nothing here yet" is shown" can be fooled with words.
+The test <code>expect(render([])).toContain('Nothing here yet')</code> can't be fooled: it either
+passes or it doesn't.</p>
+<p>For vibe coding this is critical, because the agent optimizes for the text of the task.
+If the criterion exists only in text, it can "fulfill" it formally. A test is a
+specification that can't be rephrased in its own favor.</p>
+<h3 id="62-which-tests-to-write-and-how-many">6.2 Which tests to write (and how many)</h3>
+<p>A pyramid adapted for AI development:</p>
+<ul>
+<li><strong>70% unit</strong> — pure functions: parsing, validation, calculations, formatting.
+  Fast, stable, they catch the bulk of regressions from the agent's edits.</li>
+<li><strong>20% integration</strong> — one endpoint or one component with mocks. They check
+  the glue: is the response code right, what landed in the database.</li>
+<li><strong>10% e2e</strong> — one or two end-to-end scenarios: "the user opened, entered, saw".
+  Expensive and fragile; you don't need more than two or three per project in this course.</li>
+</ul>
+<p><strong>Don't write</strong>: UI snapshots at the start of a project — the agent changes the layout, you
+get 50 failing snapshots and start "updating" them, that is, disabling the
+check. Don't write tests for getters or for the framework.</p>
+<h3 id="63-why-test-before-code">6.3 Why test before code</h3>
+<p>An agent that's given a test works fundamentally differently from an agent with a text
+description: it has feedback. The cycle becomes mechanical:</p>
+<ol>
+<li>We write a test for behavior that doesn't exist.</li>
+<li>We run it — the test fails (be sure to check that it fails <strong>for the right
+   reason</strong>: not "module not found" but "expected X, got Y").</li>
+<li>We ask for the implementation.</li>
+<li>We run it — it passes.</li>
+<li>We ask it to break the implementation — the test must fail. If it didn't fail, the test is useless.</li>
+</ol>
+<p>Step 5 is the most underrated. It separates a real check from a decorative one.</p>
+<h3 id="64-the-ban-on-editing-tests">6.4 The ban on editing tests</h3>
+<p>The most common degradation in vibe coding: the agent can't pass a test and changes the test.
+Wording for the instruction file and for the request:</p>
+<p>&gt; Tests are a specification. If a test fails, fix the implementation. You may change a test
+&gt; only if I explicitly asked for it, and then first explain why the old expectation
+&gt; was wrong.</p>
+<p>Check in the diff: any change in <code>*.test.*</code> / <code>test_*.py</code> without your request is
+red flag #1.</p>
+<h3 id="65-coverage-as-a-decoy-metric">6.5 Coverage as a decoy metric</h3>
+<p>100% line coverage is achievable without a single meaningful check: a test calls
+a function and doesn't verify the result. It's more useful to look not at the percentage but at the questions:</p>
+<ul>
+<li>Is the main scenario covered? (mandatory)</li>
+<li>Are the boundaries covered: empty, very many, wrong type, no network? (mandatory)</li>
+<li>Is there a test for every bug you've already caught? (mandatory)</li>
+<li>Is there a test for every line? (doesn't matter)</li>
+</ul>
+<h3 id="66-module-summary">6.6 Module summary</h3>
+<ul>
+<li>A test is the only acceptance criterion that can't be bypassed with wording.</li>
+<li>70/20/10: unit — integration — e2e; avoid UI snapshots.</li>
+<li>Test before code, check "fails for the right reason", mutation check.</li>
+<li>The agent doesn't edit tests. Period.</li>
+<li>Coverage is not the goal; the goal is covered boundaries and caught bugs.</li>
+</ul>
+<hr />
+<h2 id="module-7-data-apis-environment-security">Module 7. Data, APIs, environment, security</h2>
+<h3 id="71-secrets">7.1 Secrets</h3>
+<ul>
+<li>Keys only in <code>.env</code>, and <code>.env</code> in <code>.gitignore</code> <strong>before</strong> the first commit.</li>
+<li>The repository contains <code>.env.example</code> with variable names and empty values.</li>
+<li>Code reads config from the environment; a hardcoded key in code is a red flag.</li>
+<li>A key that got into git history is considered compromised: <code>git rm</code> of the file
+  doesn't remove it from history. You need to revoke the key (rotate), not "we deleted the file".</li>
+<li>On hosting, variables are set in the panel, not in code; the local <code>.env</code> and
+  prod variables are different sets.</li>
+</ul>
+<h3 id="72-the-agent-and-external-apis-where-it-lies">7.2 The agent and external APIs: where it lies</h3>
+<p>Three typical hallucinations:</p>
+<ol>
+<li><strong>A nonexistent method/endpoint.</strong> It confidently writes <code>api.getUserByEmail()</code>.</li>
+<li><strong>An outdated parameter.</strong> It uses <code>?limit=</code> where it's now <code>?page_size=</code>.</li>
+<li><strong>Invented response fields.</strong> It reads <code>data.items</code>, though it's actually <code>data.results</code>.</li>
+</ol>
+<p>A procedure that closes 90% of problems:</p>
+<ol>
+<li>Open the docs (or <code>openapi.json</code> / <code>swagger</code>).</li>
+<li>Make a <code>curl</code> call by hand and look at the <strong>real</strong> response.</li>
+<li>Paste the real response (abbreviated) into the context: "here's the response shape, use
+   only these fields".</li>
+<li>Only then ask for the client and error handling.</li>
+</ol>
+<h3 id="73-validation-at-the-boundary">7.3 Validation at the boundary</h3>
+<p>Any data from outside — user input, an API response, a file, an environment
+variable — is untrusted. Validate <strong>on input</strong>, once, in one place:</p>
+<ul>
+<li>a schema (zod/pydantic) instead of manual <code>if</code>s;</li>
+<li>checking required fields and types;</li>
+<li>explicit behavior on invalid data: 400 with a clear message, not a crash;</li>
+<li>tests for "empty", "wrong type", "too long".</li>
+</ul>
+<p>Types in TypeScript/Python are cheap protection inside the code, but not a substitute for validation
+at the boundary: data from the network arrives as <code>any</code> / <code>dict</code>.</p>
+<h3 id="74-what-not-to-give-to-the-agent">7.4 What not to give to the agent</h3>
+<ul>
+<li>The prod database and prod dumps. A local copy or fixtures.</li>
+<li>Private user data, other people's tokens, internal URLs.</li>
+<li>Passwords, private keys, certificates.</li>
+<li>Repositories under NDA without checking company policy.</li>
+</ul>
+<p>Check before sending: "if this message ends up in a public log, will it be a
+problem?" If yes — don't send it.</p>
+<h3 id="75-module-summary">7.5 Module summary</h3>
+<ul>
+<li><code>.env</code> + <code>.gitignore</code> + <code>.env.example</code>; a key in history = revoke the key.</li>
+<li>First curl and the real API response, then code.</li>
+<li>Validation at the boundary and tests for bad data.</li>
+<li>Secrets, prod, and personal data don't get into the context.</li>
+</ul>
+<hr />
+<h2 id="module-8-deployment-git-hygiene-teamwork">Module 8. Deployment, git hygiene, teamwork</h2>
+<h3 id="81-branches-and-small-prs">8.1 Branches and small PRs</h3>
+<ul>
+<li>The main branch is protected: no direct pushes, not even for you.</li>
+<li>Every task — a branch, every change — a PR. Even if you work alone:
+  a PR is the place where the diff is visible and where you can roll back in one click.</li>
+<li>A PR of 100–300 lines gets reviewed; at 1500 it's "approving without looking", meaning not
+  reviewed at all. Split it up.</li>
+<li>The agent works on a branch: a broken branch doesn't touch the working main.</li>
+</ul>
+<h3 id="82-build-and-the-prod-environment">8.2 Build and the prod environment</h3>
+<p>"It works on my machine" ≠ "it deployed". The differences that catch you at deploy time:</p>
+<ul>
+<li>environment variables: present locally, not set on the host;</li>
+<li>runtime version: Node 22 locally, 18 on the host;</li>
+<li>case in paths: Windows forgives <code>Components/Button</code>, Linux doesn't;</li>
+<li>dependencies: <code>devDependencies</code> aren't installed in the prod build;</li>
+<li>filesystem: locally you can write to <code>./data</code>, on serverless you can't.</li>
+</ul>
+<p>Practice: the first deploy is done <strong>before</strong> the project is ready — on an empty or
+almost empty app. That way you separate environment problems from code problems.</p>
+<h3 id="83-logs-monitoring-rollback">8.3 Logs, monitoring, rollback</h3>
+<ul>
+<li>Logs are the only source of truth about prod; without them debugging is impossible.</li>
+<li>An error in prod: first logs and status code, then hypotheses (the same one-fact
+  rule as in module 5).</li>
+<li>Rollback: <code>revert</code> the commit or redeploy the previous version. Being able to roll back in
+  2 minutes matters more than never making mistakes.</li>
+<li>Never "fix prod by hand": the edit goes through a branch and a deploy, otherwise
+  the state of prod doesn't match the repository.</li>
+</ul>
+<h3 id="84-reviewing-ai-code-what-a-human-looks-at">8.4 Reviewing AI code: what a human looks at</h3>
+<p>A checklist, 12 items, by priority:</p>
+<ol>
+<li>Removed or weakened checks and validation.</li>
+<li>Modified tests without a request.</li>
+<li>Silent error handling (<code>catch</code>/<code>except</code> with no action).</li>
+<li>Secrets, keys, tokens, local paths.</li>
+<li>SQL queries: concatenation instead of parameters.</li>
+<li>Access-permission checks where they used to be.</li>
+<li>New dependencies: are they needed, what do they pull in.</li>
+<li>Edge cases: empty, very many, wrong type.</li>
+<li>The logic of money, dates, time zones, rounding.</li>
+<li>Edits to files outside the task.</li>
+<li>Readability: will you understand this in a month.</li>
+<li>Compliance with the spec: all acceptance criteria closed.</li>
+</ol>
+<p>Items 1–4 take a minute to check and catch most real problems.</p>
+<h3 id="85-commit-messages-and-pr-descriptions">8.5 Commit messages and PR descriptions</h3>
+<ul>
+<li>Commit: <code>type(scope): what was done</code> — for example <code>fix(orders): 400 on
+  unknown status</code>.</li>
+<li>PR: what changes, why, how to verify (steps), what's out of scope.</li>
+<li>Separately: "what trade-offs were made" — in a month that will save you from wrong
+  conclusions.</li>
+</ul>
+<h3 id="86-module-summary">8.6 Module summary</h3>
+<ul>
+<li>A branch + PR for every task; main is protected.</li>
+<li>The first deploy — early, to separate the environment from the code.</li>
+<li>Rollback is a skill; debug only from logs.</li>
+<li>Reviewing AI code: first checks, tests, errors, secrets — then everything else.</li>
+</ul>
+<hr />
+<h2 id="module-9-capstone-analysis-before-the-build">Module 9. Capstone: analysis before the build</h2>
+<h3 id="91-how-to-choose-a-project">9.1 How to choose a project</h3>
+<p>Criterion: <strong>high value for you / low unknown for the agent.</strong>
+A bad choice is an "Airbnb clone": huge unknown, zero personal value.
+A good one is "a utility that parses my bank export and computes categories":
+little unknown, high value, real data to verify against.</p>
+<h3 id="92-four-build-steps">9.2 Four build steps</h3>
+<p>Each step ends with something runnable:</p>
+<ol>
+<li><strong>Skeleton.</strong> Repository, <code>.gitignore</code>, <code>.env.example</code>, instruction file,
+   "Hello world" on the chosen stack. Check: it runs locally.</li>
+<li><strong>Core.</strong> The main scenario end-to-end on minimal data. Check:
+   the scenario completes fully.</li>
+<li><strong>Wiring.</strong> Error handling, one or two tests for the main scenario, README.
+   Check: tests pass, the README lets you run it from scratch.</li>
+<li><strong>Deploy.</strong> A public link, environment variables on the host, a check from
+   your phone. Check: the link opens and works.</li>
+</ol>
+<h3 id="93-what-to-cut-from-the-mvp">9.3 What to cut from the MVP</h3>
+<p>Cut without mercy: auth (if it's not the point), an admin panel, dark theme,
+settings, export, multilingual support, "pretty". The first version proves that
+the main scenario works. Everything else — after the link.</p>
+<h3 id="94-delivery-checklist">9.4 Delivery checklist</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>git clone</code> + the README instructions → the app runs from scratch</li>
+<li class="task"><span class="cb"></span>The main scenario works on real data</li>
+<li class="task"><span class="cb"></span>There's at least one test for the main scenario, <code>npm test</code> is green</li>
+<li class="task"><span class="cb"></span>The public link is live, checked not only in your own browser</li>
+<li class="task"><span class="cb"></span>There are no secrets in the repository, <code>.env.example</code> is up to date</li>
+<li class="task"><span class="cb"></span>The project instruction file is in place</li>
+<li class="task"><span class="cb"></span>The commit history reads well: it's clear what was done and why</li>
+<li class="task"><span class="cb"></span>Known limitations are documented in the README</li>
+</ul>
+<h3 id="95-course-summary">9.5 Course summary</h3>
+<p>The skill you've gained isn't "the ability to write code with AI". It's the ability
+to <strong>take an undefined task to a verifiable result</strong>: spec,
+small steps, reading the diff, tests, rollback, deploy. Models will change,
+this cycle won't.</p>
+    </article>
+    <div class="pager"><a class="prev" href="01-programma.html">← Program</a>
+      <a class="next" href="03-praktika.html">Practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of", crit: "criteria" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

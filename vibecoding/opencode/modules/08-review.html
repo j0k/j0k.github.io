@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 08 — Ревью и quality gates · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 08 — Ревью и quality gates · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory active" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/08-review.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/08-review.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/08-review.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="08-review-practice.html">Практика →</a></div>
+<h1 id="08-quality-gates">Модуль 08 — Ревью и quality gates</h1>
+<p><strong>Время:</strong> 4 часа · <strong>Формат:</strong> теория 80 мин + практика 160 мин</p>
+<hr />
+<h2 class="section" id="_1">Теория</h2>
+<h2 id="1">1. Ревью диффа — ваш главный навык</h2>
+<p>Агент пишет правдоподобно. Ревью — единственное место, где вы отделяете правду от правдоподобия.</p>
+<p>Что смотреть <strong>в таком порядке</strong>:</p>
+<pre><code>1. Что удалено (delete-строки)      ← самое опасное
+2. Что изменено в условиях/проверках
+3. Новые зависимости
+4. Обработка ошибок
+5. Тесты: реально ли проверяют
+6. Стиль/форматирование              ← в последнюю очередь
+</code></pre>
+<p>Дифф читают <strong>сверху вниз по удалениям</strong>, а не по добавлениям: добавления обычно
+и есть то, о чём просили.</p>
+<h2 id="2">2. Красные флаги</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Флаг</th>
+<th>Пример</th>
+<th>Почему плохо</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Удалённая проверка</td>
+<td><code>- if not user: return 403</code></td>
+<td>дыра в безопасности</td>
+</tr>
+<tr>
+<td>Проглоченная ошибка</td>
+<td><code>except Exception: pass</code></td>
+<td>баг станет невидимым</td>
+</tr>
+<tr>
+<td>Тест подогнан под код</td>
+<td><code>assert result is not None</code></td>
+<td>ничего не проверяет</td>
+</tr>
+<tr>
+<td>Заглушка</td>
+<td><code>return True  # TODO</code></td>
+<td>«работает» на бумаге</td>
+</tr>
+<tr>
+<td>Новая зависимость</td>
+<td><code>+ import requests</code></td>
+<td>лишний риск/вес</td>
+</tr>
+<tr>
+<td>Изменение вне задачи</td>
+<td>правка в 10 чужих файлах</td>
+<td>непроверяемо</td>
+</tr>
+<tr>
+<td>Секрет в коде</td>
+<td><code>API_KEY = "sk-..."</code></td>
+<td>утечка</td>
+</tr>
+<tr>
+<td>Отключённый тест</td>
+<td><code>@pytest.mark.skip</code></td>
+<td>тихое удаление проверки</td>
+</tr>
+<tr>
+<td>Магическое число</td>
+<td><code>if x &gt; 42:</code></td>
+<td>неизвестно, откуда</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3">3. Безопасность</h2>
+<ul>
+<li><strong>Секреты:</strong> всегда через env/секрет-хранилище. <code>grep -rn "sk-"</code> в диффе.</li>
+<li><strong>Инъекции:</strong> SQL/команды/шаблоны — только параметризация.</li>
+<li><strong>Доверие входу:</strong> валидация на границе, не «в глубине».</li>
+<li><strong>Supply chain:</strong> новая зависимость = новый поставщик кода. Проверяйте имя пакета
+  (typosquatting — реальная атака).</li>
+<li><strong>Права:</strong> агент не должен иметь доступ к продакшену.</li>
+</ul>
+<h2 id="4">4. Ревью агентом</h2>
+<p>Полезно как <strong>второй проход</strong>, но не как замена вашему:</p>
+<pre><code>Ты — строгий ревьюер. Вот дифф. Найди:
+1) удалённые проверки, 2) проглоченные ошибки, 3) тесты, которые ничего не проверяют,
+4) изменения вне задачи, 5) секреты. Только список проблем, без похвалы.
+</code></pre>
+<p>Ограничение: агент склонен соглашаться с кодом, который сам написал. Поэтому
+«второе мнение» лучше давать <strong>другой моделью</strong> или субагенту со свежим контекстом.</p>
+<h2 id="5-quality-gates">5. Quality gates</h2>
+<p>Что должно быть зелёным до мержа:</p>
+<pre><code>[ ] тесты
+[ ] типы
+[ ] линтер
+[ ] ревью человеком (дифф прочитан)
+[ ] нет секретов
+[ ] нет отключённых тестов и заглушек
+[ ] изменения соответствуют спеке
+</code></pre>
+<p>Автоматизируйте всё, кроме последнего пункта. Последний — только человек.</p>
+<h2 id="6">6. Сообщение о проблеме</h2>
+<p>Плохо: «тут что-то не так».
+Хорошо:</p>
+<pre><code>src/auth.py:42 — удалена проверка `if not user.is_active`.
+Это позволяет неактивным пользователям логиниться. Верни проверку и добавь тест.
+</code></pre>
+<p>Конкретность = скорость исправления.</p>
+<hr />
+<h2 id="-">Чек-лист понимания</h2>
+<ol>
+<li>Почему начинать ревью с удалённых строк?</li>
+<li>Назовите 5 красных флагов и риск каждого.</li>
+<li>Почему ревью той же моделью слабее ревью другой моделью?</li>
+<li>Какой пункт quality gates нельзя автоматизировать?</li>
+</ol>
+<hr />
+<h2 class="section" id="_2">Практика</h2>
+<p>См. <a href="08-review-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="07-refactor-practice.html">← Рефакторинг в масштабе — практика</a>
+      <a class="next" href="08-review-practice.html">Ревью и quality gates — практика →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

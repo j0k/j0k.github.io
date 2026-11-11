@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 08 — Relecture et garde-fous qualité · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 08 — Relecture et garde-fous qualité · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/08-review.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/08-review.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/08-review.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="08-review-practice.html">Pratique →</a></div>
+<h1 id="module-08-relecture-et-garde-fous-qualite">Module 08 — Relecture et garde-fous qualité</h1>
+<p><strong>Temps :</strong> 4 heures · <strong>Format :</strong> 80 min de théorie + 160 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-la-relecture-de-diff-est-votre-competence-principale">1. La relecture de diff est votre compétence principale</h2>
+<p>Un agent écrit de façon plausible. La relecture est le seul endroit où vous séparez le vrai du plausible.</p>
+<p>Ce qu'il faut regarder, <strong>dans cet ordre</strong> :</p>
+<pre><code>1. What was deleted (delete lines)   ← the most dangerous
+2. What changed in conditions/checks
+3. New dependencies
+4. Error handling
+5. Tests: do they actually check anything
+6. Style/formatting                  ← last
+</code></pre>
+<p>Vous lisez un diff <strong>de haut en bas à travers les suppressions</strong>, pas les ajouts : les ajouts correspondent
+en général exactement à ce qui a été demandé.</p>
+<h2 id="2-signaux-dalerte">2. Signaux d'alerte</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Exemple</th>
+<th>Pourquoi c'est grave</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vérification supprimée</td>
+<td><code>- if not user: return 403</code></td>
+<td>trou de sécurité</td>
+</tr>
+<tr>
+<td>Erreur avalée</td>
+<td><code>except Exception: pass</code></td>
+<td>le bug devient invisible</td>
+</tr>
+<tr>
+<td>Test ajusté au code</td>
+<td><code>assert result is not None</code></td>
+<td>ne vérifie rien</td>
+</tr>
+<tr>
+<td>Stub</td>
+<td><code>return True  # TODO</code></td>
+<td>« marche » sur le papier</td>
+</tr>
+<tr>
+<td>Nouvelle dépendance</td>
+<td><code>+ import requests</code></td>
+<td>risque/poids supplémentaire</td>
+</tr>
+<tr>
+<td>Modification hors périmètre</td>
+<td>des éditions dans 10 fichiers sans rapport</td>
+<td>invérifiable</td>
+</tr>
+<tr>
+<td>Secret dans le code</td>
+<td><code>API_KEY = "sk-..."</code></td>
+<td>fuite</td>
+</tr>
+<tr>
+<td>Test désactivé</td>
+<td><code>@pytest.mark.skip</code></td>
+<td>suppression silencieuse d'une vérification</td>
+</tr>
+<tr>
+<td>Nombre magique</td>
+<td><code>if x &gt; 42:</code></td>
+<td>personne ne sait d'où il vient</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-securite">3. Sécurité</h2>
+<ul>
+<li><strong>Secrets :</strong> toujours via l'env ou un coffre de secrets. <code>grep -rn "sk-"</code> sur le diff.</li>
+<li><strong>Injection :</strong> SQL/commandes/templates — paramétrage uniquement.</li>
+<li><strong>Confiance dans les entrées :</strong> validez à la frontière, pas « au fin fond ».</li>
+<li><strong>Chaîne d'approvisionnement :</strong> une nouvelle dépendance = un nouveau fournisseur de code. Vérifiez le nom du paquet
+  (le typosquatting est une vraie attaque).</li>
+<li><strong>Permissions :</strong> l'agent ne devrait pas avoir accès à la production.</li>
+</ul>
+<h2 id="4-relecture-par-un-agent">4. Relecture par un agent</h2>
+<p>Utile en <strong>seconde passe</strong>, mais pas en remplacement de la vôtre :</p>
+<pre><code>You are a strict reviewer. Here is the diff. Find:
+1) deleted checks, 2) swallowed errors, 3) tests that check nothing,
+4) out-of-scope changes, 5) secrets. A list of problems only, no praise.
+</code></pre>
+<p>Limite : un agent a tendance à être d'accord avec le code qu'il a écrit lui-même. Un « second avis » est donc
+plus utile demandé à <strong>un autre modèle</strong> ou à un sous-agent avec un contexte neuf.</p>
+<h2 id="5-garde-fous-qualite">5. Garde-fous qualité</h2>
+<p>Ce qui doit être vert avant un merge :</p>
+<pre><code>[ ] tests
+[ ] types
+[ ] linter
+[ ] review by a human (diff read)
+[ ] no secrets
+[ ] no disabled tests and no stubs
+[ ] changes match the spec
+</code></pre>
+<p>Automatisez tout sauf le dernier point. Le dernier est réservé à l'humain.</p>
+<h2 id="6-signaler-un-probleme">6. Signaler un problème</h2>
+<p>Mauvais : « il y a un truc qui cloche ici ».
+Bon :</p>
+<pre><code>src/auth.py:42 — the check `if not user.is_active` was deleted.
+This lets inactive users log in. Restore the check and add a test.
+</code></pre>
+<p>Précision = rapidité de correction.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>Pourquoi commencer une relecture par les lignes supprimées ?</li>
+<li>Citez 5 signaux d'alerte et le risque de chacun.</li>
+<li>Pourquoi une relecture par le même modèle est-elle plus faible que par un modèle différent ?</li>
+<li>Quel point du garde-fou qualité ne peut pas être automatisé ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="08-review-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="07-refactor-practice.html">← Refactoring à grande échelle — pratique</a>
+      <a class="next" href="08-review-practice.html">Revue et quality gates — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

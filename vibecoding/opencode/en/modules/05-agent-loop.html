@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 05 — The agent loop and permissions · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 05 — The agent loop and permissions · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory active" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/05-agent-loop.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/05-agent-loop.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/05-agent-loop.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="05-agent-loop-practice.html">Practice →</a></div>
+<h1 id="module-05-the-agent-loop-and-permissions">Module 05 — The agent loop and permissions</h1>
+<p><strong>Time:</strong> 4 hours · <strong>Format:</strong> theory 90 min + practice 150 min</p>
+<hr />
+<h2 class="section" id="theory">Theory</h2>
+<h2 id="1-what-an-agent-is">1. What an agent is</h2>
+<pre><code>LLM  →  decides which tool to call
+     →  the tool returns a result
+     →  the result enters the context
+     →  repeat until the task is solved
+</code></pre>
+<p>This is the <strong>tool calling</strong> loop. The model doesn't "do" — it asks. Hence:</p>
+<ul>
+<li>agent quality = model quality × tool quality × description quality;</li>
+<li>a bad tool breaks the loop harder than a weak model;</li>
+<li>an agent can "get stuck in a loop" — you need an iteration limit.</li>
+</ul>
+<h2 id="2-day-one-tools">2. Day-one tools</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read</code></td>
+<td>reads a file</td>
+</tr>
+<tr>
+<td><code>edit</code> / <code>write</code></td>
+<td>edits and creates files</td>
+</tr>
+<tr>
+<td><code>glob</code> / <code>grep</code></td>
+<td>searches files and contents</td>
+</tr>
+<tr>
+<td><code>shell</code></td>
+<td>runs commands</td>
+</tr>
+<tr>
+<td><code>webfetch</code> / <code>websearch</code></td>
+<td>pulls in external information</td>
+</tr>
+</tbody>
+</table></div>
+<p>Practice: the narrower the tool, the more predictable the agent. "Run everything for me" is worse
+than "run <code>pytest tests/test_auth.py</code>".</p>
+<h2 id="3-permissions-the-threat-model">3. Permissions: the threat model</h2>
+<p>Every action of the agent is potentially irreversible. Risk categories:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Example</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Irreversible deletion</td>
+<td><code>rm -rf</code>, <code>git reset --hard</code></td>
+<td><code>deny</code></td>
+</tr>
+<tr>
+<td>Publishing outward</td>
+<td><code>git push</code>, <code>docker push</code>, deploy</td>
+<td><code>ask</code></td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>reading <code>.env</code>, <code>~/.ssh</code></td>
+<td><code>deny</code></td>
+</tr>
+<tr>
+<td>Money</td>
+<td>calling paid APIs in bulk</td>
+<td>limits</td>
+</tr>
+<tr>
+<td>DB migrations</td>
+<td><code>alembic upgrade</code> in prod</td>
+<td><code>ask</code>/<code>deny</code></td>
+</tr>
+<tr>
+<td>Changes outside the project</td>
+<td>other people's folders</td>
+<td><code>external_directory</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-how-rules-work-in-opencode">4. How rules work in OpenCode</h2>
+<p>A rule = <code>action</code> + <code>resource</code> + <code>effect</code>:</p>
+<pre><code class="language-jsonc">{ &quot;action&quot;: &quot;shell&quot;,  &quot;resource&quot;: &quot;git push *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+{ &quot;action&quot;: &quot;shell&quot;,  &quot;resource&quot;: &quot;git status *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+{ &quot;action&quot;: &quot;read&quot;,   &quot;resource&quot;: &quot;*.env&quot;, &quot;effect&quot;: &quot;ask&quot; },
+{ &quot;action&quot;: &quot;external_directory&quot;, &quot;resource&quot;: &quot;D:/other/*&quot;, &quot;effect&quot;: &quot;allow&quot; },
+</code></pre>
+<ul>
+<li>They apply <strong>bottom-up</strong>: the last matching rule wins.</li>
+<li>By default — <code>ask</code> (if nothing matches).</li>
+<li>"Always allow" in the interface saves the rule at the project level.</li>
+<li><code>deny</code> can't be bypassed with a button.</li>
+</ul>
+<h2 id="5-the-minimal-working-set">5. The minimal working set</h2>
+<pre><code class="language-jsonc">{
+  &quot;permissions&quot;: [
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;ask&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git status *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git diff *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;./scripts/check.sh&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;pytest *&quot;, &quot;effect&quot;: &quot;allow&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;git push *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+    { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;sudo *&quot;, &quot;effect&quot;: &quot;deny&quot; },
+    { &quot;action&quot;: &quot;read&quot;,  &quot;resource&quot;: &quot;*.env*&quot;, &quot;effect&quot;: &quot;deny&quot; }
+  ]
+}
+</code></pre>
+<p>The logic: allow reading and checks, forbid publishing and irreversible actions.</p>
+<h2 id="6-isolation">6. Isolation</h2>
+<ul>
+<li><strong>Branch</strong> — the minimum: <code>git checkout -b agent/&lt;task&gt;</code>.</li>
+<li><strong>Worktree</strong> — a separate working copy: the agent works without getting in your way.</li>
+<li><strong>Container/VM</strong> — for risky experiments.</li>
+<li><strong><code>--auto</code></strong> — auto-approve everything that isn't forbidden. Only in an isolated environment.</li>
+</ul>
+<p>Rule: the broader the permissions, the narrower the sandbox must be.</p>
+<h2 id="7-subagents">7. Subagents</h2>
+<p>A separate session for a subtask. Why:</p>
+<ul>
+<li>reconnaissance on a large repo doesn't pollute the main context;</li>
+<li>parallel work on independent parts;</li>
+<li>a "second opinion" in review.</li>
+</ul>
+<p>The price: a subagent can't see your history — it needs a complete standalone brief.</p>
+<h2 id="8-when-the-agent-is-stuck-in-a-loop">8. When the agent is stuck in a loop</h2>
+<p>Signs: the same edits over and over, repeating errors, a growing number of tool calls.</p>
+<p>Actions:</p>
+<ol>
+<li>Stop.</li>
+<li>State what is known for certain (files, errors).</li>
+<li>A new session with that context.</li>
+<li>If it repeats — the task was stated incorrectly.</li>
+</ol>
+<hr />
+<h2 id="comprehension-checklist">Comprehension checklist</h2>
+<ol>
+<li>Why is "the model does" a wrong way to put it?</li>
+<li>What happens if you set <code>allow</code> on <code>shell: *</code>?</li>
+<li>Why <code>deny</code> on <code>git push</code> if there is review?</li>
+<li>When is <code>--auto</code> acceptable, and when is it not?</li>
+<li>How does a subagent help, and how does it hurt?</li>
+</ol>
+<hr />
+<h2 class="section" id="practice">Practice</h2>
+<p>See <a href="05-agent-loop-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="04-oracles-practice.html">← Oracles and checks — practice</a>
+      <a class="next" href="05-agent-loop-practice.html">Agent loop and permissions — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

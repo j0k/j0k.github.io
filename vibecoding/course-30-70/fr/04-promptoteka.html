@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bibliothèque de prompts — Vibecoding 30/70</title>
+<meta property="og:title" content="Bibliothèque de prompts — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>cours 30/70 · 23 heures</span></a>
+    <div class="ratio">30 % de théorie · 70 % de pratique · 1380 min</div>
+    <nav>
+      <a href="index.html">Aperçu du cours<small>Début</small></a>
+      <a href="01-programma.html">Programme<small>Modules et minutage</small></a>
+      <a href="02-teoriya.html">Théorie<small>30 % du cours</small></a>
+      <a href="03-praktika.html">Pratique<small>70 % du cours</small></a>
+      <a href="04-promptoteka.html" class="active">Bibliothèque de prompts<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projets<small>Projet final</small></a>
+      <a href="06-tracker.html">Suivi<small>Checklist</small></a>
+      <a href="gantt.html">Gantt par semaine<small>Compétences et théorie</small></a>
+    </nav>
+    <div class="foot">S'ouvre en local, sans connexion.<br>Ctrl+P — version imprimable.<br>
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../opencode/index.html">Cours OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Cours 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/fr/04-promptoteka.html" data-copied="Lien copié" title="Partager">Partager</button>
+      <a class="switch" href="../04-promptoteka.html" title="Русский">RU</a>
+      <a class="switch" href="../en/04-promptoteka.html" title="English">EN</a>
+      <a class="switch" href="../../opencode/index.html">Cours OpenCode →</a>
+    </div>
+    <article>
+<h1 id="bibliotheque-de-prompts">Bibliothèque de prompts</h1>
+<p>Formulations prêtes à l'emploi. Copiez-les, mettez vos propres valeurs à la place de <code>&lt;...&gt;</code>.
+Chaque prompt suit le schéma : contexte → tâche → contraintes → format → interdiction.</p>
+<hr />
+<h2 id="1-pour-demarrer">1. Pour démarrer</h2>
+<p><strong>1.1 Planifier sans modifier</strong></p>
+<pre><code>Lis &lt;chemin/fichiers&gt;. Tâche : &lt;une phrase&gt;.
+Montre un plan de 4–6 étapes, chacune avec un résultat vérifiable.
+Ne modifie pas les fichiers, n'écris pas de code. J'attends la validation du plan.
+</code></pre>
+<p><strong>1.2 Arriver dans le projet de quelqu'un d'autre</strong></p>
+<pre><code>Voici le projet &lt;nom&gt;. Lis le README, package.json/pyproject.toml et la structure des dossiers.
+Réponds : stack, comment lancer, comment tester, les 3 fichiers les plus importants, 3 points obscurs.
+Ne modifie pas les fichiers.
+</code></pre>
+<p><strong>1.3 Instructions du projet</strong></p>
+<pre><code>Crée AGENTS.md avec la stack, les commandes de lancement/test/lint, les règles de style et les
+interdictions (ne pas modifier les tests, ne pas toucher au legacy, ne pas ajouter de dépendances sans
+accord). Base-toi sur le contenu réel du projet, sans suppositions.
+</code></pre>
+<hr />
+<h2 id="2-cadrer-la-tache">2. Cadrer la tâche</h2>
+<p><strong>2.1 Spec à partir d'une idée brute</strong></p>
+<pre><code>Idée : &lt;telle quelle, en vrac&gt;.
+Transforme-la en spec : objectif, utilisateur et scénario, entrées/sorties avec exemples,
+cas limites (vide, très volumineux, mauvais type), contraintes, 4 critères d'acceptation
+(vérifiables oui/non), ce que nous ne faisons PAS.
+N'écris pas de code. Maximum 15 lignes.
+</code></pre>
+<p><strong>2.2 Vérifier une spec : trouver les trous</strong></p>
+<pre><code>Voici la spec. Trouve 5 endroits où l'implémenteur devra deviner : formulations
+ambiguës, cas limites manquants, critères invérifiables.
+Seulement une liste de problèmes, ne la réécris pas.
+</code></pre>
+<p><strong>2.3 Décomposition</strong></p>
+<pre><code>Découpe la tâche en étapes de 15–20 minutes de travail de l'agent. Pour chacune : nom,
+fichiers, critère d'acceptation, ce qu'il ne faut pas toucher. Pas plus de 6 étapes.
+N'écris pas de code.
+</code></pre>
+<p><strong>2.4 Critère d'acceptation → <code>/goal</code></strong></p>
+<pre><code>/goal &lt;commande de test&gt; se termine avec le code 0, &lt;lint&gt; est propre,
+git diff --name-only ne montre que &lt;dossier&gt;/, ou arrête après &lt;N&gt; tours
+</code></pre>
+<p>Exigences : un signal mesurable, une preuve dans la sortie de la session, des frontières
+par fichier, une limite de tours. Retirer le goal : <code>/goal clear</code>. Statut : <code>/goal</code> sans argument.</p>
+<p><strong>2.5 Vérifier qu'un critère convient à <code>/goal</code></strong></p>
+<pre><code>Voici un critère d'acceptation : &lt;texte&gt;. Vérifie-le sur trois points : (1) peut-on le vérifier
+par une commande ou un code de retour, (2) l'agent verra-t-il la preuve dans sa propre sortie,
+(3) quels fichiers faut-il explicitement interdire de modifier. Si le critère est invérifiable —
+reformule-le en critère vérifiable et montre la différence.
+</code></pre>
+<hr />
+<h2 id="3-implementation">3. Implémentation</h2>
+<p><strong>3.1 Modification minimale</strong></p>
+<pre><code>Dans &lt;fichier&gt;, fonction &lt;nom&gt; : &lt;ce qu'il faut changer&gt;.
+Exigences : &lt;comportement exact, frontières comprises&gt;.
+Uniquement ce fichier. Ne refactorise pas, ne change pas le formatage, n'ajoute pas de
+dépendances. Après la modification, montre le diff et la sortie de la vérification.
+</code></pre>
+<p><strong>3.2 Nouveau module</strong></p>
+<pre><code>Crée &lt;fichier&gt; avec &lt;fonction/classe&gt; qui &lt;comportement&gt;.
+Entrée : &lt;type, exemple&gt;. Sortie : &lt;type, exemple&gt;. Erreurs : &lt;lesquelles et comment&gt;.
+Style comme dans &lt;fichier voisin&gt;. Aucune nouvelle dépendance. Ajoute 2 tests :
+le scénario principal et &lt;frontière&gt;.
+</code></pre>
+<p><strong>3.3 Travailler à partir d'un test</strong></p>
+<pre><code>Test : &lt;code du test&gt;. Il échoue. Implémente le code minimal pour le faire passer.
+Ne modifie pas le test. N'ajoute pas de fonctionnalité au-delà du test.
+Montre la sortie du test après la modification.
+</code></pre>
+<p><strong>3.4 Reprendre après une pause</strong></p>
+<pre><code>État : &lt;A, B&gt; terminés, commit &lt;hash&gt;. Reste : &lt;C&gt;.
+Tâche actuelle : uniquement &lt;C&gt;. Contexte : &lt;fichiers&gt;.
+Ne remets pas en cause les décisions sur A et B.
+</code></pre>
+<hr />
+<h2 id="4-verification-et-revue">4. Vérification et revue</h2>
+<p><strong>4.1 Auto-vérification avant de rendre</strong></p>
+<pre><code>Vérifie ta modification avec la liste et réponds point par point :
+1) des contrôles/validations ont-ils été supprimés ; 2) y a-t-il un catch/except silencieux ; 3) y a-t-il
+du hardcoding ou des constantes magiques ; 4) des fichiers hors tâche ont-ils été touchés ; 5) des
+dépendances ont-elles été ajoutées ; 6) les tests ont-ils été modifiés.
+Ne change pas le code, fais seulement un rapport.
+</code></pre>
+<p><strong>4.2 Expliquer la décision</strong></p>
+<pre><code>Explique en 5 lignes : pourquoi cette solution a été choisie, quelles alternatives
+ont été envisagées, quels compromis ont été acceptés. Ne change pas le code.
+</code></pre>
+<p><strong>4.3 Vérifier les critères d'acceptation</strong></p>
+<pre><code>Voici les critères d'acceptation : &lt;liste&gt;. Pour chacun : rempli / non rempli / non vérifié,
+et exactement comment le vérifier avec une commande. Ne change pas le code.
+</code></pre>
+<hr />
+<h2 id="5-debogage">5. Débogage</h2>
+<p><strong>5.1 D'abord les faits, ensuite l'hypothèse</strong></p>
+<pre><code>Erreur : &lt;symptôme&gt;. Stack trace :
+&lt;colle&gt;
+Cite d'abord 3 lignes de la stack trace qui pointent vers notre code.
+Ensuite, propose 3 hypothèses. Pour chacune — une commande de vérification.
+Ne modifie rien avant que je choisisse.
+</code></pre>
+<p><strong>5.2 Contre la devinette</strong></p>
+<pre><code>Tu proposes une cause sans l'avoir vérifiée. Réponds : quelle donnée confirme cela ?
+Quelle commande la confirmera ou l'infirmera ? Si la vérification est impossible — dis-le directement.
+</code></pre>
+<p><strong>5.3 Cas minimal</strong></p>
+<pre><code>Réduis le problème à un exemple minimal reproductible : 10–15 lignes,
+sans notre projet, bibliothèque standard uniquement. Montre-le et le résultat attendu/obtenu.
+</code></pre>
+<p><strong>5.4 Impasse</strong></p>
+<pre><code>Deux tentatives n'ont pas fait avancer le problème. On arrête.
+État : ce qui est certain, ce qui a été vérifié, ce qui reste non vérifié,
+quelles 2 options existent. Ne modifie rien — je déciderai s'il faut revenir en arrière ou continuer.
+</code></pre>
+<p><strong>5.5 Version d'une bibliothèque</strong></p>
+<pre><code>Stack : &lt;bibliothèque&gt; version &lt;X&gt; (d'après package.json). Utilise uniquement l'API de cette version.
+Si tu n'es pas sûr que l'API existe dans cette version — dis-le au lieu de deviner.
+</code></pre>
+<hr />
+<h2 id="6-tests">6. Tests</h2>
+<p><strong>6.1 Le test avant le code</strong></p>
+<pre><code>Écris un test pour le comportement : &lt;description&gt;. Le test doit échouer maintenant.
+N'implémente pas la fonctionnalité. Montre qu'il échoue, et pour quelle raison.
+</code></pre>
+<p><strong>6.2 Vérifier la robustesse d'un test</strong></p>
+<pre><code>Casse l'implémentation pour que &lt;comportement&gt; cesse de fonctionner. Ne touche pas aux tests.
+Dis quels tests ont échoué. Si aucun n'a échoué — les tests sont inutiles, dis-le directement.
+</code></pre>
+<p><strong>6.3 Ne pas modifier les tests</strong></p>
+<pre><code>Les tests sont la spécification. Si un test échoue, corrige l'implémentation. Modifier le test est interdit.
+Si tu penses que l'attendu du test est faux — explique pourquoi et attends ma décision.
+</code></pre>
+<p><strong>6.4 Frontières</strong></p>
+<pre><code>Ajoute des tests de frontière pour &lt;fonction&gt; : entrée vide, un seul élément, maximum,
+mauvais type, champ manquant. Un test par cas, des noms explicites.
+</code></pre>
+<hr />
+<h2 id="7-donnees-et-api">7. Données et API</h2>
+<p><strong>7.1 À partir d'une réponse réelle</strong></p>
+<pre><code>Voici une vraie réponse d'API (raccourcie) :
+&lt;colle&gt;
+Utilise uniquement ces champs et cette structure. N'invente pas de champs qui n'existent pas.
+Construis un client avec validation et gestion des 4xx/5xx/timeout/JSON invalide.
+</code></pre>
+<p><strong>7.2 Secrets</strong></p>
+<pre><code>Les clés uniquement via des variables d'environnement. Ajoute .env.example avec les noms et aucune
+valeur. Vérifie que .env est dans .gitignore et n'est pas entré dans l'historique git.
+Si la clé est déjà dans l'historique — dis que la clé doit être révoquée.
+</code></pre>
+<p><strong>7.3 Validation à la frontière</strong></p>
+<pre><code>Ajoute une validation des entrées à la frontière via &lt;zod/pydantic&gt; :
+champs obligatoires, types, contraintes. Sur des données invalides — 400 avec un message
+clair, pas de plantage. Plus 3 tests pour les mauvaises données.
+</code></pre>
+<hr />
+<h2 id="8-deploiement-et-hygiene">8. Déploiement et hygiène</h2>
+<p><strong>8.1 Premier déploiement</strong></p>
+<pre><code>Prépare le projet pour un déploiement sur &lt;Vercel/Netlify&gt; : vérifie la commande de build et le dossier
+de sortie, liste les variables d'environnement pour le panneau, indique la version du runtime.
+N'invente rien sur les réglages — si tu n'es pas sûr, dis ce qu'il faut vérifier à la main.
+</code></pre>
+<p><strong>8.2 Checklist avant merge</strong></p>
+<pre><code>Parcours la PR &lt;numéro&gt; et réponds pour chaque point : contrôles non affaiblis, tests
+non modifiés, pas de catch silencieux, pas de secrets, pas de chemins codés en dur, pas de nouvelles
+dépendances sans justification, pas de concaténation SQL, pas de modifications hors tâche.
+Format : point — ok / problème (fichier:ligne).
+</code></pre>
+<p><strong>8.3 Message de commit / description de PR</strong></p>
+<pre><code>Écris un message de commit au format type(scope): ce qui a été fait, jusqu'à 70 caractères.
+Et une description de PR : ce qui change, pourquoi, comment vérifier (étapes), ce qui est hors périmètre,
+quels compromis ont été acceptés. À partir du diff, sans suppositions.
+</code></pre>
+<hr />
+<h2 id="9-redemarrage-de-session">9. Redémarrage de session</h2>
+<p><strong>9.1 Démarrage propre</strong></p>
+<pre><code>Nouvelle session. Contexte : &lt;projet, stack, 3 fichiers importants&gt;.
+Problème : &lt;symptôme&gt;. Vérifié : &lt;faits&gt;. Non vérifié : &lt;...&gt;.
+Stack trace : &lt;...&gt;.
+Propose 3 hypothèses avec une commande de vérification. Ne modifie rien.
+</code></pre>
+<p><strong>9.2 Transmettre l'état</strong></p>
+<pre><code>Résumé de session : &lt;...&gt; terminé, commits &lt;hash...&gt;, reste &lt;...&gt;.
+Questions ouvertes : &lt;...&gt;. Limitations connues : &lt;...&gt;.
+Enregistre cela dans notes/session-&lt;date&gt;.md pour qu'on puisse continuer demain.
+</code></pre>
+<hr />
+<h2 id="10-antipatterns-comment-ne-pas-faire">10. Antipatterns : comment ne pas faire</h2>
+<table>
+<thead>
+<tr>
+<th>À ne pas écrire</th>
+<th>Pourquoi ça ne marche pas</th>
+<th>À remplacer par</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« corrige le bug »</td>
+<td>donne carte blanche à la devinette</td>
+<td>« cite la stack trace, propose 3 hypothèses »</td>
+</tr>
+<tr>
+<td>« rends-le joli »</td>
+<td>aucun critère</td>
+<td>« fond blanc, un accent, system-ui, 2 couleurs maximum »</td>
+</tr>
+<tr>
+<td>« optimise-le »</td>
+<td>aucune métrique</td>
+<td>« ramène à &lt;200 ms, mesuré via &lt;commande&gt; »</td>
+</tr>
+<tr>
+<td>« ajoute la gestion des erreurs »</td>
+<td><code>except</code> silencieux</td>
+<td>« texte serveur sur 4xx, “réessaie plus tard” sur 5xx, un test pour chacun »</td>
+</tr>
+<tr>
+<td>« refactorise »</td>
+<td>tout le projet a été réécrit</td>
+<td>« extrais X de Y vers Z, comportement inchangé, tests au vert »</td>
+</tr>
+<tr>
+<td>« fais comme &lt;service&gt; »</td>
+<td>une copie sans vos exigences</td>
+<td>liste 3 éléments précis</td>
+</tr>
+<tr>
+<td>« améliore le code »</td>
+<td>périmètre non borné</td>
+<td>un problème précis + un critère</td>
+</tr>
+</tbody>
+</table>
+    </article>
+    <div class="pager"><a class="prev" href="03-praktika.html">← Pratique</a>
+      <a class="next" href="05-proekty.html">Projets →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur", crit: "critères" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

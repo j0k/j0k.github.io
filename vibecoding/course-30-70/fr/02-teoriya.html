@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Théorie — Vibecoding 30/70</title>
+<meta property="og:title" content="Théorie — Vibecoding 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Vibecoding</b><span>cours 30/70 · 23 heures</span></a>
+    <div class="ratio">30 % de théorie · 70 % de pratique · 1380 min</div>
+    <nav>
+      <a href="index.html">Aperçu du cours<small>Début</small></a>
+      <a href="01-programma.html">Programme<small>Modules et minutage</small></a>
+      <a href="02-teoriya.html" class="active">Théorie<small>30 % du cours</small></a>
+      <a href="03-praktika.html">Pratique<small>70 % du cours</small></a>
+      <a href="04-promptoteka.html">Bibliothèque de prompts<small>32 prompts</small></a>
+      <a href="05-proekty.html">Projets<small>Projet final</small></a>
+      <a href="06-tracker.html">Suivi<small>Checklist</small></a>
+      <a href="gantt.html">Gantt par semaine<small>Compétences et théorie</small></a>
+    </nav>
+    <div class="foot">S'ouvre en local, sans connexion.<br>Ctrl+P — version imprimable.<br>
+      <a href="../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../opencode/index.html">Cours OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../../index.html">← Vibecoding</a>
+      <span class="sep">·</span>
+      <span class="here">Cours 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/fr/02-teoriya.html" data-copied="Lien copié" title="Partager">Partager</button>
+      <a class="switch" href="../02-teoriya.html" title="Русский">RU</a>
+      <a class="switch" href="../en/02-teoriya.html" title="English">EN</a>
+      <a class="switch" href="../../opencode/index.html">Cours OpenCode →</a>
+    </div>
+    <article>
+<h1 id="theorie-du-cours">Théorie du cours</h1>
+<p>Cela représente 414 minutes de lecture — 30 % du cours. Chaque bloc est conçu pour 45 minutes.
+Lisez un bloc avant la pratique du module correspondant. Ne brûlez pas les étapes.</p>
+<hr />
+<h2 id="module-1-comment-le-vibe-coding-fonctionne-reellement">Module 1. Comment le vibe coding fonctionne réellement</h2>
+<h3 id="11-le-modele-ne-comprend-pas-votre-code">1.1 Le modèle ne comprend pas votre code</h3>
+<p>Un LLM prédit le token suivant. Quand il écrit une fonction, il poursuit le
+texte le plus probable qui ressemble à du code. Trois faits pratiques en découlent :</p>
+<ul>
+<li><strong>Il écrit le code standard mieux que vous.</strong> CRUD, parsing, plomberie de client HTTP,
+  regex, configs — ici la probabilité d'une « suite correcte » est élevée,
+  parce que les données d'entraînement contiennent des millions d'exemples de ce genre.</li>
+<li><strong>Il écrit mal le code rare et nouveau.</strong> Une architecture non standard, votre
+  framework interne, une API d'il y a trois ans, une bibliothèque de niche — il
+  inventera avec assurance, car un ton assuré est statistiquement plus probable qu'un ton prudent.</li>
+<li><strong>Il ne « se souvient » pas de votre projet.</strong> Il ne voit que ce qui est entré dans le contexte :
+  les fichiers ouverts, vos messages, le fichier d'instructions, les résultats de recherche dans le dépôt.</li>
+</ul>
+<p>D'où la conclusion principale du cours : <strong>vous ne gérez pas le code, vous gérez le contexte et les critères.</strong>
+Plus vous décrivez précisément ce qui doit en sortir, moins le modèle a à deviner.</p>
+<h3 id="12-pourquoi-un-contexte-long-ruine-le-resultat">1.2 Pourquoi un contexte long ruine le résultat</h3>
+<p>Le modèle dispose d'une fenêtre de contexte, et elle n'est pas élastique. Quand 40 messages, trois
+tentatives de correction ratées et un log de 2000 lignes s'y accumulent, la qualité des
+réponses chute : le modèle commence à s'accrocher à de vieilles hypothèses erronées et à
+répéter des solutions qui ont échoué.</p>
+<p>Conséquences pratiques :
+- Nouvelle tâche — nouveau chat. Toujours, sauf si la tâche est la continuation de la tâche en cours.
+- Ne collez pas des fichiers entiers si vous pouvez indiquer un chemin et demander de les lire.
+- Ne gardez pas de longs logs dans le chat : trouvez d'abord vous-même les 5 lignes clés.
+- Si deux tentatives ont échoué, redémarrer la session avec une description propre du problème
+  marche mieux qu'une cinquième tentative de « réparer ».</p>
+<h3 id="13-trois-modes-de-travail-avec-lia">1.3 Trois modes de travail avec l'IA</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Ce qu'il fait</th>
+<th>Où il est utile</th>
+<th>Limite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chat</td>
+<td>Répond par du texte</td>
+<td>Explications, plans, revues, apprentissage</td>
+<td>Ne voit pas le projet, le code est copié à la main</td>
+</tr>
+<tr>
+<td>Autocomplétion</td>
+<td>Complète une ligne/un bloc</td>
+<td>Saisie manuelle de code connu</td>
+<td>Vous l'écrivez toujours vous-même</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>Lit les fichiers, modifie, exécute des commandes</td>
+<td>Tout le cours</td>
+<td>Peut casser beaucoup de fichiers d'un coup</td>
+</tr>
+</tbody>
+</table>
+<p>Le cours repose sur l'<strong>agent</strong> (Claude Code, Cursor, Codex CLI, Windsurf). La différence est
+fondamentale : l'agent ouvre lui-même les fichiers, applique lui-même les patchs, lance
+lui-même les tests. Votre travail se déplace donc — vous ne tapez pas, vous posez la tâche,
+relisez le diff et décidez d'accepter ou d'annuler.</p>
+<h3 id="14-ou-lagent-ment-avec-une-assurance-particuliere">1.4 Où l'agent ment avec une assurance particulière</h3>
+<p>Apprenez cette liste par cœur — elle vous fera gagner des journées :</p>
+<ol>
+<li><strong>Les noms des méthodes et paramètres d'API.</strong> Il invente <code>client.fetchData()</code> là où
+   c'est en réalité <code>client.get_data()</code>. Remède : la doc ou un curl avant le code.</li>
+<li><strong>Les versions de bibliothèques.</strong> Il propose une syntaxe d'une version ancienne ou inexistante.
+   Remède : <code>package.json</code> / <code>pyproject.toml</code> dans le contexte + « n'utilise que les
+   API disponibles dans cette version ».</li>
+<li><strong>Les causes des erreurs.</strong> Il nomme une cause avec assurance sans regarder le log. Remède :
+   « lis d'abord la stack trace, l'hypothèse ensuite ».</li>
+<li><strong>« C'est fait, tout fonctionne. »</strong> Il n'a rien exécuté. Remède : demandez toujours la
+   sortie d'une commande, pas une affirmation sur le résultat.</li>
+<li><strong>La modification silencieuse des fichiers des autres.</strong> En passant, il a « amélioré » trois fichiers
+   que vous n'aviez pas demandés. Remède : lisez le diff, pas seulement le message.</li>
+</ol>
+<h3 id="15-votre-role-dans-le-processus">1.5 Votre rôle dans le processus</h3>
+<p>Le vibe coding n'annule pas l'ingénierie, il la déplace à un autre niveau :</p>
+<ul>
+<li><strong>Avant :</strong> concevoir l'architecture → écrire le code → déboguer → tester.</li>
+<li><strong>Maintenant :</strong> décrire ce qui doit en sortir → découper en étapes → accepter ou
+  rejeter les diffs → vérifier le résultat.</li>
+</ul>
+<p>Les compétences qui déterminent réellement la qualité : formuler la tâche, lire un diff,
+tester des hypothèses, la discipline du rollback. Programmer au sens de « se souvenir de la syntaxe »
+n'est presque plus nécessaire. Comprendre <strong>ce qui</strong> doit se passer est absolument indispensable.</p>
+<h3 id="16-resume-du-module">1.6 Résumé du module</h3>
+<ul>
+<li>Le modèle prédit du texte ; la précision dépend de votre description.</li>
+<li>Le contexte est une ressource rare ; il faut le nettoyer.</li>
+<li>L'agent est l'outil principal ; il fait beaucoup et peut casser beaucoup.</li>
+<li>Votre travail : spec, diff, vérification, commit. Le reste est un détail.</li>
+</ul>
+<hr />
+<h2 id="module-2-la-spec-et-la-formulation-de-la-tache">Module 2. La spec et la formulation de la tâche</h2>
+<h3 id="21-pourquoi-la-spec-decide-plus-que-le-modele">2.1 Pourquoi la spec décide plus que le modèle</h3>
+<p>Le même modèle sur la même tâche produit des résultats qui varient du simple au quintuple, selon
+la formulation. La raison est simple : sans critères d'acceptation, le modèle
+optimise pour « ça ressemble à une réponse correcte », et avec des critères — pour un comportement
+vérifiable précis.</p>
+<p>Mauvais : « écris un script pour traiter un CSV ».
+Bon : « le script lit <code>data.csv</code> avec les colonnes id,date,amount ; supprime les lignes
+dont amount ≤ 0 ; écrit dans <code>out.csv</code> le total par mois, trié par ordre décroissant ;
+si la colonne amount est absente, il se termine avec le code 2 et un message sur stderr ».</p>
+<p>L'agent peut vérifier lui-même la seconde option. La première — seulement vous, avec vos yeux.</p>
+<h3 id="22-six-blocs-dune-spec">2.2 Six blocs d'une spec</h3>
+<pre><code>1. OBJECTIF : ce qui devient possible une fois la tâche terminée (1-2 lignes)
+2. UTILISATEUR : qui l'utilise et dans quelle situation
+3. ENTRÉES/SORTIES : formats, exemples de données, cas limites
+4. CONTRAINTES : stack, versions, pas de nouvelles dépendances, ne pas toucher les fichiers X
+5. CRITÈRES D'ACCEPTATION : une liste d'affirmations vérifiables, chacune oui/non
+6. CE QUE NOUS NE FAISONS PAS : des frontières explicites pour que l'agent n'élargisse pas le périmètre
+</code></pre>
+<p>Le bloc 6 est sous-estimé, et c'est celui qui fait le plus gagner : sans lui, l'agent ajoutera « pour faire bonne mesure »
+l'authentification, du cache et Docker, parce que « c'est comme ça qu'on fait ».</p>
+<h3 id="23-les-criteres-dacceptation-le-levier-principal">2.3 Les critères d'acceptation : le levier principal</h3>
+<p>Un critère d'acceptation est une affirmation qui peut être vérifiée par une commande ou par observation.</p>
+<ul>
+<li>Pas un critère : « le code doit être propre », « l'interface doit être pratique ».</li>
+<li>Un critère : « avec une liste vide, le texte “Nothing here yet” s'affiche »,
+  « <code>npm test</code> passe », « une requête avec un email invalide renvoie 400 ».</li>
+</ul>
+<p>Règle : si un critère ne peut pas être vérifié en 30 secondes, il est mal formulé.
+De bons critères se transforment automatiquement en tests — c'est le pont vers le module 6.</p>
+<h3 id="24-les-formulations-qui-cassent-le-resultat">2.4 Les formulations qui cassent le résultat</h3>
+<table>
+<thead>
+<tr>
+<th>Formulation</th>
+<th>Ce qui se passe</th>
+<th>Comment la reformuler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« fais joli »</td>
+<td>un design aléatoire, puis 10 itérations</td>
+<td>« minimaliste, fond blanc, une couleur d'accent, police system-ui »</td>
+</tr>
+<tr>
+<td>« comme dans Notion »</td>
+<td>une copie du produit de quelqu'un d'autre sans vos exigences</td>
+<td>listez les 3 éléments précis dont vous avez besoin</td>
+</tr>
+<tr>
+<td>« optimise »</td>
+<td>des micro-modifications sans mesures</td>
+<td>« fais passer le temps de réponse de /api/search de 800 ms à &lt;200 ms, mesuré via X »</td>
+</tr>
+<tr>
+<td>« ajoute la gestion des erreurs »</td>
+<td>un <code>except: pass</code> silencieux</td>
+<td>« sur 4xx affiche le texte d'erreur du serveur, sur 5xx — “try again later”, couvre les deux cas par un test »</td>
+</tr>
+<tr>
+<td>« refactorise »</td>
+<td>tout le projet réécrit</td>
+<td>« sors la validation de la route dans un module séparé, le comportement ne change pas, les tests passent »</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-la-decomposition-la-taille-des-etapes">2.5 La décomposition : la taille des étapes</h3>
+<p>Repère pour la taille d'une tâche confiée à l'agent :</p>
+<ul>
+<li><strong>15 minutes</strong> — une fonction, un composant, un endpoint. Un diff de 30–80 lignes.
+  Une telle étape passe presque toujours du premier coup.</li>
+<li><strong>1 heure</strong> — une fonctionnalité dans son ensemble : modèle de données + endpoint + UI minimale.
+  Il faut la découper en 3–4 étapes, sinon le diff fait 400+ lignes et vous ne le relirez pas.</li>
+<li><strong>3 heures et plus</strong> — « construis une appli ». Des détritus presque garantis : l'agent devine
+  l'architecture, vous ne pouvez pas relire le diff, le rollback est impossible.</li>
+</ul>
+<p>Règle : <strong>une étape doit être telle que le diff se lit en 5 minutes.</strong> S'il ne se lit
+pas — coupez.</p>
+<h3 id="26-modele-de-spec-copiez-le">2.6 Modèle de spec (copiez-le)</h3>
+<pre><code class="language-markdown">## Objectif
+Après la tâche, l'utilisateur peut &lt;action&gt; afin de &lt;valeur&gt;.
+
+## Utilisateur et scénario
+Qui : &lt;rôle&gt;. Quand : &lt;situation&gt;. Fait : &lt;étapes&gt;.
+
+## Entrées/sorties
+Entrée : &lt;format, exemple&gt;. Sortie : &lt;format, exemple&gt;.
+Cas limites : &lt;vide&gt;, &lt;très nombreux&gt;, &lt;mauvais type&gt;, &lt;réseau indisponible&gt;.
+
+## Contraintes
+Stack : &lt;...&gt;. Ne pas ajouter de dépendances : &lt;...&gt;. Ne pas modifier les fichiers : &lt;...&gt;.
+
+## Critères d'acceptation
+- [ ] &lt;affirmation vérifiable 1&gt;
+- [ ] &lt;affirmation vérifiable 2&gt;
+- [ ] &lt;affirmation vérifiable 3&gt;
+
+## Ce que nous ne faisons pas
+- &lt;exclusion explicite 1&gt;
+- &lt;exclusion explicite 2&gt;
+</code></pre>
+<h3 id="27-goal-lobjectif-comme-condition-de-completion">2.7 <code>/goal</code> : l'objectif comme condition de complétion</h3>
+<p>Une requête normale se termine quand le modèle décide qu'il a fini. <code>/goal</code> change
+cela : vous déclarez une condition vérifiable, et l'agent continue de travailler tour après tour jusqu'à ce que
+la condition soit remplie. Le juge n'est pas celui qui a fait le travail, mais un modèle rapide séparé —
+il regarde ce que l'agent a déjà montré dans la session : la sortie des tests, les logs de build,
+la liste des fichiers modifiés.</p>
+<pre><code>/goal pytest tests/auth exits with code 0, ruff check src/auth is clean,
+git diff --name-only shows only src/auth/, or stop after 15 turns
+</code></pre>
+<p>Trois parties sans lesquelles la condition ne fonctionne pas :</p>
+<ol>
+<li><strong>Un signal de fin mesurable.</strong> Code de sortie, file vide, lint au vert.
+   Pas « rends-le plus propre » ni « pour que ce soit pratique » — il n'y a rien pour les vérifier.</li>
+<li><strong>Une preuve dans la session.</strong> La condition doit être vérifiable à partir de ce que l'agent
+   peut montrer directement dans le chat. Si la vérification exige votre accès à la prod —
+   <code>/goal</code> ne convient pas.</li>
+<li><strong>Des frontières.</strong> Ce qui ne peut pas être modifié (<code>only src/auth/</code>) et une limite de tours
+   (<code>or stop after 15 turns</code>). Sans limite, une exécution autonome brûle des tokens.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Requête normale</th>
+<th><code>/goal</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qui décide que c'est « fini »</td>
+<td>le même modèle, en un tour</td>
+<td>un évaluateur séparé après chaque tour</td>
+</tr>
+<tr>
+<td>Tours</td>
+<td>un seul, jusqu'à ce que vous la réécriviez</td>
+<td>autant que nécessaire jusqu'à ce que la condition soit remplie</td>
+</tr>
+<tr>
+<td>Où c'est utile</td>
+<td>modifications, reconnaissance, questions</td>
+<td>migrations, « jusqu'à ce que les tests soient verts », épuisement du backlog</td>
+</tr>
+<tr>
+<td>Où ça fait mal</td>
+<td>—</td>
+<td>qualité subjective, reconnaissance, tâches sans frontières</td>
+</tr>
+</tbody>
+</table>
+<p>Conséquences pratiques :</p>
+<ul>
+<li><strong><code>/goal</code> ne remplace pas la spec, il s'appuie dessus.</strong> Le critère d'acceptation du bloc 5
+  est quasiment une condition toute prête. Si un critère ne peut pas être vérifié par une commande, <code>/goal</code>
+  ne le sauvera pas — il en fera une boucle infinie.</li>
+<li><strong>Un seul objectif actif par session.</strong> Un nouvel objectif remplace l'ancien et démarre immédiatement un tour.
+  Un clic sur le statut affiche la condition, le temps, le nombre de tours, les tokens et la raison
+  de la dernière évaluation.</li>
+<li><strong>Arrêter et effacer :</strong> <code>clear</code> (synonymes <code>stop</code>, <code>off</code>, <code>reset</code>, <code>cancel</code>).
+  <code>/clear</code> efface aussi l'objectif actif.</li>
+<li><strong>Nécessite un espace de travail approuvé.</strong> Si les hooks sont désactivés
+  (<code>disableAllHooks</code>), la commande ne fonctionne pas.</li>
+<li><strong>Coûteux non pas en tokens mais en tours.</strong> L'évaluation tourne sur un modèle bon marché,
+  mais les tours eux-mêmes tournent sur le modèle complet. Une limite dans la condition est obligatoire.</li>
+<li><strong>L'autonomie n'est pas toujours nécessaire.</strong> La valeur de <code>/goal</code> tient à l'absence de
+  « on continue ? » après chaque étape, pas au fait de sauter la revue. Vous relisez toujours le diff
+  vous-même, et il existe un rollback pour une tentative autonome ratée.</li>
+</ul>
+<p><code>/goal</code> existe dans Claude Code et OpenAI Codex CLI. Il n'existe pas dans Cursor et Windsurf :
+là, le rôle de l'objectif est joué par le plan plus des critères explicites dans la requête.</p>
+<h3 id="28-resume-du-module">2.8 Résumé du module</h3>
+<ul>
+<li>Une spec, c'est 10 lignes, six blocs, des critères d'acceptation obligatoires.</li>
+<li>Un critère d'acceptation = un oui/non vérifiable, sinon c'est un souhait.</li>
+<li>Le bloc « ce que nous ne faisons pas » limite la dérive arbitraire du périmètre.</li>
+<li>Une étape dont le diff ne se lit pas en 5 minutes est trop grosse.</li>
+<li><code>/goal</code> est le même critère d'acceptation, mais comme condition d'arrêt pour l'agent.</li>
+</ul>
+<hr />
+<h2 id="module-3-le-cycle-prompt-diff-verification-commit">Module 3. Le cycle : prompt → diff → vérification → commit</h2>
+<h3 id="31-anatomie-dune-requete-qui-fonctionne">3.1 Anatomie d'une requête qui fonctionne</h3>
+<p>Cinq éléments, dans cet ordre :</p>
+<ol>
+<li><strong>Contexte</strong> : où nous en sommes, ce qui existe déjà, quels fichiers comptent. Des liens vers des chemins, pas un récit.</li>
+<li><strong>Tâche</strong> : une seule action à l'impératif. Pas deux, pas trois.</li>
+<li><strong>Contraintes</strong> : ce qui ne peut pas être modifié, quelles API utiliser, quel style.</li>
+<li><strong>Format du résultat</strong> : « modifie directement les fichiers », « montre-moi d'abord le plan »,
+   « montre seulement le diff », « ajoute un test ».</li>
+<li><strong>Une interdiction d'improviser</strong> : « ne refactorise rien en dehors de cette fonction ».</li>
+</ol>
+<p>Exemple :
+&gt; Dans <code>src/api/orders.ts</code>, l'endpoint <code>GET /orders</code> renvoie toutes les commandes sans
+&gt; filtre. Ajoute un paramètre de requête <code>status</code> (valeurs <code>new</code>, <code>paid</code>, <code>cancelled</code>),
+&gt; renvoie tout par défaut. Valeur invalide → 400 avec le texte
+&gt; <code>unknown status</code>. Uniquement ce fichier. Ajoute un test pour le 400. Ne refactorise rien.</p>
+<h3 id="32-lire-le-diff-six-signaux-dalarme">3.2 Lire le diff : six signaux d'alarme</h3>
+<p>Vérifiez chaque diff par rapport à cette liste — 80 % des problèmes se repèrent ici :</p>
+<ol>
+<li><strong>Contrôles supprimés ou affaiblis.</strong> Un <code>if (!user) return 401</code> supprimé,
+   une validation remplacée par « essayons et voyons ». La catégorie la plus dangereuse.</li>
+<li><strong><code>try/except</code> autour de tout.</strong> Une gestion silencieuse qui masque l'erreur et
+   transforme un bug en « comportement étrange ».</li>
+<li><strong>Constantes magiques et valeurs codées en dur.</strong> <code>if (id === 42)</code>, des chemins locaux
+   <code>C:\Users\...</code>, une clé en dur.</li>
+<li><strong>Modifications de fichiers hors de la tâche.</strong> L'agent a « amélioré au passage » la config,
+   les dépendances, les styles. Chacune de ces modifications est un risque non planifié.</li>
+<li><strong>Nouvelles dépendances.</strong> Une nouvelle bibliothèque pour une seule fonction est presque toujours un
+   mauvais échange : poids, vulnérabilités, maintenance.</li>
+<li><strong>Tests modifiés.</strong> Le test a été ajusté au code, et non l'inverse. C'est la même chose
+   que supprimer le contrôle.</li>
+</ol>
+<p>En plus : un fichier réécrit entièrement là où une ligne suffisait.
+Un diff de 500 lignes au lieu de 5 est le signal que l'étape était trop grosse.</p>
+<h3 id="33-comment-verifier-trois-niveaux">3.3 Comment vérifier : trois niveaux</h3>
+<ul>
+<li><strong>Niveau 1 — ça tourne.</strong> Le code démarre, la commande s'exécute sans erreur.
+  Le minimum obligatoire.</li>
+<li><strong>Niveau 2 — le comportement.</strong> Vous vérifiez manuellement exactement les critères d'acceptation
+  que vous avez écrits dans la spec. Pas « ça a l'air de marcher », mais point par point.</li>
+<li><strong>Niveau 3 — le test.</strong> Le critère a été transformé en test automatisé. C'est l'objectif du module 6.</li>
+</ul>
+<p>Si l'agent dit « c'est fait » et que vous n'avez pas passé le niveau 1, la réponse n'est pas acceptée.
+Demandez la sortie d'une commande, pas une affirmation.</p>
+<h3 id="34-quand-demander-une-explication-et-quand-refaire">3.4 Quand demander une explication et quand refaire</h3>
+<ul>
+<li><strong>Demander une explication</strong> : le diff semble raisonnable, mais on ne comprend pas pourquoi cette
+  solution a été choisie. Utile, peu coûteux, révèle souvent une hypothèse erronée.</li>
+<li><strong>Demander un plan</strong> : la tâche est plus grosse qu'une étape. « Montre-moi un plan en 4 étapes, ne fais
+  aucune modification » — vous évite un rollback.</li>
+<li><strong>Refaire immédiatement</strong> : un signal d'alarme de la liste 3.2, un diff hors de la tâche, un « c'est fait »
+  sans exécution, une deuxième tentative de correction au même endroit. Les explications n'aideront pas ici.</li>
+</ul>
+<p>Règle des deux tentatives : si la deuxième tentative de correction au même endroit a aussi échoué —
+annulez et reformulez la tâche. À la troisième tentative, l'agent consolide un modèle erroné
+du problème.</p>
+<h3 id="35-le-commit-comme-outil-pas-comme-formalite">3.5 Le commit comme outil, pas comme formalité</h3>
+<ul>
+<li>Commitez après chaque étape acceptée. Un point de rollback coûte 5 secondes, le débogage
+  d'un mélange cassé coûte une heure.</li>
+<li>Le message de commit est écrit par <strong>vous</strong>, pas par l'agent : <code>feat(orders): filter by status,
+  test for 400</code> — dans un mois, vous comprendrez ce qui s'est passé et pourquoi.</li>
+<li>Ne commitez pas : secrets, <code>node_modules</code>, <code>.env</code>, configs locales — ils vont dans
+  <code>.gitignore</code> avant le premier <code>git add</code>.</li>
+<li>Un commit = une raison de changement. « Fonctionnalité + reformatage de tout le projet »
+  dans un seul commit, c'est un conflit garanti et un diff illisible.</li>
+</ul>
+<h3 id="36-resume-du-module">3.6 Résumé du module</h3>
+<ul>
+<li>Une requête qui fonctionne : contexte, tâche, contraintes, format, interdiction des extras.</li>
+<li>Le diff se lit à l'aune des six signaux d'alarme ; les tests et les contrôles sont intouchables.</li>
+<li>Vérification : exécution → comportement par rapport aux critères → test automatisé.</li>
+<li>Deux échecs d'affilée = rollback, pas une troisième tentative.</li>
+<li>Commit après chaque étape acceptée, c'est vous qui écrivez le message.</li>
+</ul>
+<hr />
+<h2 id="module-4-le-contexte-comment-lagent-voit-votre-projet">Module 4. Le contexte : comment l'agent voit votre projet</h2>
+<h3 id="41-ce-qui-entre-dans-le-contexte">4.1 Ce qui entre dans le contexte</h3>
+<p>L'agent travaille avec ce qui lui est accessible dans la session :</p>
+<ul>
+<li>vos messages et ses réponses précédentes ;</li>
+<li>les fichiers qu'il a lus ou qui sont ouverts ;</li>
+<li>le fichier d'instructions du projet (lu automatiquement) ;</li>
+<li>les résultats de ses propres commandes : sortie de tests, logs, erreurs ;</li>
+<li>la recherche automatique dans le dépôt, si vous avez donné un chemin au lieu de texte.</li>
+</ul>
+<p>Ce qui <strong>n'est pas</strong> dans le contexte : votre tête. La stack, les conventions, « chez nous on ne fait pas comme ça »,
+la raison pour laquelle <code>legacy/</code> ne peut pas être touché — tout cela doit être écrit explicitement.</p>
+<h3 id="42-le-fichier-dinstructions-du-projet">4.2 Le fichier d'instructions du projet</h3>
+<p>Un fichier à la racine du dépôt. Les noms dépendent de l'outil : <code>CLAUDE.md</code>,
+<code>AGENTS.md</code>, <code>.cursorrules</code>, <code>.github/copilot-instructions.md</code>. Contenu :</p>
+<pre><code class="language-markdown"># Projet : &lt;nom&gt;
+Objectif : &lt;une ligne&gt;
+
+## Stack
+Node 20, TypeScript strict, Fastify, PostgreSQL 16, vitest.
+Python 3.12 pour les scripts dans /tools.
+
+## Commandes
+- run: npm run dev
+- tests: npm test
+- lint: npm run lint (obligatoire avant commit)
+
+## Règles
+- TypeScript strict : pas de any sans un commentaire qui le justifie
+- Erreurs d'API : 4xx avec un texte, 5xx sans détails internes
+- Nouvelles dépendances uniquement avec accord : proposer d'abord, installer ensuite
+
+## Interdictions
+- ne pas modifier /legacy/** sans instruction explicite
+- ne pas modifier les tests pour les faire passer
+- ne pas toucher .env, les migrations ni les configs de CI
+</code></pre>
+<p>Ce fichier est le meilleur retour sur investissement d'une minute dans tout le cours. Écrivez-le
+une fois — chaque requête suivante est un tiers plus courte.</p>
+<h3 id="43-pourquoi-lagent-oublie-et-devient-plus-bete">4.3 Pourquoi l'agent « oublie » et « devient plus bête »</h3>
+<p>La qualité chute non pas à cause d'une « fatigue du modèle » mais à cause du contexte :</p>
+<ul>
+<li><strong>40+ messages</strong> : les anciennes hypothèses erronées rivalisent avec les faits nouveaux.</li>
+<li><strong>De gros fichiers et des logs entiers</strong> : l'utile se noie, le modèle s'accroche à quelque chose d'aléatoire.</li>
+<li><strong>Mélange de tâches</strong> : des modifications pour la fonctionnalité A et la fonctionnalité B dans un même chat produisent des diffs
+  qu'on ne peut ni séparer ni annuler.</li>
+<li><strong>Un récit au lieu d'un lien</strong> : vous décrivez le code avec des mots — le modèle comble les trous.</li>
+</ul>
+<p>Remède : un nouveau chat pour une nouvelle tâche ; un chemin vers le fichier au lieu de son contenu ; 5 lignes
+de log clés au lieu de 2000 ; un « on a fini A, on commence B » explicite, à partir d'une page blanche.</p>
+<h3 id="44-techniques-de-gestion-du-contexte">4.4 Techniques de gestion du contexte</h3>
+<ol>
+<li><strong>Planifier avant de modifier.</strong> « Montre-moi un plan en 5 étapes, ne change rien » — repérez
+   la mauvaise compréhension avant même que le diff existe.</li>
+<li><strong>Un fichier par étape.</strong> « Seulement <code>parser.py</code> pour l'instant, le reste plus tard ».</li>
+<li><strong>Passation d'état explicite.</strong> « Résumé : X et Y faits, Z reste » — quand
+   vous continuez dans un nouveau chat.</li>
+<li><strong>Une citation ciblée.</strong> Collez 5–10 lignes de code au lieu du fichier entier.</li>
+<li><strong>Réinitialisation.</strong> Deux échecs — un nouveau chat + une description minimale du problème + la stack trace.</li>
+</ol>
+<h3 id="45-resume-du-module">4.5 Résumé du module</h3>
+<ul>
+<li>Seul ce qui est dit explicitement entre dans le contexte ; le reste, le modèle le complète.</li>
+<li>Le fichier d'instructions est une partie obligatoire d'un projet, pas un luxe.</li>
+<li>La dégradation de la qualité = un contexte encombré, pas un « mauvais modèle ».</li>
+<li>Un nouveau chat pour une nouvelle tâche ; planifier avant de modifier ; un fichier par étape.</li>
+</ul>
+<hr />
+<h2 id="module-5-deboguer-quand-lagent-tourne-en-rond">Module 5. Déboguer quand l'agent tourne en rond</h2>
+<h3 id="51-trois-cercles-de-lenfer">5.1 Trois cercles de l'enfer</h3>
+<ol>
+<li><strong>Deviner la cause.</strong> L'agent voit le symptôme et nomme immédiatement une cause sans
+   regarder le log. Le correctif tombe à côté, le symptôme reste.</li>
+<li><strong>Traiter le symptôme.</strong> « L'erreur n'apparaît plus » — parce qu'un <code>catch</code> a été ajouté
+   qui l'avale. La cause est toujours vivante.</li>
+<li><strong>Casser le voisin.</strong> Le correctif marche mais casse un autre scénario ; le correctif suivant
+   casse le premier. Ping-pong classique.</li>
+</ol>
+<p>Les trois se soignent par une seule règle.</p>
+<h3 id="52-la-regle-du-fait-unique">5.2 La règle du fait unique</h3>
+<p><strong>D'abord un cas minimal reproductible, ensuite le correctif.</strong></p>
+<p>L'ordre est obligatoire :
+1. Une commande qui reproduit le problème de manière fiable (ou des étapes exactes dans l'UI).
+2. Le texte complet de l'erreur / la stack trace — dans le contexte.
+3. Une hypothèse formulée comme une affirmation vérifiable : « si le problème est un
+   tableau vide, alors <code>[]</code> dans la requête donnera la même stack trace ».
+4. La vérification de l'hypothèse avant le correctif : log, point d'arrêt, <code>console.log</code>, curl.
+5. Seulement après confirmation — le correctif.</p>
+<p>Sans l'étape 3, l'agent modifie tout ce qui ressemble à la cause. En général 3–4 fichiers,
+dont 2 allaient très bien.</p>
+<h3 id="53-comment-faire-regarder-lagent-au-lieu-de-le-laisser-fantasmer">5.3 Comment faire regarder l'agent au lieu de le laisser fantasmer</h3>
+<p>Formulations qui marchent :</p>
+<ul>
+<li>« Lis d'abord la sortie complète de <code>npm test</code> et cite les 3 lignes où ça échoue.
+  Ne propose pas d'hypothèse avant de les avoir citées. »</li>
+<li>« Propose 3 hypothèses. Pour chacune — une commande qui la confirme ou
+  la réfute. Ne fais aucune modification. »</li>
+<li>« Explique ce que tu as exactement vérifié et ce qui reste non vérifié. »</li>
+<li>« Voici la stack trace. Quelle ligne de notre code y participe ? »</li>
+</ul>
+<p>Formulations qui ne marchent pas : « répare », « corrige l'erreur », « ça ne marche pas,
+débrouille-toi » — elles donnent carte blanche pour deviner.</p>
+<h3 id="54-quand-annuler-rollback">5.4 Quand annuler (rollback)</h3>
+<p>Un rollback coûte moins cher qu'un correctif si :</p>
+<ul>
+<li>deux tentatives d'affilée n'ont pas fait bouger le symptôme ;</li>
+<li>le diff s'est étendu à des fichiers qui n'étaient pas dans la tâche ;</li>
+<li>l'agent a commencé à « refactoriser au passage » l'endroit où se trouve le bug ;</li>
+<li>vous ne comprenez pas ce qui se passe dans le diff.</li>
+</ul>
+<p>Procédure : <code>git stash</code> ou <code>git reset --hard HEAD</code>, puis une tâche <strong>reformulée</strong>
+avec un fait nouveau (stack trace, cas minimal, version de la bibliothèque). Pas la même
+formulation — sinon le résultat se répétera.</p>
+<h3 id="55-les-specificites-du-debogage-avec-lia">5.5 Les spécificités du débogage avec l'IA</h3>
+<ul>
+<li><strong>De faux « correctifs »</strong> : le code change, l'erreur quitte ce scénario et
+  ressort dans un scénario voisin. Vérifiez non seulement le cas, mais le scénario voisin.</li>
+<li><strong>Incompatibilité de version</strong> : l'agent propose souvent une syntaxe d'une mauvaise version
+  de la bibliothèque. Vérifiez <code>package.json</code>/<code>pyproject.toml</code>.</li>
+<li><strong>Erreurs silencieuses</strong> : <code>except Exception: pass</code> transforme un crash en données erronées.
+  C'est pire qu'un crash — cherchez toujours ces endroits dans le diff.</li>
+<li><strong>Un correctif sans test</strong> : sans test, le bug reviendra. Chaque correctif implique un test
+  de plus (le pont vers le module 6).</li>
+</ul>
+<h3 id="56-resume-du-module">5.6 Résumé du module</h3>
+<ul>
+<li>D'abord la reproduction et le fait, ensuite l'hypothèse, ensuite le correctif. Pas l'inverse.</li>
+<li>« Répare » est un mauvais prompt ; « cite la stack trace et propose 3 hypothèses
+  vérifiables » en est un bon.</li>
+<li>Deux échecs d'affilée = rollback et une nouvelle formulation.</li>
+<li>Un correctif sans test n'est pas considéré comme clos.</li>
+</ul>
+<hr />
+<h2 id="module-6-les-tests-et-la-protection-contre-les-regressions">Module 6. Les tests et la protection contre les régressions</h2>
+<h3 id="61-un-test-un-critere-dacceptation-sous-forme-executable">6.1 Un test = un critère d'acceptation sous forme exécutable</h3>
+<p>Le critère « avec une liste vide, le texte “Nothing here yet” s'affiche » peut être trompé avec des mots.
+Le test <code>expect(render([])).toContain('Nothing here yet')</code> ne peut pas être trompé : il passe
+ou il ne passe pas.</p>
+<p>Pour le vibe coding, c'est critique, parce que l'agent optimise pour le texte de la tâche.
+Si le critère n'existe que sous forme de texte, il peut le « remplir » formellement. Un test est une
+spécification qu'on ne peut pas reformuler en sa faveur.</p>
+<h3 id="62-quels-tests-ecrire-et-combien">6.2 Quels tests écrire (et combien)</h3>
+<p>Une pyramide adaptée au développement avec l'IA :</p>
+<ul>
+<li><strong>70 % d'unitaires</strong> — des fonctions pures : parsing, validation, calculs, formatage.
+  Rapides, stables, ils attrapent le gros des régressions dues aux modifications de l'agent.</li>
+<li><strong>20 % d'intégration</strong> — un endpoint ou un composant avec des mocks. Ils vérifient
+  la colle : le code de réponse est-il le bon, qu'est-ce qui est arrivé dans la base de données.</li>
+<li><strong>10 % d'e2e</strong> — un ou deux scénarios de bout en bout : « l'utilisateur a ouvert, a saisi, a vu ».
+  Coûteux et fragiles ; vous n'en avez pas besoin de plus de deux ou trois par projet dans ce cours.</li>
+</ul>
+<p><strong>N'écrivez pas</strong> : de snapshots d'UI au début d'un projet — l'agent change la mise en page, vous
+obtenez 50 snapshots en échec et vous commencez à les « mettre à jour », c'est-à-dire à désactiver le
+contrôle. N'écrivez pas de tests pour les getters ni pour le framework.</p>
+<h3 id="63-pourquoi-tester-avant-le-code">6.3 Pourquoi tester avant le code</h3>
+<p>Un agent à qui l'on donne un test travaille fondamentalement différemment d'un agent à qui l'on donne une description
+textuelle : il a une rétroaction. Le cycle devient mécanique :</p>
+<ol>
+<li>Nous écrivons un test pour un comportement qui n'existe pas.</li>
+<li>Nous l'exécutons — le test échoue (vérifiez bien qu'il échoue <strong>pour la bonne
+   raison</strong> : pas « module not found » mais « expected X, got Y »).</li>
+<li>Nous demandons l'implémentation.</li>
+<li>Nous l'exécutons — il passe.</li>
+<li>Nous demandons de casser l'implémentation — le test doit échouer. S'il n'a pas échoué, le test est inutile.</li>
+</ol>
+<p>L'étape 5 est la plus sous-estimée. Elle sépare un vrai contrôle d'un contrôle décoratif.</p>
+<h3 id="64-linterdiction-de-modifier-les-tests">6.4 L'interdiction de modifier les tests</h3>
+<p>La dégradation la plus fréquente en vibe coding : l'agent n'arrive pas à faire passer un test et modifie le test.
+Formulation pour le fichier d'instructions et pour la requête :</p>
+<p>&gt; Les tests sont une spécification. Si un test échoue, corrige l'implémentation. Tu ne peux modifier un test
+&gt; que si je l'ai explicitement demandé, et dans ce cas explique d'abord pourquoi l'ancienne attente
+&gt; était fausse.</p>
+<p>Vérifiez dans le diff : toute modification dans <code>*.test.*</code> / <code>test_*.py</code> sans votre demande est le
+signal d'alarme n° 1.</p>
+<h3 id="65-la-couverture-comme-metrique-trompeuse">6.5 La couverture comme métrique trompeuse</h3>
+<p>100 % de couverture de lignes est atteignable sans un seul contrôle significatif : un test appelle
+une fonction et ne vérifie pas le résultat. Il est plus utile de regarder non pas le pourcentage mais les questions :</p>
+<ul>
+<li>Le scénario principal est-il couvert ? (obligatoire)</li>
+<li>Les frontières sont-elles couvertes : vide, très nombreux, mauvais type, pas de réseau ? (obligatoire)</li>
+<li>Y a-t-il un test pour chaque bug que vous avez déjà attrapé ? (obligatoire)</li>
+<li>Y a-t-il un test pour chaque ligne ? (peu importe)</li>
+</ul>
+<h3 id="66-resume-du-module">6.6 Résumé du module</h3>
+<ul>
+<li>Un test est le seul critère d'acceptation qu'on ne peut pas contourner par la formulation.</li>
+<li>70/20/10 : unitaires — intégration — e2e ; évitez les snapshots d'UI.</li>
+<li>Tester avant le code, vérifier qu'« il échoue pour la bonne raison », contrôle par mutation.</li>
+<li>L'agent ne modifie pas les tests. Point.</li>
+<li>La couverture n'est pas l'objectif ; l'objectif, ce sont des frontières couvertes et des bugs attrapés.</li>
+</ul>
+<hr />
+<h2 id="module-7-donnees-api-environnement-securite">Module 7. Données, API, environnement, sécurité</h2>
+<h3 id="71-les-secrets">7.1 Les secrets</h3>
+<ul>
+<li>Des clés uniquement dans <code>.env</code>, et <code>.env</code> dans <code>.gitignore</code> <strong>avant</strong> le premier commit.</li>
+<li>Le dépôt contient un <code>.env.example</code> avec les noms de variables et des valeurs vides.</li>
+<li>Le code lit la configuration depuis l'environnement ; une clé codée en dur dans le code est un signal d'alarme.</li>
+<li>Une clé qui est entrée dans l'historique git est considérée comme compromise : un <code>git rm</code> du fichier
+  ne la retire pas de l'historique. Il faut révoquer la clé (rotation), pas « on a supprimé le fichier ».</li>
+<li>Sur l'hébergement, les variables se définissent dans le panneau, pas dans le code ; le <code>.env</code> local et
+  les variables de prod sont deux ensembles différents.</li>
+</ul>
+<h3 id="72-lagent-et-les-api-externes-ou-il-ment">7.2 L'agent et les API externes : où il ment</h3>
+<p>Trois hallucinations typiques :</p>
+<ol>
+<li><strong>Une méthode/un endpoint inexistant.</strong> Il écrit avec assurance <code>api.getUserByEmail()</code>.</li>
+<li><strong>Un paramètre obsolète.</strong> Il utilise <code>?limit=</code> là où c'est désormais <code>?page_size=</code>.</li>
+<li><strong>Des champs de réponse inventés.</strong> Il lit <code>data.items</code>, alors que c'est en réalité <code>data.results</code>.</li>
+</ol>
+<p>Une procédure qui ferme 90 % des problèmes :</p>
+<ol>
+<li>Ouvrir la doc (ou <code>openapi.json</code> / <code>swagger</code>).</li>
+<li>Faire un appel <code>curl</code> à la main et regarder la réponse <strong>réelle</strong>.</li>
+<li>Coller la réponse réelle (abrégée) dans le contexte : « voici la forme de la réponse, n'utilise
+   que ces champs ».</li>
+<li>Seulement ensuite demander le client et la gestion des erreurs.</li>
+</ol>
+<h3 id="73-la-validation-aux-frontieres">7.3 La validation aux frontières</h3>
+<p>Toute donnée venant de l'extérieur — saisie utilisateur, réponse d'API, fichier, variable
+d'environnement — est non fiable. Validez <strong>à l'entrée</strong>, une fois, en un seul endroit :</p>
+<ul>
+<li>un schéma (zod/pydantic) au lieu de <code>if</code> manuels ;</li>
+<li>la vérification des champs obligatoires et des types ;</li>
+<li>un comportement explicite sur des données invalides : 400 avec un message clair, pas un crash ;</li>
+<li>des tests pour « vide », « mauvais type », « trop long ».</li>
+</ul>
+<p>Les types en TypeScript/Python sont une protection bon marché à l'intérieur du code, mais ne remplacent pas la validation
+aux frontières : les données du réseau arrivent en <code>any</code> / <code>dict</code>.</p>
+<h3 id="74-ce-quil-ne-faut-pas-donner-a-lagent">7.4 Ce qu'il ne faut pas donner à l'agent</h3>
+<ul>
+<li>La base de données de prod et les dumps de prod. Une copie locale ou des fixtures.</li>
+<li>Les données privées des utilisateurs, les tokens d'autres personnes, les URL internes.</li>
+<li>Les mots de passe, les clés privées, les certificats.</li>
+<li>Les dépôts sous NDA sans vérifier la politique de l'entreprise.</li>
+</ul>
+<p>Vérifiez avant d'envoyer : « si ce message se retrouve dans un log public, est-ce un
+problème ? » Si oui — ne l'envoyez pas.</p>
+<h3 id="75-resume-du-module">7.5 Résumé du module</h3>
+<ul>
+<li><code>.env</code> + <code>.gitignore</code> + <code>.env.example</code> ; une clé dans l'historique = révoquer la clé.</li>
+<li>D'abord curl et la vraie réponse de l'API, ensuite le code.</li>
+<li>Validation aux frontières et tests pour les données invalides.</li>
+<li>Les secrets, la prod et les données personnelles n'entrent pas dans le contexte.</li>
+</ul>
+<hr />
+<h2 id="module-8-deploiement-hygiene-git-travail-en-equipe">Module 8. Déploiement, hygiène git, travail en équipe</h2>
+<h3 id="81-branches-et-petites-pr">8.1 Branches et petites PR</h3>
+<ul>
+<li>La branche principale est protégée : pas de push direct, même pour vous.</li>
+<li>Chaque tâche — une branche, chaque changement — une PR. Même si vous travaillez seul :
+  une PR est l'endroit où le diff est visible et où vous pouvez annuler en un clic.</li>
+<li>Une PR de 100–300 lignes est relue ; à 1500, c'est un « approuvé sans regarder », donc pas
+  relue du tout. Découpez.</li>
+<li>L'agent travaille sur une branche : une branche cassée ne touche pas la branche main de travail.</li>
+</ul>
+<h3 id="82-le-build-et-lenvironnement-de-prod">8.2 Le build et l'environnement de prod</h3>
+<p>« Ça marche sur ma machine » ≠ « c'est déployé ». Les différences qui vous rattrapent au moment du déploiement :</p>
+<ul>
+<li>variables d'environnement : présentes en local, non définies sur l'hôte ;</li>
+<li>version du runtime : Node 22 en local, 18 sur l'hôte ;</li>
+<li>casse dans les chemins : Windows pardonne <code>Components/Button</code>, Linux non ;</li>
+<li>dépendances : les <code>devDependencies</code> ne sont pas installées dans le build de prod ;</li>
+<li>système de fichiers : en local vous pouvez écrire dans <code>./data</code>, en serverless non.</li>
+</ul>
+<p>En pratique : le premier déploiement se fait <strong>avant</strong> que le projet soit prêt — sur une app vide ou
+presque vide. Ainsi vous séparez les problèmes d'environnement des problèmes de code.</p>
+<h3 id="83-logs-supervision-rollback">8.3 Logs, supervision, rollback</h3>
+<ul>
+<li>Les logs sont la seule source de vérité sur la prod ; sans eux, le débogage est impossible.</li>
+<li>Une erreur en prod : d'abord les logs et le code de statut, ensuite les hypothèses (la même règle
+  du fait unique qu'au module 5).</li>
+<li>Rollback : <code>revert</code> du commit ou redéploiement de la version précédente. Pouvoir annuler en
+  2 minutes compte plus que ne jamais se tromper.</li>
+<li>Jamais de « correction de la prod à la main » : la modification passe par une branche et un déploiement, sinon
+  l'état de la prod ne correspond plus au dépôt.</li>
+</ul>
+<h3 id="84-relire-du-code-ia-ce-quun-humain-regarde">8.4 Relire du code IA : ce qu'un humain regarde</h3>
+<p>Une checklist, 12 points, par ordre de priorité :</p>
+<ol>
+<li>Contrôles et validations supprimés ou affaiblis.</li>
+<li>Tests modifiés sans demande.</li>
+<li>Gestion silencieuse des erreurs (<code>catch</code>/<code>except</code> sans action).</li>
+<li>Secrets, clés, tokens, chemins locaux.</li>
+<li>Requêtes SQL : concaténation au lieu de paramètres.</li>
+<li>Vérifications de droits d'accès là où elles existaient.</li>
+<li>Nouvelles dépendances : sont-elles nécessaires, qu'est-ce qu'elles tirent.</li>
+<li>Cas limites : vide, très nombreux, mauvais type.</li>
+<li>La logique de l'argent, des dates, des fuseaux horaires, des arrondis.</li>
+<li>Modifications de fichiers hors de la tâche.</li>
+<li>Lisibilité : comprendrez-vous cela dans un mois.</li>
+<li>Conformité à la spec : tous les critères d'acceptation fermés.</li>
+</ol>
+<p>Les points 1–4 prennent une minute à vérifier et attrapent la plupart des problèmes réels.</p>
+<h3 id="85-messages-de-commit-et-descriptions-de-pr">8.5 Messages de commit et descriptions de PR</h3>
+<ul>
+<li>Commit : <code>type(scope): what was done</code> — par exemple <code>fix(orders): 400 on
+  unknown status</code>.</li>
+<li>PR : ce qui change, pourquoi, comment vérifier (les étapes), ce qui est hors périmètre.</li>
+<li>Séparément : « quels compromis ont été faits » — dans un mois, cela vous évitera de mauvaises
+  conclusions.</li>
+</ul>
+<h3 id="86-resume-du-module">8.6 Résumé du module</h3>
+<ul>
+<li>Une branche + une PR pour chaque tâche ; la branche main est protégée.</li>
+<li>Le premier déploiement — tôt, pour séparer l'environnement du code.</li>
+<li>Le rollback est une compétence ; on ne débogue qu'à partir des logs.</li>
+<li>Relire du code IA : d'abord les contrôles, les tests, les erreurs, les secrets — ensuite tout le reste.</li>
+</ul>
+<hr />
+<h2 id="module-9-projet-final-lanalyse-avant-la-construction">Module 9. Projet final : l'analyse avant la construction</h2>
+<h3 id="91-comment-choisir-un-projet">9.1 Comment choisir un projet</h3>
+<p>Critère : <strong>valeur élevée pour vous / faible inconnue pour l'agent.</strong>
+Un mauvais choix, c'est un « clone d'Airbnb » : inconnue énorme, valeur personnelle nulle.
+Un bon choix, c'est « un utilitaire qui analyse mon export bancaire et calcule des catégories » :
+peu d'inconnue, valeur élevée, de vraies données pour vérifier.</p>
+<h3 id="92-quatre-etapes-de-construction">9.2 Quatre étapes de construction</h3>
+<p>Chaque étape se termine par quelque chose d'exécutable :</p>
+<ol>
+<li><strong>Squelette.</strong> Dépôt, <code>.gitignore</code>, <code>.env.example</code>, fichier d'instructions,
+   « Hello world » sur la stack choisie. Vérification : ça tourne en local.</li>
+<li><strong>Cœur.</strong> Le scénario principal de bout en bout sur des données minimales. Vérification :
+   le scénario se déroule entièrement.</li>
+<li><strong>Câblage.</strong> Gestion des erreurs, un ou deux tests pour le scénario principal, README.
+   Vérification : les tests passent, le README permet de le lancer de zéro.</li>
+<li><strong>Déploiement.</strong> Un lien public, les variables d'environnement sur l'hôte, une vérification depuis
+   votre téléphone. Vérification : le lien s'ouvre et fonctionne.</li>
+</ol>
+<h3 id="93-ce-quil-faut-couper-du-mvp">9.3 Ce qu'il faut couper du MVP</h3>
+<p>Coupez sans pitié : l'authentification (si ce n'est pas le sujet), un panneau d'administration, le thème sombre,
+les réglages, l'export, le multilingue, le « joli ». La première version prouve que
+le scénario principal fonctionne. Tout le reste — après le lien.</p>
+<h3 id="94-checklist-de-livraison">9.4 Checklist de livraison</h3>
+<ul>
+<li class="task"><span class="cb"></span><code>git clone</code> + les instructions du README → l'appli se lance de zéro</li>
+<li class="task"><span class="cb"></span>Le scénario principal fonctionne sur de vraies données</li>
+<li class="task"><span class="cb"></span>Il y a au moins un test pour le scénario principal, <code>npm test</code> est vert</li>
+<li class="task"><span class="cb"></span>Le lien public est en ligne, vérifié ailleurs que dans votre propre navigateur</li>
+<li class="task"><span class="cb"></span>Il n'y a pas de secrets dans le dépôt, <code>.env.example</code> est à jour</li>
+<li class="task"><span class="cb"></span>Le fichier d'instructions du projet est en place</li>
+<li class="task"><span class="cb"></span>L'historique des commits se lit bien : on comprend ce qui a été fait et pourquoi</li>
+<li class="task"><span class="cb"></span>Les limitations connues sont documentées dans le README</li>
+</ul>
+<h3 id="95-resume-du-cours">9.5 Résumé du cours</h3>
+<p>La compétence que vous avez acquise n'est pas « la capacité d'écrire du code avec l'IA ». C'est la capacité
+de <strong>mener une tâche indéfinie jusqu'à un résultat vérifiable</strong> : spec,
+petites étapes, lecture du diff, tests, rollback, déploiement. Les modèles changeront,
+ce cycle non.</p>
+    </article>
+    <div class="pager"><a class="prev" href="01-programma.html">← Programme</a>
+      <a class="next" href="03-praktika.html">Pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur", crit: "critères" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

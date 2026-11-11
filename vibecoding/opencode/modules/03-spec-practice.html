@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 03 — Практика: от «сделай красиво» к спеке · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 03 — Практика: от «сделай красиво» к спеке · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice active" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/03-spec-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/03-spec-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/03-spec-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="03-spec.html">← Теория</a></div>
+<h1 id="03">Модуль 03 — Практика: от «сделай красиво» к спеке</h1>
+<p><strong>Время:</strong> 200 минут · <strong>Артефакт:</strong> <code>labs/03-specs/</code></p>
+<hr />
+<h2 id="1-40">Задание 1. Разобрать три задачи (40 мин)</h2>
+<p>Возьмите три расплывчатые задачи:</p>
+<pre><code>A) &quot;Добавь кэширование&quot;
+B) &quot;Почини баги в API&quot;
+C) &quot;Сделай красивее интерфейс&quot;
+</code></pre>
+<p>Для каждой напишите спеку по шаблону <code>templates/spec.md</code>, включая блок «не входит».</p>
+<p><strong>Приёмка:</strong> в каждой спеке есть минимум 3 проверяемых требования и 2 критерия приёмки
+(команда или тест).</p>
+<hr />
+<h2 id="2-60">Задание 2. Сравнение на практике (60 мин)</h2>
+<p>Выберите одну спеку (например, A) и реализуйте задачу дважды:</p>
+<p><strong>Прогон 1 — «вайб»:</strong></p>
+<pre><code>Добавь кэширование в проект.
+</code></pre>
+<p><strong>Прогон 2 — по спеке:</strong></p>
+<pre><code>&lt;вставить спеку целиком&gt;
+Начни с плана. Код не пиши, пока я не подтвержу.
+</code></pre>
+<p><strong>Записать таблицу:</strong>
+| Метрика | Прогон 1 | Прогон 2 |
+| --- | --- | --- |
+| файлов затронуто | | |
+| лишних изменений | | |
+| тестов добавлено | | |
+| прошло с первого раза | | |
+| стоимость | | |</p>
+<p><strong>Приёмка:</strong> есть вывод о том, какая часть спеки дала наибольший эффект.</p>
+<hr />
+<h2 id="3-30">Задание 3. План до кода (30 мин)</h2>
+<p>Для спеки B (баги в API):</p>
+<pre><code>Не пиши код. Дай план:
+1) какие файлы посмотришь и почему;
+2) гипотезы о причинах багов;
+3) как будешь проверять каждую гипотезу;
+4) что может сломаться.
+</code></pre>
+<p>Отредактируйте план (уберите лишнее, добавьте пропущенное), затем разрешите реализацию.</p>
+<p><strong>Приёмка:</strong> в отчёте — исходный план, ваши правки, итоговый дифф.
+Сравните: сколько правок плана vs сколько правок кода.</p>
+<hr />
+<h2 id="4-40">Задание 4. Декомпозиция (40 мин)</h2>
+<p>Возьмите задачу C и разбейте на 4–6 шагов так, чтобы каждый:</p>
+<ul>
+<li>менял ≤ 2 файла;</li>
+<li>имел свой критерий проверки;</li>
+<li>коммитился отдельно.</li>
+</ul>
+<p><strong>Приёмка:</strong> список шагов с критериями + минимум 2 выполненных шага с коммитами.</p>
+<hr />
+<h2 id="5-30">Задание 5. Библиотека промптов (30 мин)</h2>
+<p>Создайте <code>labs/03-specs/prompts.md</code> — 5 переиспользуемых шаблонов:</p>
+<ol>
+<li>«Дай план, код не пиши»</li>
+<li>«Объясни существующий код»</li>
+<li>«Добавь тесты к функции»</li>
+<li>«Найди причину падения теста»</li>
+<li>«Отревьюй мой дифф как строгий ревьюер»</li>
+</ol>
+<p>Формат: заголовок, шаблон, когда применять, пример заполнения.</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Три спеки по шаблону, с блоком «не входит».</li>
+<li class="task"><span class="cb"></span>Таблица сравнения «вайб vs спека».</li>
+<li class="task"><span class="cb"></span>План с вашими правками и итоговым диффом.</li>
+<li class="task"><span class="cb"></span>Декомпозиция + ≥ 2 коммита.</li>
+<li class="task"><span class="cb"></span><code>prompts.md</code> с 5 шаблонами.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="03-spec.html">← Спека и промпт</a>
+      <a class="next" href="04-oracles.html">Оракулы и проверка →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 06 — Economics and model choice · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 06 — Economics and model choice · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory active" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/06-economics.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/06-economics.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/06-economics.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="06-economics-practice.html">Practice →</a></div>
+<h1 id="module-06-economics-and-model-choice">Module 06 — Economics and model choice</h1>
+<p><strong>Time:</strong> 3 hours · <strong>Format:</strong> 60 min theory + 120 min practice</p>
+<hr />
+<h2 class="section" id="theory">Theory</h2>
+<h2 id="1-what-goes-into-the-cost">1. What goes into the cost</h2>
+<p>The price is quoted per <strong>1 million tokens</strong> and splits into:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it is</th>
+<th>Usually</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>input</td>
+<td>your context</td>
+<td>expensive</td>
+</tr>
+<tr>
+<td>output</td>
+<td>the model's answer</td>
+<td>3–5× more expensive than input</td>
+</tr>
+<tr>
+<td>cache write</td>
+<td>writing to the cache</td>
+<td>≈ input</td>
+</tr>
+<tr>
+<td>cache read</td>
+<td>reading from the cache</td>
+<td>5–10× cheaper than input</td>
+</tr>
+</tbody>
+</table></div>
+<p>Session formula:</p>
+<pre><code>cost ≈ (input_tokens × price_in + output_tokens × price_out) / 1_000_000
+</code></pre>
+<p>But in an agent loop <strong>input is multiplied by the number of steps</strong>: every step resends
+the entire context. 10 steps with a 50k context means 500k input tokens.</p>
+<h2 id="2-cache-the-main-lever-for-savings">2. Cache — the main lever for savings</h2>
+<p>Providers cache the <strong>stable prefix</strong> of a request. If the structure is always:</p>
+<pre><code>[instructions] [project files] [question]
+</code></pre>
+<p>then on repeated steps the prefix is read from the cache, and you pay pennies.</p>
+<p>What kills the cache:</p>
+<ul>
+<li>changing instructions mid-session;</li>
+<li>rearranging files;</li>
+<li>inserting the current time/random data at the start;</li>
+<li>starting every step "from a clean slate".</li>
+</ul>
+<h2 id="3-latency">3. Latency</h2>
+<p>It matters for UX, but not only:</p>
+<ul>
+<li>a reasoning model thinks for 30–120 seconds before the first token;</li>
+<li>on short edits that is annoying;</li>
+<li>on architectural tasks it pays off.</li>
+</ul>
+<h2 id="4-model-classes">4. Model classes</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Trait</th>
+<th>What for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fast / mini / flash</td>
+<td>cheap, fast</td>
+<td>renames, tests by example, search</td>
+</tr>
+<tr>
+<td>balanced</td>
+<td>mid-range</td>
+<td>everyday development, refactoring</td>
+</tr>
+<tr>
+<td>frontier + reasoning</td>
+<td>expensive, thinks</td>
+<td>architecture, hard debugging, migrations</td>
+</tr>
+<tr>
+<td>long-context</td>
+<td>500k–2M window</td>
+<td>analyzing large repos/logs</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rule: <strong>80% of tasks are solved by a cheap model</strong> if you have tests and a good spec.</p>
+<h2 id="5-how-to-choose-in-practice">5. How to choose in practice</h2>
+<pre><code>1. Is there a check?     no  → oracle first, then the model
+2. Routine task?         yes → fast
+3. Needs thinking?       yes → reasoning
+4. Context &gt; 200k?       yes → long-context is mandatory
+5. Many tool-calls?      yes → tool-calling reliability matters, not &quot;smarts&quot;
+</code></pre>
+<p>Another nuance: <strong>the model's temperament</strong>. One likes writing tests, another dives straight into the code,
+a third is too verbose. You need 2–3 favorite models per task type, not one "best" one.</p>
+<h2 id="6-budget-and-limits">6. Budget and limits</h2>
+<ul>
+<li>Set provider limits (a monthly budget).</li>
+<li>Cap <code>max_tokens</code> for routine tasks.</li>
+<li>Keep an eye on <code>opencode stats</code>.</li>
+<li>A single "vibe session" at 2M tokens can cost as much as a day of work — that's normal
+  if the result is worth it, and a disaster if it was a headline edit.</li>
+</ul>
+<h2 id="7-when-an-expensive-model-is-cheaper">7. When an expensive model is cheaper</h2>
+<p>A paradox: a frontier model over 3 iterations can cost less than a mini model over 15 iterations
+plus your time on review. You have to count <strong>total cost</strong>: tokens + your time + bugs.</p>
+<hr />
+<h2 id="comprehension-checklist">Comprehension checklist</h2>
+<ol>
+<li>Why is input multiplied by the number of steps in an agent loop?</li>
+<li>What kills the cache and how do you fix it?</li>
+<li>Name three tasks where a cheap model is objectively better than an expensive one.</li>
+<li>How do you compute the "total cost" of a task?</li>
+</ol>
+<hr />
+<h2 class="section" id="practice">Practice</h2>
+<p>See <a href="06-economics-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="05-agent-loop-practice.html">← Agent loop and permissions — practice</a>
+      <a class="next" href="06-economics-practice.html">Economics and model choice — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

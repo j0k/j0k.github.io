@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 02 — Pratique : le contexte sous contrôle · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 02 — Pratique : le contexte sous contrôle · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice active" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/02-context-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/02-context-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/02-context-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="02-context.html">← Théorie</a></div>
+<h1 id="module-02-pratique-le-contexte-sous-controle">Module 02 — Pratique : le contexte sous contrôle</h1>
+<p><strong>Durée :</strong> 160 minutes · <strong>Artefact :</strong> <code>labs/02-context/</code> (AGENTS.md + rapport)</p>
+<hr />
+<h2 id="tache-1-ecrire-agentsmd-40-min">Tâche 1. Écrire AGENTS.md (40 min)</h2>
+<p>Prenez votre projet d'apprentissage (ou <code>~/edu/sandbox</code>).</p>
+<ol>
+<li>Copiez le modèle : <code>templates/AGENTS.md</code> → <code>&lt;projet&gt;/AGENTS.md</code>.</li>
+<li>Remplissez-le : stack, commandes, conventions, interdits.</li>
+<li>Vérifiez que chaque commande fonctionne vraiment :</li>
+</ol>
+<pre><code class="language-bash">pytest -q      # or your test command
+ruff check .
+</code></pre>
+<p><strong>Critère d'acceptation :</strong>
+- Toutes les commandes de <code>AGENTS.md</code> s'exécutent sans erreur.
+- Le fichier ne contient pas de mots génériques (« écris du bon code ») — uniquement des règles vérifiables.
+- Pas plus de 40 lignes.</p>
+<hr />
+<h2 id="tache-2-leffet-dagentsmd-30-min">Tâche 2. L'effet d'AGENTS.md (30 min)</h2>
+<p>Faites la même tâche deux fois dans des sessions <strong>nouvelles</strong> :</p>
+<pre><code>A) sans AGENTS.md (renommez temporairement le fichier)
+B) avec AGENTS.md
+</code></pre>
+<p>La tâche :</p>
+<pre><code>Ajoute une fonction qui additionne les nombres d'une liste de chaînes,
+en ignorant les valeurs non numériques. Écris des tests.
+</code></pre>
+<p><strong>Consignez dans le rapport :</strong>
+| | A (sans) | B (avec) |
+| --- | --- | --- |
+| le style correspondait au projet | | |
+| le bon framework de test a été utilisé | | |
+| nombre d'itérations | | |
+| coût de la session | | |</p>
+<p><strong>Critère d'acceptation :</strong> une sortie montre au moins une différence.</p>
+<hr />
+<h2 id="tache-3-des-liens-plutot-que-des-paraphrases-25-min">Tâche 3. Des liens plutôt que des paraphrases (25 min)</h2>
+<p>Trouvez un module de plus de 200 lignes dans le projet. Comparez deux requêtes :</p>
+<pre><code>Mauvais : « J'ai un module de paiements, il fait plein de choses,
+il y a des fonctions de calcul, corrige l'arrondi »
+
+Bon : « Dans src/payments/calc.py la fonction round_amount arrondit
+à 2 chiffres. Il nous faut un arrondi bancaire (ROUND_HALF_EVEN). Corrige-le et ajoute un test. »
+</code></pre>
+<p><strong>Consignez :</strong> quelle requête a produit le diff le plus précis, et combien de tokens ont été dépensés.</p>
+<hr />
+<h2 id="tache-4-degradation-et-recuperation-40-min">Tâche 4. Dégradation et récupération (40 min)</h2>
+<p>Menez une session « sale » :</p>
+<ol>
+<li>Donnez 4 tâches différentes à la suite dans une même session.</li>
+<li>Après chacune, demandez de la refaire « un peu autrement ».</li>
+<li>À la 5e tâche, demandez « fais comme dans la première tâche, mais pour un autre module ».</li>
+</ol>
+<p><strong>Consignez le résultat</strong> (qualité, style, erreurs).</p>
+<p>Puis dans une nouvelle session :</p>
+<pre><code>Contexte : le projet a un module X, la fonction Y fait Z (fichier src/...).
+Tâche : fais la même chose pour le module A.
+Critère : les tests passent, style comme dans Y.
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> le rapport compare les sessions « sale » et « propre » sur 3 signaux
+(style, précision, coût).</p>
+<hr />
+<h2 id="tache-5-deplacer-la-memoire-dans-un-fichier-25-min">Tâche 5. Déplacer la mémoire dans un fichier (25 min)</h2>
+<p>Créez <code>docs/decisions.md</code> dans le projet et notez-y 3 décisions d'architecture :</p>
+<pre><code class="language-markdown">## ADR-1 : Des tests uniquement via pytest
+## ADR-2 : Les erreurs passent par AppError
+## ADR-3 : Pas de magie ORM, seulement du SQL explicite
+</code></pre>
+<p>Ajoutez un lien dans <code>AGENTS.md</code> :</p>
+<pre><code class="language-markdown">## Documentation
+- Décisions : `docs/decisions.md` (à lire avant tout changement d'architecture)
+</code></pre>
+<p>Vérifiez : dans une nouvelle session, à la question « pourquoi utilise-t-on AppError ? », l'agent trouve le fichier.</p>
+<hr />
+<h2 id="criteres-de-fin">Critères de fin</h2>
+<ul>
+<li class="task"><span class="cb"></span><code>AGENTS.md</code> est créé, les commandes sont vérifiées, ≤ 40 lignes.</li>
+<li class="task"><span class="cb"></span>Il y a un tableau de comparaison A/B de la tâche 2.</li>
+<li class="task"><span class="cb"></span>Il y a une comparaison « paraphrase vs lien ».</li>
+<li class="task"><span class="cb"></span>Il y a un compte rendu de la dégradation de session avec une conclusion.</li>
+<li class="task"><span class="cb"></span><code>docs/decisions.md</code> est créé et lié depuis <code>AGENTS.md</code>.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="02-context.html">← Ingénierie du contexte</a>
+      <a class="next" href="03-spec.html">Spécification et prompt →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

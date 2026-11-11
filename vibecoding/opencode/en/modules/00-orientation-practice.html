@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 00 — Practice · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 00 — Practice · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice active" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/00-orientation-practice.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/00-orientation-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/00-orientation-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="00-orientation.html">← Theory</a></div>
+<h1 id="module-00-practice">Module 00 — Practice</h1>
+<p><strong>Time:</strong> 80 minutes · <strong>Artifact:</strong> <code>labs/00-setup.md</code></p>
+<hr />
+<h2 id="task-1-check-the-environment-10-min">Task 1. Check the environment (10 min)</h2>
+<pre><code class="language-bash">git --version
+opencode --version
+</code></pre>
+<p>Then in the terminal:</p>
+<pre><code class="language-bash">mkdir -p ~/edu/sandbox &amp;&amp; cd ~/edu/sandbox
+git init
+printf 'print(&quot;hello&quot;)\n' &gt; app.py
+git add . &amp;&amp; git commit -m &quot;init&quot;
+</code></pre>
+<p>Start <code>opencode</code> and ask:</p>
+<pre><code>What project is in this folder? What files are there and what do they do?
+</code></pre>
+<p><strong>Acceptance:</strong> the agent named <code>app.py</code> and its contents, and did not invent extra files.</p>
+<hr />
+<h2 id="task-2-the-first-no-15-min">Task 2. The first "no" (15 min)</h2>
+<p>Ask the agent to do something obviously harmful:</p>
+<pre><code>Delete all files in this folder and create a new Rust project.
+</code></pre>
+<p><strong>Do not confirm</strong> the change request right away — read what it is going to do.</p>
+<p>Answer in <code>labs/00-setup.md</code>:</p>
+<ul>
+<li>Did the agent show the list of changes before executing?</li>
+<li>Is it clear from the request what exactly will be deleted?</li>
+<li>What happens if you press "Always allow" for such an action?</li>
+</ul>
+<p>Lesson: <strong>permissions are not bureaucracy, they are a brake before the irreversible.</strong></p>
+<hr />
+<h2 id="task-3-limits-of-competence-20-min">Task 3. Limits of competence (20 min)</h2>
+<p>Ask three questions whose exact answers you know:</p>
+<pre><code>1. What Python version is installed? (check with: python3 --version)
+2. How many lines are in app.py?
+3. What is the latest version of &lt;your library&gt;?
+</code></pre>
+<p>Compare the answers with the facts.</p>
+<p><strong>Acceptance:</strong> in <code>labs/00-setup.md</code> there is a table "question / agent answer / fact / matched?".</p>
+<p>The conclusion you have to formulate yourself: why the third question is more dangerous than the first two.</p>
+<hr />
+<h2 id="task-4-a-branch-as-insurance-20-min">Task 4. A branch as insurance (20 min)</h2>
+<pre><code class="language-bash">git checkout -b agent-experiment
+</code></pre>
+<p>Ask the agent to add an <code>add(a, b)</code> function and a test for it to <code>app.py</code>.
+Then:</p>
+<pre><code class="language-bash">git diff
+</code></pre>
+<p>Read the diff in full. If everything is fine:</p>
+<pre><code class="language-bash">git add . &amp;&amp; git commit -m &quot;add add()&quot;
+git checkout main &amp;&amp; git branch -D agent-experiment   # or merge it if you want to keep it
+</code></pre>
+<p><strong>Acceptance:</strong> the report contains the <code>git diff</code> output (abbreviated is fine) and one sentence: what you would
+reject in this diff if it were 10 times bigger.</p>
+<hr />
+<h2 id="task-5-module-retro-15-min">Task 5. Module retro (15 min)</h2>
+<p>Add to <code>labs/00-setup.md</code>:</p>
+<pre><code class="language-markdown">## Module 00 retro
+- What surprised me:
+- Where the agent got it wrong:
+- What I'm taking into my workflow:
+- Time estimate (plan/actual):
+</code></pre>
+<hr />
+<h2 id="completion-criteria">Completion criteria</h2>
+<ul>
+<li class="task"><span class="cb"></span>All commands from tasks 1–4 were run, the output is recorded.</li>
+<li class="task"><span class="cb"></span>There is a table comparing the agent's answers with the facts.</li>
+<li class="task"><span class="cb"></span>At least one diff was read in full (attached).</li>
+<li class="task"><span class="cb"></span>The retro is filled in.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="00-orientation.html">← Orientation</a>
+      <a class="next" href="01-llm-basics.html">How LLMs work →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

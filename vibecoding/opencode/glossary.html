@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Глоссарий · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Глоссарий · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="modules/00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="modules/02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="modules/03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="modules/04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="modules/06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="modules/07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="modules/09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="modules/10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="rubric.html">Критерии оценки</a>
+    <a class="nav active" href="glossary.html">Глоссарий</a>
+    <a class="nav" href="resources.html">Что читать дальше</a>
+    <a class="nav" href="progress.html">Трекер прогресса</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Шаблоны</a>
+    <a class="nav" href="build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/glossary.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="en/glossary.html" title="English">EN</a>
+  <a class="switch" href="fr/glossary.html" title="Français">FR</a>
+  <a class="switch" href="../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<h1 id="_1">Глоссарий</h1>
+<p>Понятия курса. Растёт по мере прохождения модулей.</p>
+<hr />
+<h2 id="az">A–Z</h2>
+<p><strong>AGENTS.md</strong> — файл с инструкциями проекта, читается автоматически в каждой сессии.</p>
+<p><strong>Agent (агент)</strong> — LLM в цикле «решение → вызов инструмента → результат → решение».</p>
+<p><strong>Auto (<code>--auto</code>)</strong> — режим авто-одобрения действий, не запрещённых правилами. Только в песочнице.</p>
+<hr />
+<h2 id="_2">В</h2>
+<p><strong>Вайбкодинг</strong> — разработка, где код в значительной степени пишет агент, а человек
+ставит задачу и проверяет результат.</p>
+<p><strong>Верификация</strong> — автоматическая проверка результата (тесты, типы, линтер, запуск).</p>
+<hr />
+<h2 id="_3">Г</h2>
+<p><strong>Галлюцинация</strong> — правдоподобный, но неверный вывод модели. Следствие устройства, не «баг».</p>
+<hr />
+<h2 id="_4">Д</h2>
+<p><strong>Дифф (diff)</strong> — построчное представление изменений; основной объект ревью.</p>
+<p><strong>Декомпозиция</strong> — разбиение задачи на независимо проверяемые шаги.</p>
+<hr />
+<h2 id="_5">К</h2>
+<p><strong>Контекст</strong> — всё, что модель видит в одном запросе: инструкции, файлы, история, вопрос.</p>
+<p><strong>Контекстное окно</strong> — максимальный объём контекста в токенах.</p>
+<p><strong>Компакция</strong> — автоматическое сжатие истории сессии при заполнении контекста.</p>
+<p><strong>Кэш</strong> — сохранённый стабильный префикс запроса; чтение из кэша в 5–10 раз дешевле.</p>
+<hr />
+<h2 id="_6">Л</h2>
+<p><strong>Lost in the middle</strong> — эффект, при котором информация в середине длинного контекста
+используется хуже, чем в начале и в конце.</p>
+<hr />
+<h2 id="_7">М</h2>
+<p><strong>MCP (Model Context Protocol)</strong> — протокол подключения внешних инструментов к агенту.</p>
+<p><strong>Модель</strong> — нейросеть, предсказывающая следующий токен.</p>
+<hr />
+<h2 id="_8">О</h2>
+<p><strong>Оракул</strong> — автоматический источник «да/нет»: тест, компилятор, линтер, запуск.</p>
+<hr />
+<h2 id="_9">П</h2>
+<p><strong>Permission (право)</strong> — правило <code>action + resource + effect</code>, определяющее, что агенту можно.</p>
+<p><strong>Plan-first</strong> — подход «сначала план, потом код».</p>
+<p><strong>Промпт</strong> — текстовая инструкция модели. В курсе трактуется как спецификация.</p>
+<hr />
+<h2 id="_10">Р</h2>
+<p><strong>Reasoning-токены</strong> — скрытые токены рассуждения у «думающих» моделей; дороже, но качественнее
+на сложных задачах.</p>
+<p><strong>Ревью</strong> — чтение и проверка диффа человеком.</p>
+<hr />
+<h2 id="_11">С</h2>
+<p><strong>Сессия</strong> — один рабочий контекст агента; единица гигиены.</p>
+<p><strong>Спека</strong> — формализованное описание задачи с проверяемыми критериями.</p>
+<p><strong>Субагент</strong> — отдельная сессия агента для подзадачи; не видит основной контекст.</p>
+<p><strong>Skill (навык)</strong> — папка с инструкциями и ресурсами, подключаемая по описанию.</p>
+<hr />
+<h2 id="_12">Т</h2>
+<p><strong>Токен</strong> — единица текста для модели (3–4 символа в среднем).</p>
+<p><strong>Tool calling</strong> — механизм, при котором модель запрашивает вызов инструмента.</p>
+<hr />
+<h2 id="_13">Ф</h2>
+<p><strong>Few-shot</strong> — приём с примерами в промпте, задающими формат или стиль.</p>
+<p><strong>Fast / mini / flash</strong> — класс дешёвых быстрых моделей.</p>
+<p><strong>Frontier</strong> — класс самых сильных (и дорогих) моделей.</p>
+<hr />
+<h2 id="_14">Ц</h2>
+<p><strong>CI (Continuous Integration)</strong> — автоматические проверки на каждый коммит.</p>
+<hr />
+<h2 id="_15">Э</h2>
+<p><strong>Эмбеддинг</strong> — векторное представление текста; используется для поиска, не для генерации.</p>
+<hr />
+<h2 id="_16">Я</h2>
+<p><strong>Якорение</strong> — эффект, при котором модель повторяет своё раннее (возможно ошибочное) решение.</p>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

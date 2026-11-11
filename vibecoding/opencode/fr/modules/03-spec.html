@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 03 — Spécification et prompt · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 03 — Spécification et prompt · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/03-spec.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/03-spec.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/03-spec.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="03-spec-practice.html">Pratique →</a></div>
+<h1 id="module-03-specification-et-prompt">Module 03 — Spécification et prompt</h1>
+<p><strong>Temps :</strong> 5 heures · <strong>Format :</strong> théorie 100 min + pratique 200 min</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-un-prompt-nest-pas-une-demande-cest-une-specification">1. Un prompt n'est pas une demande, c'est une spécification</h2>
+<p>La différence entre « fais-le bien » et « fais-le comme ça », c'est la présence de <strong>critères vérifiables</strong>.</p>
+<pre><code>Tâche sans spec :  &quot;ajouter l'autorisation&quot;
+Tâche avec spec :  &quot;endpoint POST /login, accepte {email, password},
+                    renvoie 200 {token} ou 401 {error},
+                    le mot de passe est haché avec bcrypt, le token vit 24 h,
+                    tests : login valide, mauvais mot de passe, email manquant&quot;
+</code></pre>
+<p>Le second se vérifie. Le premier — seulement « à l'œil ».</p>
+<h2 id="2-anatomie-dune-spec">2. Anatomie d'une spec</h2>
+<p>Une spec minimale qui fonctionne, c'est 6 blocs :</p>
+<pre><code class="language-markdown">## Contexte
+Ce qui existe déjà, où ça se trouve, ce qui ne doit pas casser.
+
+## Objectif
+Une phrase : ce qui doit apparaître.
+
+## Exigences
+Une liste numérotée d'affirmations vérifiables.
+
+## Contraintes
+Ce qui est interdit : dépendances, fichiers, patterns, style.
+
+## Critères d'acceptation
+Des vérifications concrètes : commandes, tests, scénarios.
+
+## Hors périmètre
+Un « on ne fait pas ça » explicite — une protection contre la dérive du périmètre.
+</code></pre>
+<p>Le bloc « hors périmètre » est celui qui rapporte le plus : l'agent adore « améliorer les choses en passant ».</p>
+<h2 id="3-les-formulations-qui-marchent">3. Les formulations qui marchent</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Marche</th>
+<th>Ne marche pas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>« fonction <code>parse_date(s: str) -&gt; date</code> »</td>
+<td>« une fonction pour les dates »</td>
+</tr>
+<tr>
+<td>« renvoyer <code>None</code> si le parsing échoue »</td>
+<td>« gérer les erreurs »</td>
+</tr>
+<tr>
+<td>« comme dans <code>services/billing.py</code> »</td>
+<td>« dans notre style »</td>
+</tr>
+<tr>
+<td>« pas plus de 50 lignes »</td>
+<td>« de façon compacte »</td>
+</tr>
+<tr>
+<td>« d'abord un plan, ne pas écrire de code »</td>
+<td>« fais-le bien »</td>
+</tr>
+</tbody>
+</table></div>
+<p>Règle : <strong>remplacer chaque adjectif par une condition vérifiable.</strong></p>
+<h2 id="4-le-plan-dabord-lastuce-la-moins-chere">4. Le plan d'abord : l'astuce la moins chère</h2>
+<p>Demandez un plan avant le code :</p>
+<pre><code>N'écris pas de code. Fais un plan : quels fichiers tu vas toucher, quelles fonctions tu vas
+ajouter, comment on va vérifier. Liste les risques et ce qui peut casser.
+</code></pre>
+<p>Ce que ça vous donne :</p>
+<ul>
+<li>les malentendus sont visibles en 30 secondes, pas après 300 lignes ;</li>
+<li>le plan se corrige avec des mots ;</li>
+<li>le plan devient une checklist d'acceptation ;</li>
+<li>du contexte est économisé.</li>
+</ul>
+<p>Un mauvais plan est une raison de reformuler la tâche, pas d'« expliquer au modèle qu'il a tort ».</p>
+<h2 id="5-decomposition">5. Décomposition</h2>
+<p>Une grosse tâche → une chaîne d'étapes vérifiables :</p>
+<pre><code>1. Ajouter le modèle de données + la migration
+2. Ajouter la couche d'accès
+3. Ajouter l'endpoint + les tests
+4. Brancher dans l'UI
+5. Supprimer l'ancien code
+</code></pre>
+<p>Chaque étape : son propre diff, son propre commit, des tests verts. Ainsi une erreur reste localisée à une étape,
+pas « quelque part dans 800 lignes ».</p>
+<h2 id="6-exemples-few-shot-et-format">6. Exemples (few-shot) et format</h2>
+<p>Vous voulez un style précis — donnez un exemple de code fini. Le modèle copie la structure
+plus fiablement qu'il ne comprend une description.</p>
+<p>Vous voulez un format de réponse précis — dites-le explicitement : « diff seulement », « fichier X seulement »,
+« un tableau », « pas d'explications ».</p>
+<h2 id="7-ce-quil-faut-eviter">7. Ce qu'il faut éviter</h2>
+<ul>
+<li><strong>Exigences doubles</strong> : « fais-le vite et de qualité ».</li>
+<li><strong>Exigences cachées</strong> : « tu vois ce que je veux dire » → le modèle l'a compris à sa façon.</li>
+<li><strong>Tâches monstres</strong> : 5 objectifs dans une seule demande.</li>
+<li><strong>Demandes « réécris tout »</strong> : rien à vérifier, tout casse d'un coup.</li>
+</ul>
+<h2 id="8-le-prompt-comme-artefact">8. Le prompt comme artefact</h2>
+<p>Une bonne spec survit à la session : vous pouvez la mettre dans <code>docs/specs/</code>, en discuter en review,
+la réutiliser. Un prompt qui « a marché » est un actif du projet, pas un déchet de l'historique.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>En quoi une spec diffère-t-elle d'une demande ? Nommez le trait distinctif.</li>
+<li>Pourquoi le bloc « hors périmètre » est-il nécessaire ?</li>
+<li>Pourquoi le plan d'abord coûte-t-il moins cher que d'aller droit au code ?</li>
+<li>Que faire si le plan est mauvais — et que ne faut-il surtout pas faire ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="03-spec-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="02-context-practice.html">← Ingénierie du contexte — pratique</a>
+      <a class="next" href="03-spec-practice.html">Spécification et prompt — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

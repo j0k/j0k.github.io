@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 05 — Pratique : permissions et isolation · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 05 — Pratique : permissions et isolation · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice active" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/05-agent-loop-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/05-agent-loop-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/05-agent-loop-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="05-agent-loop.html">← Théorie</a></div>
+<h1 id="module-05-pratique-permissions-et-isolation">Module 05 — Pratique : permissions et isolation</h1>
+<p><strong>Temps :</strong> 150 minutes · <strong>Artefact :</strong> <code>labs/05-agent-loop/</code></p>
+<hr />
+<h2 id="tache-1-construire-un-modele-de-menace-25-min">Tâche 1. Construire un modèle de menace (25 min)</h2>
+<p>Pour votre projet d'apprentissage, notez 10 actions que l'agent <strong>ne doit pas</strong> faire
+sans demander. Répartissez-les en trois catégories : <code>deny</code>, <code>ask</code>, <code>allow</code>.</p>
+<p><strong>Acceptation :</strong> un tableau avec une justification pour chaque <code>deny</code>.</p>
+<p>Exemple :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Décision</th>
+<th>Pourquoi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git push</code></td>
+<td>deny</td>
+<td>publication vers l'extérieur</td>
+</tr>
+<tr>
+<td>lecture de <code>.env</code></td>
+<td>deny</td>
+<td>secrets</td>
+</tr>
+<tr>
+<td><code>pytest</code></td>
+<td>allow</td>
+<td>sans danger, nécessaire souvent</td>
+</tr>
+<tr>
+<td><code>alembic upgrade</code></td>
+<td>ask</td>
+<td>modifie la base</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="tache-2-configurer-les-regles-30-min">Tâche 2. Configurer les règles (30 min)</h2>
+<p>Ajoutez des règles dans <code>opencode.jsonc</code> (projet ou global) et vérifiez :</p>
+<pre><code class="language-bash">opencode debug config | grep -A2 permissions
+</code></pre>
+<p>Puis testez-les en action :</p>
+<ol>
+<li>Demandez <code>git status</code> — il ne doit pas demander.</li>
+<li>Demandez <code>git push</code> — il doit refuser.</li>
+<li>Demandez-lui de lire <code>.env</code> — il doit refuser/demander.</li>
+</ol>
+<p><strong>Acceptation :</strong> les trois scénarios se sont comportés comme prévu, le rapport contient captures d'écran/logs.</p>
+<hr />
+<h2 id="tache-3-isolation-via-branche-et-worktree-40-min">Tâche 3. Isolation via branche et worktree (40 min)</h2>
+<p><strong>Branche :</strong></p>
+<pre><code class="language-bash">git checkout -b agent/refactor-utils
+</code></pre>
+<p>Donnez à l'agent une tâche qui couvre 2–3 fichiers. Vérifiez que <code>main</code> n'a pas bougé :</p>
+<pre><code class="language-bash">git diff main --stat
+</code></pre>
+<p><strong>Worktree :</strong></p>
+<pre><code class="language-bash">git worktree add ../sandbox-agent -b agent/experiment
+cd ../sandbox-agent
+</code></pre>
+<p>Lancez-y un agent avec une autre tâche. Vérifiez que le dossier principal est propre.</p>
+<p><strong>Acceptation :</strong> le rapport contient la sortie de <code>git diff main --stat</code> et de <code>git worktree list</code>.</p>
+<hr />
+<h2 id="tache-4-une-action-dangereuse-sous-controle-25-min">Tâche 4. Une action dangereuse sous contrôle (25 min)</h2>
+<p>Demandez à l'agent d'exécuter une commande potentiellement dangereuse (dans un sandbox !) :</p>
+<pre><code>Supprime le dossier de build et reconstruis le projet.
+</code></pre>
+<p>Vérifiez : a-t-il demandé, a-t-il montré un plan de ce qui est supprimé exactement.
+Puis mettez <code>deny</code> sur <code>rm -rf *</code> et recommencez — l'agent doit trouver un autre chemin
+(par exemple <code>rm -r build</code>, ou proposer une commande manuelle).</p>
+<p><strong>Acceptation :</strong> le rapport couvre les deux comportements et la conclusion : pourquoi « l'agent a trouvé un contournement » n'est pas un bug mais un signal.</p>
+<hr />
+<h2 id="tache-5-un-subagent-pour-la-reconnaissance-30-min">Tâche 5. Un subagent pour la reconnaissance (30 min)</h2>
+<p>Donnez au subagent une tâche :</p>
+<pre><code>Trouve tous les endroits du dépôt où une requête à la base est exécutée directement
+(sans la couche repository). Renvoie une liste de fichiers et de lignes, sans modification.
+</code></pre>
+<p>Puis utilisez le résultat dans la session principale.</p>
+<p><strong>Acceptation :</strong> le rapport du subagent est une liste compacte ; le contexte principal n'est pas gonflé (comparez
+le coût avec un « lis tout le dépôt » direct).</p>
+<hr />
+<h2 id="criteres-de-soumission">Critères de soumission</h2>
+<ul>
+<li class="task"><span class="cb"></span>Modèle de menace : 10 actions avec catégories et justification.</li>
+<li class="task"><span class="cb"></span>Règles appliquées et vérifiées sur 3 scénarios.</li>
+<li class="task"><span class="cb"></span>Branche/worktree utilisé, preuves dans le rapport.</li>
+<li class="task"><span class="cb"></span>Il y a une analyse de l'action dangereuse et du comportement de l'agent.</li>
+<li class="task"><span class="cb"></span>Le subagent a fait la reconnaissance, il y a une comparaison des coûts.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="05-agent-loop.html">← Boucle d'agent et permissions</a>
+      <a class="next" href="06-economics.html">Économie et choix du modèle →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

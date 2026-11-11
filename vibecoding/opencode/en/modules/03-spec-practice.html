@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 03 — Practice: from "make it nice" to a spec · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 03 — Practice: from "make it nice" to a spec · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice active" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/03-spec-practice.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/03-spec-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/03-spec-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="03-spec.html">← Theory</a></div>
+<h1 id="module-03-practice-from-make-it-nice-to-a-spec">Module 03 — Practice: from "make it nice" to a spec</h1>
+<p><strong>Time:</strong> 200 minutes · <strong>Artifact:</strong> <code>labs/03-specs/</code></p>
+<hr />
+<h2 id="task-1-break-down-three-tasks-40-min">Task 1. Break down three tasks (40 min)</h2>
+<p>Take three vague tasks:</p>
+<pre><code>A) &quot;Add caching&quot;
+B) &quot;Fix the bugs in the API&quot;
+C) &quot;Make the interface prettier&quot;
+</code></pre>
+<p>For each, write a spec using the <code>templates/spec.md</code> template, including the "out of scope" block.</p>
+<p><strong>Acceptance:</strong> each spec has at least 3 verifiable requirements and 2 acceptance criteria
+(a command or a test).</p>
+<hr />
+<h2 id="task-2-comparison-in-practice-60-min">Task 2. Comparison in practice (60 min)</h2>
+<p>Pick one spec (for example, A) and implement the task twice:</p>
+<p><strong>Run 1 — "vibe":</strong></p>
+<pre><code>Add caching to the project.
+</code></pre>
+<p><strong>Run 2 — by the spec:</strong></p>
+<pre><code>&lt;insert the full spec&gt;
+Start with a plan. Don't write code until I confirm.
+</code></pre>
+<p><strong>Record a table:</strong>
+| Metric | Run 1 | Run 2 |
+| --- | --- | --- |
+| files touched | | |
+| unnecessary changes | | |
+| tests added | | |
+| passed on the first try | | |
+| cost | | |</p>
+<p><strong>Acceptance:</strong> there is a conclusion about which part of the spec had the biggest effect.</p>
+<hr />
+<h2 id="task-3-plan-before-code-30-min">Task 3. Plan before code (30 min)</h2>
+<p>For spec B (bugs in the API):</p>
+<pre><code>Don't write code. Give me a plan:
+1) which files you'll look at and why;
+2) hypotheses about the causes of the bugs;
+3) how you'll verify each hypothesis;
+4) what might break.
+</code></pre>
+<p>Edit the plan (remove the excess, add what's missing), then allow the implementation.</p>
+<p><strong>Acceptance:</strong> the report contains the original plan, your edits, and the final diff.
+Compare: how many plan edits vs how many code edits.</p>
+<hr />
+<h2 id="task-4-decomposition-40-min">Task 4. Decomposition (40 min)</h2>
+<p>Take task C and break it into 4–6 steps so that each one:</p>
+<ul>
+<li>changes ≤ 2 files;</li>
+<li>has its own verification criterion;</li>
+<li>is committed separately.</li>
+</ul>
+<p><strong>Acceptance:</strong> a list of steps with criteria + at least 2 completed steps with commits.</p>
+<hr />
+<h2 id="task-5-prompt-library-30-min">Task 5. Prompt library (30 min)</h2>
+<p>Create <code>labs/03-specs/prompts.md</code> — 5 reusable templates:</p>
+<ol>
+<li>"Give me a plan, don't write code"</li>
+<li>"Explain the existing code"</li>
+<li>"Add tests for a function"</li>
+<li>"Find the cause of a failing test"</li>
+<li>"Review my diff like a strict reviewer"</li>
+</ol>
+<p>Format: title, template, when to use it, a filled-in example.</p>
+<hr />
+<h2 id="submission-criteria">Submission criteria</h2>
+<ul>
+<li class="task"><span class="cb"></span>Three specs from the template, with an "out of scope" block.</li>
+<li class="task"><span class="cb"></span>"Vibe vs spec" comparison table.</li>
+<li class="task"><span class="cb"></span>A plan with your edits and the final diff.</li>
+<li class="task"><span class="cb"></span>Decomposition + ≥ 2 commits.</li>
+<li class="task"><span class="cb"></span><code>prompts.md</code> with 5 templates.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="03-spec.html">← Spec and prompt</a>
+      <a class="next" href="04-oracles.html">Oracles and checks →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

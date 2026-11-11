@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Обзор курса · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Обзор курса · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav active" href="index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="modules/00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="modules/00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="modules/01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="modules/02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="modules/03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="modules/04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="modules/05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="modules/06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="modules/07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="modules/08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="modules/09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="modules/10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="modules/10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="rubric.html">Критерии оценки</a>
+    <a class="nav" href="glossary.html">Глоссарий</a>
+    <a class="nav" href="resources.html">Что читать дальше</a>
+    <a class="nav" href="progress.html">Трекер прогресса</a>
+    <a class="nav" href="labs.html">Labs</a>
+    <a class="nav" href="templates.html">Шаблоны</a>
+    <a class="nav" href="build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/index.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="en/index.html" title="English">EN</a>
+  <a class="switch" href="fr/index.html" title="Français">FR</a>
+  <a class="switch" href="../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<h1 id="opencode">Вайбкодинг с OpenCode — практический курс</h1>
+<p>Курс о том, как получать <strong>предсказуемый</strong> результат от AI-агентов в разработке.
+Не про «секретные промпты», а про контекст, проверку и инженерную дисциплину.</p>
+<p>Автор: команда курса · Версия 1.0 · OpenCode V2</p>
+<hr />
+<h2 id="_1">Чему вы научитесь</h2>
+<p>К концу курса вы сможете:</p>
+<ol>
+<li>Объяснить, как устроена LLM и почему она ошибается, — без мистики.</li>
+<li>Сформулировать задачу так, чтобы агент выдавал рабочий код с первого-второго раза.</li>
+<li>Настроить проект под агента: <code>AGENTS.md</code>, права, команды сборки и тестов.</li>
+<li>Работать в цикле «спека → план → маленький дифф → проверка → коммит».</li>
+<li>Читать диффы агента и находить опасные изменения.</li>
+<li>Считать стоимость сессии и выбирать модель под задачу, а не «самую умную».</li>
+<li>Собрать собственный инструментарий: навыки, команды, субагенты.</li>
+</ol>
+<hr />
+<h2 id="_2">Для кого</h2>
+<ul>
+<li>Студенты, предприниматели, маркетологи, эксперты, фаундеры.</li>
+<li>Все, кто пробовал «попросить ChatGPT написать проект» и получил кашу.</li>
+</ul>
+<p><strong>Требуется заранее:</strong> git (ветки, дифф, откат), терминал, один язык программирования
+с тестами (Python/JS/Go/Java — любой), установленный OpenCode.</p>
+<p>Проверка готовности:</p>
+<pre><code class="language-bash">git --version
+opencode --version
+node --version   # или python3 --version
+</code></pre>
+<hr />
+<h2 id="_3">Как устроен курс</h2>
+<pre><code>теория   ~40%  — понятия и ментальные модели, без воды
+практика ~60%  — упражнения с критериями приёмки
+</code></pre>
+<p>Каждый модуль — папка с двумя обязательными файлами:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Файл</th>
+<th>Что внутри</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>теория: понятия, мини-лекция, вопросы на понимание</td>
+</tr>
+<tr>
+<td><code>practice.md</code></td>
+<td>упражнения, критерии приёмки, время</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Правило курса:</strong> модуль не пройден, пока не сдан артефакт в <code>labs/</code>.</p>
+<hr />
+<h2 id="_4">Программа</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Модуль</th>
+<th>Теория</th>
+<th>Практика</th>
+<th>Часы</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td><a href="modules/00-orientation.html">Ориентация</a></td>
+<td>что такое вайбкодинг, роли, границы</td>
+<td>настроить окружение, первая сессия</td>
+<td>2</td>
+</tr>
+<tr>
+<td>01</td>
+<td><a href="modules/01-llm-basics.html">Как работают LLM</a></td>
+<td>токены, контекст, сэмплинг, галлюцинации</td>
+<td>эксперименты, ломающие интуицию</td>
+<td>4</td>
+</tr>
+<tr>
+<td>02</td>
+<td><a href="modules/02-context.html">Контекст-инжиниринг</a></td>
+<td>окно, <code>AGENTS.md</code>, гигиена сессии</td>
+<td>написать <code>AGENTS.md</code>, измерить деградацию</td>
+<td>4</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="modules/03-spec.html">Спека и промпт</a></td>
+<td>спека-first, критерии, план</td>
+<td>превратить 3 задачи в спеки</td>
+<td>5</td>
+</tr>
+<tr>
+<td>04</td>
+<td><a href="modules/04-oracles.html">Оракулы и проверка</a></td>
+<td>тесты, типы, линтеры, CI</td>
+<td>TDD-цикл с агентом</td>
+<td>5</td>
+</tr>
+<tr>
+<td>05</td>
+<td><a href="modules/05-agent-loop.html">Агентный цикл и права</a></td>
+<td>tool calling, permissions, изоляция</td>
+<td>deny-лист, worktree, <code>--auto</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td>06</td>
+<td><a href="modules/06-economics.html">Экономика и выбор модели</a></td>
+<td>цена, кэш, окно, латентность</td>
+<td>посчитать стоимость, сравнить модели</td>
+<td>3</td>
+</tr>
+<tr>
+<td>07</td>
+<td><a href="modules/07-refactor.html">Рефакторинг в масштабе</a></td>
+<td>многофайловые изменения, зелёный репо</td>
+<td>миграция модуля агентом</td>
+<td>5</td>
+</tr>
+<tr>
+<td>08</td>
+<td><a href="modules/08-review.html">Ревью и quality gates</a></td>
+<td>чтение диффов, красные флаги, безопасность</td>
+<td>поймать 3 плохих диффа</td>
+<td>4</td>
+</tr>
+<tr>
+<td>09</td>
+<td><a href="modules/09-custom.html">Кастомизация</a></td>
+<td>skills, commands, subagents, MCP</td>
+<td>собрать свой инструментарий</td>
+<td>4</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="modules/10-capstone.html">Капстоун</a></td>
+<td>—</td>
+<td>фича от спеки до CI + ретро</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<p>Итого ≈ 50 часов. Порядок обязателен: 01–04 — база, без неё 05–09 превращаются в набор кнопок.</p>
+<hr />
+<h2 id="_5">Расписание</h2>
+<p><strong>Семестр (16 недель, 3 ч/нед):</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Недели</th>
+<th>Модули</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>00, 01</td>
+</tr>
+<tr>
+<td>3–4</td>
+<td>02, 03</td>
+</tr>
+<tr>
+<td>5–6</td>
+<td>04</td>
+</tr>
+<tr>
+<td>7–8</td>
+<td>05</td>
+</tr>
+<tr>
+<td>9</td>
+<td>06</td>
+</tr>
+<tr>
+<td>10–11</td>
+<td>07</td>
+</tr>
+<tr>
+<td>12–13</td>
+<td>08</td>
+</tr>
+<tr>
+<td>14</td>
+<td>09</td>
+</tr>
+<tr>
+<td>15–16</td>
+<td>10</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Интенсив (2 недели, 25 ч/нед):</strong> по одному модулю в день, капстоун в последние 2 дня.</p>
+<hr />
+<h2 id="_6">Оценка</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Часть</th>
+<th>Вес</th>
+<th>Что оценивается</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Понимание</td>
+<td>25%</td>
+<td>ответы на вопросы модулей, устная защита</td>
+</tr>
+<tr>
+<td>Практика</td>
+<td>45%</td>
+<td>артефакты в <code>labs/</code>, прохождение критериев приёмки</td>
+</tr>
+<tr>
+<td>Капстоун</td>
+<td>30%</td>
+<td>фича до зелёного CI + ретро по метрикам</td>
+</tr>
+</tbody>
+</table></div>
+<p>Проходной балл — <strong>70%</strong>, капстоун обязателен. Подробно: <a href="rubric.html">rubric.md</a>.</p>
+<hr />
+<h2 id="_7">Структура репозитория</h2>
+<pre><code>Vibecode/opencode/
+├── README.md            ← вы здесь
+├── rubric.md            ← критерии оценки
+├── glossary.md          ← понятия (растёт по ходу курса)
+├── resources.md         ← что читать сверх курса
+├── progress.md          ← трекер прогресса
+├── templates/           ← шаблоны артефактов
+│   ├── AGENTS.md
+│   ├── spec.md
+│   ├── review-checklist.md
+│   └── retro.md
+├── modules/             ← 00..10, у каждого README.md + practice.md
+└── labs/                ← сюда складываются артефакты
+    └── README.md
+</code></pre>
+<hr />
+<h2 id="_8">Три правила, важнее всего остального</h2>
+<ol>
+<li><strong>Не принимать дифф, который не прочитал.</strong> Вайбкодинг без чтения диффа — кредит под 300%.</li>
+<li><strong>Нет оракула — нет задачи.</strong> Если результат нельзя проверить командой, задача не готова к агенту.</li>
+<li><strong>Одна задача — одна сессия.</strong> Смешивание целей в одном контексте — главная причина «модель отупела».</li>
+</ol>
+<hr />
+<h2 id="_9">С чего начать прямо сейчас</h2>
+<ol>
+<li>Прочитать <a href="modules/00-orientation.html">modules/00-orientation/README.md</a>.</li>
+<li>Заполнить <a href="progress.html">progress.md</a> — поставить дату старта.</li>
+<li>Открыть терминал в своём учебном проекте и запустить <code>opencode</code>.</li>
+</ol>
+    </article>
+    <div class="pager"></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

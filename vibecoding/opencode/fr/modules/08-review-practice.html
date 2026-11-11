@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 08 — Pratique : attraper un mauvais diff · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 08 — Pratique : attraper un mauvais diff · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice active" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/08-review-practice.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/08-review-practice.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/08-review-practice.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="08-review.html">← Théorie</a></div>
+<h1 id="module-08-pratique-attraper-un-mauvais-diff">Module 08 — Pratique : attraper un mauvais diff</h1>
+<p><strong>Temps :</strong> 160 minutes · <strong>Livrable :</strong> <code>labs/08-review/</code></p>
+<hr />
+<h2 id="tache-1-diffs-dentrainement-40-min">Tâche 1. Diffs d'entraînement (40 min)</h2>
+<p>Créez trois « mauvais » diffs (à la main ou avec un agent) :</p>
+<p><strong>Diff A — trou de sécurité :</strong></p>
+<pre><code class="language-diff">- if not user.is_active: return 403
++ # no check needed
+</code></pre>
+<p><strong>Diff B — erreur avalée :</strong></p>
+<pre><code class="language-diff">- raise PaymentError(...)
++ except Exception: pass
+</code></pre>
+<p><strong>Diff C — test ajusté :</strong></p>
+<pre><code class="language-diff">- assert calculate(2, 3) == 5
++ assert calculate(2, 3) is not None
+</code></pre>
+<p>Relisez chacun à l'aide de <code>templates/review-checklist.md</code>.</p>
+<p><strong>Critère d'acceptation :</strong> pour chaque diff — une remarque précise avec fichier/ligne et une correction proposée.</p>
+<hr />
+<h2 id="tache-2-relire-un-vrai-diff-dagent-40-min">Tâche 2. Relire un vrai diff d'agent (40 min)</h2>
+<p>Prenez le diff du module 07 (migration) ou faites une nouvelle modification avec un agent.</p>
+<p>Passez la checklist :</p>
+<ul>
+<li class="task"><span class="cb"></span>toutes les suppressions lues</li>
+<li class="task"><span class="cb"></span>aucun <code>except: pass</code></li>
+<li class="task"><span class="cb"></span>aucun <code>skip</code>/<code>xfail</code> sans raison</li>
+<li class="task"><span class="cb"></span>aucun stub du genre <code>return None  # TODO</code></li>
+<li class="task"><span class="cb"></span>aucune nouvelle dépendance (ou elles sont justifiées)</li>
+<li class="task"><span class="cb"></span>les tests vérifient un comportement, pas « not None »</li>
+<li class="task"><span class="cb"></span>aucun secret</li>
+<li class="task"><span class="cb"></span>les modifications restent dans le périmètre de la tâche</li>
+</ul>
+<p><strong>Critère d'acceptation :</strong> une checklist remplie + au moins une remarque trouvée.</p>
+<hr />
+<h2 id="tache-3-second-avis-30-min">Tâche 3. Second avis (30 min)</h2>
+<p>Demandez à <strong>un autre</strong> modèle ou à un sous-agent neuf de relire le diff :</p>
+<pre><code>You are a strict reviewer. The diff is below. Find problems only:
+deleted checks, swallowed errors, useless tests,
+out-of-scope changes, secrets. Format: file:line — problem — how to fix.
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> comparez ce que vous avez trouvé et ce que l'agent a trouvé. Notez ce que vous avez manqué.</p>
+<hr />
+<h2 id="tache-4-ecrire-une-checklist-de-relecture-25-min">Tâche 4. Écrire une checklist de relecture (25 min)</h2>
+<p>Créez <code>labs/08-review/checklist.md</code> — votre propre checklist pour votre stack (10 à 15 points).
+Ajoutez-la à <code>AGENTS.md</code> sous forme de commande :</p>
+<pre><code class="language-markdown">## Review
+Before committing, go through `.review-checklist.md` and list the problems you find.
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> la checklist est spécifique à votre projet, pas des mots génériques.</p>
+<hr />
+<h2 id="tache-5-garde-fou-qualite-en-ci-25-min">Tâche 5. Garde-fou qualité en CI (25 min)</h2>
+<p>Ajoutez une CI minimale (GitHub Actions ou un pre-commit local) :</p>
+<pre><code class="language-yaml">- run: ./scripts/check.sh
+- run: grep -rn &quot;sk-&quot; --include=*.py . &amp;&amp; exit 1 || exit 0
+</code></pre>
+<p><strong>Critère d'acceptation :</strong> le garde-fou échoue sur un commit volontairement cassé et passe sur un commit normal.</p>
+<hr />
+<h2 id="criteres-de-rendu">Critères de rendu</h2>
+<ul>
+<li class="task"><span class="cb"></span>Trois diffs d'entraînement analysés.</li>
+<li class="task"><span class="cb"></span>Un vrai diff est passé par la checklist, avec des remarques.</li>
+<li class="task"><span class="cb"></span>Une comparaison « moi vs l'agent relecteur » existe.</li>
+<li class="task"><span class="cb"></span>Votre propre checklist est branchée dans <code>AGENTS.md</code>.</li>
+<li class="task"><span class="cb"></span>Le garde-fou CI fonctionne (échoue/passe).</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="08-review.html">← Revue et quality gates</a>
+      <a class="next" href="09-custom.html">Personnalisation →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

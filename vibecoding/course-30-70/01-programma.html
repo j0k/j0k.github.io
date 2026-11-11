@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Программа — Вайбкодинг 30/70</title>
+<meta property="og:title" content="Программа — Вайбкодинг 30/70">
+<meta property="og:type" content="article">
+<style>
+:root{
+  --bg:#fbfaf7; --panel:#ffffff; --ink:#1a1a1a; --muted:#6b6b6b;
+  --line:#e6e2da; --accent:#2f5d50; --accent-soft:#eaf1ee; --code:#f4f2ed;
+  --warn:#8a4b2f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:flex; min-height:100vh; align-items:flex-start}
+
+/* --- сайдбар --- */
+.side{
+  width:268px; flex:0 0 268px; position:sticky; top:0; height:100vh;
+  overflow-y:auto; background:var(--panel); border-right:1px solid var(--line);
+  padding:26px 18px 40px;
+}
+.brand{display:block; text-decoration:none; color:var(--ink); margin-bottom:4px}
+.brand b{font-size:15px; letter-spacing:.02em; display:block}
+.brand span{font-size:12px; color:var(--muted)}
+.side .ratio{
+  margin:16px 0 22px; font-size:11.5px; color:var(--accent);
+  background:var(--accent-soft); border-radius:6px; padding:7px 10px; letter-spacing:.02em;
+}
+.side nav a{
+  display:block; text-decoration:none; color:var(--ink); padding:8px 10px;
+  border-radius:6px; font-size:14px; border-left:2px solid transparent;
+}
+.side nav a small{display:block; color:var(--muted); font-size:11.5px; line-height:1.3}
+.side nav a:hover{background:#f6f4f0}
+.side nav a.active{background:var(--accent-soft); border-left-color:var(--accent); font-weight:600}
+.side nav a.active small{color:var(--accent)}
+.side .foot{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:11.5px; color:var(--muted); line-height:1.5;
+}
+.side .foot a{color:var(--accent); text-decoration:none}
+.side .foot a:hover{text-decoration:underline}
+
+/* --- контент --- */
+main{flex:1 1 auto; min-width:0; padding:52px 56px 90px; max-width:900px}
+
+/* верхняя навигация: выход из курса, share, язык, переключение курсов */
+.topbar{
+  position:sticky; top:0; z-index:20; display:flex; align-items:center;
+  gap:8px; flex-wrap:wrap; margin:-26px 0 24px; padding:11px 0;
+  background:var(--bg); border-bottom:1px solid var(--line); font-size:13.5px;
+}
+.topbar a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+.topbar a:hover{border-bottom-color:var(--accent)}
+.topbar .home{font-weight:650}
+.topbar .sep{color:#c9c3b8}
+.topbar .here{color:var(--muted)}
+.topbar .spacer{flex:1 1 auto}
+.topbar .switch{
+  font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px;
+  transition:color .15s, border-color .15s;
+}
+.topbar .switch:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share{
+  font:inherit; font-size:12.5px; color:var(--muted); background:var(--panel);
+  border:1px solid var(--line); padding:5px 12px; border-radius:999px; cursor:pointer;
+  transition:color .15s, border-color .15s, background .15s;
+}
+.topbar .share:hover{color:var(--accent); border-color:var(--accent)}
+.topbar .share.copied{color:#fff; background:var(--accent); border-color:var(--accent)}
+
+article h1{
+  font-size:30px; line-height:1.25; margin:0 0 10px; letter-spacing:-.01em;
+  padding-bottom:16px; border-bottom:2px solid var(--accent);
+}
+article h2{font-size:21px; margin:44px 0 12px; padding-top:8px; letter-spacing:-.005em}
+article h3{font-size:16.5px; margin:28px 0 8px; color:var(--accent)}
+article h4{font-size:15px; margin:22px 0 6px}
+article p{margin:10px 0}
+article ul,article ol{margin:10px 0 10px 22px; padding:0}
+article li{margin:5px 0}
+article li::marker{color:var(--muted)}
+article a{color:var(--accent); text-decoration:none; border-bottom:1px solid #c8d8d2}
+article a:hover{border-bottom-color:var(--accent)}
+article strong{font-weight:650}
+article hr{border:0; border-top:1px solid var(--line); margin:38px 0}
+article blockquote{
+  margin:16px 0; padding:2px 0 2px 16px; border-left:3px solid var(--accent);
+  color:#3d3d3d; background:#f7f5f1;
+}
+article blockquote p{margin:8px 0}
+
+/* таблицы */
+article table{
+  width:100%; border-collapse:collapse; margin:18px 0; font-size:14px;
+  background:var(--panel); border:1px solid var(--line);
+}
+article th,article td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+article th{background:#f4f2ed; font-weight:650; font-size:13px; letter-spacing:.01em}
+article tbody tr:last-child td{border-bottom:none}
+article tbody tr:hover{background:#fbfaf7}
+article td:first-child{white-space:nowrap}
+
+/* код */
+article code{
+  font-family:"SF Mono",ui-monospace,Consolas,"Liberation Mono",monospace;
+  font-size:13px; background:var(--code); padding:2px 5px; border-radius:4px;
+}
+article pre{
+  background:#22201d; color:#eae6df; padding:16px 18px; border-radius:8px;
+  overflow-x:auto; font-size:13px; line-height:1.55; margin:16px 0;
+}
+article pre code{background:none; padding:0; color:inherit; font-size:12.5px}
+
+/* чек-лист */
+article li.task{list-style:none; margin-left:-20px; padding-left:26px; position:relative; cursor:pointer}
+article li.task .cb{
+  position:absolute; left:0; top:4px; width:14px; height:14px;
+  border:1.5px solid #b9b3a8; border-radius:3px; display:inline-block;
+}
+article li.task.done .cb{background:var(--accent); border-color:var(--accent)}
+article li.task.done .cb:after{
+  content:""; position:absolute; left:4px; top:0.5px; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+article li.task.done{color:var(--muted)}
+article .cb{
+  display:inline-block; width:13px; height:13px; border:1.5px solid #b9b3a8;
+  border-radius:3px; position:relative; vertical-align:-2px; cursor:pointer;
+}
+article .cb.done{background:var(--accent); border-color:var(--accent)}
+article .cb.done:after{
+  content:""; position:absolute; left:3.5px; top:0; width:4px; height:8px;
+  border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg);
+}
+
+/* навигация снизу */
+.pager{display:flex; justify-content:space-between; gap:16px; margin-top:56px;
+  padding-top:22px; border-top:1px solid var(--line); font-size:14px}
+.pager a{text-decoration:none; color:var(--accent)}
+.pager .next{margin-left:auto; text-align:right}
+
+/* полоса прогресса */
+.progress{
+  position:relative; background:var(--accent-soft); border-radius:8px;
+  padding:10px 14px; margin-bottom:26px; font-size:13px; color:var(--accent);
+  overflow:hidden;
+}
+.progress span{position:relative; z-index:1}
+.progress i{
+  position:absolute; left:0; top:0; bottom:0; background:#cfe0d8;
+  display:block; transition:width .2s ease;
+}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  .side{position:static; width:100%; flex:none; height:auto; border-right:none;
+        border-bottom:1px solid var(--line); padding:18px 16px}
+  .side nav{display:flex; flex-wrap:wrap; gap:6px}
+  .side nav a{flex:1 1 140px; border-left:none; border-bottom:2px solid transparent}
+  .side nav a.active{border-left:none; border-bottom-color:var(--accent)}
+  .side .foot{display:none}
+  main{padding:28px 18px 60px}
+  .topbar{margin:-28px 0 20px; font-size:13px}
+  .topbar .switch,.topbar .share{font-size:12px; padding:4px 10px}
+  article h1{font-size:24px}
+  article h2{font-size:19px}
+  article td:first-child{white-space:normal}
+}
+@media print{
+  .side,.pager,.topbar{display:none}
+  main{padding:0; max-width:none}
+  body{background:#fff}
+  article pre{background:#f4f2ed; color:#1a1a1a; border:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="index.html"><b>Вайбкодинг</b><span>курс 30/70 · 23 часа</span></a>
+    <div class="ratio">30% теории · 70% практики · 1380 мин</div>
+    <nav>
+      <a href="index.html">Обзор курса<small>Старт</small></a>
+      <a href="01-programma.html" class="active">Программа<small>Модули и тайминг</small></a>
+      <a href="02-teoriya.html">Теория<small>30% курса</small></a>
+      <a href="03-praktika.html">Практика<small>70% курса</small></a>
+      <a href="04-promptoteka.html">Промптотека<small>32 промпта</small></a>
+      <a href="05-proekty.html">Проекты<small>Капстоун</small></a>
+      <a href="06-tracker.html">Трекер<small>Чек-лист</small></a>
+      <a href="gantt.html">Гант по неделям<small>Навыки и теория</small></a>
+    </nav>
+    <div class="foot">Открывается локально, без интернета.<br>Ctrl+P — версия для печати.<br>
+      <a href="../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../opencode/index.html">Курс по OpenCode</a></div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <a class="home" href="../index.html">← Вайбкодинг</a>
+      <span class="sep">·</span>
+      <span class="here">Курс 30/70</span>
+      <span class="spacer"></span>
+      <button type="button" class="share" data-share="course-30-70/01-programma.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+      <a class="switch" href="en/01-programma.html" title="English">EN</a>
+      <a class="switch" href="fr/01-programma.html" title="Français">FR</a>
+      <a class="switch" href="../opencode/index.html">Курс по OpenCode →</a>
+    </div>
+    <article>
+<h1 id="_1">Программа курса</h1>
+<p>Формат: 8 модулей + капстоун. Всего 1380 минут.
+Теория 414 мин = <strong>30.0%</strong>. Практика 966 мин = <strong>70.0%</strong>.</p>
+<h2 id="_2">Сводная таблица</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Модуль</th>
+<th>Теория</th>
+<th>Практика</th>
+<th>Итого</th>
+<th>Накопительно</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Как вайбкодинг работает на самом деле</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>150</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Спека и постановка задачи</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>300</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Цикл: промпт → диф → проверка → коммит</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>450</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Контекст: как агент видит ваш проект</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>600</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Отладка, когда агент ходит по кругу</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>750</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Тесты и защита от регрессий</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>900</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Данные, API, окружение, безопасность</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>1050</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Деплой, git-гигиена, командная работа</td>
+<td>45</td>
+<td>105</td>
+<td>150</td>
+<td>1200</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Капстоун: свой проект с нуля до ссылки</td>
+<td>54</td>
+<td>126</td>
+<td>180</td>
+<td>1380</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Итого</strong></td>
+<td><strong>414 (30.0%)</strong></td>
+<td><strong>966 (70.0%)</strong></td>
+<td><strong>1380</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="1-150">Модуль 1. Как вайбкодинг работает на самом деле — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Что реально делает LLM: предсказание токенов, а не «понимание» кода.
+- Почему длинный контекст деградирует качество и что это меняет в работе.
+- Три режима: чат, автодополнение, агент с инструментами. Что умеет только агент.
+- Границы: агент уверенно пишет шаблонный код и уверенно врёт про API, которого не видел.
+- Ваша роль: не программист, а постановщик задачи и приёмщик результата.</p>
+<p><strong>Практика (105 мин)</strong>
+- 20 мин — окружение: агент, git, Node, Python, пустая папка проекта.
+- 20 мин — первый репозиторий, первый коммит до всякого кода, <code>.gitignore</code>.
+- 45 мин — первое задание: консольная утилита на 40–60 строк по готовой спеке.
+- 20 мин — разбор диффа построчно: что приняли, что завернули, почему.</p>
+<p><strong>Результат:</strong> репозиторий с историей из 3+ коммитов и понимание, зачем нужна спека.</p>
+<hr />
+<h2 id="2-150">Модуль 2. Спека и постановка задачи — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Спека из 6 блоков: цель, пользователь, входы/выходы, ограничения, критерии приёмки, что НЕ делаем.
+- Почему критерии приёмки — главный рычаг качества: агент их проверяет, а не угадывает.
+- Формулировки, которые ломают результат: «сделай красиво», «как в Airbnb», «оптимизируй».
+- Декомпозиция: задача на 15 минут работы агента против задачи на 3 часа.
+- Шаблон и антишаблон спеки рядом, на одном примере.
+- <code>/goal</code> — цель как условие завершения: агент сам решает, закончил или нет, по проверяемому признаку.</p>
+<p><strong>Практика (105 мин)</strong>
+- 30 мин — пишете спеку своего маленького проекта (не капстоуна), 10 строк.
+- 30 мин — две попытки реализации: с плохой формулировкой и со спекой; сравниваете диффы.
+- 20 мин — режете спеку на 5 задач, каждая с отдельными критериями.
+- 15 мин — переписываете критерий приёмки в условие для <code>/goal</code> и запускаете: тесты зелёные, дифф только в своей папке, лимит ходов.
+- 10 мин — ретро: что в спеке было лишним, что пришлось доспецифицировать в процессе.</p>
+<p><strong>Результат:</strong> спека, по которой другой человек (или агент) воспроизводит результат без вопросов, и умение превратить её критерии в условие <code>/goal</code>.</p>
+<hr />
+<h2 id="3-150">Модуль 3. Цикл: промпт → диф → проверка → коммит — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Анатомия хорошего запроса: контекст, задача, ограничения, формат ответа, чего не делать.
+- Чтение диффа: 6 красных флагов (удалённые проверки, «магические» константы, тихий <code>try/except</code>, переписанные чужие файлы, новые зависимости, изменённые тесты).
+- Размер шага: почему шаг больше 200 строк диффа почти всегда идёт в мусор.
+- Когда просить агента объяснить, а когда — сразу переделывать.
+- Коммит как точка отката; сообщение коммита как документация.</p>
+<p><strong>Практика (105 мин)</strong>
+- 25 мин — 8 мини-упражнений по 3 минуты: формулировка запроса под заданную задачу.
+- 40 мин — фича в существующем проекте ровно за 4 шага, с коммитом после каждого.
+- 25 мин — намеренно кривой дифф от агента: находите все красные флаги по чек-листу.
+- 15 мин — ретро: сколько раз откатывались и на каком шаге теряли время.</p>
+<p><strong>Результат:</strong> умение вести фичу короткими проверяемыми шагами с откатом.</p>
+<hr />
+<h2 id="4-150">Модуль 4. Контекст: как агент видит ваш проект — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Что попадает в контекст: открытые файлы, инструкции проекта, история чата, авто-поиск по репозиторию.
+- Файл инструкций (<code>CLAUDE.md</code> / <code>AGENTS.md</code> / <code>.cursorrules</code>): что туда писать, чтобы не повторяться каждый раз.
+- Почему агент не знает про ваш стек, пока вы не скажете; почему он «забывает» через 40 сообщений.
+- Стратегии: новый чат на новую задачу, ссылки на файлы вместо пересказа, «покажи план до правок».
+- Мусор в контексте = мусор в коде: как большие файлы и логи губят сессию.</p>
+<p><strong>Практика (105 мин)</strong>
+- 30 мин — пишете файл инструкций проекта: стек, команды запуска, правила стиля, запреты.
+- 45 мин — три задачи подряд в одном чате и те же три в разных чатах; замеряете разницу.
+- 20 мин — когда агент начинает бредить: приёмы перезапуска с минимальным контекстом.
+- 10 мин — ретро: какие правила в инструкции сэкономили больше всего времени.</p>
+<p><strong>Результат:</strong> проект с файлом инструкций, который агент соблюдает без напоминаний.</p>
+<hr />
+<h2 id="5-150">Модуль 5. Отладка, когда агент ходит по кругу — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Три круга ада: агент угадывает причину, агент «чинит» симптом, агент ломает соседнее.
+- Правило одного факта: сначала воспроизводимый минимальный кейс, потом правка.
+- Как заставить агента смотреть логи и стектрейсы, а не фантазировать.
+- Приём «объясни, что ты проверил» и приём «предложи 3 гипотезы с проверкой».
+- Когда откатывать и переписывать заново — дешевле, чем чинить.</p>
+<p><strong>Практика (105 мин)</strong>
+- 20 мин — сломанный проект с 3 известными багами; воспроизводите каждый минимальным кейсом.
+- 50 мин — чините все три, фиксируя для каждого: гипотеза → проверка → правка → коммит.
+- 25 мин — даёте агенту заведомо неверную гипотезу: смотрите, спорит ли он, и учитесь провоцировать спор.
+- 10 мин — ретро: сколько циклов до фикса и что сократило бы их вдвое.</p>
+<p><strong>Результат:</strong> три закрытых бага с коммитами и рабочий алгоритм отладки.</p>
+<hr />
+<h2 id="6-150">Модуль 6. Тесты и защита от регрессий — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Тест как критерий приёмки в исполняемом виде: спека, которую нельзя обмануть словами.
+- Пирамида для вайбкодинга: много юнит-тестов на логику, мало e2e, почти без снимков UI.
+- Тест сначала, код потом: почему агенту так проще, чем наоборот.
+- Запрет на правку тестов агентом без вашего согласия — как это формулировать.
+- Покрытие как метрика-обманка: 100% строк и ноль проверок смысла.</p>
+<p><strong>Практика (105 мин)</strong>
+- 20 мин — ставите тест-раннер (vitest/pytest), первый тест на существующую функцию.
+- 45 мин — TDD-цикл на новой фиче: 5 тестов, каждый падает до реализации.
+- 30 мин — просите агента сломать фичу и проверить, что тесты это поймали.
+- 10 мин — ретро: какие тесты оказались бесполезными и почему.</p>
+<p><strong>Результат:</strong> проект с тестами, которые падают при регрессии, и привычка «тест до кода».</p>
+<hr />
+<h2 id="7-api-150">Модуль 7. Данные, API, окружение, безопасность — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Секреты: <code>.env</code>, <code>.gitignore</code>, почему ключ в истории git = скомпрометированный ключ.
+- Агент и внешние API: галлюцинация методов, устаревшие параметры, выдуманные поля ответа.
+- Проверка API руками: документация, curl, реальный ответ до кода.
+- Валидация входных данных на границе; типы как дешёвая защита.
+- Что нельзя отдавать агенту: прод-базы, приватные данные, чужие токены.</p>
+<p><strong>Практика (105 мин)</strong>
+- 20 мин — <code>.env</code>, <code>.env.example</code>, чтение конфига, проверка что ключ не попал в git.
+- 50 мин — интеграция с публичным API: сначала curl, потом клиент, потом обработка ошибок.
+- 25 мин — валидация ответов и входных данных, тесты на кривые данные.
+- 10 мин — ретро: чему агент соврал и как вы это поймали.</p>
+<p><strong>Результат:</strong> рабочая интеграция с API, секреты вне репозитория, ошибки обработаны.</p>
+<hr />
+<h2 id="8-git-150">Модуль 8. Деплой, git-гигиена, командная работа — 150 мин</h2>
+<p><strong>Теория (45 мин)</strong>
+- Ветки и маленькие PR: почему агент на ветке безопаснее агента в main.
+- Сборка и прод-окружение: почему «у меня работает» не равно «задеплоилось».
+- Переменные окружения на хостинге, логи, откат на предыдущий деплой.
+- Ревью ИИ-кода: что проверять человеку в первую очередь.
+- Как писать сообщения коммитов и описания PR, чтобы через месяц не гадать.</p>
+<p><strong>Практика (105 мин)</strong>
+- 15 мин — ветка, PR, защита main от прямых пушей.
+- 40 мин — деплой проекта на Vercel/Netlify с переменными окружения.
+- 35 мин — ломаете прод намеренно и откатываете: сначала через редеплой, потом через revert.
+- 15 мин — чек-лист ревью ИИ-кода на 12 пунктов, применяете к своему PR.</p>
+<p><strong>Результат:</strong> публичная ссылка на работающий проект и умение откатиться за 2 минуты.</p>
+<hr />
+<h2 id="9-180">Модуль 9. Капстоун — 180 мин</h2>
+<p><strong>Теория, разбор (54 мин)</strong>
+- Выбор проекта по критерию «ценность / неизвестность», а не «что впечатляет».
+- План сборки: 4 шага, каждый заканчивается чем-то запускаемым.
+- Что вырезать из MVP, чтобы уложиться в 126 минут практики.
+- Чек-лист сдачи: запускается, ссылка живая, README, тесты, секреты не утекли.</p>
+<p><strong>Практика (126 мин)</strong>
+- 16 мин — спека на 10 строк + список из 4 шагов + репозиторий.
+- 60 мин — ядро: главный сценарий работает локально, 4 коммита.
+- 30 мин — обвязка: обработка ошибок, один тест на главный сценарий, README.
+- 20 мин — деплой, проверка ссылки с телефона, финальный коммит.</p>
+<p><strong>Результат:</strong> задеплоенный проект и пройденный чек-лист сдачи.</p>
+<hr />
+<h2 id="3070">Как держать пропорцию 30/70 на практике</h2>
+<ul>
+<li>Ставьте таймер на теорию. 45 минут вышло — закрываете и идёте делать.</li>
+<li>Если застряли в практике больше 20 минут — это не повод читать больше теории,
+  это повод уменьшить шаг и вернуться к короткой спеке.</li>
+<li>Пропущенная практика не переносится на следующий модуль: без неё следующий
+  модуль не имеет смысла, потому что все они опираются на предыдущий навык.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="index.html">← Обзор курса</a>
+      <a class="next" href="02-teoriya.html">Теория →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из", crit: "критериев" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url = location.protocol === "file:"
+        ? SHARE_ORIGIN + path
+        : location.origin + location.pathname + location.search + location.hash;
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "vibe-course-progress-v1:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " " + DIST.crit + " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

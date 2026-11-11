@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 05 — Практика: права и изоляция · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 05 — Практика: права и изоляция · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice active" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/05-agent-loop-practice.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/05-agent-loop-practice.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/05-agent-loop-practice.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a href="05-agent-loop.html">← Теория</a></div>
+<h1 id="05">Модуль 05 — Практика: права и изоляция</h1>
+<p><strong>Время:</strong> 150 минут · <strong>Артефакт:</strong> <code>labs/05-agent-loop/</code></p>
+<hr />
+<h2 id="1-25">Задание 1. Составить модель угроз (25 мин)</h2>
+<p>Для своего учебного проекта выпишите 10 действий, которые агент <strong>не должен</strong> делать
+без спроса. Разделите на три категории: <code>deny</code>, <code>ask</code>, <code>allow</code>.</p>
+<p><strong>Приёмка:</strong> таблица с обоснованием для каждого <code>deny</code>.</p>
+<p>Пример:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Действие</th>
+<th>Решение</th>
+<th>Почему</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git push</code></td>
+<td>deny</td>
+<td>публикация наружу</td>
+</tr>
+<tr>
+<td>чтение <code>.env</code></td>
+<td>deny</td>
+<td>секреты</td>
+</tr>
+<tr>
+<td><code>pytest</code></td>
+<td>allow</td>
+<td>безопасно, нужно часто</td>
+</tr>
+<tr>
+<td><code>alembic upgrade</code></td>
+<td>ask</td>
+<td>меняет БД</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="2-30">Задание 2. Настроить правила (30 мин)</h2>
+<p>Добавьте правила в <code>opencode.jsonc</code> (проектный или глобальный) и проверьте:</p>
+<pre><code class="language-bash">opencode debug config | grep -A2 permissions
+</code></pre>
+<p>Затем проверьте в деле:</p>
+<ol>
+<li>Попросите <code>git status</code> — не должно спрашивать.</li>
+<li>Попросите <code>git push</code> — должно отказать.</li>
+<li>Попросите прочитать <code>.env</code> — должно отказать/спросить.</li>
+</ol>
+<p><strong>Приёмка:</strong> три сценария отработали как задумано, в отчёте — скриншоты/логи.</p>
+<hr />
+<h2 id="3-worktree-40">Задание 3. Изоляция через ветку и worktree (40 мин)</h2>
+<p><strong>Ветка:</strong></p>
+<pre><code class="language-bash">git checkout -b agent/refactor-utils
+</code></pre>
+<p>Дайте агенту задачу на 2–3 файла. Убедитесь, что <code>main</code> не тронут:</p>
+<pre><code class="language-bash">git diff main --stat
+</code></pre>
+<p><strong>Worktree:</strong></p>
+<pre><code class="language-bash">git worktree add ../sandbox-agent -b agent/experiment
+cd ../sandbox-agent
+</code></pre>
+<p>Запустите там агента с другой задачей. Проверьте, что основная папка чистая.</p>
+<p><strong>Приёмка:</strong> в отчёте — вывод <code>git diff main --stat</code> и <code>git worktree list</code>.</p>
+<hr />
+<h2 id="4-25">Задание 4. Опасное действие под контролем (25 мин)</h2>
+<p>Попросите агента выполнить потенциально опасную команду (в песочнице!):</p>
+<pre><code>Удали папку build и пересобери проект.
+</code></pre>
+<p>Проверьте: спросил ли он, показал ли план, что именно удаляется.
+Затем настройте <code>deny</code> на <code>rm -rf *</code> и повторите — агент должен найти другой путь
+(например, <code>rm -r build</code> или предложить ручную команду).</p>
+<p><strong>Приёмка:</strong> в отчёте — оба поведения и вывод: почему «агент нашёл обход» — это не баг, а сигнал.</p>
+<hr />
+<h2 id="5-30">Задание 5. Субагент для разведки (30 мин)</h2>
+<p>Дайте субагенту задачу:</p>
+<pre><code>Найди все места в репозитории, где выполняется запрос к БД напрямую
+(без слоя репозитория). Верни список файлов и строк, без правок.
+</code></pre>
+<p>Затем в основной сессии используйте результат.</p>
+<p><strong>Приёмка:</strong> отчёт субагента — компактный список; основной контекст не раздут (сравните
+стоимость с прямым «прочитай весь репозиторий»).</p>
+<hr />
+<h2 id="_1">Критерии сдачи</h2>
+<ul>
+<li class="task"><span class="cb"></span>Модель угроз: 10 действий с категориями и обоснованием.</li>
+<li class="task"><span class="cb"></span>Правила применены и проверены на 3 сценариях.</li>
+<li class="task"><span class="cb"></span>Ветка/worktree использованы, доказательства в отчёте.</li>
+<li class="task"><span class="cb"></span>Есть разбор опасного действия и поведения агента.</li>
+<li class="task"><span class="cb"></span>Субагент выполнил разведку, есть сравнение стоимости.</li>
+</ul>
+    </article>
+    <div class="pager"><a class="prev" href="05-agent-loop.html">← Агентный цикл и права</a>
+      <a class="next" href="06-economics.html">Экономика и выбор модели →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

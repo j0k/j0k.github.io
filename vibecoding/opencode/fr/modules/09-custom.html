@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 09 — Personnalisation : skills, commandes, sous-agents, MCP · Vibecoding avec OpenCode</title>
+<meta property="og:title" content="Module 09 — Personnalisation : skills, commandes, sous-agents, MCP · Vibecoding avec OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>avec OpenCode · 50 heures</span></a>
+    <div class="ratio">40 % de théorie · 60 % de pratique</div>
+    <div class="group-title">Cours</div>
+    <a class="nav" href="../../index.html">Aperçu<small>Programme et règles</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Comment fonctionnent les LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Ingénierie du contexte</a><a class="mod-practice" href="02-context-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spécification et prompt</a><a class="mod-practice" href="03-spec-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles et vérification</a><a class="mod-practice" href="04-oracles-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Boucle d'agent et permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Économie et choix du modèle</a><a class="mod-practice" href="06-economics-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring à grande échelle</a><a class="mod-practice" href="07-refactor-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Revue et quality gates</a><a class="mod-practice" href="08-review-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory active" href="09-custom.html"><span class="num">09</span>Personnalisation</a><a class="mod-practice" href="09-custom-practice.html">pratique</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Projet final</a><a class="mod-practice" href="10-capstone-practice.html">pratique</a></div>
+    <div class="group-title">Ressources</div>
+    <a class="nav" href="../rubric.html">Grille d'évaluation</a>
+    <a class="nav" href="../glossary.html">Glossaire</a>
+    <a class="nav" href="../resources.html">À lire ensuite</a>
+    <a class="nav" href="../progress.html">Suivi de progression</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Modèles</a>
+    <a class="nav" href="../build.html">Comment construire le site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Marathon Vibecoding</a><br>
+      <a href="../../../course-30-70/index.html">Cours 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding avec OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/fr/modules/09-custom.html" data-copied="Lien copié" title="Partager">Partager</button>
+  <a class="switch" href="../../modules/09-custom.html" title="Русский">RU</a>
+  <a class="switch" href="../../en/modules/09-custom.html" title="English">EN</a>
+  <a class="switch" href="../../../course-30-70/index.html">Cours 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="09-custom-practice.html">Pratique →</a></div>
+<h1 id="module-09-personnalisation-skills-commandes-sous-agents-mcp">Module 09 — Personnalisation : skills, commandes, sous-agents, MCP</h1>
+<p><strong>Durée :</strong> 4 heures · <strong>Format :</strong> 80 min de théorie + 160 min de pratique</p>
+<hr />
+<h2 class="section" id="theorie">Théorie</h2>
+<h2 id="1-pourquoi-personnaliser">1. Pourquoi personnaliser</h2>
+<p>L'agent par défaut est générique. Votre projet, lui, est spécifique.
+La personnalisation transforme les connaissances générales du modèle en vos processus.</p>
+<p>Quatre mécanismes :</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Mécanisme</th>
+<th>Ce que c'est</th>
+<th>Quand</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Skill</strong></td>
+<td>un dossier avec des instructions + des ressources, chargé par description</td>
+<td>processus répétable (« comment déployer », « comment écrire des migrations »)</td>
+</tr>
+<tr>
+<td><strong>Commande</strong></td>
+<td>un modèle de prompt nommé (<code>/review</code>, <code>/test</code>)</td>
+<td>requêtes fréquentes</td>
+</tr>
+<tr>
+<td><strong>Sous-agent</strong></td>
+<td>un agent séparé avec ses propres permissions et son propre modèle</td>
+<td>reconnaissance, revue, travail en parallèle</td>
+</tr>
+<tr>
+<td><strong>MCP</strong></td>
+<td>un serveur externe avec des outils</td>
+<td>Jira, DB, navigateur, API internes</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="2-skill">2. Skill</h2>
+<p>Un skill est un fichier <code>SKILL.md</code> avec une description du moment où l'appliquer :</p>
+<pre><code class="language-markdown">---
+name: deploy
+description: Comment livrer une release en staging et en prod sans risque
+---
+
+# Deploy
+1. Vérifier que main est vert
+2. Construire l'image : ...
+3. ...
+</code></pre>
+<p>Le point clé : la <strong>description</strong> détermine le moment où l'agent va chercher le skill de lui-même.
+Une mauvaise description = un skill jamais utilisé.</p>
+<h2 id="3-commande">3. Commande</h2>
+<pre><code class="language-jsonc">{
+  &quot;commands&quot;: {
+    &quot;review&quot;: {
+      &quot;description&quot;: &quot;Revue stricte du diff courant&quot;,
+      &quot;template&quot;: &quot;Tu es un relecteur strict. Vérifie `git diff` pour : ... Uniquement les problèmes.&quot;
+    }
+  }
+}
+</code></pre>
+<p>Invocation : <code>/review</code>. Évite de retaper et standardise la qualité.</p>
+<h2 id="4-sous-agent">4. Sous-agent</h2>
+<p>Une session séparée avec ses propres permissions :</p>
+<pre><code class="language-jsonc">{
+  &quot;agents&quot;: {
+    &quot;scout&quot;: {
+      &quot;description&quot;: &quot;Reconnaissance du dépôt sans modification&quot;,
+      &quot;mode&quot;: &quot;subagent&quot;,
+      &quot;permissions&quot;: [
+        { &quot;action&quot;: &quot;edit&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; },
+        { &quot;action&quot;: &quot;shell&quot;, &quot;resource&quot;: &quot;*&quot;, &quot;effect&quot;: &quot;deny&quot; }
+      ]
+    }
+  }
+}
+</code></pre>
+<p>Le bénéfice : il n'encombre pas le contexte principal, et il ne peut pas modifier le code par accident.</p>
+<h2 id="5-mcp">5. MCP</h2>
+<p>Un protocole par lequel l'agent obtient des outils externes. Exemples : accès à une DB,
+Jira, navigateur, API internes.</p>
+<p>Règles de sécurité :</p>
+<ul>
+<li>un serveur MCP est <strong>du code qui s'exécute avec vos permissions</strong> — ne faites confiance qu'à ceux qui sont vérifiés ;</li>
+<li>préférez OAuth au collage d'une clé dans la config ;</li>
+<li>restreignez : lecture seule si vous avez seulement besoin de regarder.</li>
+</ul>
+<h2 id="6-comment-ne-pas-se-noyer-dans-la-personnalisation">6. Comment ne pas se noyer dans la personnalisation</h2>
+<p>Partez du problème, pas du mécanisme :</p>
+<pre><code>Je répète le même prompt 5 fois par semaine → Commande
+Il y a un processus en 10 étapes → Skill
+J'ai besoin d'isoler la reconnaissance → Sous-agent
+J'ai besoin de données d'un système externe → MCP
+</code></pre>
+<p>L'ordre inverse (« je vais faire un MCP parce que c'est à la mode ») laisse des déchets dans la config.</p>
+<hr />
+<h2 id="checklist-de-comprehension">Checklist de compréhension</h2>
+<ol>
+<li>En quoi un skill diffère-t-il d'une commande ?</li>
+<li>Pourquoi la <code>description</code> d'un skill est-elle plus importante que son contenu ?</li>
+<li>Pourquoi restreindre les permissions d'un sous-agent ?</li>
+<li>Quel est le risque principal d'un serveur MCP ?</li>
+</ol>
+<hr />
+<h2 class="section" id="pratique">Pratique</h2>
+<p>Voir <a href="09-custom-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="prev" href="08-review-practice.html">← Revue et quality gates — pratique</a>
+      <a class="next" href="09-custom-practice.html">Personnalisation — pratique →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "sur" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

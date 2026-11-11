@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 00 — Orientation · Vibecoding with OpenCode</title>
+<meta property="og:title" content="Module 00 — Orientation · Vibecoding with OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../../index.html"><b>Vibecoding</b><span>with OpenCode · 50 hours</span></a>
+    <div class="ratio">40% theory · 60% practice</div>
+    <div class="group-title">Course</div>
+    <a class="nav" href="../../index.html">Overview<small>Program and rules</small></a>
+    <div class="group-title">Modules</div>
+    <div class="mod"><a class="mod-theory active" href="00-orientation.html"><span class="num">00</span>Orientation</a><a class="mod-practice" href="00-orientation-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>How LLMs work</a><a class="mod-practice" href="01-llm-basics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Context engineering</a><a class="mod-practice" href="02-context-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Spec and prompt</a><a class="mod-practice" href="03-spec-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Oracles and checks</a><a class="mod-practice" href="04-oracles-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Agent loop and permissions</a><a class="mod-practice" href="05-agent-loop-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Economics and model choice</a><a class="mod-practice" href="06-economics-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Refactoring at scale</a><a class="mod-practice" href="07-refactor-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Review and quality gates</a><a class="mod-practice" href="08-review-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Customization</a><a class="mod-practice" href="09-custom-practice.html">practice</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Capstone</a><a class="mod-practice" href="10-capstone-practice.html">practice</a></div>
+    <div class="group-title">Materials</div>
+    <a class="nav" href="../rubric.html">Grading rubric</a>
+    <a class="nav" href="../glossary.html">Glossary</a>
+    <a class="nav" href="../resources.html">Further reading</a>
+    <a class="nav" href="../progress.html">Progress tracker</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Templates</a>
+    <a class="nav" href="../build.html">How to build the site</a>
+    <div class="foot">
+      <a href="../../../index.html">← Vibecoding marathon</a><br>
+      <a href="../../../course-30-70/index.html">Course 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../../index.html">← Vibecoding</a>
+  <span class="sep">·</span>
+  <span class="here">Vibecoding with OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/en/modules/00-orientation.html" data-copied="Link copied" title="Share">Share</button>
+  <a class="switch" href="../../modules/00-orientation.html" title="Русский">RU</a>
+  <a class="switch" href="../../fr/modules/00-orientation.html" title="Français">FR</a>
+  <a class="switch" href="../../../course-30-70/index.html">Course 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="00-orientation-practice.html">Practice →</a></div>
+<h1 id="module-00-orientation">Module 00 — Orientation</h1>
+<p><strong>Time:</strong> 2 hours · <strong>Format:</strong> 40 min theory + 80 min practice</p>
+<hr />
+<h2 class="section" id="theory">Theory</h2>
+<h2 id="1-what-vibe-coding-is-and-what-it-is-not">1. What vibe coding is (and what it is not)</h2>
+<p><strong>Vibe coding</strong> is development where the agent writes a significant part of the code, while the
+human acts as the task setter, the reviewer, and the owner of the result.</p>
+<p>It is <strong>not</strong> "press a button — get a product". It is a shift in the division of labor:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Before</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>you write the code</td>
+<td>you write the spec and the check</td>
+</tr>
+<tr>
+<td>you remember the API</td>
+<td>you verify that the API exists</td>
+</tr>
+<tr>
+<td>an error = a typo</td>
+<td>an error = confidently written untruth</td>
+</tr>
+<tr>
+<td>speed = typing speed</td>
+<td>speed = quality of context</td>
+</tr>
+</tbody>
+</table></div>
+<p>The key shift: <strong>the bottleneck moved from typing code to stating the task and verifying it.</strong></p>
+<h2 id="2-three-roles">2. Three roles</h2>
+<p>They only work together:</p>
+<pre><code>Task setter  →  what we do, why, how we verify
+Agent        →  fast executor, does not know your context
+Reviewer     →  reads the diff, catches lies, commits
+</code></pre>
+<p>If you combine all three and cut corners on review, you get writing speed
+and debt accumulation speed at the same time.</p>
+<h2 id="3-where-the-agent-is-strong-and-where-it-fails">3. Where the agent is strong and where it fails</h2>
+<p><strong>Strong at:</strong>
+- boilerplate, typical code (CRUD, configs, tests by example);
+- porting between languages and libraries;
+- explaining someone else's code;
+- mass, repetitive edits.</p>
+<p><strong>Fails at:</strong>
+- unfamiliar internal context ("how we do things here");
+- long chains of requirements without verification;
+- exact API versions that are not in the training data;
+- tasks where "correct" = "what the business decided", not "what the internet does".</p>
+<p>Conclusion: give the agent what can be verified, and keep for yourself what requires judgment.</p>
+<h2 id="4-the-model-is-not-the-main-factor">4. The model is not the main factor</h2>
+<p>Order of influence on the result:</p>
+<pre><code>context and task statement  &gt;  having a verification  &gt;  iteration  &gt;  model  &gt;  prompt wording
+</code></pre>
+<p>"Magic words" like "think step by step" have an effect an order of magnitude smaller
+than one properly applied <code>AGENTS.md</code> and one working test.</p>
+<h2 id="5-tools">5. Tools</h2>
+<p>OpenCode is a CLI agent: it reads files, edits them, runs commands, and asks for permissions.</p>
+<p>Three things you need to know from day one:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Thing</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Session</strong></td>
+<td>one working context; a new task means a new session</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>what the agent may do without asking, and what it may never do</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>chosen for the task, not "one for everything"</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="comprehension-checklist">Comprehension checklist</h2>
+<p>Answer to yourself without looking back:</p>
+<ol>
+<li>Why did the bottleneck move from typing code to stating the task?</li>
+<li>Name three types of tasks where the agent is consistently weaker than a human.</li>
+<li>Why is saving on diff review a bad saving?</li>
+<li>What gives a bigger gain: changing the model or <code>AGENTS.md</code>? Why?</li>
+</ol>
+<hr />
+<h2 class="section" id="practice">Practice</h2>
+<p>See <a href="00-orientation-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="next" href="00-orientation-practice.html">Orientation — practice →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "of" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 00 — Ориентация · Вайбкодинг с OpenCode</title>
+<meta property="og:title" content="Модуль 00 — Ориентация · Вайбкодинг с OpenCode">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <a class="brand" href="../index.html"><b>Вайбкодинг</b><span>с OpenCode · 50 часов</span></a>
+    <div class="ratio">40% теории · 60% практики</div>
+    <div class="group-title">Курс</div>
+    <a class="nav" href="../index.html">Обзор<small>Программа и правила</small></a>
+    <div class="group-title">Модули</div>
+    <div class="mod"><a class="mod-theory active" href="00-orientation.html"><span class="num">00</span>Ориентация</a><a class="mod-practice" href="00-orientation-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="01-llm-basics.html"><span class="num">01</span>Как работают LLM</a><a class="mod-practice" href="01-llm-basics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="02-context.html"><span class="num">02</span>Контекст-инжиниринг</a><a class="mod-practice" href="02-context-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="03-spec.html"><span class="num">03</span>Спека и промпт</a><a class="mod-practice" href="03-spec-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="04-oracles.html"><span class="num">04</span>Оракулы и проверка</a><a class="mod-practice" href="04-oracles-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="05-agent-loop.html"><span class="num">05</span>Агентный цикл и права</a><a class="mod-practice" href="05-agent-loop-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="06-economics.html"><span class="num">06</span>Экономика и выбор модели</a><a class="mod-practice" href="06-economics-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="07-refactor.html"><span class="num">07</span>Рефакторинг в масштабе</a><a class="mod-practice" href="07-refactor-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="08-review.html"><span class="num">08</span>Ревью и quality gates</a><a class="mod-practice" href="08-review-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="09-custom.html"><span class="num">09</span>Кастомизация</a><a class="mod-practice" href="09-custom-practice.html">практика</a></div>
+    <div class="mod"><a class="mod-theory" href="10-capstone.html"><span class="num">10</span>Капстоун</a><a class="mod-practice" href="10-capstone-practice.html">практика</a></div>
+    <div class="group-title">Материалы</div>
+    <a class="nav" href="../rubric.html">Критерии оценки</a>
+    <a class="nav" href="../glossary.html">Глоссарий</a>
+    <a class="nav" href="../resources.html">Что читать дальше</a>
+    <a class="nav" href="../progress.html">Трекер прогресса</a>
+    <a class="nav" href="../labs.html">Labs</a>
+    <a class="nav" href="../templates.html">Шаблоны</a>
+    <a class="nav" href="../build.html">Как собрать сайт</a>
+    <div class="foot">
+      <a href="../../index.html">← Марафон по вайбкодингу</a><br>
+      <a href="../../course-30-70/index.html">Курс 30/70</a>
+    </div>
+  </aside>
+  <main>
+<div class="topbar">
+  <a class="home" href="../../index.html">← Вайбкодинг</a>
+  <span class="sep">·</span>
+  <span class="here">Вайбкодинг с OpenCode</span>
+  <span class="spacer"></span>
+  <button type="button" class="share" data-share="opencode/modules/00-orientation.html" data-copied="Ссылка скопирована" title="Поделиться">Поделиться</button>
+  <a class="switch" href="../en/modules/00-orientation.html" title="English">EN</a>
+  <a class="switch" href="../fr/modules/00-orientation.html" title="Français">FR</a>
+  <a class="switch" href="../../course-30-70/index.html">Курс 30/70 →</a>
+</div>
+    <article>
+<div class="crosslink"><a class="primary" href="00-orientation-practice.html">Практика →</a></div>
+<h1 id="00">Модуль 00 — Ориентация</h1>
+<p><strong>Время:</strong> 2 часа · <strong>Формат:</strong> теория 40 мин + практика 80 мин</p>
+<hr />
+<h2 class="section" id="_1">Теория</h2>
+<h2 id="1">1. Что такое вайбкодинг (и чем он не является)</h2>
+<p><strong>Вайбкодинг</strong> — это разработка, в которой значительную часть кода пишет агент, а человек
+выполняет роль постановщика задачи, ревьюера и владельца результата.</p>
+<p>Это <strong>не</strong> «нажал кнопку — получил продукт». Это смена распределения труда:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Раньше</th>
+<th>Теперь</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>вы пишете код</td>
+<td>вы пишете спеку и проверку</td>
+</tr>
+<tr>
+<td>вы помните API</td>
+<td>вы проверяете, что API существует</td>
+</tr>
+<tr>
+<td>ошибка = опечатка</td>
+<td>ошибка = уверенно написанная неправда</td>
+</tr>
+<tr>
+<td>скорость = набор текста</td>
+<td>скорость = качество контекста</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ключевой сдвиг: <strong>узкое место переместилось из набора кода в постановку задачи и проверку.</strong></p>
+<h2 id="2">2. Три роли</h2>
+<p>Работают только вместе:</p>
+<pre><code>Постановщик  →  что делаем, зачем, как проверим
+Агент        →  быстрый исполнитель, не знает вашего контекста
+Ревьюер      →  читает дифф, ловит вранье, коммитит
+</code></pre>
+<p>Если вы совмещаете все три и экономите на ревью — вы получаете скорость написания
+и скорость накопления долгов одновременно.</p>
+<h2 id="3">3. Где агент силён и где проваливается</h2>
+<p><strong>Силён:</strong>
+- шаблонный, типовой код (CRUD, конфиги, тесты по образцу);
+- перевод между языками и библиотеками;
+- объяснение чужого кода;
+- массовые однотипные правки.</p>
+<p><strong>Проваливается:</strong>
+- незнакомый внутренний контекст («как у нас принято»);
+- длинные цепочки требований без проверки;
+- точные версии API, которых нет в обучающих данных;
+- задачи, где «правильно» = «так решил бизнес», а не «так принято в интернете».</p>
+<p>Вывод: отдавайте агенту то, что можно проверить, и оставляйте себе то, что требует суждения.</p>
+<h2 id="4">4. Модель — не главный фактор</h2>
+<p>Порядок влияния на результат:</p>
+<pre><code>контекст и постановка  &gt;  наличие проверки  &gt;  итеративность  &gt;  модель  &gt;  формулировка промпта
+</code></pre>
+<p>«Волшебные слова» вроде «подумай пошагово» дают эффект на порядок меньше,
+чем один правильно приложенный <code>AGENTS.md</code> и работающий тест.</p>
+<h2 id="5">5. Инструменты</h2>
+<p>OpenCode — CLI-агент: читает файлы, правит их, запускает команды, спрашивает разрешения.</p>
+<p>Три сущности, которые надо знать с первого дня:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Сущность</th>
+<th>Зачем</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Сессия</strong></td>
+<td>один рабочий контекст; новая задача — новая сессия</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>что агенту можно без спроса, что нельзя вообще</td>
+</tr>
+<tr>
+<td><strong>Модель</strong></td>
+<td>выбирается под задачу, а не «одна на всё»</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="-">Чек-лист понимания</h2>
+<p>Ответьте себе, не подглядывая:</p>
+<ol>
+<li>Почему узкое место сместилось из набора кода в постановку задачи?</li>
+<li>Назовите три типа задач, где агент стабильно слабее человека.</li>
+<li>Почему экономия на ревью диффа — плохая экономия?</li>
+<li>Что даёт больший прирост: смена модели или <code>AGENTS.md</code>? Почему?</li>
+</ol>
+<hr />
+<h2 class="section" id="_2">Практика</h2>
+<p>См. <a href="00-orientation-practice.html">practice.md</a>.</p>
+    </article>
+    <div class="pager"><a class="next" href="00-orientation-practice.html">Ориентация — практика →</a></div>
+  </main>
+</div>
+<script>var DIST = { done: "из" };</script>
+<script>
+(function () {
+  /* --- кнопка «Поделиться» --- */
+  var SHARE_ORIGIN = "https://j0k.github.io/vibecoding/";
+  document.querySelectorAll(".share").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var path = btn.getAttribute("data-share") || "";
+      var url;
+      if (location.protocol === "file:") {
+        url = SHARE_ORIGIN + path;
+      } else {
+        url = location.origin + location.pathname + location.search + location.hash;
+      }
+      var done = function () {
+        var old = btn.textContent;
+        btn.textContent = btn.getAttribute("data-copied") || "OK";
+        btn.classList.add("copied");
+        setTimeout(function () {
+          btn.textContent = old;
+          btn.classList.remove("copied");
+        }, 1600);
+      };
+      var fail = function () {
+        window.prompt(btn.getAttribute("data-copied") || "", url);
+      };
+      if (navigator.clipboard && location.protocol !== "file:") {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(done, fail);
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = url;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        ok ? done() : fail();
+      }
+    });
+  });
+
+  /* --- чек-листы с сохранением прогресса --- */
+  var boxes = document.querySelectorAll("li.task, .cb[data-task]");
+  if (!boxes.length) return;
+  var KEY = "opencode-course:" + location.pathname.split("/").pop();
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var bar = document.createElement("div");
+  bar.className = "progress";
+  document.querySelector("article").prepend(bar);
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function render() {
+    var done = 0;
+    boxes.forEach(function (el) { if (el.classList.contains("done")) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    bar.innerHTML = "<span><b>" + done + "</b> " + DIST.done + " " + boxes.length +
+      " · " + pct + "%</span><i style=\"width:" + pct + "%\"></i>";
+  }
+
+  boxes.forEach(function (el, i) {
+    var id = "t" + i;
+    if (state[id]) el.classList.add("done");
+    el.addEventListener("click", function (e) {
+      if (e.target.tagName === "A") return;
+      el.classList.toggle("done");
+      state[id] = el.classList.contains("done");
+      save();
+      render();
+    });
+  });
+  render();
+})();
+</script>
+</body>
+</html>
